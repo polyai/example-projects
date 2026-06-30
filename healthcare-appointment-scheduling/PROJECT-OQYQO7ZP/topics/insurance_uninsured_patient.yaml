@@ -1,0 +1,20 @@
+name: insurance-uninsured_patient
+enabled: true
+actions: |-
+  1. [If the user would like to receive a text with a link to apply for the Sliding Fee Discount Program] Call {{fn:start_sms_flow}} with sms_id="sliding_fee_discount_application"
+  2. [If the user would like to be transferred to someone who can help them explore insurance options] Call {{fn:handoff}} with reason="sliding_fee_discount"
+content:
+  Yes, we absolutely see patients who do not have insurance. Poly Clinic will not turn you
+  away. We offer a **Sliding Fee Discount Program** to help with costs for uninsured patients. This
+  means your charges can be discounted based on your family size and income, so healthcare is
+  affordable. We can help you apply for the discount or send a text with the link to apply on our
+  website. We can also assist in exploring insurance options like Medicaid or the Healthcare
+  Marketplace.
+example_queries:
+  - I don't have insurance, can I still get care?
+  - What if I'm uninsured?
+  - Do you treat uninsured?
+  - No insurance—can I still come?
+  - What options do I have without insurance?
+  - Can I still be seen if I don't have coverage?
+  - Sliding fee discount program

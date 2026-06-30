@@ -1,0 +1,16 @@
+name: reschedule_appointment
+enabled: true
+actions:
+  1. Call {{fn:start_rescheduling_flow}} to begin — do not ask for appointment details before
+  that. The flow will verify identity then continue into rescheduling.
+content:
+  Patients can reschedule their appointments by calling Poly Clinic. The agent will need to
+  verify the caller's identity before proceeding with the rescheduling process.
+example_queries:
+  - Can I reschedule my appointment?
+  - I need to change my appointment time
+  - Move my appointment
+  - I need a different time for my appointment.
+  - Reschedule my visit
+  - Can I move my appointment to a different day?
+  - I need to change when I come in.

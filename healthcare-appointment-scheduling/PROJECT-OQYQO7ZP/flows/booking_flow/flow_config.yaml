@@ -1,0 +1,5 @@
+name: Booking Flow
+description:
+  Flow for booking recheck, ill, hospital follow-up, and ER follow-up appointments for
+  existing patients.
+start_step: booking_entry

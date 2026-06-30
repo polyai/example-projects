@@ -1,0 +1,16 @@
+name: speak_to_person
+enabled: true
+actions: |-
+  1. [caller wants to speak to, talk to, or be transferred to a specific person by name]
+     Call {{fn:handoff}} with reason="SCHEDULING" and utterance="Let me transfer you to our team so they can connect you with the right person. Putting you through now."
+content: |-
+  When a caller asks to speak to or be connected to a specific person by name,
+  the agent will transfer them to the scheduling team who can route the call
+  to the correct department.
+example_queries:
+  - I need to talk to someone
+  - Can I speak with my doctor?
+  - I'd like to speak with my provider
+  - Transfer me to my doctor please
+  - Someone from the office called me and I need to speak back with them
+  - I need to speak back with my provider

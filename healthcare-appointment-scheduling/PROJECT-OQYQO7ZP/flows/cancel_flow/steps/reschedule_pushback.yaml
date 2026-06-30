@@ -1,0 +1,54 @@
+step_type: advanced_step
+name: Reschedule Pushback
+asr_biasing:
+  is_enabled: false
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === TASK ===
+
+  The caller wants to cancel an appointment. Before proceeding, give them the option to
+  reschedule instead — this is often what they actually need.
+
+  === FIRST TURN ON THIS STEP ===
+
+  Review the full conversation history:
+
+  - If the caller has **already said they want to reschedule** rather than cancel, call
+    {{ft:caller_wants_reschedule}} immediately. Do NOT offer the option again.
+
+  - If the caller has **already explicitly said they only want to cancel** and not
+    reschedule, call {{ft:caller_confirmed_cancel}} immediately. Do NOT ask again.
+
+  - Otherwise, acknowledge their request and offer reschedule as a warm, tactful
+    alternative. Keep it brief and natural — for example: "Sure, I can help you with
+    that. If you can't make your appointment, I can also reschedule it for you —
+    would you like me to do that instead?" Do NOT use that exact phrasing.
+
+  === ACTIONS ===
+
+  --- CALLER WANTS TO RESCHEDULE INSTEAD ---
+
+  If the caller says yes to rescheduling, or indicates they'd prefer to reschedule:
+  call {{ft:caller_wants_reschedule}}. Do not say anything else when calling the function.
+
+  --- CALLER CONFIRMS THEY WANT TO CANCEL ---
+
+  If the caller confirms they want to cancel (not reschedule):
+  call {{ft:caller_confirmed_cancel}}. Do not say anything else when calling the function.

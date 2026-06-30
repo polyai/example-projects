@@ -1,0 +1,13 @@
+name: preventative_general_care
+enabled: true
+actions: |-
+  Choose the best response from the available responses. Do not combine responses.
+
+  AVAILABLE RESPONSES:
+  1. Most adults should have a check-up annually to monitor overall health, check vital signs, and discuss preventive care. Those with chronic conditions may need more frequent visits. Would you like to schedule a check-up?
+  1.1 [if the user would like to schedule a regular/annual check up] Call {{fn:handoff}} with reason="annual_physical"
+content: ""
+example_queries:
+  - When should I get a check up?
+  - How often should I get a physical exam?
+  - I can't remember the last time I got a physical, am I due for one?

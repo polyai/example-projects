@@ -1,0 +1,65 @@
+step_type: advanced_step
+name: Collect Recheck Type
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords:
+    - diabetes
+    - hypertension
+    - blood pressure
+    - medication
+    - recheck
+    - follow up
+    - follow-up
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === FIRST TURN ON THIS STEP ===
+
+  The caller was already asked which type of recheck they need. Wait silently for their
+  response, then follow the ACTIONS below.
+
+  === ACTIONS ===
+
+  The patient has multiple recheck types on file ($booking_recheck_disambiguation).
+  Match the caller's answer to the closest option below and call
+  {{ft:appointment_type_confirmed}} with the matching appointment_type.
+
+  --- DIABETES ---
+
+  If the caller mentions diabetes, blood sugar, A1C, or similar:
+  call {{ft:appointment_type_confirmed}} with appointment_type="recheck_diabetes".
+
+  --- HYPERTENSION ---
+
+  If the caller mentions hypertension, blood pressure, or similar:
+  call {{ft:appointment_type_confirmed}} with appointment_type="recheck_hypertension".
+
+  --- MEDICATION ---
+
+  If the caller mentions medication, meds, prescriptions, or similar:
+  call {{ft:appointment_type_confirmed}} with appointment_type="recheck_medication".
+
+  --- GENERAL RECHECK ---
+
+  If the caller says "just a regular recheck" or their answer doesn't match a specific
+  sub-type, call {{ft:appointment_type_confirmed}} with appointment_type="recheck".
+
+  --- UNCLEAR ---
+
+  If the caller's response is ambiguous, ask one brief clarifying question referencing the
+  specific options on file.

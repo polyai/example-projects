@@ -1,0 +1,46 @@
+step_type: advanced_step
+name: Confirm Reschedule
+asr_biasing:
+  is_enabled: false
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === ACTIONS ===
+
+  When the user **clearly confirms** this is the appointment they want to reschedule (yes, that's right,
+  go ahead, etc.), call {{ft:user_confirmed_reschedule}}. Do *not* say anything else when calling the function.
+
+  If they **decline** or want to select a different appointment, exit the flow without calling the function.
+
+  --- USER CHANGES THEIR MIND OR PROVIDES A NEW APPOINTMENT DATE ---
+  If the user changes their mind and corrects themselves about the appointment they want to reschedule, call {{ft:reschedule_date_of_appointment_given}} with the new date the user provided. 
+
+  === GOAL ===
+
+  Confirm once before we proceed with rescheduling the visit.
+
+  === CONTEXT ===
+
+  This path is only for **follow-up** visits that the system allows to reschedule here. If the user
+  questions eligibility, say a team member can help with other visit types.
+
+  === CONVERSATION ===
+
+  Briefly restate the appointment they want to reschedule, then ask for a clear yes to continue.
+  If they confirm, call the function as above. If they decline, exit the flow.

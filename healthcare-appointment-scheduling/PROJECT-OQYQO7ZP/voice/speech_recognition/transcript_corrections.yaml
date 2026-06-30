@@ -1,0 +1,73 @@
+corrections:
+  - name: Dr R. Chang
+    description: Prevent parsing Dr R. Chang as 2 sentences
+    regular_expressions:
+      - regular_expression: Dr R. Chang
+        replacement: Dr R Chang
+        replacement_type: partial
+      - regular_expression: R. Chang
+        replacement: R Chang
+        replacement_type: partial
+      - regular_expression: Dr. Chang
+        replacement: Dr Chang
+        replacement_type: partial
+  - name: Emmett Street
+    description: Correct common ASR misrecognitions of Emmett Street
+    regular_expressions:
+      - regular_expression: \bBennett Street\b
+        replacement: Emmett Street
+        replacement_type: partial
+      - regular_expression: \bEmma Street\b
+        replacement: Emmett Street
+        replacement_type: partial
+      - regular_expression: \bEmit Street\b
+        replacement: Emmett Street
+        replacement_type: partial
+      - regular_expression: \bM Street\b
+        replacement: Emmett Street
+        replacement_type: partial
+      - regular_expression: Hammett street
+        replacement: Emmett Street
+        replacement_type: partial
+      - regular_expression: Damnit street
+        replacement: Emmett Street
+        replacement_type: partial
+      - regular_expression: dammit street
+        replacement: Emmett Street
+        replacement_type: partial
+      - regular_expression: dammit streak
+        replacement: Emmett Street
+        replacement_type: partial
+      - regular_expression: \bdemonstrate\b
+        replacement: Emmett Street
+        replacement_type: partial
+      - regular_expression: Hammett street
+        replacement: Emmett Street
+        replacement_type: partial
+      - regular_expression: Damnit street
+        replacement: Emmett Street
+        replacement_type: partial
+      - regular_expression: dammit street
+        replacement: Emmett Street
+        replacement_type: partial
+      - regular_expression: dammit streak
+        replacement: Emmett Street
+        replacement_type: partial
+  - name: Prescription misrecognitions
+    description: Correct common ASR misrecognitions of prescription
+    regular_expressions:
+      - regular_expression: \binscription line\b
+        replacement: prescription line
+        replacement_type: partial
+      - regular_expression: \binscription\b
+        replacement: prescription
+        replacement_type: partial
+      - regular_expression: \binscriptions\b
+        replacement: prescriptions
+        replacement_type: partial
+  - name: Optometry
+    description: Correct ASR misrecognitions of eye/optometry terms as I/IT
+    regular_expressions:
+      - regular_expression: (?i)\bi (department|exam|doctor|correction|appointment|care|check)\b
+        replacement: eye \1
+        replacement_type: partial

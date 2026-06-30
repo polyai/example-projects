@@ -1,0 +1,17 @@
+name: telehealth_services
+enabled: true
+actions: |-
+  1. [asking if telehealth is available] Cover key facts from content.
+  2. [asking how telehealth works] Cover the telehealth platform details from content.
+  3. [wants to schedule a telehealth appointment] Before scheduling, confirm the caller has a smartphone or computer with internet access. Let them know they'll receive a link via email or text to join at their appointment time. Remind them to be in a private area during the call and to have any needed devices ready (e.g. blood pressure cuff). Once confirmed, call {{fn:handoff}} with reason="SCHEDULING" and utterance="Let me transfer you to our scheduling team to set up your virtual visit. Putting you through now."
+content: |-
+  Yes, we do offer **virtual visits** (telehealth) for many types of appointments. Just let us know you prefer a telehealth appointment when scheduling. We use a secure platform for video visits — we send you a link via email or text, and you join at your appointment time. If during a telehealth appointment, the provider feels you need in-person care, they'll advise you to come in.
+
+  To schedule a telehealth appointment, you'll need a smartphone or computer with internet access. You'll receive a link via email or text before your appointment. Make sure you're in a private area during the call and have any devices you may need ready, like a blood pressure cuff.
+example_queries:
+  - Do you offer telehealth?
+  - Can I see a doctor virtually?
+  - Video appointments available?
+  - Do you have virtual appointments?
+  - Can I do a virtual visit?
+  - Online doctor appointment

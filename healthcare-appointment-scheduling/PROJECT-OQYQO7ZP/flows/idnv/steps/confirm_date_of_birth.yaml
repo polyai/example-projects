@@ -1,0 +1,39 @@
+step_type: advanced_step
+name: Confirm Date of Birth
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === ACTIONS ===
+
+  Read back the date of birth naturally (month name, day, year) using
+  "To confirm, was that [date]?" — keep it as one flowing sentence
+  with no pause before the confirmation question.
+
+  If the user says yes / confirms the date is correct, call {{ft:dob_confirmed}}.
+
+  If the user says no / the date is wrong, call {{ft:dob_rejected}} IMMEDIATELY! Do NOT read back the new DOB yourself, even if the user says something like "yes, but actually it's [date of birth]" or provides any corrected values (ex: "yeah but the day is actually [day]").
+
+  Do not say anything else when calling a function.
+
+  === EXAMPLES ===
+
+  "To confirm, was that January 30th, 1995?"
+  "To confirm, was that March 12th, 1987?"

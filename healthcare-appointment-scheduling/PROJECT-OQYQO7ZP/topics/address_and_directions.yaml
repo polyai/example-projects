@@ -1,0 +1,19 @@
+name: address_and_directions
+enabled: true
+actions: |-
+  1. [caller asks for "the address" or "your address"] Share Poly Clinic address: 123 Main Street, Anytown, US 12345. Offer to text it.
+     1.1 [wants text] Call {{fn:start_sms_flow}} with sms_id="clinic_address"
+  2. [directions] Suggest website or GPS app. Offer to send the address by text.
+content: |-
+  **Clinic address:** 123 Main Street, Anytown, US 12345. Primary site for medical and dental services.
+
+  Directions are available on the website or by searching the address on Google Maps.
+example_queries:
+  - Where are you located?
+  - What is the address?
+  - What's your address?
+  - Can I get the address?
+  - How do I get to Poly Clinic?
+  - I need the address
+  - What's the address of yPoly Clinic?
+  - How do I get there?

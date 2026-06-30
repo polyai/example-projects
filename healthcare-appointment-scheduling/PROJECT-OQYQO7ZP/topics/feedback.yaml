@@ -1,0 +1,14 @@
+name: feedback
+enabled: true
+actions: |-
+  1. Offer the Patient Satisfaction Survey or to take feedback directly on the call.
+  1.1 [User wants a text with the survey link] Call {{fn:start_sms_flow}} with sms_id="patient_satisfaction_survey"
+  1.2 [User wants to share feedback directly on the call] Invite them to share. After they do, thank them and confirm it will be passed to the team.
+content:
+  We appreciate you wanting to share feedback! You can complete our Patient Satisfaction
+  Survey online to let us know about your experience. We always value hearing from our patients.
+example_queries:
+  - I have feedback
+  - I want to thank the staff.
+  - How can I leave a review?
+  - Where can I register feedback?

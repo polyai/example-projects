@@ -1,0 +1,80 @@
+step_type: advanced_step
+name: Triage Appointment Type
+asr_biasing:
+  is_enabled: false
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === FIRST TURN ON THIS STEP ===
+
+  Before saying anything, **review the full conversation history**.
+
+  - If the caller has already mentioned a **specialty department** (OB/GYN, obstetrics,
+    gynecology, dental, dentist, pediatrics, children's doctor, behavioral health, mental
+    health, counseling, physical therapy, PT, podiatry, foot doctor, optometry, eye doctor),
+    call {{fn:handoff}} with reason="SCHEDULING" and utterance="Let me transfer you to our
+    scheduling team for that department. Putting you through now."
+    immediately. Do NOT ask again — they already told you.
+
+  - If the caller has already mentioned **family practice, internal medicine, primary care,
+    primary provider, general practice, a recheck, a follow-up, or an ill visit**, call
+    {{ft:caller_wants_fpim_reschedule}} immediately.
+    Do NOT ask again — they already told you.
+
+  - Otherwise, ask the caller in a natural, brief way whether they are looking to reschedule
+    with their primary care provider or with a different department (for example: "Got it —
+    is this for a primary care provider in family practice and internal medicine, or is the appointment with a different department?").
+
+  Do NOT use that exact wording — keep it conversational.
+
+  === TASK ===
+
+  Determine whether the caller wants to reschedule an appointment with a specialty department
+  or with family practice / internal medicine / primary care.
+
+  === ACTIONS ===
+
+  --- CALLER MENTIONS A SPECIFIC PROVIDER BY NAME ---
+
+  If the caller mentions a provider by name (e.g. "Dr. Chang", "Danielle Jennings"),
+  ask whether the appointment is with their primary care provider or a different department
+  so you can route them correctly.
+
+  --- CALLER WANTS TO RESCHEDULE A SPECIALTY DEPARTMENT APPOINTMENT ---
+
+  If the caller mentions OB/GYN, obstetrics, gynecology, dental, dentist, pediatrics,
+  children's doctor, behavioral health, mental health, counseling, physical therapy, PT,
+  podiatry, foot doctor, optometry, or eye doctor:
+  call {{fn:handoff}} with reason="SCHEDULING" and utterance="Let me transfer you to our
+  scheduling team for that department. Putting you through now."
+  Do *not* say anything else when calling the function.
+
+  --- CALLER WANTS TO RESCHEDULE A FAMILY PRACTICE / INTERNAL MEDICINE / PRIMARY CARE APPOINTMENT ---
+
+  If the caller mentions family practice, internal medicine, primary care, primary provider,
+  general practice, a recheck, a follow-up, an ill visit, or any appointment with their
+  regular provider:
+  call {{ft:caller_wants_fpim_reschedule}}.
+  Do *not* say anything else when calling the function.
+
+  --- UNCLEAR ---
+
+  If the caller's intent is still ambiguous after their response, ask one brief clarifying
+  question — something like whether they are trying to reschedule with their primary care
+  provider or a specialist. Do not use a fixed script.

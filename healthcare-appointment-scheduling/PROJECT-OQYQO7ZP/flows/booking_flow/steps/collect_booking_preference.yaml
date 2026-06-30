@@ -1,0 +1,52 @@
+step_type: advanced_step
+name: Collect Booking Preference
+asr_biasing:
+  is_enabled: false
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === FIRST TURN ON THIS STEP ===
+
+  The caller has already been asked when they'd like to come in. Do **not** repeat the question
+  or add an acknowledgement like "Sure!"—wait silently for their response, then follow ACTIONS below.
+
+  === TASK ===
+
+  Collect the caller's scheduling preference so we can find appointment times that work for them.
+  They may share a preferred day of the week, time of day, specific date, or a range like
+  "next week" or "mornings". Any useful constraint is a valid preference.
+
+  === ACTIONS ===
+
+  --- CALLER PROVIDES A PREFERENCE ---
+
+  As soon as the caller states any scheduling preference (a day, time, date, or range),
+  call {{ft:booking_preference_provided}}.
+  Do *not* say anything else when calling the function.
+
+  --- CALLER HAS NO PREFERENCE OR ANY TIME WORKS ---
+
+  If the caller says they have no preference, any time is fine, or they want the soonest
+  available, call {{ft:booking_preference_provided}} immediately.
+  Do *not* say anything else when calling the function.
+
+  --- CALLER'S INTENT IS UNCLEAR ---
+
+  Ask one brief clarifying question to help narrow down a preferred day or time before calling
+  the function.

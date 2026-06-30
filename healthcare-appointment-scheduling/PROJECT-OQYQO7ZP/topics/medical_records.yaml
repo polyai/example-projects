@@ -1,0 +1,25 @@
+name: medical_records
+enabled: true
+actions: |-
+  1. [requesting medical records, vaccination records, shot records, or immunization records — including for a child] Say only: "You'll need a release form for that — want me to text you the link?" Do NOT explain the process, requirements, or timelines unless the caller asks. NOTE: Vaccination records, shot records, and immunization records are medical records — do NOT route these to Pediatrics.
+  1.1 [wants the form by text] Call {{fn:start_sms_flow}} with sms_id="records_release"
+  1.2 [asks follow-up about process] Answer briefly from content.
+  2. [asking how long records take] A few business days.
+  3. [asking how to receive records] Pick up or mail.
+  4. [caller asks to speak to someone, be transferred, or connect with a human — at any point during a medical records conversation] Call {{fn:handoff}} with reason="help_with_forms" and utterance="Let me connect you with our Health Information Services team. Putting you through now."
+content: |-
+  You'll need to fill out a release form. We can text you the link. Processing takes a few
+  business days — pick up or mail. This includes vaccination records, shot records, and
+  immunization records (including for a child) — these are all medical records handled by
+  Health Information Services, not Pediatrics.
+example_queries:
+  - How do I get my medical records?
+  - Can I get a copy of my records?
+  - Can you mail me my medical records?
+  - Records release?
+  - Can you transfer me to medical records?
+  - I need to speak to someone in medical records
+  - I need my child's vaccination records
+  - Can I get my kid's shot records?
+  - I need immunization records for school
+  - I need my shot records

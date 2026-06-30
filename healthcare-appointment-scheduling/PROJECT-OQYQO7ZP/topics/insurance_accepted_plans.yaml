@@ -1,0 +1,23 @@
+name: insurance-accepted_plans
+enabled: true
+actions: |-
+  1. [User asks what insurance Poly Clinic accepts without specifying] We take patients with Medicaid, Medicare, and most commercial private insurance plans. For dental services, we accept Medicaid.
+  1.1 [User wants more info on which private insurances are accepted] Offer to transfer to check specific insurance.
+  1.1.1 [User wants to be transferred] Call {{fn:handoff}} with reason="insurance_check"
+  2. [User asks specifically about Medicaid or Medicare] Share Medicaid/Medicare info from the content.
+  3. [User asks about commercial or private insurance] Share private insurance info from the content. Offer to transfer to verify their specific plan.
+  3.1 [User wants to be transferred] Call {{fn:handoff}} with reason="insurance_check"
+content: |-
+  ## Medicaid and Medicare
+  Absolutely. We gladly welcome patients with Medicaid and Medicare. Poly Clinic is enrolled with most Medicaid and Medicare plans. We also have a sliding fee scale for uninsured patients, to make sure care is affordable for you.
+
+  ## Private Insurance Plans
+  Yes, we accept most commercial and private insurance plans. We are enrolled with many different HMO and private insurance companies.
+example_queries:
+  - Do you accept Medicaid?
+  - Will you take Medicare?
+  - Is government insurance okay?
+  - Do you take private insurance?
+  - Can I come if I have Blue Cross insurance?
+  - Is my insurance plan accepted?
+  - Do you accept Blue Cross?

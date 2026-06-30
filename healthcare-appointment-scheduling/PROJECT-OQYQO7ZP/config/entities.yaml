@@ -1,0 +1,23 @@
+entities:
+  - name: phone_number
+    description:
+      The phone number to use for the account (when the user is not calling from the number
+      on file). Include country code if provided. Format as digits, e.g. 10 digits for US.
+    entity_type: phone_number
+    config:
+      enabled: true
+      country_codes:
+        - US
+  - name: date_of_birth
+    description:
+      The patient's date of birth. Collect as stated by the user; format for storage as
+      YYYY-MM-DD (e.g. March 15, 1990 → 1990-03-15).
+    entity_type: date
+    config:
+      relative_date: false
+  - name: full_name
+    description:
+      The patient's full name as they say it (first and last, or first middle last). Used
+      to confirm identity against the account we pulled up by phone and DOB.
+    entity_type: name_config
+    config: {}

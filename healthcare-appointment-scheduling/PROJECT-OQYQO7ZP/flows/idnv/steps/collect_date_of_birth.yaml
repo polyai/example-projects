@@ -1,0 +1,40 @@
+step_type: default_step
+name: Collect Date of Birth
+conditions:
+  - name: Date of birth collected
+    condition_type: step_condition
+    description: When the user has provided their date of birth for verification.
+    child_step: Confirm Date of Birth
+    required_entities:
+      - date_of_birth
+  - name: User refuses or cannot provide date of birth
+    condition_type: step_condition
+    description:
+      When the user refuses to provide their date of birth, OR when the user has been asked
+      for the missing part of their date of birth twice and still cannot provide a complete date
+      (month, day, AND year). Do not ask more than twice.
+    child_step: dob_collection_failed
+    required_entities: []
+extracted_entities:
+  - date_of_birth
+prompt: |-
+  ## Goal
+  Collect the patient's FULL date of birth — month, day, AND year — for verification.
+
+  ## Actions
+  1. Ask for their date of birth in a natural, flowing way.
+  2. You need ALL three parts: month, day, and year. If the user gives only month and day, ask once for the year. If they still cannot provide the year on the second ask, exit the flow for transfer — do NOT keep asking.
+  3. Save the complete date as {{entity:date_of_birth}} in YYYY-MM-DD format (e.g. December 25, 1973 → 1973-12-25).
+
+  ## Parsing numeric date strings
+  Callers often say their date of birth as a string of numbers. Parse these as MMDDYY or MMDDYYYY:
+  - "111099" → 10/11/1999 → 1999-11-10
+  - "08221951" → 08/22/1951 → 1951-08-22
+  - "030575" → 03/05/1975 → 1975-03-05
+  - "12251973" → 12/25/1973 → 1973-12-25
+  For 2-digit years: 00–29 → 2000–2029, 30–99 → 1930–1999.
+
+  If the user refuses or cannot provide their full date of birth after two attempts, trigger the refusal condition so they can be transferred.
+
+  ## Example
+  "And could you give me your date of birth?"

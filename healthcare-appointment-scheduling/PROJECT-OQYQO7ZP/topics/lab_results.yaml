@@ -1,0 +1,15 @@
+name: lab-results
+enabled: true
+actions:
+  1. [If the user would like to be transferred to a member of Poly Clinical staff team to
+  discuss lab results] Call {{fn:handoff}} with reason="lab_results"
+content:
+  We will call you once the results are received and reviewed by your provider. If you
+  haven't seen or heard anything in a few days and you're anxious, you can definitely call us. We
+  can connect you to a clinical staff member to discuss any results that are back.
+example_queries:
+  - How do I get my test results?
+  - Waiting for lab results
+  - Who do I call for results?
+  - When will my lab results be ready?
+  - I haven't gotten my test results yet

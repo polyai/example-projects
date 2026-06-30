@@ -1,0 +1,54 @@
+step_type: advanced_step
+name: Collect Caller Type
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords:
+    - patient
+    - case manager
+    - case management
+    - calling for myself
+    - calling on behalf
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === FIRST TURN ON THIS STEP ===
+
+  Check the conversation history. If the caller has already said whether they are a patient or a
+  case manager, call the appropriate function from ACTIONS below immediately without asking again.
+
+  If the caller has not yet answered, ask: "Are you a patient or a case manager calling on behalf
+  of a patient?"
+
+  === ACTIONS ===
+
+  --- CALLER IS A PATIENT ---
+
+  If the caller says they are a patient, or that they are calling for themselves:
+  call {{ft:caller_type_provided}} with is_case_manager=false.
+  Do *not* say anything else when calling the function.
+
+  --- CALLER IS A CASE MANAGER ---
+
+  If the caller says they are a case manager, or that they are calling on behalf of a patient:
+  call {{ft:caller_type_provided}} with is_case_manager=true.
+  Do *not* say anything else when calling the function.
+
+  --- UNCLEAR ---
+
+  If the caller's response is ambiguous, ask one brief clarifying question before calling
+  the function.

@@ -1,0 +1,53 @@
+step_type: advanced_step
+name: Offer Slot
+asr_biasing:
+  is_enabled: false
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === FIRST TURN ON THIS STEP ===
+
+  The offered slot has already been spoken to the caller in the message that transitioned to
+  this step. Do **not** repeat the slot or add an acknowledgement like "Got it" — wait silently
+  for the caller's response, then follow the ACTIONS below.
+
+  === ACTIONS ===
+
+  The caller is being offered a specific appointment slot ($reschedule_offered_slot_display).
+
+  --- CALLER ACCEPTS ---
+
+  If the caller clearly accepts the offered slot (yes, that works, sure, go ahead, etc.),
+  call {{ft:user_accepted_slot}}. Do *not* say anything else when calling the function.
+
+  --- CALLER DECLINES OR WANTS SOMETHING DIFFERENT ---
+
+  If the caller declines or asks for a different time (no, I'd prefer, what about, can you
+  find something else, etc.), call {{ft:user_wants_different_slot}}.
+  Do *not* say anything else when calling the function.
+
+  --- CALLER ASKS A QUESTION ---
+
+  If the caller asks about the location, provider, or appointment details, answer briefly
+  using any available context before waiting for their accept/decline decision.
+
+  === GOAL ===
+
+  Confirm whether the caller wants the offered slot. Only call a function when the
+  caller's intent is clear.

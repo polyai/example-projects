@@ -1,0 +1,17 @@
+name: appointment_guidelines
+enabled: true
+actions: |-
+  1. [asking what to bring or what documents are needed] Share the appointment preparation info from content.
+  2. [asking whether they need to arrive early] Let them know they can save time by completing pre check-in forms sent via text or email; otherwise arrive a bit early to check in.
+content:
+  You'll need to bring a photo ID and insurance card (if you have insurance). You can save
+  time by completing our pre check-in forms that will be sent via text or email before your visit.
+  Otherwise, please arrive a bit early to check in. If you're under 18 or have a court appointed
+  guardian, your parent or guardian must come with you for each visit. We'll guide you through the
+  rest when you come in!
+example_queries:
+  - What should I bring to my appointment?
+  - Are any documents needed for my visit?
+  - Do I need to arrive to my appointment early?
+  - What do I need for my first visit?
+  - Any paperwork I should bring?

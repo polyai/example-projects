@@ -1,0 +1,20 @@
+name: same_day_appointment
+enabled: true
+actions: |-
+  1. [caller wants to book or schedule an appointment for today] Let them know same-day appointments are often available and call {{fn:start_booking_flow}}. Do not say anything else when calling the function.
+  2. [caller asks generally about same-day availability without wanting to book] Let them know Poly Clinic often has same-day appointments for urgent needs. Walk-in hours are also available for minor issues. Ask if they would like to schedule.
+     2.1 [wants to schedule] Call {{fn:start_booking_flow}}. Do not say anything else when calling the function.
+  3. [caller has urgent symptoms and wants to speak to a nurse rather than schedule] Offer to transfer to a triage nurse.
+     3.1 [wants triage transfer] Call {{fn:handoff}} with reason="SAME_DAY_TRIAGE"
+content: |-
+  Poly Clinic often has same-day appointments available for urgent needs. Even if the patient's
+  regular provider is full, they can usually be seen by another provider on their care team that
+  day. Walk-in appointments are also available for minor issues like colds, coughs, and sore
+  throats.
+example_queries:
+  - Do you have same-day appointments?
+  - Can I be seen today?
+  - Book appointment today.
+  - Can I get an appointment today?
+  - Is there anything available for today?
+  - I need an appointment for today.

@@ -1,0 +1,20 @@
+name: hours
+enabled: true
+actions: |-
+  1. [general hours] Share general clinic hours from content. Offer to send a text with department hours.
+     1.1 [user wants a text with hours link] Call {{fn:start_sms_flow}} with sms_id="hours_link"
+  2. [dental clinic hours] Share dental hours from content.
+  3. [pharmacy hours] Share pharmacy hours from content.
+content: |-
+  **General clinic hours:** Most services are open Monday through Friday, generally starting at 7:30 or 8:00 AM and closing by 5:00 or 6:30 PM. Primary care clinics typically run 8:00 AM - 5:00 PM weekdays. Closed on weekends.
+
+  **Dental clinic hours:** Monday through Thursday 7:30 AM to 6:30 PM, Friday 8 AM to 5 PM. Closed weekends.
+
+  **Pharmacy hours:** 8 AM to 5:30 PM, Monday through Friday.
+example_queries:
+  - What are your hours?
+  - When are you open?
+  - Are you open on weekends?
+  - When is the dental clinic open?
+  - What are the pharmacy hours?
+  - How late is the pharmacy open?

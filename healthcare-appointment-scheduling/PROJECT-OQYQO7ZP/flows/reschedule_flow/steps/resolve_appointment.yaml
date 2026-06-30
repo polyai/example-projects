@@ -1,0 +1,117 @@
+step_type: advanced_step
+name: Resolve Appointment
+asr_biasing:
+  is_enabled: false
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === FIRST TURN ON THIS STEP ===
+
+  If the **last assistant message** already asked which appointment the caller wants to reschedule
+  (for example, right after identity verification), **do not** speak again or add acknowledgements
+  like "Got it"—wait silently for the caller's next turn, then follow SAVE VALUES below.
+
+  === ACTIONS ===
+
+  --- SAVE VALUES ---
+
+  Every time you're able to extract which appointment they mean by **date**, call
+  {{ft:reschedule_date_of_appointment_given}} with **day**, **month**, and **year** as separate parameters.
+  Call this function every time the user attempts to give the date—even if the input is unclear or repeats
+  a prior attempt. Do *not* say anything else when calling the function.
+
+  --- USER REFERS TO "THE NEXT ONE" / "MY NEXT APPOINTMENT" ---
+
+  If the user says they want to reschedule their next appointment, the next one, the upcoming one,
+  or otherwise refers to the appointment by position rather than by date:
+    1. Call {{ft:suggest_next_reschedule_appointment}}. The function will return the date of their
+       next upcoming eligible visit. Read it back naturally and ask if that is the one they are
+       calling about:
+         - If $caller_is_case_manager is true: "I can see their next visit is on [date] — is that the one they're looking to reschedule?"
+         - Otherwise: "I can see your next visit is on [date] — is that the one you're looking to reschedule?"
+    2. If the caller confirms that appointment is correct, extract its date from the conversation
+       and call {{ft:reschedule_date_of_appointment_given}} with those date parts.
+    3. If the caller says no, that is not the right appointment, or still does not know after
+       you have already suggested one, call {{fn:handoff}} with
+       reason="RESCHEDULING_DATE_UNAVAILABLE",
+       utterance="Please hold while I transfer you to someone who can help. Putting you through now.",
+       destination="DEFAULT".
+
+  Only call {{ft:suggest_next_reschedule_appointment}} once. If you have already suggested an
+  appointment date and the caller is still unable to confirm, go straight to handoff.
+
+  --- USER REFERS TO "THE LAST ONE" / "MY LAST APPOINTMENT" ---
+
+  If the user says they want to reschedule their last appointment, the last one, the furthest one,
+  or otherwise refers to the appointment at the end of their list:
+    1. Call {{ft:suggest_last_reschedule_appointment}}. The function will return the date of their
+       last (furthest out) upcoming eligible visit. Read it back naturally and ask if that is the
+       one they are calling about:
+         - If $caller_is_case_manager is true: "I can see their last upcoming visit is on [date] — is that the one they're looking to reschedule?"
+         - Otherwise: "I can see your last upcoming visit is on [date] — is that the one you're looking to reschedule?"
+    2. If the caller confirms that appointment is correct, extract its date from the conversation
+       and call {{ft:reschedule_date_of_appointment_given}} with those date parts.
+    3. If the caller says no, that is not the right appointment, call
+       {{ft:suggest_next_reschedule_appointment}} to try the next one instead.
+
+  --- USER CHANGES THEIR MIND OR PROVIDES A NEW APPOINTMENT DATE ---
+  If the user changes their mind and corrects themselves about the appointment they want to reschedule, call {{ft:reschedule_date_of_appointment_given}} with the new date the user provided. 
+
+  --- VALUES UNAVAILABLE ---
+
+  If the user seems unable or unwilling to provide the appointment date, call
+  {{ft:suggest_next_reschedule_appointment}} to look up and suggest their next visit.
+  If they still cannot confirm after the suggestion, call {{fn:handoff}} with reason="RESCHEDULING_DATE_UNAVAILABLE",
+  utterance="Please hold while I transfer you to someone who can help. Putting you through now.", destination="DEFAULT".
+
+  === TASK ===
+
+  Their upcoming visits are already loaded. **Only follow-up visits** can be rescheduled on this line;
+  other visit types are transferred after the system checks the visit type—do not promise rescheduling
+  until the flow confirms eligibility.
+
+  Ask which appointment they need to reschedule. Do **not** ask for a particular date format; let them speak
+  however they want. Your job is to extract **appointment date** as three fields for the function:
+
+  - **day_of_appointment_date** — DD (01–31), or N/A if missing
+  - **month_of_appointment_date** — MM (01–12), or N/A if missing
+  - **year_of_appointment_date** — YYYY, or **N/A** when they only gave month and day so the system can
+    match against their **loaded** upcoming visits
+
+  === ADDITIONAL GUIDELINES ===
+
+  --- DATE INPUTS (examples; never read these examples aloud) ---
+
+  1. *Numeric-style*
+  - 130199 -> day='13', month='01', year='1999'
+  - 5 5 2001 -> day='5', month='5', year='2001'
+  - 3rd 7 85 -> ambiguous: confirm whether July 3 or March 7 before calling the function
+
+  2. *Textual*
+  - september seventh 1985 -> day='7', month='9', year='1985'
+  - tenth of October -> day='10', month='10', year='N/A'
+
+  3. *Relative*
+  - Calculate from today's date: $datetime_now_readable
+  - "Today", "the one for today", "my appointment today" -> resolve to TODAY's calendar day, month, and year before calling the function.
+  - "Tomorrow" -> resolve to the actual calendar day, month, and year before calling the function.
+  - When year is omitted, use **N/A** for year_of_appointment_date so visits are matched by month/day
+    against loaded appointments.
+
+  Remember: never give examples of formats to the user; keep the conversation brief and natural.

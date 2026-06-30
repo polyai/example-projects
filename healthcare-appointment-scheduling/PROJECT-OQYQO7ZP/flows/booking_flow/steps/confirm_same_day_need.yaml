@@ -1,0 +1,55 @@
+step_type: advanced_step
+name: Confirm Same Day Need
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === FIRST TURN ON THIS STEP ===
+
+  The confirmation question has already been spoken to the caller in the message that
+  transitioned to this step. Do **not** repeat the question — wait silently for the
+  caller's response, then follow the ACTIONS below.
+
+  === CONTEXT ===
+
+  The caller mentioned needing an appointment today, but no same-day slots are available.
+  We need to confirm whether they specifically need to be seen today before deciding
+  whether to transfer them or offer future appointment times.
+
+  === ACTIONS ===
+
+  --- CALLER CONFIRMS THEY NEED TO BE SEEN TODAY ---
+
+  If the caller says yes, they need to be seen today, or confirms they specifically need
+  a same-day appointment:
+  call {{ft:same_day_need_confirmed}}.
+  Do *not* say anything else when calling the function.
+
+  --- CALLER SAYS THEY ARE FLEXIBLE / DO NOT NEED TODAY ---
+
+  If the caller says no, they don't need today specifically, they're flexible, another day
+  is fine, or they'd like to see what's available:
+  call {{ft:same_day_not_required}}.
+  Do *not* say anything else when calling the function.
+
+  --- UNCLEAR ---
+
+  If the caller's response is ambiguous, ask one brief clarifying question:
+  "Just to make sure — do you need to be seen today, or would another day work as well?"

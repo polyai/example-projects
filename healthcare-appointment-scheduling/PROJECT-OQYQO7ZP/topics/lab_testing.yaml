@@ -1,0 +1,13 @@
+name: lab-testing
+enabled: true
+actions: ""
+content:
+  Yes, we have an on-site lab at Poly Clinic. That means if your provider orders blood tests
+  or other lab work, you can get it done during your visit or immediately after, without going
+  elsewhere. The lab is open Monday to Friday, 8:00 AM to 5:00 PM.
+example_queries:
+  - Do you have a lab on-site?
+  - Where do I get blood work done?
+  - Lab testing at Poly Clinic?
+  - Can I get lab work done there?
+  - On-site lab hours

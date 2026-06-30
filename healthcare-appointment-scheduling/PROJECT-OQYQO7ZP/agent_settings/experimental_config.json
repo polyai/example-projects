@@ -1,0 +1,52 @@
+{
+  "asr": {
+    "eager_final": true,
+    "model": "poly-latency",
+    "provider": "default",
+    "use_asr_lib": true
+  },
+  "audio_enhancement": {
+    "ai-coustics": {
+      "enabled": true,
+      "model": "standard",
+      "noise_reduction": 0.9,
+      "voice_gain": 1
+    }
+  },
+  "barge_in": {
+    "is_enabled": true,
+    "trigger": {
+      "speech_threshold": 0.6,
+      "speech_window_ms": 100
+    }
+  },
+  "conversation_control": {
+    "max_silence_count": 10
+  },
+  "eot": {
+    "flow_overrides": {
+      "IDNV": {
+        "steps": {
+          "Collect Phone Number": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          }
+        }
+      }
+    },
+    "provider": "smart_turn",
+    "threshold": 0.5,
+    "timeout_ms": 500
+  },
+  "llm": {
+    "include_kb_functions_in_flows": true
+  },
+  "smart_vad": {
+    "is_enabled": true,
+    "max_extension_duration": "1s",
+    "max_extensions": 5
+  },
+  "vad": {
+    "provider": "silero-experimental"
+  }
+}

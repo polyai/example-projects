@@ -1,0 +1,13 @@
+keyphrases:
+  - keyphrase: recheck
+    level: boosted
+  - keyphrase: yes
+    level: maximum
+  - keyphrase: no
+    level: maximum
+  - keyphrase: prescription
+    level: boosted
+  - keyphrase: reschedule
+    level: boosted
+  - keyphrase: appointment
+    level: boosted

@@ -1,0 +1,21 @@
+sms_templates:
+  - name: appointment_confirmation
+    text: |-
+      Thanks for calling!
+
+      Your appointment has been confirmed. If you need to reschedule or cancel, please call us back.
+    env_phone_numbers:
+      sandbox: ""
+      pre_release: ""
+      live: "+15550001234"
+  - name: clinic_address
+    text: |-
+      Thanks for calling!
+
+      Our address is 123 Main Street, Anytown, US 12345.
+
+      We look forward to seeing you!
+    env_phone_numbers:
+      sandbox: ""
+      pre_release: ""
+      live: "+15550001234"

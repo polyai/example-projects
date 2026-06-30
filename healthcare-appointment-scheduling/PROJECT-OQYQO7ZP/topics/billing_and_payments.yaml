@@ -1,0 +1,37 @@
+name: billing_and_payments
+enabled: true
+actions: |-
+  0. [caller asks to speak to, be transferred to, or reach "accounting", "patient accounts", or "billing department"] Transfer immediately. Call {{fn:handoff}} with reason="billing" and utterance="Let me transfer you to our Patient Accounts team. Putting you through now."
+  1. [billing question] Ask if it's about a medical or dental bill.
+  1.1 [medical bill] Offer to transfer to Patient Accounts. Mention medical billing number from content.
+  1.1.1 [wants transfer] Call {{fn:handoff}} with reason="billing"
+  1.2 [dental bill] Offer to transfer to dental billing. Mention dental billing number from content.
+  1.2.1 [wants transfer] Call {{fn:handoff}} with reason="DENTAL_BILLING" and utterance="Let me transfer you to our dental billing team. Putting you through now."
+  1.3 [not sure medical or dental] Offer to transfer to Patient Accounts.
+  1.3.1 [wants transfer] Call {{fn:handoff}} with reason="billing"
+  2. [how to pay bill] Cover payment options from content. Offer SMS link to pay online.
+  2.1 [wants SMS link] Call {{fn:start_sms_flow}} with sms_id="pay_bill_online"
+  2.2 [wants to pay by phone] Offer to transfer to Patient Accounts.
+  2.2.1 [wants transfer] Call {{fn:handoff}} with reason="bill_payment"
+  3. [payment plan] Cover payment plan info from content. Offer to transfer to Patient Accounts.
+  3.1 [wants transfer] Call {{fn:handoff}} with reason="payment_plan"
+content: |-
+  **Billing Questions**
+  If you have questions about a bill or charges, our Patient Accounts representatives can assist. For **medical bills**, you can call our billing office at +1 (555) 000-1234. For **dental bills**, the billing line is +1 (555) 000-1234. They'll be happy to explain your statement, check on insurance payments, or discuss any adjustments.
+
+  **Payment Options**
+  We offer several convenient payment options. You can **pay online** via our Patient Portal or the "Pay My Bill" link on our website (that will guide you to our secure payment system). You can also pay in person at Poly Clinic — just stop by the front desk during office hours to pay with cash, check, or card. Another option is to **call Patient Accounts** at +1 (555) 000-1234 to pay over the phone by card. Lastly, you may mail a check or money order to our main address (123 Main Street, Anytown, US 12345) if that's easier. So, online, by phone, by mail, or in person — whichever works best for you.
+
+  **Payment Plans**
+  We understand that medical bills can be heavy. Yes, we can set up a **payment plan** so you can pay your balance over time. Our Patient Accounts team will work with you to find a monthly payment amount that fits your budget. We'll also check if you qualify for any discounts (for example, our sliding fee discount) that could reduce what you owe. Just call our billing office at +1 (555) 000-1234 to discuss options. There's no interest or finance charge on payment plans; we just ask that you make regular monthly payments as agreed.
+example_queries:
+  - I have a billing question
+  - I got a bill that I don't understand
+  - How can I pay my bill?
+  - Do you offer payment plans?
+  - What's my balance?
+  - Billing department?
+  - Can I speak to accounting?
+  - Transfer me to patient accounts
+  - I need to talk to someone in accounting
+  - I need to reach patient accounts

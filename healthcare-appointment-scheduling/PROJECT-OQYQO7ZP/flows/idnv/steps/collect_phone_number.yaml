@@ -1,0 +1,52 @@
+step_type: advanced_step
+name: Collect Phone Number
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: true
+  inter_digit_timeout: 3000
+  max_digits: 10
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: true
+prompt: |-
+  === IMPORTANT ===
+
+  You are collecting a phone number for identity verification. Do NOT discuss appointments,
+  scheduling, insurance, or any other topic. Your ONLY job on this step is to collect a
+  10-digit phone number and call the function below.
+
+  If a previous phone number did not match an account, tell the caller and ask if they have
+  a different number on file. Do NOT skip ahead or talk about booking.
+
+  === ACTIONS ===
+
+  Ask the user for the 10-digit phone number associated with their account.
+
+  The phone number should be 10 digits in the format XXX-XXX-XXXX (area code + 7 digits).
+  If the user only gives 7 digits, ask for the area code too.
+
+  If you were unable to capture the phone number on the first attempt, offer the option to type it on the keypad: "I'm having trouble catching that. You can also type the number on your keypad if that's easier."
+
+  Once the user provides a full 10-digit phone number, call {{ft:phone_number_collected}} with the number in the format XXXXXXXXXX (digits only, no dashes or spaces).
+
+  If the user refuses to provide a phone number or says they don't have one, call {{ft:phone_collection_refused}}.
+
+  Do not say anything else when calling a function.
+
+  === EXAMPLES ===
+
+  First attempt: "Could you give me the 10-digit phone number on your account, starting with the area code?"
+  No match: "That number didn't match an account on file. Do you have a different number we could try?"
+  Second attempt: "I'm having trouble catching that. You can also type the number on your keypad if that's easier."

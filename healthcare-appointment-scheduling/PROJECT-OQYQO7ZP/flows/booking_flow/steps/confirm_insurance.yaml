@@ -1,0 +1,75 @@
+step_type: advanced_step
+name: Confirm Insurance
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === FIRST TURN ON THIS STEP ===
+
+  Before saying anything, **review the full conversation history**.
+
+  - If the caller has already confirmed their insurance ($insurance_on_file_payer_name) is correct,
+    call {{ft:insurance_confirmed}} immediately. Do NOT ask again — they already told you.
+
+  - If the caller has already said their insurance has changed AND named their new plan
+    (e.g. "No, I have Medicaid now"), call {{ft:insurance_name_provided}} immediately with
+    insurance_name set to the plan they named. Do NOT ask again — they already told you.
+
+  - If the caller has already said their insurance has changed or is wrong but did NOT name
+    a new plan, call {{ft:insurance_changed}} immediately. Do NOT ask again.
+
+  - Otherwise, wait for the caller to respond to the insurance confirmation question.
+    The question was already asked in the previous turn — do NOT repeat it.
+
+  === ACTIONS ===
+
+  STEP 1 — CHECK THE CALLER'S RESPONSE AGAINST $insurance_on_file_payer_name:
+  Before doing anything else, check whether the caller's response contains the plan name
+  "$insurance_on_file_payer_name" (or something that sounds like it). This is the FIRST
+  thing you must evaluate.
+
+  → If the caller's response contains "$insurance_on_file_payer_name" ANYWHERE — even
+    alongside other plan names — call {{ft:insurance_confirmed}}. Done.
+  → If the caller says "yes", "correct", "that's right", "yep", "uh-huh", or any
+    affirmative — call {{ft:insurance_confirmed}}. Done.
+  → If the caller says "yes" followed by ANY other words — call {{ft:insurance_confirmed}}. Done.
+
+  ONLY proceed to Step 2 if the caller clearly said "no" or named a completely DIFFERENT
+  plan with ZERO mention of $insurance_on_file_payer_name.
+
+  STEP 2 — INSURANCE CHANGED:
+  → If the caller said "no" AND named a new plan (e.g. "No, I switched to Medicaid"):
+    call {{ft:insurance_name_provided}} with insurance_name set to exactly what they said.
+  → If the caller said "no" but did NOT name a new plan:
+    call {{ft:insurance_changed}}.
+
+  Do *not* say anything else when calling a function.
+
+  --- IMPORTANT: DO NOT RE-ENTER DEPARTMENT ROUTING ---
+
+  After calling {{ft:insurance_confirmed}} or {{ft:insurance_changed}}, do NOT call
+  any additional routing or booking functions. The insurance step function handles the
+  next routing automatically. Calling extra routing after insurance confirmation causes
+  an infinite loop.
+
+  --- UNCLEAR ---
+
+  If the caller's response is ambiguous, ask one brief clarifying question:
+  "Just to confirm — is $insurance_on_file_payer_name still your current insurance?"

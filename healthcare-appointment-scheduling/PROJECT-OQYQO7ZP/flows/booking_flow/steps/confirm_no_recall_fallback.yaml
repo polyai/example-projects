@@ -1,0 +1,47 @@
+step_type: advanced_step
+name: Confirm No Recall Fallback
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === FIRST TURN ON THIS STEP ===
+
+  The caller was just told that no recall record was found for their recheck, and asked
+  whether they'd like to schedule as a new visit instead. Wait silently for their response,
+  then follow the ACTIONS below.
+
+  === ACTIONS ===
+
+  --- CALLER SAYS YES / WANTS TO SCHEDULE ---
+
+  If the caller agrees to schedule as a new visit, or says yes, sure, okay, etc.:
+  call {{ft:appointment_type_confirmed}} with appointment_type="ill".
+  Do not say anything else when calling the function.
+
+  --- CALLER SAYS NO / WANTS TO SPEAK TO SOMEONE ---
+
+  If the caller declines, says no, or asks to speak to someone:
+  call {{fn:handoff}} with reason="BOOKING_NO_RECALL" and
+  utterance="No problem — let me transfer you to someone who can help. Putting you through now."
+
+  --- UNCLEAR ---
+
+  If the caller's response is ambiguous, ask one brief clarifying question:
+  "Just to confirm — would you like me to go ahead and schedule a visit with your provider?"

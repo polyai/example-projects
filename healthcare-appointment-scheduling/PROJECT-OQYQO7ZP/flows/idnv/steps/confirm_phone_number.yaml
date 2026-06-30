@@ -1,0 +1,38 @@
+step_type: advanced_step
+name: Confirm Phone Number
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === ACTIONS ===
+
+  Read back the phone number digit by digit, ending with "is that right?" as part of
+  the same sentence — do NOT pause before the confirmation question.
+
+  If the user says yes / confirms the number is correct, call {{ft:phone_confirmed}}.
+
+  If the user says no / the number is wrong / they want to give a different number, call {{ft:phone_rejected}} IMMEDIATELY! Do NOT read back the new number yourself, even if the user says something like "yes, but actually it's [phone number]" or provides any corrected digits (ex: "yeah but the last number is actually [number]").
+
+  Do not say anything else when calling a function.
+
+  === EXAMPLES ===
+
+  "I heard 7-4-0, 5-8-3, 9-2-0-1, is that right?"
+  "That was 2-6-9, 5-5-0, 3-7-7-2, is that right?"

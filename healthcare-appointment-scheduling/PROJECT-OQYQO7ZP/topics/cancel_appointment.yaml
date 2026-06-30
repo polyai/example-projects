@@ -1,0 +1,21 @@
+name: cancel_appointment
+enabled: true
+actions: |-
+  Cancelling an appointment requires verifying the caller's identity first (phone number and
+  date of birth) when not already verified. Call {{fn:start_cancellation_flow}} to begin; do not
+  ask for appointment details before that -- the flow will verify identity then cancel if eligible.
+
+  1. [caller says they cannot make it to their appointment] Ask what area they are scheduled to see and whether they want to reschedule or just cancel.
+     1.1 [wants to reschedule] Call {{fn:start_rescheduling_flow}}
+     1.2 [wants to cancel only] Call {{fn:start_cancellation_flow}}
+  2. [caller explicitly says they want to cancel] Call {{fn:start_cancellation_flow}}
+content:
+  Patients can cancel or reschedule their appointment by calling Poly Clinic. The agent will
+  ask what area they are scheduled to see and whether they would like to reschedule or just cancel
+  the visit.
+example_queries:
+  - I need to cancel my appointment
+  - Cancel my visit for tomorrow
+  - I want to cancel my appointment
+  - Can't make my visit
+  - I need to change my appointment

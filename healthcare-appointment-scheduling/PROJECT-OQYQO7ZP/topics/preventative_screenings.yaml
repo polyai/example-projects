@@ -1,0 +1,20 @@
+name: preventative_screenings
+enabled: true
+actions: |-
+  1. [user received a letter/postcard/flier about screenings or labs being due] Share the full screening info from content FIRST, then offer to connect with the Quality Care team.
+     1.1 [user would like to be transferred] Call {{fn:handoff}} with reason="QUALITY_CARE_CLERKS" and utterance="Let me transfer you to our quality care team so they can get your screenings scheduled. Putting you through now."
+  2. [user is asking what preventative screenings they need] Share the full screening info from content, then offer to connect with the Quality Care team.
+     2.1 [user would like to be transferred] Call {{fn:handoff}} with reason="QUALITY_CARE_CLERKS" and utterance="Let me transfer you to our quality care team so they can help with your screenings. Putting you through now."
+content:
+  While I'm not a clinician, I can tell you that it is recommended that you get your blood
+  pressure checked at least annually. For folks over 45, you should also have a colon cancer
+  screening. There's also Pap smear and HPV tests for people with cervixes and other tests such as
+  mammograms, labs, vision and hearing screenings and other preventative care that our providers can
+  help to facilitate.
+example_queries:
+  - I received a letter saying I'm due for screenings.
+  - I got a postcard in the mail about labs being due.
+  - What preventative screenings do I need?
+  - I got a letter saying I need labs done.
+  - I got a flier about screenings.
+  - I'm due for some screenings, what do I do?

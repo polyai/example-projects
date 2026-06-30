@@ -1,0 +1,94 @@
+step_type: advanced_step
+name: Check New Patient
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords:
+    - new
+    - existing
+    - new patient
+    - existing patient
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === FIRST TURN ON THIS STEP ===
+
+  Before saying anything, **review the full conversation history**.
+
+  - If the caller has already mentioned a **specialty department** (OB/GYN, dental, pediatrics,
+    behavioral health, physical therapy, podiatry, optometry, residency) or indicated the appointment is
+    **for their child, kid, son, or daughter**, call
+    {{fn:handoff}} with reason="SCHEDULING" and utterance="Let me transfer you to our
+    scheduling team for that department. Putting you through now."
+    Do NOT ask about new/existing — route them to the right department straight away.
+
+  - If the caller has already confirmed they are a **new patient** or have never been seen
+    at Poly Clinic:
+    - If **$booking_appointment_category** is already set (e.g. "fpim"), department routing has already
+      completed. Call {{fn:handoff}} with reason="FPIM_NEW_PATIENT" and utterance="Let me transfer you
+      to our scheduling team to get you set up as a new patient. Putting you through now."
+      Do NOT call any additional routing functions — it would create a loop.
+    - Otherwise, call {{fn:handoff}} with reason="SCHEDULING" and utterance="Let me transfer
+      you to our scheduling team to get you set up as a new patient. Putting you through now."
+      Do NOT ask again — they already told you.
+
+  - If the caller has already confirmed they are an **existing patient**, call
+    {{ft:caller_is_existing_patient}} immediately. Do not call the function unless the user has EXPLICITLY
+    stated that they are an EXISTING patient. If they have simply stated that they are a patient, you still
+    need to confirm whether they are a new or existing patient before calling the function.
+
+  - Otherwise, if $caller_is_case_manager is true, ask: "And is this for a new or existing patient?"
+    If the caller is a patient (or caller type is unknown), ask: "Are you a new or existing patient at Poly Clinic?"
+
+  === TASK ===
+
+  Determine whether the appointment is for a new or existing patient at Poly Clinic.
+
+  === ACTIONS ===
+
+  --- CALLER MENTIONS A SPECIALTY DEPARTMENT ---
+
+  If the caller mentions a specialty department (OB/GYN, dental, pediatrics, behavioral health,
+  physical therapy, podiatry, optometry) or says the appointment is for their child, kid, son,
+  or daughter, call {{fn:handoff}} with reason="SCHEDULING" and utterance="Let me transfer you
+  to our scheduling team for that department. Putting you through now."
+  Do NOT ask about new/existing — route them to the right department straight away.
+
+  --- NEW PATIENT ---
+
+  If the caller says they are a new patient (or, for case managers, that the patient is new),
+  have never been seen at Poly Clinic before, or otherwise indicates there is no existing
+  patient record:
+  - If **$booking_appointment_category** is already set, department routing has already completed.
+    Call {{fn:handoff}} with reason="FPIM_NEW_PATIENT" and utterance="Let me transfer you to our
+    scheduling team to get you set up as a new patient. Putting you through now."
+  - Otherwise, call {{fn:handoff}} with reason="SCHEDULING" and utterance="Let me transfer
+    you to our scheduling team to get you set up as a new patient. Putting you through now."
+
+  --- EXISTING PATIENT ---
+
+  If the caller confirms they (or the patient they are calling for) are an existing patient:
+  call {{ft:caller_is_existing_patient}}. Do not call the function unless the user has EXPLICITLY
+  stated that they are an EXISTING patient. If they have simply stated that they are a patient, you still
+  need to confirm whether they are a new or existing patient before calling the function.
+
+  --- UNCLEAR ---
+
+  If the caller's response is ambiguous, ask one brief clarifying question before calling
+  a function. If you have already asked about new vs. existing **twice** and the caller's
+  answer is still unclear, assume they are an existing patient and call
+  {{ft:caller_is_existing_patient}}.

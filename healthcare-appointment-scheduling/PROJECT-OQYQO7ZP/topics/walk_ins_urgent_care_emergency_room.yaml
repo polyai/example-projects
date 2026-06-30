@@ -1,0 +1,40 @@
+name: walk_ins_urgent_care_emergency_room
+enabled: true
+actions: |-
+  1. [if asking about walk-ins or whether Poly Clinic offers walk-in appointments] Share walk-in info from content. Do NOT offer a transfer unprompted.
+  2. [if asking about walk-in hours] Share hours from content.
+  3. [if asking whether Poly Clinic is an urgent care or ER] Share urgent care vs ER info from content. Do NOT offer a transfer unprompted.
+  4. [if user says they are feeling sick/unwell and describes WALK-IN ELIGIBLE symptoms: colds, sore throat, cough, ear pain, eye irritation, sinus symptoms, rashes, headaches, vomiting, painful or frequent urination, mild to moderate abdominal pain, minor cuts or burns, sprains and strains, animal bites, insect bites / bee stings, dizziness] Offer the walk-in option first: "For that type of concern, we do have walk-in availability at Poly Clinic. Walk-in hours are Monday through Thursday 7:30 AM to 6 PM and Friday 8 AM to 4 PM. Would you like to come in as a walk-in, or would you prefer to schedule an appointment with your provider?" If the caller wants walk-in, confirm the hours. If they want to schedule, call {{fn:start_booking_flow}} to enter the booking flow. Do not say anything else when calling the function — the booking flow will guide the conversation from there.
+  5. [if user describes symptoms that are NOT walk-in eligible or wants to see their provider about a new concern] Call {{fn:start_booking_flow}} to enter the booking flow. Do not say anything else when calling the function — do NOT say "let me find appointment times" or similar. The booking flow will handle the next steps (insurance verification, then scheduling).
+  6. [ONLY if the user describes SERIOUS or EMERGENCY symptoms (e.g. chest pain, difficulty breathing, severe bleeding, loss of consciousness)] Call {{fn:handoff}} with reason="SPEAK_TO" and utterance="Let me connect you with someone who can help right away. Putting you through now."
+  7. [if the user explicitly asks to speak to a nurse or be transferred] Call {{fn:handoff}} with reason="SPEAK_TO" and utterance="Let me connect you with someone who can help. Putting you through now."
+content: |-
+  ## Walk-In Clinic Services
+  Poly Clinic offers walk-in availability for certain issues. Walk-in hours are Monday through Thursday 7:30 AM to 6:00 PM and Friday 8:00 AM to 4:00 PM for minor illnesses and injuries. Walk-ins are for things like colds, cough, sore throat, earaches, minor cuts or sprains, etc. Both current and new patients are welcome for walk-ins. If the issue is more complex, a same-day scheduled visit may be suggested instead.
+
+  ## Urgent Care vs ER
+  Poly Clinic handles urgent but non-life-threatening health issues. It functions similar to an urgent care for things like minor injuries, flu symptoms, or infections — and can often see patients the same day. However, Poly Clinic is not an emergency room. Nurses are available 24/7 to help advise patients.
+
+  ## Feeling Unwell Advice
+  If it's not life-threatening, the best first step is to call Poly Clinic. Nurses are available 24/7 to talk through symptoms. They will help decide if the patient can be safely treated at home, if they should come into the office, or if they should go to the ER.
+example_queries:
+  - Can I walk in without an appointment?
+  - I'm not feeling well. Should I go to you or the ER?
+  - I'm sick. Do you have urgent care?
+  - Do you accept walk-ins?
+  - Is this an urgent care?
+  - Do you treat emergencies?
+  - Need medical advice.
+  - Walk in hours
+  - I have a headache
+  - I have a sore throat
+  - I have a cough
+  - I've been throwing up
+  - I have a rash
+  - I think I have a cold
+  - My ear hurts
+  - I'm feeling really sick
+  - I have a stomach ache
+  - I got a bug bite and it's swollen
+  - I cut my hand
+  - I feel dizzy

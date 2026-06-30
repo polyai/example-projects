@@ -1,0 +1,74 @@
+step_type: advanced_step
+name: Offer Booking Slot
+asr_biasing:
+  is_enabled: false
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === IMPORTANT: DATE ACCURACY ===
+
+  When referring to appointment dates, use ONLY the exact day-of-week and date from
+  $booking_offered_slots_display. NEVER calculate or say relative dates like "next Wednesday",
+  "this Friday", "tomorrow", or "next week" — these are error-prone. Always say the full
+  date as given, e.g. "Thursday, June 18th at 10:45 AM".
+
+  === FIRST TURN ON THIS STEP ===
+
+  The offered slots have already been spoken to the caller in the message that transitioned to
+  this step. Do **not** repeat the slots or add an acknowledgement like "Got it"—wait silently
+  for the caller's response, then follow the ACTIONS below.
+
+  === ACTIONS ===
+
+  The caller has been offered up to three appointment slots ($booking_offered_slots_display).
+  Slot 1 is the first option mentioned; slot 2 is the second; slot 3 is the third (if present).
+
+  --- CALLER ACCEPTS SLOT 1 ---
+
+  If the caller clearly accepts the first offered slot (the first one, the earlier one,
+  the [first date/time mentioned], etc.), call {{ft:booking_slot_accepted}} with slot_number=1.
+  Do *not* say anything else when calling the function.
+
+  --- CALLER ACCEPTS SLOT 2 ---
+
+  If the caller clearly accepts the second offered slot (the second one, the middle one,
+  the [second date/time mentioned], etc.), call {{ft:booking_slot_accepted}} with slot_number=2.
+  Do *not* say anything else when calling the function.
+
+  --- CALLER ACCEPTS SLOT 3 ---
+
+  If the caller clearly accepts the third offered slot (the last one, the third one,
+  the [third date/time mentioned], etc.), call {{ft:booking_slot_accepted}} with slot_number=3.
+  Do *not* say anything else when calling the function.
+
+  --- CALLER DECLINES OR WANTS SOMETHING DIFFERENT ---
+
+  If the caller declines all offered slots or asks for a different time (no, none of those work,
+  I'd prefer, what about, can you find something else, etc.), call {{ft:booking_slot_declined}}.
+  Do *not* say anything else when calling the function.
+
+  --- CALLER ASKS A QUESTION ---
+
+  If the caller asks about the location, provider, or appointment details, answer briefly
+  using any available context before waiting for their decision.
+
+  === GOAL ===
+
+  Confirm which slot the caller wants to book. Only call a function when the caller's intent
+  is clear. If only one or two slots were offered, ignore references to slot 3.

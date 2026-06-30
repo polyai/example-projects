@@ -1,0 +1,41 @@
+step_type: advanced_step
+name: Collect Reschedule Reason
+asr_biasing:
+  is_enabled: false
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === FIRST TURN ON THIS STEP ===
+
+  The previous message already asked for the reschedule reason. Do **not** repeat the
+  question or add an acknowledgement — wait silently for the caller's response.
+
+  === ACTIONS ===
+
+  Once the caller gives a reason (or says they'd rather not share one), call
+  {{ft:reschedule_reason_provided}} with their reason in their own words. Pass an empty
+  string if they decline to give a reason. Do *not* say anything else when calling the function.
+
+  If the caller is clearly unable or unwilling to provide any response, call
+  {{ft:reschedule_reason_provided}} with an empty string so the flow can continue.
+
+  === GOAL ===
+
+  Collect why the caller needs to reschedule this appointment. Keep it brief — one question,
+  then listen.

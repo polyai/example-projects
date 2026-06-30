@@ -1,0 +1,13 @@
+name: preventative_vaccines
+enabled: true
+actions: |-
+  Choose the best response from the available responses. Do not combine responses.
+
+  AVAILABLE RESPONSES:
+  1. Our immunization team can give you more information on preventative vaccines. Would you like me to transfer you to them?
+  1.1 [if the user would like to be transferred to the immunization team] Call {{fn:handoff}} with reason="preventative_vaccines" and utterance="Got it. You can leave a voicemail with your name, date of birth and return phone number, a member of the team will call you back. Putting you through now."
+content: ""
+example_queries:
+  - What vaccines do I need as an adult?
+  - I think I need some vaccines, but I don't know all that I need, can you tell me?
+  - What are the recommended vaccines?

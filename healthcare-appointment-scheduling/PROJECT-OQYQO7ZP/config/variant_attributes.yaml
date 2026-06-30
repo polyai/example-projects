@@ -1,0 +1,7 @@
+variants:
+  - name: Sandbox Site 1
+    is_default: true
+attributes:
+  - name: clinic_name
+    values:
+      Sandbox Site 1: Poly Clinic

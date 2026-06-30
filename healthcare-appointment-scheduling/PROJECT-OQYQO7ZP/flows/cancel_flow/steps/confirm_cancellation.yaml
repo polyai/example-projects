@@ -1,0 +1,43 @@
+step_type: advanced_step
+name: Confirm Cancellation
+asr_biasing:
+  is_enabled: false
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === ACTIONS ===
+
+  When the user **clearly confirms** they want to cancel (yes, go ahead, cancel it, etc.),
+  call {{ft:user_confirmed_cancel}}. Do *not* say anything else when calling the function.
+
+  If they **decline** or want to keep the appointment, exit the flow without calling the function.
+
+  === GOAL ===
+
+  Confirm once before we cancel the visit.
+
+  === CONTEXT ===
+
+  This path is only for **follow-up** visits that the system allows to cancel here. If the user
+  questions eligibility, say a team member can help with other visit types.
+
+  === CONVERSATION ===
+
+  Briefly restate the appointment they are cancelling, then ask for a clear yes to cancel.
+  If they confirm, call the function as above. If they decline, exit the flow.
