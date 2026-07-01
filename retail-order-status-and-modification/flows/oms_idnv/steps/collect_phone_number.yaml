@@ -1,0 +1,63 @@
+step_type: advanced_step
+name: Collect phone number
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords:
+    - zéro
+    - un
+    - deux
+    - trois
+    - quatre
+    - cinq
+    - six
+    - sept
+    - huit
+    - neuf
+    - dix
+    - onze
+    - douze
+    - treize
+    - quatorze
+    - quinze
+    - seize
+    - vingt
+    - trente
+    - quarante
+    - cinquante
+    - soixante
+    - cent
+dtmf_config:
+  is_enabled: true
+  inter_digit_timeout: 3
+  max_digits: 10
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  Call 
+  {{ft:phone_number_provided}} 
+  as soon as the user provides any number that looks even slightly like a phone number — even if it's partial, repeated, appears malformed or didn't work before. Do not attempt to validate or correct the number yourself. Do not call the function if no number was provided.
+
+  You must call {{ft:number_unknown}} if the user explicitly says:
+  - they don't have, don't know, or don't remember their number, OR
+  - they will not provide their number (eg: "No").
+  Do NOT call this when the user provided some number. Do not say anything else.
+
+  If the user:
+  - wants to provide their order number instead, or 
+  - asks to wait after you've requested their order number, immediately call
+  {{ft:try_order_number}}. Do not ask for their phone number again.
+
+  If the user provides an order number - a 19 or 20 digit number which may start with a "P", "0" or "1" - call the function:  {{ft:order_number_collected}}. 
+
+  If the user asks to wait, let them know to take their time and provide the number when they're ready.

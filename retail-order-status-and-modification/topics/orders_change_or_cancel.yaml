@@ -1,0 +1,17 @@
+name: Orders-change_or_cancel
+enabled: true
+actions: |-
+  If the user wants to CANCEL their order, call {{fn:cancel_order}}.
+  If the user wants to MODIFY their delivery address, call {{fn:start_modify_order}}.
+  For any other changes, say "For that type of change, I'll need to transfer you to a team member" and call {{fn:transfer_call}} with handoff_reason="ORDER_MODIFICATION".
+content: |-
+  Orders can be cancelled if they haven't shipped yet. Delivery address changes are supported for orders that haven't shipped. For all other modifications, transfer to an agent.
+example_queries:
+  - I want to cancel my order
+  - How can I cancel my order?
+  - Change order
+  - Modify my order please
+  - change my shipping address
+  - need to change the address
+  - I need to update my delivery address
+  - cancel my recent order

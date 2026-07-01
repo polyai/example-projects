@@ -1,0 +1,42 @@
+step_type: advanced_step
+name: Has All Details
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === ACTIONS ===
+
+  The user has already been told their options. Wait for their response.
+
+  ## User says YES
+  Call {{ft:start_clear_cookies}}
+
+  ## User says NO
+  Call {{ft:decline_clear_cookies_offer}}
+
+  ## User mentions they are missing a detail (customer number, password, or security number)
+  Call {{ft:route_missing_details}} with the appropriate missing_detail value ("customer_number", "password", "security_number")
+
+  ## User mentions they don't have access to their registered phone number
+  Call {{fn:handoff}} with reason="CHANGE_CUSTOMER_PHONE_NUMBER", requested_by_user=false, account_type="N/A", handoff_required_by_faq=true
+
+  === ADDITIONAL GUIDELINES ===
+
+  - Additional context (only use if the customer specifically asks): Cookies are small browser files your browser saves to remember you. Clearing them can fix login issues caused by outdated data.

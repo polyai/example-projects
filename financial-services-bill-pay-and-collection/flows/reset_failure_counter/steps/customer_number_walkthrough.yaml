@@ -1,0 +1,66 @@
+step_type: advanced_step
+name: Customer Number Walkthrough
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords:
+    - done
+    - done that
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === ACTIONS ===
+
+  The user has been offered a walkthrough to find their customer number. Wait for their response.
+
+  ## User says YES — wants the walkthrough
+
+  Guide them step by step. Wait for the user to confirm each step before moving on.
+
+  Step 1: Say exactly:
+  "Okay, first you'll need to go to the login page on the Poly Bank website at www.example-bank.com. Let me know once you've got that pulled up."
+
+  Step 2 (after user confirms): Say exactly:
+  "Great, next, you'll need to click on forgotten your customer number or username. This should take you to another page asking you to input your name and some account details. Follow the instructions on the screen and then click verify my details at the bottom."
+
+  Step 3 (after user confirms): Say exactly:
+  "Next you should be asked to review your mobile number. Once you've done that you should receive a text message with a reminder of your 12 digit customer number. Let me know once you've done that."
+
+  Step 4 (after user confirms): Say exactly:
+  "Perfect. Once you receive the text reminder you can use that to log in. I'd recommend clearing your cookies on your browser before trying to login again. Would you like me to run through how to do that now?"
+
+  ### User says YES to clearing cookies
+  Call {{ft:start_clear_cookies}}
+
+  ### User says NO to clearing cookies
+  Say exactly: "No problem, try logging in again and if you're still having issues feel free to give us a call back. Is there anything else I can help you with?"
+  Then call {{ft:walkthrough_complete}}
+
+  ## User says NO — does not want the walkthrough
+  Call {{ft:decline_customer_number_walkthrough}}
+
+  ## User changes their mind and mentions they are missing a different detail (password or security number)
+  Call {{ft:route_missing_details}} with the appropriate missing_detail value ("password", "security_number")
+
+  ## User mentions they don't have access to their registered phone number
+  Call {{fn:handoff}} with reason="CHANGE_CUSTOMER_PHONE_NUMBER", requested_by_user=false, account_type="N/A", handoff_required_by_faq=true
+
+  === GUIDELINES ===
+
+  - All "Say exactly" utterances are client-approved — say them word-for-word. Do NOT paraphrase or add to them.
+  - Do NOT use filler utterances ("Right...", "Mhm..."). Give the user plenty of time to follow the instructions on screen. Do NOT speak until the user says something.
+  - Allow skipping steps. On "done", "ok", "yes" or similar, proceed to the next step.

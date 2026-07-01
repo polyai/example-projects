@@ -1,0 +1,143 @@
+sms_templates:
+  - name: Returns-store_return_denied
+    text:
+      Hi from ${variant_brand_name}. You can access a copy of your retail activity report by
+      visiting our returns portal at www.example-store.com/returns.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Corporate-employment_opportunities
+    text:
+      "Hi from ${variant_brand_name}. To find out more about our employment opportunities, please visit:
+      ${variant_employment_url}."
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Shipping-shipping_costs
+    text:
+      Hi from ${variant_brand_name}. Head to ${variant_shipping_costs_url} for full details on
+      shipping.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Gift_Cards-check_balance
+    text:
+      Hi from ${variant_brand_name}. Head to ${variant_giftcards_url} to check your current gift
+      card balance.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Returns-start_a_return
+    text:
+      Hi from ${variant_brand_name}. Head to ${variant_returns_url} if you need to start a return
+      or exchange.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Returns-return_policy
+    text:
+      Hi from ${variant_brand_name}. Head to ${variant_returns_url} if you need to start a return
+      or exchange.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Product-launches
+    text:
+      Hi from ${variant_brand_name}. Head to ${variant_launch101_url} to download Launch
+      Reservation and get all the information on products and product launches.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Loyalty-join
+    text:
+      Hi from ${variant_brand_name}. Head to ${variant_loyalty_url} to join our loyalty program
+      and start earning points.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Instore-opening_hours
+    text: Hi from ${variant_brand_name}. Head to ${variant_stores_url} to find your nearest store.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Returns-track_exchange
+    text: Hi from ${variant_brand_name}. Head to ${variant_returns_url} to track your exchange.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Orders-change_or_cancel
+    text:
+      Hi from ${variant_brand_name}. Once you've received your order, head to
+      ${variant_returns_url} if you need a return or exchange.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Product-information
+    text:
+      Hi from ${variant_brand_name}. Head to ${variant_launch101_url} to download Launch
+      Reservation and get all the information on products and product launches.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Technical_Issues-log_in
+    text:
+      Hi from ${variant_brand_name}. Head to ${variant_password_url} for details on how to reset
+      your password.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Discount_Codes-not_working
+    text:
+      Hi from ${variant_brand_name}. Check out ${variant_promos_url} for our current coupons and
+      discount codes.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Tracking link
+    text: "Hi from ${variant_brand_name}. Track your parcel here: $tracking_url"
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Corporate-delete_account
+    text:
+      Hi from ${variant_brand_name}. Head to ${variant_data_privacy_url} to manage your account
+      data privacy.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Narvar tracking link
+    text: "Hi from ${variant_brand_name}. Track your item here: $tracking_sms"
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: Refunds-track_refund
+    text: Hi from ${variant_brand_name}. Head to ${variant_returns_url} to track your return.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"
+  - name: unsubscribe
+    text:
+      Hi from ${variant_brand_name}. Check out ${variant_unsubscribe_url} to manage your email
+      preferences.
+    env_phone_numbers:
+      sandbox: "+15550001234"
+      pre_release: "+15550001234"
+      live: "+15550001234"

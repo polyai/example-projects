@@ -1,0 +1,37 @@
+step_type: advanced_step
+name: Ask if account under different number
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: true
+  inter_digit_timeout: 15
+  max_digits: 10
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  If you haven't already, ask the user: "Okay. So, I can't see any accounts under that number. Is it possible it's under a different one?"
+
+  If the user says yes:
+  - If you have already tried to collect the phone number once and are still having issues, immediately call the {{fn:handoff}} with 'handoff_destination'='CUSTOMER_CARE' and 'handoff_reason'='PHONE_NUMBER_LOOKUP_FAIL' and 'handoff_utterance'="Let me put you through to a colleague who can assist with that. One moment please" — this takes priority over retrying collection.
+  - Otherwise, immediately call {{ft:go_to_collect_associated_phone_number}} with no spoken output.
+
+  If the user says no or says they don't know, say sorry and call the {{fn:handoff}} function with 'handoff_destination'='CUSTOMER_CARE' 
+  and 'handoff_reason'="ACCOUNT_NOT_FOUND_WITH_PHONE_NUMBER_PROVIDED" and 'handoff_utterance'="One moment while I transfer you to a colleague please."
+   
+  If the user says their phone number, immediately call {{ft:save_associated_phone_number}} with no spoken output. 
+
+  - If the caller wants to speak to someone, call the {{fn:handoff}} function with "handoff_destination"='CUSTOMER_CARE' and 'handoff_reason'='SPEAK_TO' and "handoff_utterance" = "Okay, I'll put you through to a colleague. One moment please." 
+
+  - If the user offers to give you their address or account number, tell them that you can only validate their account using the phone number.

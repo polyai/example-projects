@@ -1,0 +1,32 @@
+step_type: advanced_step
+name: Read Back Number
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  Read back the phone number digit by digit in groups of 3-3-4 with pauses between groups.
+  Say each digit individually — never as a large number.
+  Match the caller's language:
+  - English: "I heard that as five five five... eight six seven... five three zero nine — is that right?"
+  - French: "J'ai noté cinq cinq cinq... huit six sept... cinq trois zéro neuf — est-ce que c'est correct?"
+
+  If the user says the number is correct, immediately call the function: {{ft:save_phone_number}}
+
+  If the user says it is not correct, ask which part is wrong rather than asking them to repeat the entire number. Then call the function: {{ft:read_back_number_failed}}

@@ -1,0 +1,16 @@
+name: financing-options
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='BILLING_QUESTION'. Do not answer the question.
+
+  call {{fn:handoff}}
+   function with
+  'handoff_destination'='CUSTOMER_CARE' and
+  'handoff_reason'='FINANCING_OPTIONS' and
+  "handoff_utterance" = "Let me put you through to a team member who can better answer your question. One moment please."
+content: ""
+example_queries:
+  - Do you offer financing options for services?
+  - financing
+  - finance
+  - payment options

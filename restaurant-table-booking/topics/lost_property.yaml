@@ -1,0 +1,17 @@
+name: lost_property
+enabled: true
+actions: |-
+  Immediately, without saying anything, call  {{fn:try_transfer_call}} with
+  "handoff_reason" = "lost_property" and
+  "handoff_utterance" = "Sure, let me hand you over to my colleague who can help with that, I'll transfer you now." and
+  "handoff_to" = "default"
+content: ""
+example_queries:
+  - I think I left something in the restaurant
+  - I've lost my wallet
+  - I can't find my bag
+  - I've left my coat
+  - Do you have a lost and found?
+  - I came in last week and I think I left something there
+  - I left my purse in the restaurant yesterday, well I think I did. Has anything been handed in?
+  - How do I get something back that I left in the restaurant?

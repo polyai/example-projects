@@ -1,0 +1,3 @@
+name: confirm_cancel_modify_booking
+description: Help the user to confirm, cancel or modify their existing booking
+start_step: Collect phone number

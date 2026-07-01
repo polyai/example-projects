@@ -1,0 +1,39 @@
+name: Returns-track_exchange
+enabled: true
+actions: |-
+  First, check whether the user purchased the item online or in store. If it's not clear, ask them — the exchange process is different for each.
+
+  IF PURCHASED IN STORE:
+  Tell the user: {{attr:instore_exchange_policy}}.
+  Ask if there's anything else you can help with.
+
+  IF PURCHASED ONLINE:
+  {{attr:online_exchange_instructions}}.
+
+  You MUST tell the user that they can track their return and exchange at {{attr:returns_url}} (the returns portal). Always mention this URL verbally as part of your answer.
+
+  Then ask the user if they would like an SMS with the link. If they say yes, call the function:
+  {{fn:send_sms_message}} with sms_id="Returns-track_exchange". If the user doesn't want the SMS, ask if there's anything else you can help with.
+content: |-
+  # If purchased online:
+  You can expect to receive your exchange up to two weeks from when your return was delivered back to us.
+
+  Once we've processed your exchange request, you'll receive an order confirmation email, and your exchange order will ship with standard 3 to 5 Business Day shipping. Sometimes, holidays, back-to-school season and weather delays may make this a little longer.
+
+  You can track your return and exchange at {{attr:returns_url}}.
+
+  IF A USER DIDN'T RECEIVE AN EXCHANGE:
+  - If your requested exchange item is out of stock, you'll be issued a refund instead.
+  - If the requested exchange item is a higher price than the original item, and you use a payment method that we're unable to charge the difference to - like PayPal, for example - then you'll be issued a refund instead.
+
+  # If purchased in store:
+  {{attr:instore_exchange_policy}}
+example_queries:
+  - My exchange hasn't arrived
+  - Where's my exchange?
+  - i got a refund instead of my exchange
+  - why didn't I get my exchange
+  - missing exchange
+  - status of return
+  - return status
+  - text me the exchange tracking link

@@ -1,0 +1,36 @@
+name: Refunds-track_refund
+enabled: true
+actions: |-
+  First, check whether the user is asking about a return for an item they purchased online or in store. If it's not clear, ask them — the refund process is different for each.
+
+  IF PURCHASED IN STORE:
+  Tell the user: {{attr:instore_return_policy}}. The store team will process the refund directly.
+  Ask if there's anything else you can help with.
+
+  IF PURCHASED ONLINE:
+  Always explain the refund timeline before anything else: once the return arrives at the facility, processing takes up to two weeks; after that, credit/debit refunds take 5 to 7 business days (Klarna may take longer). You MUST state this timing as part of your answer.
+
+  Then ask if the user has already tracked their return on the returns portal at {{attr:returns_url}}.
+
+  If the user has NOT yet tracked their return, tell them they can do so at {{attr:returns_url}}. Ask: "do you want me to text you the link to the site?" If the user says yes, call {{fn:send_sms_message}} with sms_id="Refunds-track_refund". If the user says no, ask if there's anything else you can help with.
+
+  If the user HAS tracked their return on the returns portal, ask: "Has it been more than two weeks since the last order status on the returns portal?"
+
+  If the user says no, it has not been longer than two weeks, remind them that they can keep tracking their return on the returns portal, and to call back if they haven't received their refund after two weeks.
+
+  If the user says yes, it has been longer than two weeks, call {{fn:pre_handoff}} with handoff_reason ="Refunds-track_refund", and utterance = "Okay - let me put you through to someone who can help. One sec."
+content: |-
+  # For online purchases (returned via the returns portal):
+  You can expect up to two weeks for processing once your return arrives back at our returns facility. Once we've processed your request, credit and debit refunds typically take 5 to 7 business days. Klarna refunds may take a little longer.
+
+  You can track your return on the returns portal.
+
+  # For in-store purchases:
+  {{attr:instore_return_policy}}. The store team will process the refund directly.
+example_queries:
+  - How long will my refund take?
+  - I haven't received my refund yet
+  - where's my refund
+  - returned my order but have't got money back
+  - where's my money
+  - text me the link to track my refund

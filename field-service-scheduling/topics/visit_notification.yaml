@@ -1,0 +1,14 @@
+name: visit-notification
+enabled: true
+actions:
+  "##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}}
+  with caller_intent='GENERAL_QUESTION'. Do not answer the question."
+content:
+  Of course! We’ll send you a text and an email before your service to make sure it’s fresh
+  on your mind.
+example_queries:
+  - Can you send me a reminder before my appointment?
+  - Will I be notified before service is performed?
+  - Will you send me an email so I know when a technician is coming next?
+  - Do I get notifications in advance of my service dates?
+  - Will you text me the week before my tech is coming?

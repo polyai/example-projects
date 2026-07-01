@@ -1,0 +1,10 @@
+name: parking
+enabled: true
+actions: ""
+content: "{{attr:parking_info}}"
+example_queries:
+  - Where can I find parking near the restaurant?
+  - How much does parking cost at the restaurant?
+  - Can I reserve a parking spot ahead of time?
+  - Is there valet parking?
+  - Do you have a car park?

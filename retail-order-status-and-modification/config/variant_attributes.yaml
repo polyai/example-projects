@@ -1,0 +1,106 @@
+variants:
+  - name: Poly Store
+    is_default: true
+attributes:
+  - name: brand_name
+    values:
+      Poly Store: Poly Store
+  - name: returns_url
+    values:
+      Poly Store: www.example-store.com/returns
+  - name: launch101_url
+    values:
+      Poly Store: www.example-store.com/launch101
+  - name: promos_url
+    values:
+      Poly Store: www.example-store.com/coupons
+  - name: password_url
+    values:
+      Poly Store: www.example-store.com/help/reset-password
+  - name: homepage_url
+    values:
+      Poly Store: www.example-store.com
+  - name: stores_url
+    values:
+      Poly Store: www.example-store.com/stores
+  - name: shipping_costs
+    values:
+      Poly Store: |-
+        3 to 5 Business Day standard shipping is a flat rate of $8.99 within the continental US, and $11.99 to Alaska, Puerto Rico and Hawaii.
+
+        2 Business Day Express Shipping is a flat rate of $17.99 within the continental US, and $20.99 to Alaska, Puerto Rico and Hawaii.
+
+        Overnight Shipping is a flat rate of $27.99 within the continental US, and $30.99 to Alaska, Puerto Rico and Hawaii.
+  - name: shipping_costs_url
+    values:
+      Poly Store: www.example-store.com/help/shipping
+  - name: loyalty_url
+    values:
+      Poly Store: www.example-store.com/loyalty
+  - name: giftcards_url
+    values:
+      Poly Store: www.example-store.com/giftcards/checkbalance
+  - name: unsubscribe
+    values:
+      Poly Store:
+        To unsubscribe from emails, you may click the 'unsubscribe from all future emails'
+        link at the bottom of any marketing email. Alternatively, you can visit
+        www.example-store.com/manage-email-subscriptions. Would you like me to send you a link to the
+        website?
+  - name: unsubscribe_url
+    values:
+      Poly Store: www.example-store.com/manage-email-subscriptions
+  - name: instore_return_policy
+    values:
+      Poly Store:
+        You can return the item to any store location. You can also start a return online
+        via the returns portal.
+  - name: instore_exchange_policy
+    values:
+      Poly Store: You can exchange the item at any store location.
+  - name: shipping_additional_info
+    values:
+      Poly Store: |-
+        For two-day and overnight shipping, these timeframes are for in-stock items, ordered by 1 PM Central Standard Time. For example, If you order after that on a Friday, or order on a Saturday or Sunday, your package will ship on Monday and arrive Wednesday with 2-Day rush shipping. Oh, and please add 1 day for holidays.
+
+        If your item is shipping from one of our store locations, it can only be shipped within the continental US.
+
+        Standard shipping is free for loyalty program members, though exclusions apply.
+  - name: defective_return_instructions
+    values:
+      Poly Store: ""
+  - name: online_exchange_instructions
+    values:
+      Poly Store:
+        Answer the user's question using the content. TAILOR your answer to the user's
+        specific question.
+  - name: shipping_question_flow
+    values:
+      Poly Store:
+        If the user asks "how much is shipping", first ask whether they want to know about
+        shipping within the continental US, OR shipping to Alaska, Puerto Rico or Hawaii. The user may
+        reply with a state that is part of the continental US without explicitly saying 'continental
+        US' (e.g., "California"). Just behave as though they've said 'continental US' and move onto
+        the next question. You do NOT need to tell them "that's in the continental US". They know
+        already. Once the user has responded, ask if they want to know about 3-5 Business Day, 2
+        Business Day, or Overnight shipping. Once you know BOTH pieces of information, give them just
+        the single rate that matches — do NOT list all the rates.
+  - name: shipping_time_info
+    values:
+      Poly Store: |-
+        Orders placed with 2 Business Day - Express or Overnight shipping will ship the same day if ordered by 1PM central time.
+
+        If you order after that, it'll ship the following business day.
+  - name: store_return_denied_contact
+    values:
+      Poly Store:
+        If you prefer, a customer service agent can be reached at support@example-store.com
+        or by calling 1-800-555-0199, Monday through Friday from 8 am to 5pm Pacific Time. Please have
+        the transaction number printed on the receipt when calling. Is there anything else I can help
+        you with?
+  - name: employment_url
+    values:
+      Poly Store: www.example-store.com/careers
+  - name: data_privacy_url
+    values:
+      Poly Store: www.example-store.com/privacy

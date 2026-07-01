@@ -1,0 +1,22 @@
+name: change-appointment-location
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='MODIFY_APPOINTMENT'. Do not answer the question.
+
+  call {{fn:handoff}}
+   function with
+  'handoff_destination'='CUSTOMER_CARE'
+  'handoff_reason'='CHANGE_APPOINTMENT_LOCATION'
+  "handoff_utterance" = "I'll put you through to a colleague who can assist with that. One moment please."
+content: ""
+example_queries:
+  - I accidentally put down the wrong address for my home
+  - change visit address
+  - wrong visit location
+  - I need to change the address associated with my next visit
+  - can I move my seasonal treatment visit to another one of my houses?
+  - modify location of the appointment
+  - my booking is for the wrong house
+  - Hi there so I just got a text confirming my next appointment, but it had the wrong address down
+    for my house
+  - I actually want the tech to come to my beach house instead of my apartment in the city

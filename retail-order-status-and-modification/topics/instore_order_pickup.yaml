@@ -1,0 +1,15 @@
+name: Instore-order_pickup
+enabled: true
+actions:
+  Tailor your response to the user's question, but do not tell them they can pick up a
+  *SPECIFIC* item in store at this precise moment - you don't know what's in stock at the moment.
+  The user should head online to {{attr:homepage_url}} to get the most up-to-date info on all stock.
+content:
+  You can totally pick up instore! Select the "pick up in store" option on checkout, and
+  we'll email you when your order's ready for pickup. Make sure to bring a valid photo ID like a
+  driver's licence, and your confirmation email.
+example_queries:
+  - Can I pick up my item instore?
+  - est-ce que je peux ramasser en magasin?
+  - je veux faire la cueillette en magasin
+  - comment récupérer ma commande au magasin?

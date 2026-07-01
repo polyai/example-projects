@@ -1,0 +1,16 @@
+name: refund-request
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='BILLING_QUESTION'. Do not answer the question.
+
+  call {{fn:handoff}}
+   function with 
+  'handoff_destination'='CUSTOMER_CARE' and
+  'handoff_reason'='REFUND_REQUEST' and
+  "handoff_utterance" = "To discuss refund options, I'll need to put you through to a team member. One moment please."
+content: ""
+example_queries:
+  - I want a refund
+  - refund
+  - money back
+  - get a refund

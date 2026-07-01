@@ -1,0 +1,37 @@
+corrections:
+  - name: Sneaker corrections
+    description: Corrections for sneaker names
+    regular_expressions:
+      - regular_expression: Nike a(ir)? m(a)?x
+        replacement: Nike Air Max
+        replacement_type: partial
+      - regular_expression: air m(a)?x
+        replacement: Nike Air Max
+        replacement_type: partial
+      - regular_expression: (K|k)arachi
+        replacement: Huarache
+        replacement_type: partial
+      - regular_expression: Nike Amex
+        replacement: Nike Air Max
+        replacement_type: partial
+  - name: check / track order
+    description: '"track my order" often transcribed as "check my order" which performs badly wrt RAG'
+    regular_expressions:
+      - regular_expression: check my order
+        replacement: track my order
+        replacement_type: partial
+  - name: misc
+    description: misc ASR mishaps
+    regular_expressions:
+      - regular_expression: auto number
+        replacement: order number
+        replacement_type: partial
+      - regular_expression: council
+        replacement: cancel
+        replacement_type: partial
+      - regular_expression: councillor order
+        replacement: cancel an order
+        replacement_type: partial
+      - regular_expression: my patient
+        replacement: live agent
+        replacement_type: partial

@@ -1,0 +1,27 @@
+name: change-address
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='GENERAL_QUESTION'. Do not answer the question.
+
+  If the caller is informing of an address change or that they have moved,  call {{fn:handoff}}
+   function with
+  'handoff_destination'='CUSTOMER_CARE' and
+  'handoff_reason'='ADDRESS_CHANGE' and
+  "handoff_utterance" = "To update your contact info, I'll need to put you through to a team member. One moment please."
+content: |-
+  transfer service
+  talk to someone about transferring service
+  This is about a new house.
+  i need service for my new house
+example_queries:
+  - Can I change the address on my account if I have moved?
+  - I moved houses
+  - changing my address
+  - we just moved to a new house/apartment/condo
+  - I moved and need to change the address associated with my account.
+  - I'm at a new address now
+  - I need to change my address in the portal
+  - Hi there, we moved recently from 1880 Columbia Road to 90 7th Avenue, so I'll need to update that
+    in your portal
+  - I just wanted to inform you of our new address which is on Nicoll Street
+  - We no longer live at that house so we'll be needing to change our service address

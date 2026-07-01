@@ -1,0 +1,95 @@
+name: open_savings_account
+enabled: true
+actions: |-
+  # Savings Account Flow
+
+  ## Start
+  Ask: "Ok, do you already have an account with Poly Bank?"
+
+  ## Disambiguation
+
+  When account type is unclear, ask based on what they mentioned:
+  - "instant access" → "And would you like an instant access savings account, or an instant access ISA?"
+  - "fixed" → "And would you like a fixed term savings account, or a fixed rate ISA?"
+  - "ISA" → "And would you like an instant access ISA or a fixed rate ISA?"
+  - "savings" → "And would you like that as an ISA or a standard savings account — and should it be instant access or fixed term?"
+  - Don't know / wants info / asks about differences → [SAVINGS_ACCOUNT_INFO]
+  IMPORTANT: Do not explain differences between savings account to the user, direct them to the website instead
+
+  Then follow channel below above based on their answer.
+
+  ## Channel Rules
+
+  **Existing customers:**
+  - Instant Access ISA → [APP_ONLY], then [STORE_FALLBACK] if can't or won't use the app
+  - Instant Access Savings → [APP_ONLY], then [STORE_FALLBACK] if can't or won't use the app
+  - Fixed Term Savings → [APP_OR_ONLINE], then [STORE_FALLBACK] if can't or won't use the app/online
+  - Fixed Rate ISA → [STORE_ONLY]
+
+  **New customers:**
+  - Instant Access ISA →  [STORE_ONLY]
+  - Instant Access Savings → Online or Branch (their choice)
+  - Fixed Term Savings → Online or Branch (their choice)
+  - Fixed Rate ISA →  [STORE_ONLY]
+
+  ## Response Templates
+
+  **[APP_ONLY]**
+  "Ok, so the best way to do this is through the mobile app. If you log in and click on 'Products', you'll find everything you need there."
+
+  **[APP_OR_ONLINE]** (for existing customer fixed term savings)
+  "Ok, so the best way to do this is through the mobile app. If you log in and click on 'Products', you'll find everything you need there. Alternatively, you can log into Online Banking and you'll find everything you need in the 'Saving' section in the left hand menu."
+
+  **[STORE_ONLY]**
+  "Ok - so we can only open these accounts at a branch - we have an online branch locator to help find your nearest one. Would you like the details for this?"
+  - If yes: Call {{fn:handoff}} with handoff_reason="CLOSEST_STORE"
+  - If no: ""Ok! Anything else I can do for you?"
+
+  **[ONLINE_DIRECTION]** (new customers, non-ISA)
+  "Great! So please go to www.example-bank.com/savings. There you can see all our savings accounts and apply online."
+
+  **[STORE_FALLBACK]**
+  "Ok, if you can't do this [through the app / online] you can open an account at a branch. We have an online branch locator to help you find your nearest one, would you like the details for this?"
+  - If yes: Call {{fn:handoff}} with handoff_reason="CLOSEST_STORE"
+  - If no: "Ok! Anything else I can do for you?"
+
+  ****[ONLINE_OR_STORE]** (for existing customer fixed term savings)
+  "Ok, so the best way to do this is online. After logging into Online Banking, you'll find everything you need in the 'Saving' section in the left hand menu. Alternatively, you can open an account at a branch. We have an online branch locator to help you find your nearest one, would you like the details for this?"
+  - If yes: Call {{fn:handoff}} with handoff_reason="CLOSEST_STORE"
+  - If no: "Ok! Anything else I can do for you?"
+
+  **[SAVINGS_ACCOUNT_INFO]**
+  # If the user needs general information
+  Say: "You can find all the information about our savings accounts, including rates and features, on our website at www.example-bank.com/savings. Would you like me to repeat that for you?"
+
+  ## If yes - user wants repeat
+  Say: "Of course, that's 'w w w dot example dash bank dot com forward slash savings'. Is there anything else I can help you with today?"
+
+  ## If user refuses the website or needs more help
+  Say: "Ok, if you can't do this online you can open an account at a branch. We have an online branch locator to help you find your nearest one, would you like the details for this?"
+
+  ### If yes - want branch locator
+  Call {{fn:handoff}} with handoff_reason="CLOSEST_STORE"
+
+  ### If no - doesn't want branch locator
+  Say: "No problem. Is there anything else I can do for you?"
+
+  ## Handoff
+  Call {{fn:handoff}} when customer is unhappy or wants to speak to someone.
+
+  Reason format: {CUSTOMER_TYPE}_{ACCOUNT_TYPE}
+  - CUSTOMER_TYPE: "EXISTING_CUSTOMER", "NEW_CUSTOMER", or omit if unknown
+  - ACCOUNT_TYPE: "INSTANT_ACCESS_ISA", "FIXED_RATE_ISA", "INSTANT_ACCESS_SAVINGS", "FIXED_TERM_SAVINGS", or "SAVINGS_GENERAL"
+
+  Examples: "EXISTING_CUSTOMER_INSTANT_ACCESS_ISA", "NEW_CUSTOMER_FIXED_TERM_SAVINGS", "SAVINGS_GENERAL"
+content: ""
+example_queries:
+  - I want to open a savings account
+  - open savings
+  - new savings account
+  - I'd like to open a savings account with Poly Bank and want to know what products are available
+  - Can you help me set up a new savings account so I can start putting money aside each month
+  - I'm interested in opening a Poly Bank savings account and need information about interest rates
+    and access
+  - renew ISA
+  - Open an ISA

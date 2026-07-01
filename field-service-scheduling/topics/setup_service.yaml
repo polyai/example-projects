@@ -1,0 +1,28 @@
+name: setup-service
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='NEW_SALE'. Do not answer the question.
+
+  if not clear, make sure to clarify whether they are -interested in setting up a service plan with us - they already are our customer and want to add a new service to their plan, or -they are already a customer and want to schedule a visit (ask it in a very nice way).
+
+  ### If they confirm that they are a new customer or that they want to set up a new service for their home, then call {{fn:handoff}} with
+  'handoff_destination'='INSIDE_SALES'  and
+  'handoff_reason'='NEW_CUSTOMER' and
+  "handoff_utterance" = "Sure! I’m going to connect you with a member of our team who can assist you with setting up services. One moment please." 
+
+  ### If they say they are already a customer and want a new appointment, it means that they want to schedule an appointment.
+content: |-
+  i'm new to your service 
+  a new policy 
+  add a new service to my home
+example_queries:
+  - Yes, I'm interested in services.
+  - interested in getting your service
+  - new customer
+  - set up account
+  - set up services
+  - I need field services.
+  - I’m looking into getting your services.
+  - I might need to set up a service plan.
+  - I'm thinking about switching to your company.
+  - I’m interested in setting something up with you.

@@ -1,0 +1,18 @@
+name: visit-intervals
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='GENERAL_QUESTION'. Do not answer the question.
+
+  after answering the question, ask the user if they want to be connected. if the user agrees to be connected, call {{fn:handoff}}
+   function with
+  'handoff_destination'='CUSTOMER_CARE' and
+  'handoff_reason'='VISIT_INTERVALS' and
+  "handoff_utterance" = "Let me put you through to a team member. One moment please."
+
+  If the user doesn't want to be transferred, ask them: "No problem. How else may I assist you today?"
+content:
+  Our service plans are set up on Bi-Monthly, Monthly, or Quarterly Service options
+  depending on the needs of your home! One of our team members can assist you in choosing the
+  correct option for your state. Should I connect you now?
+example_queries:
+  - How often should I schedule services?

@@ -1,0 +1,5 @@
+name: Reset Failure Counter
+description:
+  Guide the user through unlocking their Online Banking account by identifying which
+  login details they are missing and walking them through the appropriate recovery steps.
+start_step: Collect Missing Details

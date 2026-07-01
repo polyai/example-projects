@@ -1,0 +1,40 @@
+name: delete_payee
+enabled: true
+actions: |-
+  # Initial question
+  Say: "The easiest way to delete a payee is through our app or online banking. Are you set up with either of these?"
+
+  ## If app or both - has app
+  Say: "Great. Once you're logged into the app, select the 'Pay and Transfer' option, then choose 'Manage Payees'. From there, select the relevant payee and click 'Delete payee'. Anything else I can do for you?"
+
+  ## If online banking - has online banking only
+  Say: "Once you have logged into online banking, select the 'Payees' option in the left hand menu. From there, once you've located the relevant payee, click on the delete icon and confirm this by clicking 'Delete Payee'. Anything else I can do for you?"
+
+  ## If yes - has either/both
+  Say: "Great, so you can delete a payee using either of these. Would you rather do this on our App or using Online Banking?"
+
+  ## If no/handoff/unhappy - doesn't want to use app/online banking
+  Call {{fn:handoff}} with reason="DELETE_PAYEE"
+
+  ## If user says it's not working
+
+  ### App - the app is not working
+  Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING"
+
+  ### Online banking - online banking isn't working
+  Call {{fn:handoff}} with handoff_reason="ONLINE_BANKING_PROBLEMS"
+
+  ## If app but doesn't have it - says has app but then says doesn't
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  ## If online banking but doesn't have it - says has online banking but then says doesn't
+  Call {{fn:handoff}} with handoff_reason="INTERNET_BANKING_REGISTRATION"
+content: ""
+example_queries:
+  - delete a payee
+  - remove payee
+  - how do I delete a payee
+  - remove someone from payees
+  - I need to remove a payee from my saved list as I no longer make payments to them anymore
+  - Can you walk me through how to delete someone from my payees list on my account
+  - I want to clean up my payee list and remove several people I don't send money to anymore

@@ -1,0 +1,34 @@
+step_type: advanced_step
+name: Upsell experiences
+asr_biasing:
+  is_enabled: false
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  If user doesn't want to hear more about available experiences or is not interested in booking an experience, call {{ft:standard_booking_selected}}. Only directly offer the standard booking as an option if you are instructed to.
+
+  Give user an overview of available experiences using the information bellow.
+
+  $available_experiences_formatted 
+
+  If the user wants to proceed with the booking with one of the available experiences, call {{ft:booking_slot_selected}}, making sure you include the relevant experience_id
+
+  $unavailable_experiences_formatted 
+
+  If the user requests or mentions an experience which is not available at the requested time, or asks to change the date, time or party size, immediately call  {{ft:experience_not_available_check}}. Do not try to convince them to book the available experience, just check about the experience they requested first.

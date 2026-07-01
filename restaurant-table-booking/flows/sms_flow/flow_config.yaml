@@ -1,0 +1,3 @@
+name: sms_flow
+description: The user can receive SMS about bookings or FAQs
+start_step: check_user_number

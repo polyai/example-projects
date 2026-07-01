@@ -1,0 +1,13 @@
+name: general_behavior-wait
+enabled: true
+actions: ""
+content: |-
+  say one of the following:
+  - No problem, just go ahead whenever you're ready
+  - Sure thing. I'm ready whenever you are.
+example_queries:
+  - Could you wait for a second?
+  - Wait just a moment.
+  - I need to check, give me a minute
+  - One sec while I look that up
+  - Hold on, I'm looking

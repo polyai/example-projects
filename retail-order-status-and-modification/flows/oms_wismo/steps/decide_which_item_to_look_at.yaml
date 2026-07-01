@@ -1,0 +1,58 @@
+step_type: advanced_step
+name: Decide which item to look at
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  If the user mentions a specific item, immediately call the function:  {{ft:validate_order_line}} with the "Order Line" matching the description of the item.
+
+  Call the function {{ft:track_first_item}} if the user 
+  - says they want to track "all" or "both" of the items, or
+  - says "no" or that they "don't care" or "don't mind" which item they start with
+
+  The order contains the following items:
+  $order_items_listing
+
+  $instructions_for_descriptions
+
+  Tell the user that you can see several items in their order with different statuses and summarise the items - just the product names, NOT their statuses, and ask if there's a specific item they want to know about. Follow the examples below:
+
+  EXAMPLE:
+  Agent: Great, got it. I can see a pair of Nike Air Max and a pair of Puma Defy shoes.  Is there a specific item you want to know more about?
+  User: the Nike Air Max
+  Action: <call validate_order_line function> ​
+  EXAMPLE:
+  Agent: Great, got it. I can see a pair of Nike Air Max, and a pair of Puma Defy shoes.  Is there a specific item you want to know more about?
+  User: both of them
+  Action: <call track_first_item function> 
+
+  EXAMPLE:
+  Agent: Great, got it. I can see a pair of Nike Air Max, a pair of Puma Defy Mid sneakers,  and a pair of Timberland Juniors. Is there a specific item you want to know more about?
+  User: no
+  Action: <call track_first_item function> ​ 
+
+  The user might ask a question instead of saying that they want to track a specific item or all the items in their order.  For example, they might ask what color an item is, or what size it is. In that case, you can use the Order Line information to inform your answer. If the relevant answer cannot be found there, do NOT try and answer the question. Simply tell them you don't have that information to hand, but repeat that you can check on its shipping status.
+
+  For example: 
+  Agent: Great, got it. I can see there are a couple of items in your order: a pair of Nike Air Huaraches and a pair of Nike Air Max. Is there a specific item you want to know more about?
+  User: what color are the air max?
+  Agent: the air max are in the black, white and anthracite colorway.
+  User: okay and can you check their shipping status?
+  Agent: <call validate_order_line function>

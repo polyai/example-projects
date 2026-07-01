@@ -1,0 +1,3 @@
+name: schedule_appointment
+description: create an appointment for an existing user
+start_step: Collect appointment details

@@ -1,0 +1,17 @@
+name: Delivery_Issues-package_investigations
+enabled: true
+actions: |-
+  Provide the user with the information written in content.
+
+  If the user requests a transfer or indicates it's been longer than 4 days, call the {{fn:pre_handoff}} function with handoff_reason="Delivery_Issues-package_investigation" and utterance="Okay - let me put you through to someone who can help. One sec."
+content:
+  Please allow up to 4 business days to receive an update via email regarding your claim. Is
+  there anything else I can help you with?
+example_queries:
+  - Status update on a package investigation
+  - I need an update on an open invesigation
+  - I have a claim open for a missing package that I would like to get an update on
+  - When will I hear back about my claim
+  - je veux une mise à jour sur mon enquête de colis
+  - j'ai une réclamation ouverte pour un colis manquant
+  - quand est-ce que je vais avoir des nouvelles de ma réclamation?

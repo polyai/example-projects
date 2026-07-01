@@ -1,0 +1,3 @@
+name: transfer_money
+description: "Transfer money from the user's Poly Bank account to another account"
+start_step: collect transfer details

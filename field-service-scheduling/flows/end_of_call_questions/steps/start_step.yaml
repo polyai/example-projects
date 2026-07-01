@@ -1,0 +1,31 @@
+step_type: advanced_step
+name: Start step
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  # ACTIONS
+
+  Your task is to ask the following 'end of call' question from the user. Every time you're able to extract a user input, call the {{ft:save_final_questions}} function and save the corresponding response as final_question_1
+
+  Call this function even if the input is clearly ill-formed or identical to one of the previous inputs - every attempt at inputting information should be immediately recorded. Do *not* say anything else when calling the function. After successfully saving user's input to final_question_1, go to {{ft:go_to_final_question_2}}
+
+  final_question_1:
+  "Are you completely satisfied with the service I’ve provided today?”

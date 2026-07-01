@@ -1,0 +1,30 @@
+name: schedule-appointment
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='MAKE_APPOINTMENT'. Do not answer the question.
+
+  Don't say anything, immediately call {{fn:start_make_appointment}}.
+content: |-
+  I'd like some help scheduling my next appointment
+  How can I schedule a followup visit?
+  I need service
+  Can I schedule an emergency service?
+  How do I schedule a service visit?
+  I need a technician to come over
+  Could you help request a supplementary visit
+  I'd like to make a new appointment
+  Can you get a technician out here for me?
+  I need to make a new appointment
+  I'd like to request service.
+  want something scheduled
+example_queries:
+  - I need to schedule an appointment
+  - need service
+  - I'd like to get someone out here
+  - How can I schedule a followup visit?
+  - I'd like some help scheduling my next appointment
+  - Can you help me schedule a visit?
+  - can we get someone back for a followup?
+  - I missed my last appointment, can I rebook?
+  - I need a technician to come out
+  - How do I schedule a service visit?

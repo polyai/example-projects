@@ -1,0 +1,62 @@
+name: overdraft_general
+enabled: true
+actions: |-
+  # Initial question
+  Say: "Do you have access to our mobile app?"
+
+  ## If at any point the user is unhappy or requests handoff/speak to someone - handoff deflection utterance:
+  Say: "Sorry, the easiest way to get information about overdrafts and check your eligibility would be to go online to www.example-bank.com. Is there anything else I can help you with?"
+
+  ## If yes - has app
+  Say: "Our Live Chat team can help you with this. Click on the 'Chat To Us' button in the bottom right-hand corner of our App. Are you ok to do that?"
+
+  ## If no - doesn't have app or refuses to use the Live Chat
+  Say: "I can help with overdrafts! Do you want to apply for an overdraft or just get more information?"
+
+  ### If request info - wants information
+  Say: "Ok! So, you can get all the details about our overdrafts and check your eligibility online. Just go to www.example-bank.com and click 'help' in the top right hand corner. Then, type in overdraft. Just to check, is this for a personal or business account?"
+
+  ### If personal OR business
+  Say "Great, in that case, can I send you a text with some information to help?"
+
+  #### If yes - wants SMS with info
+  Call {{fn:start_sms_flow}} with sms_id='overdraft_general'
+
+  #### If no - doesn't want SMS
+  Say: "Ok! Anything else I can do for you?"
+
+  ### If apply - wants to apply for an overdraft
+  Say: "OK, so, to apply for an overdraft, you have to to meet three requirements. I'll just run through these now. Firstly, you must have a regular income from employment, self-employment, a pension or rent. Secondly, you need have a positive balance on your account and not be in any arrears. And thirdly, you must already have a personal current account with us. Do all of these apply to you?"
+
+  #### If no - doesn't meet requirements
+  Say: "Ok, unfortunately we won't be able to open an overdraft for you right now. If things change and you want to apply for an overdraft in future, head to www.example-bank.com. Click 'help' in the top right corner and type in overdraft to find our guides and eligibility checker. Just to check, is this for a personal or business account?"
+
+  ### If personal OR business
+  Say "Great, in that case, can I send you a text with some information to help?"
+
+  ##### If yes - wants SMS
+  Call {{fn:start_sms_flow}} with sms_id='overdraft_general'
+
+  ##### If no - doesn't want SMS
+  Say: "Ok! Anything else I can do for you?"
+
+  #### If yes - meets requirements
+  Say: "Ok! So, the best thing is to get all the details about our overdrafts and check your eligibility online. You'll just need to head to www.example-bank.com and, in the top right hand corner, click 'help'. Then, type in overdraft."
+
+  ##### If continue/yes/silence - continues listening
+  Say: "From there, you'll find plenty of guides for what we offer. We've also got an eligibility checker that can tell you what you're eligible for and won't affect your credit rating."
+
+  ## If can't do online/unhappy/not working - has issues
+  Say: "Ok, I can put you through to our team to discuss opening an overdraft. Would that be ok?"
+
+  ### If handoff - wants to speak to someone
+  Call {{fn:handoff}} with reason="OVERDRAFT_GENERAL_ENQUIRY"
+content: ""
+example_queries:
+  - I have a question about overdrafts
+  - overdraft information
+  - overdraft limit
+  - I'm interested in applying for an overdraft on my Poly Bank account and want to know what the
+    eligibility requirements are
+  - Can you tell me more about overdraft limits and fees so I can decide if I should apply for one
+  - I have some questions about how overdrafts work at Poly Bank and what interest rates you charge

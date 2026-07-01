@@ -1,0 +1,38 @@
+name: withdrawal_limits
+enabled: true
+actions: |-
+  # withdrawal vs payment limits
+  IMPORTANT: consider the user's query. If it is unclear whether the user is asking about withdrawal limits (taking money out of their own account) or making a payment/transferring money:
+  Say: "Just to clarify, are you asking about limits on how much you can withdraw from your account, or limits on how much you can transfer or pay to someone else?"
+
+  # If the user is asking about making a payment:
+  Call the {{fn:start_payments_flow}}
+
+  Otherwise/ if the user is asking about withdrawal limits:
+  # Initial answer
+  Say: "So limits on withdrawals depend on what type of account you have. Is this a business or personal account?"
+
+  ## If personal - personal account
+  Say: "Ok, so for personal accounts, you can withdraw a maximum of $300 a day from cash machines using your card. In branch, you can take out up to $1,000 a day if you’re 16 or over or $300 a day if you’re between 11 and 15. If you want to withdraw more than $1,000 you’ll need to give us a weekday’s notice."
+
+  ## If business - business account
+  Call {{fn:handoff}} with handoff_reason="WITHDRAWAL_LIMITS".
+
+  IMPORTANT: withdrawals and payments are two different things. provide the above information if you are sure the user is specifically asking about taking money out of their own account. If it seems like the user is referring to making a payment or transferring money (i.e. "how much can I transfer" or "what's the limit on how much I can send") you MUST immediately call the {{fn:start_payments_flow}} function.
+content:
+  User specifically asks about how much they can withdraw from their account. DO NOT PROVIDE
+  THIS INFORMATION FOR TRANSFER / PAYMENT QUERIES.
+example_queries:
+  - what are the withdrawal limits
+  - cash withdrawal limit
+  - ATM withdrawal limit
+  - how much can I withdraw
+  - I need to withdraw a significant amount of cash today and want to know the maximum daily
+    withdrawal limit from ATMs
+  - Can you tell me what the daily cash withdrawal limits are for my Poly Bank personal account
+  - I'm planning to take out some money and need to understand the withdrawal limits for both ATMs and
+    branch transactions
+  - I tried to take out $2000 at the ATM and it didn't work
+  - I went to the bank to withdraw some money but I couldn't get it it was about 1500 dollars I think
+    but 800 dollars was fine
+  - How much money can I take out at any one time?

@@ -1,0 +1,15 @@
+name: children
+enabled: true
+actions: ""
+content: "{{attr:children_info}}"
+example_queries:
+  - Who is welcome to come?
+  - What's the minimum age
+  - What should I do with my children?
+  - Is the restaurant kid friendly
+  - What about my children?
+  - May I bring my baby?
+  - Is your venue only for adults?
+  - Is your restaurant family friendly?
+  - Can I bring my daughter to the booking?
+  - Is there an age requirement?

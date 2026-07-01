@@ -1,0 +1,13 @@
+categories:
+  violence:
+    enabled: true
+    level: medium
+  hate:
+    enabled: true
+    level: medium
+  sexual:
+    enabled: true
+    level: lenient
+  self_harm:
+    enabled: true
+    level: lenient

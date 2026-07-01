@@ -1,0 +1,10 @@
+variants:
+  - name: Poly_Services
+    is_default: true
+attributes:
+  - name: site_name
+    values:
+      Poly_Services: Poly Services
+  - name: phone_number
+    values:
+      Poly_Services: ""

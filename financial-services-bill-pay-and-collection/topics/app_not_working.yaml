@@ -1,0 +1,74 @@
+name: app_not_working
+enabled: true
+actions: |-
+  # APP NOT WORKING FLOW
+
+  ## User *can't* log into the app
+  Ask: "I see. So you can't log in. And do you know the PIN to your app?"
+  - No → [PIN_RESET_FLOW]
+  - Yes → "Ok, so the best thing you can do is to delete the App and then reinstall it from either the Apple App Store or Google Play Store. After that, you'll be able to re-register and get back into the App but, to re-register, you'll need to know all your security details. Are you missing any of these?" → [SECURITY_DETAILS_HELP]
+
+  ## User *can* log into the app
+  Go to [REINSTALL_SOLUTION]
+
+  ## Unspecified if the user can log in
+  If the user explicitly states they cannot log in (e.g. "can't log in", "locked out", "login not working", "can't log into mobile app"):
+  1. Proceed with "I see. So you can't log in. And do you know the PIN to your app?"
+  2. Otherwise, ask: "I'm sorry to hear that. Just so I'm sure, are you able to log in to the app at all?"
+
+  ## Response Templates
+
+  **[REINSTALL_SOLUTION]**
+  "Ok, so the best thing you can do is to delete the App and then reinstall it from either the Apple App Store or Google Play Store. After that, you'll need to log back in using your existing details. Anything else I can do for you?"
+  - If user unhappy or requests to speak to someone → Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING"
+
+  **[PIN_RESET_FLOW]**
+  "To reset your PIN, tap 'Forgot passcode?' on the App login page. You'll need to have your Security Number, Password, and registered Mobile Number. Do you have all of those?"
+  - Yes → "Great! Anything else I can do for you?"
+  - Missing security number → Tell the user how to reset their security number using the info in [RESET_SECURITY_NUMBER_APP_NOT_WORKING]
+  - Missing password → Tell the user how to reset their password using the info [RESET_PASSWORD_APP_NOT_WORKING]
+  - Missing all details: pin, security number AND password → Call {{fn:handoff}} with handoff_reason="NEW_MAGIC_WORD"
+
+  **[SECURITY_DETAILS_HELP]**
+  - Yes (did not specify which detail) → "No problem, what details are you missing?"
+  - No (has all details) → "Great! Anything else I can do for you?"
+  - Missing security number → [RESET_SECURITY_NUMBER]
+  - Missing password → [RESET_PASSWORD]
+  - Missing customer number/username → [REMEMBER_CUSTOMER_NUMBER]
+  - Missing security number and password → "OK, if you have forgotten your Security Number and your Password, you will need to re-register with a Magic Word to unlock your account. For this, I'll need to put you through to our team to run through some security checks first. Is that ok?"
+        - Yes → Call {{fn:handoff}} with handoff_reason="NEW_MAGIC_WORD"
+        - No → "No problem! Is there anything else I can help you with?"
+
+  **[RESET_SECURITY_NUMBER_APP_NOT_WORKING]**
+  "OK, if you've forgotten both your PIN and security number, you can reset your security number first, and then reset your PIN. When logging in via the App, click on 'Forgot your security number?' This will take you to the Poly Bank website, where you can reset it. You should then be able to reset your PIN using your new security number. Can I just check, is this for a personal or business account?"
+  - If personal OR business → "Great, in that case, would you like me to send you a text to help do this?"
+  - Yes → Call {{fn:start_sms_flow}} with sms_id="reset_security_number"
+  - No → "Ok! Anything else I can do for you?"
+
+  **[RESET_PASSWORD_APP_NOT_WORKING]**
+  "OK, if you've forgotten both your PIN and password, you can reset your password first, and then reset your PIN. When logging in via the App, click on 'Forgot your password?' This will then take you to the Poly Bank website, where you can reset it. You should then be able to reset your PIN using your new password. Can I just check, is this for a personal or business account?"
+  - If personal OR business → "Great, in that case, would you like me to send you a text to help do this?"
+  - Yes → Call {{fn:start_sms_flow}} with sms_id="reset_password"
+  - No → "Ok! Anything else I can do for you?"
+
+  **[REMEMBER_CUSTOMER_NUMBER]**
+  "Ok, so you can get your customer number on our website. When logging in, click on 'Forgotten your customer number or username?' and then enter your details. We will send you a text message with your customer number. You can also use your username instead of your customer number. Can I just check, is this for a personal or business account?"
+  - If personal OR business → "Great, in that case, would you like me to send you a text to help do this?"
+  - Yes → Call {{fn:start_sms_flow}} with sms_id="forgot_customer_number_website"
+  - No → "Ok! Is there anything else I can help you with?"
+
+  EXAMPLE CONVERSATION:
+  Agent: Hiya, thanks for calling Poly Bank, you're speaking to the virtual assistant! How can I help?
+  User: Hi, I'm having trouble logging into the app. I don't have my password or my security number.
+  Agent: OK, if you have forgotten your Security Number and your Password, you will need to re-register with a Magic Word to unlock your account. For this, I'll need to put you through to our team to run through some security checks first. Is that ok?
+content: ""
+example_queries:
+  - my app isn't working
+  - the app won't let me in
+  - I can't log into the app
+  - app problems
+  - I've been trying to access my Poly Bank app for the past hour but it just won't let me log in
+  - The mobile banking app keeps crashing every time I try to open it and I really need to check my
+    account
+  - I'm locked out of the app and can't seem to get back in no matter what I try with my password
+  - I've got issues with my app

@@ -1,0 +1,33 @@
+step_type: advanced_step
+name: Readback number
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  Depending on the user response:
+
+  - If the user says yes, immediately call {{ft:go_to_ask_if_different_number}} with no spoken output. 
+
+  - If the user says no without saying their phone number, immediately call {{ft:go_to_collect_associated_phone_number}} with no spoken output. 
+  - If the user says their phone number, immediately call {{ft:save_associated_phone_number}} with no spoken output. 
+
+  -----
+
+  Otherwise, if you haven't already, say: "um... Sorry, did you say $phone_number_spelled_out" ?

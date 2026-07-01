@@ -1,0 +1,46 @@
+name: faster_payments_general
+enabled: true
+actions: |-
+  # Initial question
+  Say: "Sure, so, bank transfers, do you have our app or online banking?"
+
+  ## If yes - has app or online banking
+  Say: "Fantastic, so that'll be the quickest way to make a payment. Would that be ok?"
+
+  ### If yes/thanks - confirms
+  Say: "Great! Anything else I can do for you?"
+
+  ### If no - doesn't want to use app/online banking
+  Call {{fn:handoff}} with reason="FASTER_PAYMENTS_GENERAL" (requires IDNV)
+
+  ## If no/don't know/not there - doesn't have app or online banking
+  Say: "Ok, in which case, I'll need to put you through to our team to run through some security with you. You'll need your registered phone number or internet banking details for this too. Is that ok?"
+
+  ### If yes - ok with security questions
+  Call {{fn:handoff}} with reason="FASTER_PAYMENTS_GENERAL"
+
+  ### If no - not ok with security questions
+  Say: "Ah, ok. Is there anything else I can help you with?"
+
+  ### If the user says some variation of 'not working', and only if you do not know whether they are referring to the app or online banking:
+  Say: "Oh sorry, Is it the app that's not working, or online banking"
+
+  ### if app not working
+  Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING"
+
+  ### if online banking not working
+  Call {{fn:handoff}} with handoff_reason="ONLINE_BANKING_PROBLEMS"
+
+  ### If no - not ok with security questions
+  Say: "Ah, ok. Is there anything else I can help you with?"
+content: ""
+example_queries:
+  - how do bank transfers work
+  - I need to make a bank transfer
+  - bank transfer timing
+  - I need to send money urgently to someone and want to know how long a bank transfer will take to
+    arrive
+  - Can you explain how the bank transfer system works and whether there are any limits on how much
+    I can send
+  - I want to make a bank transfer to another bank account and need to understand the process and
+    timing

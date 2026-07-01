@@ -1,0 +1,16 @@
+name: Delivery_Issues-missing_package
+enabled: true
+actions: "Without saying anything, immediately call the function: {{fn:track_order}}."
+content: ""
+example_queries:
+  - package is missing
+  - lost package
+  - I just received my order and some of the packages are missing
+  - package was stolen?
+  - where's my package
+  - my parcel is stolen?
+  - my parcel is not here
+  - mon colis est manquant
+  - je n'ai pas reçu mon colis
+  - mon paquet a été volé
+  - où est mon colis?

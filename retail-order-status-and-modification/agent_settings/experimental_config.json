@@ -1,0 +1,240 @@
+{
+  "asr": {
+    "eager_final": true,
+    "flow_overrides": {
+      "LOYALTY_IDNV": {
+        "steps": {
+          "Verify loyalty number": {
+            "model": "gpt-4o-transcribe",
+            "provider": "openai"
+          }
+        }
+      },
+      "OMS_IDNV": {
+        "steps": {
+          "Collect billing postcode": {
+            "model": "gpt-4o-transcribe",
+            "provider": "openai"
+          },
+          "Collect billing zipcode": {
+            "model": "gpt-4o-transcribe",
+            "provider": "openai"
+          },
+          "Collect full order number": {
+            "model": "gpt-4o-transcribe",
+            "provider": "openai"
+          },
+          "Collect last 4": {
+            "model": "gpt-4o-transcribe",
+            "provider": "openai"
+          },
+          "Collect phone number": {
+            "model": "gpt-4o-transcribe",
+            "provider": "openai"
+          }
+        }
+      },
+      "SMS flow": {
+        "steps": {
+          "Phone number collected": {
+            "model": "gpt-4o-transcribe",
+            "provider": "openai"
+          }
+        }
+      }
+    },
+    "language_overrides": {
+      "fr-CA": {
+        "model": "gpt-4o-transcribe",
+        "provider": "openai"
+      }
+    },
+    "model": "poly-latency",
+    "provider": "default",
+    "use_asr_lib": true
+  },
+  "barge_in": {
+    "flow_overrides": {
+      "LOYALTY_IDNV": {
+        "steps": {
+          "Verify loyalty number": {
+            "is_enabled": false
+          }
+        }
+      },
+      "OMS_IDNV": {
+        "steps": {
+          "Collect billing postcode": {
+            "is_enabled": false
+          },
+          "Collect billing zipcode": {
+            "is_enabled": false
+          },
+          "Collect full order number": {
+            "is_enabled": false
+          },
+          "Collect last 4": {
+            "is_enabled": false
+          },
+          "Collect phone number": {
+            "is_enabled": false
+          }
+        }
+      },
+      "SMS flow": {
+        "steps": {
+          "Phone number collected": {
+            "is_enabled": false
+          }
+        }
+      }
+    },
+    "is_enabled": false
+  },
+  "conversation_control": {
+    "max_silence_count": 50
+  },
+  "eot": {
+    "flow_overrides": {
+      "OMS_IDNV": {
+        "steps": {
+          "Collect full order number": {
+            "threshold": 0.8,
+            "timeout_ms": 1500
+          },
+          "Collect phone number": {
+            "threshold": 0.7,
+            "timeout_ms": 1200
+          }
+        }
+      },
+      "SMS flow": {
+        "steps": {
+          "Phone number collected": {
+            "threshold": 0.7,
+            "timeout_ms": 1200
+          }
+        }
+      }
+    },
+    "provider": "smart_turn"
+  },
+  "filler_utterances": {
+    "interval_sec": 3,
+    "is_enabled": true,
+    "utterances": {
+      "en-US": [
+        "One moment",
+        "Just a second",
+        "almost there"
+      ],
+      "fr-CA": [
+        "Un instant",
+        "Juste un moment",
+        "Une seconde"
+      ]
+    }
+  },
+  "llm": {
+    "flow_overrides": {
+      "OMS_WISMO": {
+        "inference_parameters": {
+          "reasoning_effort": "low"
+        }
+      }
+    }
+  },
+  "memory": {
+    "repeat_caller": {
+      "analytics_enabled": true,
+      "state_keys": [
+        "zd_requester_id"
+      ]
+    }
+  },
+  "prompts": {
+    "silence": "The user is silent."
+  },
+  "ragdoll": {
+    "feature_flags": {
+      "azure_search": true
+    }
+  },
+  "smart_vad": {
+    "flow_overrides": {
+      "LOYALTY_IDNV": {
+        "steps": {
+          "Verify loyalty number": {
+            "is_enabled": false
+          }
+        }
+      },
+      "OMS_IDNV": {
+        "steps": {
+          "Collect billing postcode": {
+            "is_enabled": false
+          },
+          "Collect billing zipcode": {
+            "is_enabled": false
+          },
+          "Collect full order number": {
+            "is_enabled": false
+          },
+          "Collect last 4": {
+            "is_enabled": false
+          },
+          "Collect phone number": {
+            "is_enabled": false
+          }
+        }
+      },
+      "SMS flow": {
+        "steps": {
+          "Phone number collected": {
+            "is_enabled": false
+          }
+        }
+      }
+    },
+    "is_enabled": true
+  },
+  "vad": {
+    "flow_overrides": {
+      "LOYALTY_IDNV": {
+        "steps": {
+          "Verify loyalty number": {
+            "vad_end": 1800
+          }
+        }
+      },
+      "OMS_IDNV": {
+        "steps": {
+          "Collect billing postcode": {
+            "vad_end": 1600
+          },
+          "Collect billing zipcode": {
+            "vad_end": 1600
+          },
+          "Collect full order number": {
+            "vad_end": 2500
+          },
+          "Collect last 4": {
+            "vad_end": 1800
+          },
+          "Collect phone number": {
+            "vad_end": 1600
+          }
+        }
+      },
+      "SMS flow": {
+        "steps": {
+          "Phone number collected": {
+            "vad_end": 1600
+          }
+        }
+      }
+    },
+    "provider": "silero",
+    "vad_end": 800
+  }
+}

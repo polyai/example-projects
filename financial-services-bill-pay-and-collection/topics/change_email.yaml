@@ -1,0 +1,44 @@
+name: change_email
+enabled: true
+actions: |-
+  # Initial answer
+  Say: "You can change your email address on our app or online banking, which one works best?"
+
+  ## If app - has app
+  Say: "So, on the app, tap the settings icon in the top right-hand corner, then tap 'My details' and you'll be able to update your email address from there. Would you like me to repeat that?"
+
+  ## If online banking - has online banking
+  Say: "So, once you have logged into online banking, select the 'Settings' option in the left hand menu, from there under the 'Details' section, you'll be able to update your email address. Would you like me to repeat that?"
+
+  ## If don't have either - has neither
+  Say: "So the quickest way to get your email address changed would be through the app or online banking. Would you like to register for the app or online banking?"
+
+  #### If yes - wants registration but doesn't say for what
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  #### If app - wants registration for the app
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  #### If online banking - wants registration for online banking
+  Call {{fn:handoff}} with handoff_reason="INTERNET_BANKING_REGISTRATION"
+
+  ### If no - declines registration
+  Say: "Ok, so, for this, I'll need to put you through to our team to run through some security checks first. Is that ok?"
+
+  #### If yes - accepts handoff
+  Call {{fn:handoff}} with handoff_reason="CHANGE_EMAIL"
+
+  #### If no - declines handoff
+  Say: "No problem. Anything else I can do for you?"
+content: ""
+example_queries:
+  - change my email address
+  - update email
+  - new email address
+  - how do I change my email
+  - I need to update the email address associated with my account as I no longer use the
+    old one
+  - Can you help me change my registered email address to a new one as I've switched email providers
+  - I want to update my contact email on my account because I'm not receiving any notifications at my
+    current address
+  - I’d like to change my email address for my online banking account.

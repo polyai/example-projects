@@ -1,0 +1,35 @@
+name: change_statement
+enabled: true
+actions: |-
+  # Initial question
+  Say: "Ok, so for changing your statement preferences, are you set up with online banking?"
+
+  ## If yes - has online banking
+  Say: "Perfect, so the best way to change your statement preferences is through Online Banking. Just go to 'Settings' on the left hand menu, then select 'Paperless Statements' at the top, then choose which accounts you want to change your statement preferences for. Anything else I can do for you?"
+
+  ## If no - doesn't have online banking
+  Say: "No problem. In that case I'd recommend getting set up with online banking. Once you've done that you'll be able to edit your statement preferences whenever you want. Can I help you get set up with this? It should only take a few minutes."
+
+  ### If yes - wants to register
+  Call {{fn:handoff}} with handoff_reason="INTERNET_BANKING_REGISTRATION"
+
+  ### If no - doesn't want to register
+  Say: "No worries, is there anything else I can help you with?"
+
+  #### If user wants to speak to someone
+  Call {{fn:handoff}} with reason="CHANGE_STATEMENT"
+content: ""
+example_queries:
+  - change statement preferences
+  - stop paper statements
+  - switch to electronic statements
+  - change how I receive statements
+  - I want to stop receiving paper statements in the post and switch to getting them electronically
+    instead
+  - Can you help me change my statement preferences so I get digital statements rather than physical
+    ones
+  - I'd like to modify how I receive my bank statements as I prefer to go paperless for environmental
+    reasons
+  - where can I find paper statements? I prefer this
+  - How can I get my statement sent in the post?
+  - I can't seem to get my statements and I wanted to change how I receive them.

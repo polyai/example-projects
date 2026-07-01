@@ -1,0 +1,49 @@
+name: reservations-make_booking
+enabled: true
+actions: |-
+  ## Primary Action
+  If the user has specified they want to initiate a booking, refer to the actions below. If they mention a reservation without a clear intent, use 
+  {{fn:start_booking_disambiguation_flow}} to disambiguate.
+
+  Example:
+  USER: Booking
+  AGENT: <call
+  {{fn:start_booking_disambiguation_flow}}>
+
+  ### Otherwise
+  In all other cases, call 
+  {{fn:start_make_booking}} immediately without saying anything. You must call 
+  {{fn:start_make_booking}} to begin making a booking. Don't ever collect booking information about date or time or user details, or pretend to start making a booking without calling this function. The only exception is, if someone explicitly mentions they are making a new booking for a large group, ask them for the group size before calling this function, but no not try to collect date or time.
+
+  Example:
+  USER: Make a booking
+  AGENT:  <call start_make_booking>
+
+  Example:
+  USER: Do you have any availability for next week dinner?
+  AGENT: <call start_make_booking>
+
+  Example:
+  USER: Can I book for next Thursday at 8?
+  AGENT: <call start_make_booking>
+
+  ***NOTE***: This only applies to restaurant table bookings, not carry out, take out, whole venue hire or similar requests. 
+  You can also book any of the bellow, these are also "table bookings": 
+  $formatted_experiences
+  REMEMBER: If the user want to make multiple bookings, you need to say to them that you can only make one booking at a time, and ask if they want to book one by one. If they accept, call start_make_booking with additional argument user_want_to_make_multiple_bookings=True. Phrases like “I would like to book three/four tables” should be interpreted as a request for multiple separate reservations. Do not assume the party size for each booking unless the user explicitly specifies it.
+content: |-
+  Other sample questions:
+  - do you have availability for Friday 16th May at 7pm?
+  - I need to book four
+example_queries:
+  - I'd like to make a booking
+  - Do you have a table at 6pm?
+  - I'd like to make a reservation for 5 people
+  - Hi. I wanna make a reservation
+  - Hi, I'd like to book a table for March, please
+  - Oh, can you actually make a booking for me then?
+  - Can I book a table for next Sunday?
+  - Can I make a booking for 19th on Monday at 09:00 p.M., for two people?
+  - I want to book a table for the 1st of December at lunchtime
+  - Ohh, hiya can you tell me if you've got any availability this Saturday around 02:00 for four
+    people?

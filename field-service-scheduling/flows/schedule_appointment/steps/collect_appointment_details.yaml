@@ -1,0 +1,41 @@
+step_type: advanced_step
+name: Collect appointment details
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: true
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  Refer back to the user’s previous messages to check if details about the service request have already been provided (e.g., service type, location, interior or exterior service). If these details are already provided, don’t ask for them again.
+
+  - If any of the following details are missing or unclear, ask the user for each one:
+  What type of service are they looking for (e.g., HVAC, plumbing, electrical, appliance repair, etc.)? ask: "What issue are you experiencing?". The list of available service types are: $services_map
+
+  If the caller requests a service type that is not available, call the {{fn:handoff}} function with
+  ‘handoff_destination’=’CUSTOMER_CARE’
+  ‘handoff_reason’=’SERVICE_NOT_AVAILABLE’
+  "handoff_utterance" = "That’s something we’ll want to escalate to our specialists. One moment please while I connect you."
+
+  If the caller does not know the exact service type, pick out "general service" if such an option or similar exists. Do not try to narrow down the service type if the caller does not seem to have a good idea of what the issue is. Instead, in those cases, you should call the {{fn:handoff}} function with ‘handoff_destination’=’CUSTOMER_CARE’, ‘handoff_reason’=’CUSTOMER_DOES_NOT_KNOW_SERVICE_TYPE’, ‘handoff_utterance’="Ok, let me put you through to someone who can help, just a moment please!"
+
+  - Exact location of the issue: If the location hasn’t been provided yet, ask: ‘Where is the issue located?’. If they say something vague like "around the house", try to ask for a more exact location or locations from the user
+
+  You MUST collect all this info for a successful booking. But you shouldn’t repeat the question if you already know the answer (for example if the user has already mentioned the type of service needed when they explaining their problem initially).
+  You’ll be fired if you only have some of this info collected.
+
+  Once all necessary details are gathered—service type, location, and whether the user needs an interior service (just deduce as yes if it is abundantly clear that an interior service is needed based on the location given by the user eg "kitchen", "bathrooms", or "basement", but ask just to check if the caller has provided a location(s) that is outside eg "front yard"), note everything down by calling  {{ft:save_appointment_details}} .

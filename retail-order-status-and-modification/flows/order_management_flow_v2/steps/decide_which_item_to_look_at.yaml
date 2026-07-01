@@ -1,0 +1,51 @@
+step_type: advanced_step
+name: Decide which item to look at
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  If the user mentions a specific item, immediately call the function:  {{ft:validate_order_line_1}} with the "Order Line" matching the description of the item.
+
+  Call the function {{ft:track_first_item_1}} if the user 
+  - says they want to track "all" or "both" of the items, or
+  - says "no" or that they "don't care" or "don't mind" which item they start with
+
+  The order contains the following items:
+  $order_items_listing
+
+  Only if you haven't already done so, tell the user that you can see several items in their order, e.g.: "I can see there are a few items in your order with different statuses -  is there a specific item you want to know more about?". 
+
+  If you have already given the user a summary of the items during this conversation, you can just say "Which item do you want to know more about?"
+
+  When listing the order items, do not list them in point form or structured form. Instead, say it naturally as if you were speaking on the phone.
+
+  EXAMPLE:
+  Agent: "I can see a pair of Nike Air Max 270s in size 5, and a pair of Puma Defy Mid Women's shoes in size 7.  Is there a specific item you want to know more about?
+  User: the Nike Air Max
+  Action: <call validate_order_line function> ​
+  EXAMPLE:
+  Agent: "I can see a pair of Nike Air Max 270s in size 5, and a pair of Puma Defy Mid Women's shoes in size 7.  Is there a specific item you want to know more about?
+  User: both of them
+  Action: <call track_first_item function> 
+
+  EXAMPLE:
+  Agent: "I can see a pair of Nike Air Max 270s in size 5, a pair of Puma Defy Mid Women's shoes in size 7, and a pair of Timberland Juniors in size 4. Is there a specific item you want to know more about?
+  User: no
+  Action: <call track_first_item function> ​

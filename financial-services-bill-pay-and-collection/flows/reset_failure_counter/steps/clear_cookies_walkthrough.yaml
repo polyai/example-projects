@@ -1,0 +1,104 @@
+step_type: advanced_step
+name: Clear Cookies Walkthrough
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords:
+    - mobile
+    - computer
+    - desktop
+    - laptop
+    - phone
+    - settings
+    - done
+    - done that
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === ACTIONS ===
+
+  Walk the user through clearing their browser cookies step by step. Wait for the user to confirm they have completed each step before moving on to the next.
+
+  The user has already been asked whether they are using a mobile or a computer. Wait for their response.
+
+  --- COMPUTER PATH ---
+
+  If the user says COMPUTER, DESKTOP, or LAPTOP:
+
+  Step 1: Say exactly:
+  "Okay. First you'll need to open settings. This should look like three little dots or lines at the top right hand corner of your browser. Click on the icon and a menu should drop down. Let me know when you've done that"
+
+  Step 2 (after user confirms): Say exactly:
+  "From the list, look for the tab that says 'settings' and click it."
+
+  Step 3 (after user confirms): Say exactly:
+  "Great! In the settings panel, you should see a button or link that says 'clear browsing data', 'delete browsing data', or 'clear cookies'. Do you see a link like that?"
+
+  If the user says YES: Say exactly:
+  "Click that, and another small window should pop up showing a list of options like browsing history and cookies. Make sure the option for 'cookies' is checked, then click the button at the bottom that says 'clear data' or 'delete'. If asked about the time range, select 'all time'. Let me know when you've done that."
+
+  If the user says NO or cannot find it: Say exactly:
+  "No problem. You might need to have a look under a tab that says 'privacy' or 'browsing data'. Let me know if you can see the option to clear cookies there."
+
+  Step 4 (after user confirms cookies are cleared): Go to COMPLETION below.
+
+  --- MOBILE PATH ---
+
+  If the user says MOBILE, PHONE, or similar:
+
+  Step 1: Say exactly:
+  "Okay, first you'll need to open settings. In your browser, this can look like three dots or your account profile picture at the top of the screen, usually in the right hand corner, or three lines at the bottom of the screen if you're using an iphone. Let me know when you've found that"
+
+  Step 2 (after user confirms): Say exactly:
+  "Great, now have a look through the menu for 'settings'. Can you see that?"
+
+  If the user says YES: Say exactly:
+  "Once you've clicked settings, look for a tab that says something like 'privacy' or 'privacy and security'. Click on that and have a look for the option that says 'clear browsing data' or 'delete browsing data'. Let me know once you've done that"
+
+  If the user says NO or cannot find it: Say exactly:
+  "You might need to scroll a little. Keep an eye out for a small cog symbol"
+
+  Step 3 (after user confirms): Say exactly:
+  "Make sure the option for 'cookies' is checked, then click the button at the bottom that says 'clear data' or 'delete'."
+
+  Step 4 (after user confirms cookies are cleared): Go to COMPLETION below.
+
+  --- COMPLETION ---
+
+  Say exactly:
+  "Great, your cookies should now be cleared and you can try logging in again. Would you like me to stay on the line with you while you do that?"
+
+  ## User says YES — wants to stay on line
+  Call {{ft:start_wait_for_login}}
+
+  ## User says NO — does not want to stay on line
+  Say exactly: "No problem, try logging in again and let me know if you run into any issues."
+  Then call {{ft:walkthrough_complete}}
+
+  ## User changes their mind and mentions they are missing a detail (customer number, password, or security number)
+  Call {{ft:route_missing_details}} with the appropriate missing_detail value ("customer_number", "password", "security_number")
+
+  ## User mentions they don't have access to their registered phone number
+  Call {{fn:handoff}} with reason="CHANGE_CUSTOMER_PHONE_NUMBER", requested_by_user=false, account_type="N/A", handoff_required_by_faq=true
+
+  === GUIDELINES ===
+
+  - All "Say exactly" utterances are client-approved — say them word-for-word. Do NOT paraphrase or add to them.
+  - Do NOT use filler utterances ("Right...", "Mhm..."). Give the user plenty of time to follow the instructions on screen. Do NOT speak until the user says something.
+  - Allow skipping steps. On "done", "ok", "yes" or similar, proceed to the next step.
+  - If stuck, offer guidance based on common browser layouts.
+  - Cookies context (only if asked): small browser files that can cause login issues when outdated.

@@ -1,0 +1,43 @@
+name: cancel_direct_debit
+enabled: true
+actions: |-
+  # Initial answer
+  Say: "You can cancel a direct debit on our app or Online Banking, which one works best?"
+
+  ## If app - has app
+  Say: "So, on the app, click on 'Regular Payments' under the relevant account, then under 'Direct Debits', select the relevant direct debit and tap the cancel option. We recommend that you also cancel the Direct Debit with the merchant directly or they may reinstate this and continue to take funds. Anything else I can do for you?"
+
+  ## If online banking - has online banking
+  Say: "So, once you have logged into online banking, click on 'View upcoming payments and direct debits' next to the relevant account, then select the 'Direct Debits' option at the top, from there, tap the delete icon for the relevant direct debit. We recommend that you also cancel the Direct Debit with the merchant directly or they may reinstate this and continue to take funds. Anything else I can do for you?"
+
+  ## If don't have either - has neither
+  Say: "So the quickest way to get a direct debit cancelled would be through the app or online banking. Would you like to register for the app or online banking? It would be the easiest way to manage your direct debits now and in the future."
+
+  ### If yes - wants registration but doesn't say for what
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  ### If app - wants registration for the app
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  ### If online banking - wants registration for online banking
+  Call {{fn:handoff}} with handoff_reason="INTERNET_BANKING_REGISTRATION"
+
+  ### If no - declines registration
+  Say: "Ok, so, for this, I'll need to put you through to our team to run through some security checks first. Is that ok?"
+
+  #### If yes - accepts handoff
+  Call {{fn:handoff}} with handoff_reason="CANCEL_DIRECT_DEBIT"
+
+  #### If no - declines handoff
+  Say: "No problem. Anything else I can do for you?"
+content: The user wants to CANCEL their direct debit
+example_queries:
+  - cancel a direct debit
+  - how do I stop a direct debit
+  - remove direct debit
+  - cancel DD
+  - I need to cancel a direct debit payment that's been going out of my account each month and I'm not
+    sure how
+  - Can you help me stop a direct debit mandate I set up a while ago that I no longer need
+  - I want to remove a direct debit from my account as the service has been cancelled and I don't need
+    it anymore

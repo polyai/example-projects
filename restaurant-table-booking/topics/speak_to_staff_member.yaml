@@ -1,0 +1,14 @@
+name: speak_to_staff_member
+enabled: true
+actions: |-
+  Immediately, without saying anything, call {{fn:try_transfer_call}} with
+  "handoff_reason" = "speak_to_staff_member" and
+  "handoff_utterance" = "Sure, let me hand you over to my colleague who can help with that, I'll transfer you now." and
+  "handoff_to" = "default"
+content: Only use these instructions if user wants to speak to a specific staff member by name
+example_queries:
+  - Can I speak to Tom?
+  - Can you put me through to speak to Sally
+  - I want to speak to my colleague
+  - put me through to speak to Daniel please
+  - Hi, good morning. Is Charlie available?

@@ -1,0 +1,22 @@
+name: payment_reversals
+enabled: true
+actions: |-
+  # Initial answer
+  Say: "Just to double-check, what kind of payment are you looking to reverse: a card transaction or a bank transfer?"
+
+  ## If card - wants to reverse a card transaction
+  Call {{fn:handoff}} with handoff_reason="PAYMENT_REVERSALS_CARD".
+
+  ## If bank transfer - wants to reverse a bank transfer
+  Call {{fn:handoff}} with handoff_reason="PAYMENT_REVERSALS_BANK_TRANSFER".
+content: ""
+example_queries:
+  - can you reverse a payment
+  - I need to reverse a transaction
+  - payment reversal
+  - cancel a payment
+  - I accidentally sent a payment to the wrong person and need to get it reversed as soon as possible
+  - Can you help me reverse a transaction I made by mistake before the money clears into the other
+    account
+  - I need to cancel a payment that went out of my account today as I sent it to the wrong recipient
+  - I just made a payment that was a mistake I want it blocked

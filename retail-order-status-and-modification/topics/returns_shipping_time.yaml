@@ -1,0 +1,24 @@
+name: Returns-shipping_time
+enabled: true
+actions: |-
+  First, check whether the user purchased the item online or in store. If it's not clear, ask them — the return process is different for each.
+
+  IF PURCHASED IN STORE:
+  Tell the user: {{attr:instore_return_policy}}.
+  Ask if there's anything else you can help with.
+
+  IF PURCHASED ONLINE:
+  Answer the user's question. Always mention that return orders can be tracked at {{attr:returns_url}} (the returns portal).
+
+  Ask the user if they would like an SMS with the link. If they say yes, call {{fn:send_sms_message}} with sms_id="Refunds-track_refund". If they say no, ask if there's anything else you can help with.
+content: |-
+  # If purchased online:
+  Returns typically take 5 to 6 business days to reach our returns facility, but sometimes holidays, back to school season, and weather issues may make this a little longer.
+
+  Return orders can be tracked at {{attr:returns_url}}. Would you like me to send you an SMS with the link to track your return?
+
+  # If purchased in store:
+  {{attr:instore_return_policy}}
+example_queries:
+  - How long does return shipping take?
+  - text me the return tracking link

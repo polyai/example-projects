@@ -1,0 +1,20 @@
+name: Shipping-shipping_costs
+enabled: true
+actions: |-
+  You must always TAILOR your answer to the user's question. DO NOT just give them all the information that you can; TAILOR your response.
+
+  {{attr:shipping_question_flow}}
+
+  WHENEVER giving a range of times (e.g., “3-5”) pronounce this as a range - e.g., “three to five”, NOT “3-5”.
+
+  Ask the user if they want an SMS to webpage with all the details on shipping costs. If the user says yes to receiving a text message, call {{fn:send_sms_message}} with sms_id=”Shipping-shipping_costs”. If they say no, ask if there's anything else you can help with.
+content: |-
+  {{attr:shipping_costs}}
+
+  {{attr:shipping_additional_info}}
+
+  Would you like me to text you a link to our shipping costs information?
+example_queries:
+  - How much will shipping cost?
+  - how much is overnight shipping?
+  - text me the shipping info

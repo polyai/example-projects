@@ -1,0 +1,75 @@
+name: international_payments_general
+enabled: true
+actions: |-
+  # Initial response
+  You MUST first ask: "Ok, so for international payments, do you have our App?"
+
+  ## If no - doesn't have app
+  Say: "So doing this through the app will be the quickest way. Would you like to register for the app?"
+
+  ### If yes - wants to use app
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  ### If no - doesn't want to use app
+  Call {{fn:handoff}} with reason="INTERNATIONAL_PAYMENTS"
+
+  Refer to the conversation history, if the user has mentioned any of these details then do not ask them for the details again:
+
+  ## If yes - has app
+  Ask: "Great, and is this from a personal or business account?"
+
+  ### If personal - personal account
+  Ask: "OK Great, and how much would you like to send in dollars?"
+
+  #### After transaction value provided - personal account
+  Call {{fn:save_payment_amount}} with payment_type = "INTERNATIONAL" and payment_amount = amount mentioned by user and account_type = "PERSONAL"
+
+  ##### If payment amount is within limit - personal account
+  Say: "Great, the app is the quickest way to make the payment. Would you like to use the app to do so?"
+
+  ###### If yes - wants to use app - personal account
+  Say: "Okay. Just so you know, the app only lets you send international payments in U.S. dollars or euros. Does that work for you?"
+
+  ####### If yes - confirms international transfer
+  Ask: "And which country would you like to send to?"
+
+  ######## After country provided
+  Call {{fn:check_international_country}} with country = country mentioned by user and account_type = "PERSONAL"
+
+  ###### If no - doesn't want to use app / app not working
+  Call {{fn:handoff}} with reason="INTERNATIONAL_PAYMENTS"
+
+  ####### If no - doesn't want international transfer
+  Call {{fn:handoff}} with reason="INTERNATIONAL_PAYMENTS"
+
+  ### If business - business account
+  Ask: "OK Great, and how much would you like to send in dollars?"
+
+  #### After transaction value provided
+  Call {{fn:save_payment_amount}} with payment_type = "INTERNATIONAL" and payment_amount = amount mentioned by user and account_type = "BUSINESS"
+
+  ##### If payment amount is within limit
+  Say: "Great, the app is the quickest way to make the payment. Would you like to use the app to do so?"
+
+  ###### If yes - wants to use app
+  Say: "Okay. Just so you know, the app only lets you send international payments in U.S. dollars or euros. Does that work for you?"
+
+  ####### If yes - confirms international transfer
+  Ask: "And which country would you like to send to?"
+
+  ######## After country provided
+  Call {{fn:check_international_country}} with country = country mentioned by user and account_type = "BUSINESS"
+content:
+  The user wants to make an international payment, or has explicitly said the payee is
+  outside of the U.S. (User must mention a paying someone not in the U.S. or must say
+  'international payment')
+example_queries:
+  - I want to make an international payment
+  - send some money to a recipient outside of the U.S.
+  - need to make a payment to singapore
+  - need to transfer some money to the U.S.
+  - international payment
+  - pay someone not in the U.S.
+  - Pay someone outside of the U.S.
+  - Make payment to Spain
+  - Make payment to international account

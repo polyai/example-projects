@@ -1,0 +1,31 @@
+name: close_account
+enabled: true
+actions: |-
+  # Initial answer
+  Say: "To close your account, do you have access to our app?"
+
+  ## If yes - has app
+  Say: "Great. in that case, our Live Chat team will be the quickest way to close your account. Just click on the 'Chat To Us' button in the bottom right-hand corner of our app, and they'll be able to get you sorted. Is there anything else I can do for you today?"
+
+  ## If no - doesn't have app
+  Say: "Ok, sorry to hear you want to close your account. Can I just check, have you made any payments or card purchases from your account recently?"
+
+  ### If yes - has recent transactions
+  Say: "So, to close your account, you'll need to wait 24 hours after any payments have been made and until all pending card transactions have cleared. Do you know if it's been less than 24 hours since your last transaction?"
+
+  #### If yes - needs to wait
+  Say: "Ok, not a problem, once those 24 hours have passed and your transactions have cleared,  give us a ring back and we'll be able to help close your account then. Is there anything else I can do for you today?"
+
+  ### If no - no recent transactions and doesn't need to wait
+  Call {{fn:handoff}} with handoff_reason="CLOSE_ACCOUNT".
+content: ""
+example_queries:
+  - I want to close my account
+  - close account
+  - shut down my account
+  - cancel my account
+  - I've decided to close my account and move my banking elsewhere so I need help with the
+    process
+  - Can you help me shut down my current account as I no longer need it and want to consolidate my
+    finances
+  - I'm looking to cancel my account and would like to know what steps I need to take

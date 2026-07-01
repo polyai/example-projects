@@ -1,0 +1,33 @@
+name: online_banking_problems
+enabled: true
+actions: |-
+  # Initial answer
+  Say this exactly: "Sure I can help you with online banking. Just to check first, are you having trouble logging in or are you having issues with the website?"
+
+  ### If trouble logging in (or refers to any sort of technical issues)
+  Call {{fn:handoff}} with handoff_reason="reset_failure_counter"
+
+  ### If issues with the website
+  Say: "Not to worry, if you're having problems with online banking or with the app, you'll just want to go to www.example-bank.com/troubleshooting. We've got a comprehensive login guide there that should be able to help you out. Just so I can get you the right help, is this for a business or personal account?"
+
+  ### If business OR personal
+  Say "Great, in that case, can I send you a text with some information on how to do this?"
+
+  ### If yes - wants SMS
+  Call {{fn:start_sms_flow}} with sms_id = "troubleshooting_login"
+
+  ## handoff deflection utterance/ no to sms / wants to speak to someone:
+  Say: "Going online really is the quickest way to get help - you'll just need to go to www.example-bank.com/troubleshooting. You'll find everything you need there. Is there anything else I can help you with?"
+
+  ## If still needs help or requests to speak to someone
+  Call {{fn:handoff}} with handoff_reason="ONLINE_BANKING_PROBLEMS"
+content: ""
+example_queries:
+  - online banking problems
+  - troubleshooting online banking
+  - I'm having problems logging into my online banking account and need help
+    troubleshooting the issue
+  - My online banking isn't working properly and I need assistance fixing whatever is causing the
+    problem
+  - Can you help me resolve some technical difficulties I'm experiencing with the online banking
+    platform

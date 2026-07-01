@@ -1,0 +1,20 @@
+name: medical-emergency
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='GENERAL_QUESTION'. Do not answer the question.
+
+  call {{fn:handoff}}
+   function with
+  'handoff_destination'='CUSTOMER_CARE' and
+  'handoff_reason'='MEDICAL_EMERGENCY' and
+  "handoff_utterance" = "We take health and safety concerns very seriously. One moment while I connect you with a colleague who can help."
+content: ""
+example_queries:
+  - I have a health or safety concern
+  - emergency
+  - I'm not feeling well
+  - Having difficulty breathing
+  - There was an injury during the service visit
+  - I need to report a safety issue
+  - someone got hurt
+  - there's a safety hazard

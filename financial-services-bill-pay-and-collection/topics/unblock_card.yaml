@@ -1,0 +1,41 @@
+name: unblock_card
+enabled: true
+actions: |-
+  # Unblock Card Flow
+
+  ## Entry (user says card is blocked)
+  Ask: "Ok, and did you block the card yourself?"
+
+  - Yes → [UNBLOCK_SELF_SERVICE]
+  - No  → Call {{fn:handoff}} with reason="CARD_BLOCKED_NOT_USER"
+  - Don't know → Say "If you blocked the card yourself you likely would have used our app or online banking, Did you block the card yourself?"
+  - Wants to block/freeze → Call {{fn:handoff}} with reason="BLOCK_CARD"
+
+  ## [UNBLOCK_SELF_SERVICE]
+
+  Ask: "Ok and are you set up on our app?"
+
+  - Yes → [APP_INSTRUCTIONS]
+  - No → Route to Mobile App Registration flow
+  - App not working → Route to Online Banking Problems flow
+  - 3+ attempts → Call {{fn:handoff}} with reason="UNBLOCK_CARD"
+
+  **[APP_INSTRUCTIONS]**
+  "Great so you'll be able to unblock your card using our App. Log in, then tap 'Manage Card' under the relevant account. From there you'll have the option to unblock your card. Just to check, is this for a personal or business account?"
+  - If personal OR business → "Great, in that case, can I send you a text with some help on how to unblock your card?"
+  - Yes/Thanks → Call {{fn:start_sms_flow}} with sms_content={{twilio_sms:unblock_card}}
+  - No → "Ok! Anything else I can do for you?"
+  - App not working → Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING"
+content: ""
+example_queries:
+  - unblock my card
+  - card is blocked
+  - how do I unblock my card
+  - my card won't work it's blocked
+  - I blocked my card earlier but now I've found it and need to unblock it so I can use it
+    again
+  - My debit card has been blocked and I need to unblock it immediately as I need to make a purchase
+  - Can you help me unblock my card that I temporarily froze through the app as I need it working
+    again
+  - I used my bank card and I put the incorrect Pin number in three times and I've been blocked.
+  - How do I unblock my card?

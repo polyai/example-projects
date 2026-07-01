@@ -1,0 +1,13 @@
+phrase_filtering:
+  - name: attempt_handoff
+    description:
+      The LLM says a handoff utterance without calling the handoff function. We stop the
+      handoff utterance and re-prompt the LLM to call the handoff function instead, with the utterance
+      as one of the function arguments.
+    regular_expressions:
+      - \btransferring you\b
+      - \bconnecting you\b
+      - transfer is in progress
+      - \bOne moment please\b
+    say_phrase: false
+    function: handoff

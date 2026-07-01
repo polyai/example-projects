@@ -1,0 +1,4 @@
+pronunciations:
+  - regex: Umm, are you still there?
+    replacement: Hi, are you still there?
+    case_sensitive: false

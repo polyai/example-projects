@@ -1,0 +1,17 @@
+name: Delivery_Issues-claim_denied
+enabled: true
+actions: |-
+  Provide the user with the information written in content.
+
+  If the user requests a transfer, call the {{fn:pre_handoff}} function with handoff_reason="Delivery_Issues-claim_denied" and utterance="Okay - let me put you through to someone who can help. One sec."
+content:
+  We use external data sources to help verify the claim. When certain limits are met, the
+  claim will be denied. We do not disclose the data points or limits used in the decision-making
+  process. Is there anything else I can help you with?
+example_queries:
+  - Why was my claim denied
+  - I lost a package but the investigation has said I won't get refunded, why?
+  - Investigation of missing package rejected
+  - pourquoi ma réclamation a été refusée?
+  - j'ai perdu un colis mais on me rembourse pas
+  - mon enquête de colis manquant a été rejetée

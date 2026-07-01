@@ -1,0 +1,3 @@
+name: make_booking
+description: Help the user to make a new reservation
+start_step: Collect booking info

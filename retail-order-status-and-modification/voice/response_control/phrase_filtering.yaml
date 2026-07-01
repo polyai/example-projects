@@ -1,0 +1,92 @@
+phrase_filtering:
+  - name: attempt_transfer_call
+    description:
+      The LLM says a transfer utterance without calling the transfer_call function. We stop
+      the transfer utterance and re-prompt the LLM to call the function instead, with the utterance as
+      one of the function arguments.
+    regular_expressions:
+      - transfer_call
+      - (I can't|I cannot|unable to|not able to|capacity to|ability to) (transfer|connect|put you
+        through)
+      - (I'll|I will|let me|while I|need to) (put you through|transfer you|connect you)
+      - (putting you through|transferring you|connecting you)
+      - (I can't|I cannot|unable to|not able to|capacity to|ability to) (transfer|connect|put you
+        through)
+      - hold the line
+    say_phrase: false
+    function: attempt_transfer_call
+  - name: attempt_track_order
+    description:
+      The LLM says a "track order" utterance without calling the correct function. We stop
+      the utterance and re-prompt the LLM to call the function instead.
+    regular_expressions:
+      - \*?Tracking order( now)?\.?\!?\*?
+      - \*?Starting the verification process( now)?\.?\!?\*?
+      - Could you (please )?provide me with your order details\?
+      - Let me get you started on that\. Just a moment while I verify your information\.
+      - Let me just verify your information first\. One moment, please\!
+      - Let me track (your|that) order for you( right now)?( right away)?( now)?\.( One moment,?
+        please\.?\!?)?
+      - Just give me a moment while I track your order for you\.( One moment,? please\.?\!?)?
+      - (I can help (you )?track your order\.?\!? )?(I can help with that\.?\!? )?(Let me just )?(I just
+        need to )?verify your information first\.?\!?
+      - (I can help (you )?track your order\.?\!? )?(I can help with that\.?\!? )?Let me track your
+        order for you( right now)?(now)?\.?\!?
+      - (I can help (you )?track your order\.?\!? )?(I can help with that\.?\!? )?Let me get (you)?
+        started on that\.?\!?
+      - (I can help (you )?track your order\.?\!? )?(I can help with that\.?\!? )?Let me just
+        (verify|check) (some|your) details first\.?\!?
+      - (I can help (you )?track your order\.?\!? )?(I can help with that\.?\!? )?Just (give me )?a
+        moment while I (verify|track|find|check) your (information|order)\.?\!?
+      - (I can help (you )?track your order\.?\!? )?(I can help with that\.?\!? )?Just (give me )?a
+        moment while I get that started\.?\!?
+      - (I can help (you )?track your order\.?\!? )?(I can help with that\.?\!? )?Just (give me )?a
+        moment while I pull up the details\.?\!?
+      - It sounds like you want to track your order\. Let me get that started for you\.
+      - \*Calling to track (your|the) order now\.\*
+      - Let me track that (order )?for you\.( One moment, please\.?\!?)?
+      - I’ll get started on tracking your order right now\.( One moment, please\.?\!?)?
+      - It sounds like you might be asking about an order status\.
+      - (Je vais |Laissez-moi )?(vérifier|suivre|retrouver|chercher) (votre|la|cette) commande
+      - (l'état|le statut|le suivi) de (votre|la|cette) commande
+      - Pour (vérifier|suivre|retrouver) (votre|la|cette) commande
+      - (Je peux|Je vais) vous aider (à |avec )?(suivre|vérifier|retrouver) (votre|la) commande
+      - j'aurais besoin de (votre|quelques) (numéro|détails|informations)
+      - (un instant|un moment) (pendant que|le temps que) je (vérifie|cherche|retrouve)
+      - \*?(Suivi|Vérification) de (la |votre )?commande( en cours)?\.?\!?\*?
+    say_phrase: false
+    function: track_order
+  - name: attempt_goodbye
+    description:
+      The LLM says a goodbye utterance without calling the end_call function. We stop the
+      goodbye utterance and re-prompt the LLM to call the function instead.
+    regular_expressions:
+      - \*?Goodbye message plays\*?
+      - Alright, have a fantastic day\!
+      - If you have any more questions in the future, feel free to reach out. Have a great day\!
+      - You're welcome\! Have a great day\!
+      - \*?Calling the goodbye message( now)?\.?\*?
+      - (h|H)ave (a good|a great|a wonderful|a fantastic|a lovely|an excellent) ?(rest of (the|your))?
+        ?day
+      - \*?(E|e)nding the call( now)?\!?\*?
+      - I'll end the call now\.?\!?
+      - I'll hang up now\.?\!?
+      - \*?(P|p)laying goodbye message\*?
+      - ([Gg]ood)?bye
+      - ^(Alright[.!]?|Okay[.!]?|Ok[.!]?|You're welcome!?)?\s*(If you (change your mind (or|and) )?need
+        anything( else)?( in the future)?, (feel free to )?(reach out|call back))\.?\s*(Have a great
+        day[.!])?$
+      - (No problem\!?.\ |Alright\!?.\ |Sounds good\!?.\ |Ok\!?.\ |Okay\!?.\ )?If you need anything
+        else, just (let me know|give me a shout)\.?
+      - Okay, thanks for calling\! If you need anything else in the future, just give us a shout\.
+    say_phrase: false
+    function: end_call
+  - name: attempt_SMS_flow
+    description:
+      The LLM said a phrase that indicated it was calling a function, but never called the
+      function.
+    regular_expressions:
+      - \*?Starting the SMS flow( now)?\.?\!?\*?
+      - \*?Sending (an|the|your) (SMS|text|link)( now)?\.?\!?\*?
+    say_phrase: false
+    function: send_sms_message

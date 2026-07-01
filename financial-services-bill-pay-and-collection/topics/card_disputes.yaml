@@ -1,0 +1,24 @@
+name: card_disputes
+enabled: true
+actions: |-
+  # Initial answer
+  Say: "Ok, I'll put you through to our disputes team who can help you with this. Would that be ok?"
+
+  ## If yes - accepts handoff
+  Call {{fn:handoff}} with handoff_reason="CARD_DISPUTES"
+
+  ## If no - declines handoff
+  Say: "No problem. Is there anything else I can help you with?"
+content: ""
+example_queries:
+  - I want to dispute a card transaction
+  - dispute a charge on my card
+  - I paid for something but never received it
+  - the item I received is not what was described
+  - chargeback request
+  - I was charged twice for the same thing
+  - the merchant charged me the wrong amount
+  - I didn't get the cash from the ATM but was charged
+  - goods not received
+  - dispute an incorrect charge
+  - I need to dispute a payment

@@ -1,0 +1,26 @@
+step_type: advanced_step
+name: Final details
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  - Remember to not mention the user's name
+  - Refer back to previous messages and attempt to extract any additional details or booking notes such as a specific seating area or occasion and then call{{fn:finalize_booking}} with the relevant booking_notes (use "-" if no notes were mentioned) otherwise ask the user if there are any notes you should make for their booking such as a special occasion. If the user has already told you about one of these, don't ask about it here. 
+  - $additional_booking_final_details

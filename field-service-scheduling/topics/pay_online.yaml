@@ -1,0 +1,17 @@
+name: pay-online
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='BILLING_QUESTION'. Do not answer the question.
+
+  after answering, If the user confirms that they want to receive a text, call
+  {{fn:start_send_sms}} with sms_id="pay-online"
+content:
+  Absolutely! We’ll send you a text with your online portal link. Once you log in,
+  you’ll see your account details right away. Your username will be your Account Number. May I send
+  you a text with the link to your portal account?
+example_queries:
+  - online payment
+  - pay bill online
+  - Can I pay online
+  - online payment
+  - pay balance online

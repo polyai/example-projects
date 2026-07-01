@@ -1,0 +1,8 @@
+name: walk_in
+enabled: true
+actions: ""
+content: "{{attr:walk_in_info}}"
+example_queries:
+  - Do I have to make a booking or can I walk in without a reservation?
+  - I haven't made a booking, can I still get a table tonight?
+  - Do you take walk ins?

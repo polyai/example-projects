@@ -1,0 +1,15 @@
+name: Instore-product_issues
+enabled: true
+actions: ""
+content:
+  If you've got an issue with a product you purchased instore, the best thing to do is to
+  take it back to the store and speak to our instore {{attr:brand_name}} team.
+example_queries:
+  - I've got an issue with a product I purchased instore
+  - I bought some sneakers in the New York store but they are missing laces?
+  - I bought some shoes instore last week and they're the wrong size
+  - Bought shoes in store and they're broken
+  - return shoes i bought instore
+  - j'ai un problème avec un produit acheté en magasin
+  - j'ai acheté des souliers au magasin pis y sont brisés
+  - les souliers que j'ai achetés en magasin sont pas la bonne taille

@@ -1,0 +1,50 @@
+name: Discount_Codes-not_working
+enabled: true
+actions: |-
+  Even if the user asks to speak to someone about their discount code at the start, you MUST still work through all three questions first before offering a transfer.
+
+  Work through the three questions ONE AT A TIME, stopping after each to wait for the user's response.
+
+  If the user says YES to any of the questions, stop and say: "Ah, that may be why the discount code isn't valid. You can check out our current coupons and discounts at {{attr:promos_url}}. Do you want me to text you the link?" If the user says yes, call {{fn:send_sms_message}} with sms_id="Discount_Codes-not_working".
+
+  If the user says NO or DOESN'T KNOW to a question, move on to the next question.
+
+  After the user has answered ALL THREE questions with NO or DON'T KNOW, you MUST immediately ask: "Would you like me to put you through to someone who can help?" Do not stop the conversation — this next step is required.
+
+  If the user says yes to being transferred, call {{fn:pre_handoff}} with handoff_reason="Discount_Codes-not_working", and utterance="Let me put you through to someone who can help figure this out. One sec."
+
+  If the user says no to receiving an SMS or being transferred, ask if there's anything else you can help with.
+
+  Never mention SPECIFIC discounts (e.g., student discount, veteran discount) - you do not have information about what discounts are available, and referring to specific discounts may mislead the user.
+
+  User: My discount code isn't working, can I talk to someone about this?
+  Agent: I can help you figure this out! First, you may be trying to apply a discount to a non-discountable item. If you scroll down the product page, is there any note saying the item is excluded from discount?
+  User: oh, yeah I see a note
+  Agent: Ah, that may be why the discount code isn't valid. You can check out our current coupons and discounts at {{attr:promos_url}} Do you want me to text you the link?
+  User: yeah okay
+  ACTION:  <call start_sms_flow function with sms_id="Discount_Codes-not_working">
+
+  User: i wanna speak to someone about my discount code not working
+  Agent: Let's see if we can figure this out together. First, you may be trying to apply a discount to a non-discountable item. If you scroll down the product page, is there any note saying the item is excluded from discount?
+  User: no don't think so
+  Agent: Ok, great. Now, some codes can only be used once; have you used this discount code before?
+  User: No
+  Agent: Ok, and finally, some codes have expiry dates; has the discount code expired?
+  User: No i don't think so
+  Agent: Okay, let me put you through to someone who can help figure this out. One sec.
+  ACTION: <call pre-handoff function with handoff_reason ="Discount_Codes-not_working">
+content: |-
+  Respond in a STEP BY STEP process, STOPPING after each of the questions below and waiting for the user to reply. Start with question 1, and then go to question 2, then go to question 3.
+
+  1. You may be trying to apply a discount to a non-discountable item. If you scroll down the product page, check under the "add to cart" button for a note saying the item is excluded from discount.
+
+  2. The discount code may have been used already; have you used this discount code before?
+
+  3. Some codes have expiry dates; has the discount code expired?
+example_queries:
+  - Why is my discount code not working?
+  - mon code promo marche pas
+  - pourquoi mon code de réduction fonctionne pas?
+  - j'arrive pas à appliquer mon rabais
+  - text me the promo link
+  - envoyez-moi le lien des promotions par texto

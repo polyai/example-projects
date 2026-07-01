@@ -1,0 +1,71 @@
+name: change_address
+enabled: true
+actions: |-
+  # Initial answer
+  Say: "And is this a personal or business address?"
+
+  ## If business - user wants to change a business address
+  Call {{fn:handoff}} with handoff_reason="CHANGE_BUSINESS_ADDRESS"
+
+  ## If personal - user wants to change a personal address
+  Say: "Great. You can change your address on our app or Online Banking, which one works best?"
+
+  ### If app - has app
+  Say: "On our App, tap the settings icon in the top right-hand corner, then tap 'My details' and you'll be able to update your address from there. Just to check, do you have the new address to hand?"
+
+  ### Regardless of the user's response
+  Say: "Okay in that case, would you like me to send you a text to help change your address?"
+
+  #### If yes - wants SMS
+  Call {{fn:start_sms_flow}} with sms_id = "change_personal_address_app"
+
+  #### If no - doesn't want SMS
+  Say: "No problem. Anything else I can do for you?"
+
+  ### If online banking - has online banking
+  Say: "Perfect, once you're logged in, you'll need to click on 'Settings' and then 'Details'. From there, just scroll down to change your address! Just to check, do you have the new address to hand?"
+
+  ### Regardless of the user's response
+  Say: "Okay in that case, would you like me to send you a text to help change your address?"
+
+  #### If yes - wants SMS
+  Call {{fn:start_sms_flow}} with sms_id = "change_personal_address_online"
+
+  #### If no - doesn't want SMS
+  Say: "No problem. Anything else I can do for you?"
+
+  ### If don't have either - has neither
+  Say: "The quickest way to get your address changed would be via our App or Online Banking. Would you like to register for the App or Online Banking?"
+
+  #### If request to do it over the phone 
+  Call {{fn:handoff}} with handoff_reason="CHANGE_PERSONAL_ADDRESS"
+
+  ##### If yes - wants registration but doesn't say for what
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  ##### If app - wants registration for the app
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  ##### If online banking - wants registration for online banking
+  Call {{fn:handoff}} with handoff_reason="INTERNET_BANKING_REGISTRATION"
+
+
+  #### If no - declines registration
+  Say: "I'll need to put you through to our team to run through some security checks first. Is that ok?"
+
+  ##### If yes - accepts handoff
+  Call {{fn:handoff}} with handoff_reason="CHANGE_PERSONAL_ADDRESS"
+
+  ##### If no - declines handoff
+  Say: "No problem. Anything else I can do for you?"
+content: ""
+example_queries:
+  - change my address
+  - update my address
+  - I've moved
+  - new address
+  - I recently moved to a new place and need to update my address details on my Poly Bank account
+  - Can you help me change my registered address as I've relocated to a different city and need my
+    bank details updated
+  - I need to update my home address with the bank because I moved last month and haven't
+    changed it yet

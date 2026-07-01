@@ -1,0 +1,22 @@
+name: cancel-subscription
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='CANCEL_SUBSCRIPTION'. Do not answer the question.
+
+  call {{fn:handoff}}
+   function with
+  'handoff_destination'='ACCOUNT_CARE' and
+  'handoff_reason'='CANCEL_SUBSCRIPTION' and
+  "handoff_utterance" = "I'm sorry to hear that you want to leave us! One moment, please, while I put you through to a colleague to help with this."
+content: ""
+example_queries:
+  - I would like to speak to someone because I wanted to end my contract.
+  - cancel my account
+  - cancel subscription
+  - I'm not happy
+  - too expensive
+  - canceling you
+  - cancel service(s)
+  - my name is a j clark and i initially signed up for your service but i think i wanna
+    put this off for a bit
+  - i wanna put off the plan

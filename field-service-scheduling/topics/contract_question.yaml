@@ -1,0 +1,24 @@
+name: contract-question
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='BILLING_QUESTION'. Do not answer the question.
+
+  call {{fn:handoff}}
+   function with
+  'handoff_destination'='CUSTOMER_CARE'
+  'handoff_reason'='QUESTION_REGARDING_CONTRACT'
+  "handoff_utterance" = "Please hold the line while I put you in touch with a colleague to assist with that."
+content: |-
+  I'm calling about part of my contract I have with you. I wanna get rid of the lantern fly spray. I don't think I need it this year. 
+  I'd like to adjust the plan i have with you
+example_queries:
+  - I'd like to get a copy of my contract
+  - can you clarify something for me about my agreement with you
+  - would you be able to email me a pdf of your terms of service
+  - what is the season renewal period
+  - I would like you to mail me a new copy of our service contract
+  - contract copy request
+  - What are the exact terms of my contract
+  - could you email me the contract for account number E7645221
+  - How much longer am I covered for?
+  - copy of the service agreement

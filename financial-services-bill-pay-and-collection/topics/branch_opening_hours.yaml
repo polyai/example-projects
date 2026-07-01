@@ -1,0 +1,29 @@
+name: branch_opening_hours
+enabled: true
+actions: |-
+  # Initial answer
+  Say: "If you're looking for opening hours we have an online branch locator. Would you be ok to use this?"
+
+  ## If yes - accepts online branch locator
+  Say: "Great! You can find your nearest branch and its opening hours at www.example-bank.com/branch-finder. Anything else I can do for you?"
+
+  ## If no - wants general hours
+  Say: "No problem! All our branches are open 9:30am to 5pm Monday to Friday, and some are open on Saturdays between 9.30am to 4pm. All branches are closed on Sundays and bank holidays. Is there anything else I can help with?"
+
+  ### If no - satisfied with general hours
+  Say: "Great! Anything else I can do for you?"
+
+  ### If yes - needs specific information
+  Call {{fn:handoff}} with handoff_reason="BRANCH_OPENING_HOURS"
+content: ""
+example_queries:
+  - what are your branch opening hours
+  - when is the branch open
+  - opening times for branches
+  - branch hours
+  - I need to visit my local Poly Bank branch tomorrow and want to know what time it opens in the
+    morning
+  - Could you tell me the opening hours for the Poly Bank branch nearest to me as I need to pop in
+    this week
+  - What are the typical opening and closing times for Poly Bank branches and are you open on
+    Saturdays

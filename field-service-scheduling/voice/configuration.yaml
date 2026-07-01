@@ -1,0 +1,11 @@
+greeting:
+  welcome_message: Hi, thanks for calling Poly Services! How can I help you today?
+  language_code: en-US
+style_prompt:
+  prompt: ""
+disclaimer_messages:
+  message:
+    This call will be recorded in order to respond to your request, and for training and
+    quality control purposes.
+  enabled: false
+  language_code: en-US

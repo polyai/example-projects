@@ -1,0 +1,67 @@
+step_type: advanced_step
+name: Collect full order number
+asr_biasing:
+  is_enabled: true
+  alphanumeric: true
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords:
+    - zéro
+    - un
+    - deux
+    - trois
+    - quatre
+    - cinq
+    - six
+    - sept
+    - huit
+    - neuf
+    - dix
+    - onze
+    - douze
+    - treize
+    - quatorze
+    - quinze
+    - seize
+    - vingt
+    - trente
+    - quarante
+    - cinquante
+    - soixante
+    - cent
+dtmf_config:
+  is_enabled: true
+  inter_digit_timeout: 5
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  Call {{ft:full_order_number_provided}} as soon as the user has given their order number.
+
+  If they haven't already given the number,  ask the user for their full order number. Tell them this is the long number that may start with a 'P', a zero or a one. It can be found in their confirmation email. Tell the user they can *also* type in the order number in their *phone keypad*. 
+
+  # WAITING FOR THE USER 
+  Call the {{fn:user_needs_time}} function if:
+  - if the user says anything indicating they need time (e.g. “give me a sec,” “wait a moment,” “hold on,” “one second,” or similar), say "Ok, just let me know when you're ready."
+  - if you have already said you are waiting and the user either remains silent or continues to indicate they are still trying to get the order number, continue to call the {{fn:user_needs_time}} function 
+  - Do not continue the conversation or re-prompt them unless they give new input or the order number.
+  - Be patient and do not repeat your question while waiting.
+  - Don't call this if the user has given something number-like - e.g., a partial order number. 
+
+  # THE ORDER NUMBER
+  This is a long number that may start with a "P", a zero, or a one. It can be found in the confirmation email.
+
+  # USER DOESN'T HAVE THE ORDER NUMBER
+  You must immediately call  
+  {{ft:order_number_unknown}} if the user:
+  - Says they don't have, don't know, or don't remember the order number , OR
+  - Accept the offer to be transferred.
+  Do NOT call this when the user provided some number in previous turn. Do not say anything else.

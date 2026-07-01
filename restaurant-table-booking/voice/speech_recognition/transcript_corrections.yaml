@@ -1,0 +1,11 @@
+corrections:
+  - name: Member of staff
+    regular_expressions:
+      - regular_expression: Amber of staff
+        replacement: a member of staff
+        replacement_type: partial
+  - name: times
+    regular_expressions:
+      - regular_expression: 0(\d:\d\d)
+        replacement: \1
+        replacement_type: partial

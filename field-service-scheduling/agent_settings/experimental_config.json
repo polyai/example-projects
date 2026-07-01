@@ -1,0 +1,50 @@
+{
+  "asr": {
+    "disable_itn": true,
+    "model": "poly-latency",
+    "provider": "default"
+  },
+  "audio_enhancement": {
+    "ai-coustics": {
+      "enabled": true,
+      "model": "standard",
+      "noise_reduction": 0.8,
+      "voice_gain": 1
+    }
+  },
+  "barge_in": {
+    "is_enabled": false,
+    "trigger": {
+      "speech_threshold": 0.6,
+      "speech_window_ms": 100
+    }
+  },
+  "conversation_control": {
+    "max_silence_count": 20
+  },
+  "eot": {
+    "provider": "smart_turn",
+    "threshold": 0.4,
+    "timeout_ms": 600
+  },
+  "filler_utterances": {
+    "interval_sec": 2.3,
+    "is_enabled": true,
+    "randomize": false,
+    "utterances": [
+      "Just a moment...",
+      "One more second please..."
+    ]
+  },
+  "prompts": {
+    "silence": "The user is silent.",
+    "step_footer": "Make sure to address any question the user asks before proceeding.\nAlways collect all required pieces of information from the user before proceeding.\nIf you already said you are waiting for the user to find the requested information and the user remains silent or asks for more time to find required information, continue calling the wait function. Do not continue the conversation or re-prompt them unless they give you new input. Be patient and do not repeat your question while waiting.\n\nRemember to be conversational and brief."
+  },
+  "smart_vad": {
+    "is_enabled": true
+  },
+  "vad": {
+    "provider": "aicoustics-experimental",
+    "vad_end": 800
+  }
+}

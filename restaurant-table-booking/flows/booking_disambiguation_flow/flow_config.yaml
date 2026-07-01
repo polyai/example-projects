@@ -1,0 +1,3 @@
+name: booking_disambiguation_flow
+description: Clarify whether the user would like to make a new booking or amend an existing one
+start_step: Start step

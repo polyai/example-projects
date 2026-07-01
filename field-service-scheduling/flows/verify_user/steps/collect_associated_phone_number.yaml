@@ -1,0 +1,39 @@
+step_type: advanced_step
+name: Collect associated phone number
+asr_biasing:
+  is_enabled: false
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: true
+  inter_digit_timeout: 15
+  max_digits: 10
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  - If you haven't already, ask the user for the phone number on their account
+  - The user provides the phone number - save it by calling {{ft:save_associated_phone_number}}
+
+  Only consider the most recent phone number the user has provided. Phone numbers can have a maximum of 10 digits.
+
+  Interpret multipliers such as "double" and "triple" as a quantity of numbers: "double nine" = "nine nine", "triple eight" = "eight eight eight".
+
+  Interpret "oh" as "zero", and ensure that multipliers before "oh" are interpreted in the same manner as above: "double oh" = "zero zero".
+
+  - If you have already asked the user to repeat themselves once, and you are still having issues with the phone number collection, call the {{fn:handoff}} with 'handoff_destination'='CUSTOMER_CARE' and 'handoff_reason'='PHONE_NUMBER_LOOKUP_FAIL' and 'handoff_utterance'="No problem, I'll put you through to a colleague to assist with that. One moment please"
+
+  - If the user say's they don't have an account or that they are new to our service, call the {{fn:handoff}} function with 'handoff_destination'='INSIDE_SALES' and 'handoff_reason'='NEW_CUSTOMER' and 'handoff_utterance'='Okay, let me put you through to a colleague to assist setting you up. One moment please.' 
+
+  - If the user wants to speak to someone, call the {{fn:handoff}} function with 'handoff_destination'='CUSTOMER_CARE' and 'handoff_reason'='SPEAK_TO' and "handoff_utterance" ="Okay, I'll put you through to a colleague. One moment please."
+
+  - If the user offers to give you their address or account number, tell them that you can only validate their account using the phone number.

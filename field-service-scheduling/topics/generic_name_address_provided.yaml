@@ -1,0 +1,14 @@
+name: generic-name_address_provided
+enabled: true
+actions: |-
+  ## If the user has just provided their address or name, greet the user and ask for more information about what they need help with. 
+  ## If they offer to read the account number, thank the user and tell them that you can help them even without their account number or address.
+content: Hi there! How can I help you?
+example_queries:
+  - I'm calling from 18 Fox Lane
+  - this is Tom Gottlieb on 1514 Riverside Avenue
+  - Hi there I'm calling about 12 East 49th Street?
+  - Hello Mia. this is Bob Sullivan calling on behalf of Macy Gordon
+  - this is Tammy Frank, I'm calling about my apartment on 15 Columbia Rd. Northwest, Apartment 209
+  - Hi there this is Edward Green
+  - this is geneva dixon

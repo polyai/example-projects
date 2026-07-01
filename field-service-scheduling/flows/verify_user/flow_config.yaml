@@ -1,0 +1,3 @@
+name: verify_user
+description: verify the user based on phone number and zipcode
+start_step: Should collect phone number

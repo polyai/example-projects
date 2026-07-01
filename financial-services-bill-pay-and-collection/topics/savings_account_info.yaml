@@ -1,0 +1,32 @@
+name: savings_account_info
+enabled: true
+actions: |-
+  # Initial answer
+  Say: "You can find all the information about our savings accounts, including rates and features, on our website at www.example-bank.com/savings. Would you like me to repeat that for you?"
+
+  ## If yes - user wants repeat
+  Say: "Of course, that's 'w w w dot example dash bank dot com forward slash savings'. Is there anything else I can help you with today?"
+
+  ## If user refuses the website or needs more help
+  Say: "Ok, if you can't do this online you can open an account in branch. We have an online branch locator to help you find your nearest one, would you like the details for this?"
+
+  ### If yes - want branch locator
+  Call {{fn:handoff}} with handoff_reason="CLOSEST_BRANCH"
+
+  ### If no - doesn't want branch locator
+  Say: "No problem. Is there anything else I can do for you?"
+
+  ### If needs more help
+  Call {{fn:handoff}} with handoff_reason="SAVINGS_ACCOUNT_INFO"
+content: ""
+example_queries:
+  - tell me about savings accounts
+  - savings account information
+  - do you have savings accounts
+  - savings account rates
+  - I'd like to learn about the different types of savings accounts Poly Bank offers and what
+    interest rates are currently available
+  - Can you provide me with information about savings accounts including features, rates, and any
+    special offers
+  - I'm interested in opening a savings account and want to compare the different options Poly Bank
+    has available

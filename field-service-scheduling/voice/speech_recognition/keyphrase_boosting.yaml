@@ -1,0 +1,59 @@
+keyphrases:
+  - keyphrase: appointment
+    level: maximum
+  - keyphrase: schedule
+    level: maximum
+  - keyphrase: reschedule
+    level: maximum
+  - keyphrase: cancel
+    level: maximum
+  - keyphrase: technician
+    level: maximum
+  - keyphrase: service
+    level: maximum
+  - keyphrase: plumbing
+    level: maximum
+  - keyphrase: electrical
+    level: maximum
+  - keyphrase: HVAC
+    level: maximum
+  - keyphrase: heating
+    level: boosted
+  - keyphrase: air conditioning
+    level: boosted
+  - keyphrase: appliance
+    level: boosted
+  - keyphrase: repair
+    level: boosted
+  - keyphrase: maintenance
+    level: boosted
+  - keyphrase: emergency
+    level: maximum
+  - keyphrase: inspection
+    level: boosted
+  - keyphrase: estimate
+    level: boosted
+  - keyphrase: roofing
+    level: default
+  - keyphrase: landscaping
+    level: default
+  - keyphrase: painting
+    level: default
+  - keyphrase: carpentry
+    level: default
+  - keyphrase: flooring
+    level: default
+  - keyphrase: drywall
+    level: default
+  - keyphrase: insulation
+    level: default
+  - keyphrase: gutter
+    level: default
+  - keyphrase: pressure washing
+    level: default
+  - keyphrase: locksmith
+    level: default
+  - keyphrase: fencing
+    level: default
+  - keyphrase: window
+    level: default

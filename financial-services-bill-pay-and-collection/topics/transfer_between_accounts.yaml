@@ -1,0 +1,36 @@
+name: transfer_between_accounts
+enabled: true
+actions: |-
+  If is not clear that the caller would like to send money to their own account/to themself, or just says 'transfer money' you must ask:
+
+  "Can I just check, are you looking to transfer money to someone else or between your own accounts?"
+
+  If the caller wants to transfer money to someone else, call the {{fn:start_transfer_flow}}
+
+  Otherwise, if it is clear the user wants to transfer money between their accounts (e.g. transfer money to myself, transfer to my other account), do. the following:
+
+  # Initial answer
+  Say: "Ok, transferring between accounts, um, do you have our app or online banking?"
+
+  ## Yes - has app or online banking
+  Say: "Fantastic, so that'll be the quickest way to move money between your accounts. Is there anything else I can help you with?"
+
+  ## No - doesn't have app or online banking, or doesn't want to use them
+  Say: "Ok, so the easiest way to transfer money between your own accounts now and in the future would be to get set up with online banking. Would you like me to quickly run through how to do that?"
+
+  ## Yes - wants to get set up with online banking
+  Call {{fn:handoff}} with handoff_reason="INTERNET_BANKING_REGISTRATION"
+
+  ## No - does not want to get set up with online banking/wants handoff / wants you to help do the transaction:
+  Call {{fn:handoff}} with handoff_reason="TRANSFER_BETWEEN_ACCOUNTS".
+content: ""
+example_queries:
+  - transfer money between my accounts
+  - move money between my own accounts
+  - internal transfer
+  - I need to transfer money from my savings account to my current account and want to know how to do
+    this
+  - Can you help me move funds between my two Poly Bank accounts as I need to transfer money
+    internally
+  - I want to make an internal transfer from one of my accounts to another one and need guidance on
+    the process

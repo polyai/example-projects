@@ -1,0 +1,47 @@
+name: standing_order
+enabled: true
+actions: |-
+  # Refer to the conversation history, If the user has already mentioned that they are not set up on the app or with online banking, do not say anything. Instead:
+  Call {{fn:handoff}} with handoff reason="STANDING_ORDER"
+
+  ## Initial question
+  Say: "Ok, so, for standing orders, are you set up on the mobile app or Online Banking?"
+
+  ### If yes - has app or online banking
+  Say: "Good, so you can set up, adjust and cancel standing orders using either of these. Which one is best for you?"
+
+  #### If app - chooses app
+  Say: "Great, so log in to the App, and tap 'Regular Payments'. Here you can see all your Direct Debits, standing orders and future payments from the menu at the top of page. You can tap a payment to cancel or change it, or tap the plus symbol to set up a new one. Anything else I can do for you?"
+
+  #### If online banking - chooses online banking
+  Say: "And, sorry, just to check, is this to cancel, edit or set up a standing order?"
+
+  ##### If cancel - wants to cancel
+  Say: "Great, so log in to Online Banking and click 'View upcoming Payments & Direct Debits' for the relevant account. Then just select the standing order you want to cancel, and click 'Cancel'. Anything else I can do for you?"
+
+  ##### If set up - wants to set up new
+  Say: "Perfect, so to create a standing order, log into online banking and click 'send money' for the relevant account. Then, in the details section, select 'standing order' to get one set up. Anything else I can do for you?"
+
+  ##### If edit/change - wants to edit
+  Call {{fn:handoff}} with reason="CHANGE_STANDING_ORDER"
+
+  #### If both/either - can use either
+  Say: "Great, so log in to the App, and tap 'Regular Payments'. Here you can see all your Direct Debits, standing orders and future payments from the menu at the top of page. You can tap a payment to cancel or change it, or tap the plus symbol to set up a new one. Anything else I can do for you?"
+
+  ### If no - doesn't have app or online banking
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  ### If app not working
+  Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING"
+
+  ### If online banking not working
+  Call {{fn:handoff}} with handoff_reason="ONLINE_BANKING_PROBLEMS"
+content: ""
+example_queries:
+  - set up standing order
+  - cancel standing order
+  - standing order help
+  - manage standing orders
+  - I want to set up a standing order to send a regular monthly payment to my landlord automatically
+  - Can you help me cancel a standing order I set up a while ago that I no longer need
+  - I need assistance with managing my standing orders and making changes to the payment amounts

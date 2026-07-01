@@ -1,0 +1,38 @@
+name: service-cost
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='NEW_SALE'. Do not answer the question.
+
+  - If the user confirms transfer, immediately call {{fn:handoff}}
+   function with
+  'handoff_destination'='INSIDE_SALES' and
+  'handoff_reason'='SERVICE-QUOTE' and
+  "handoff_utterance" = "Please hold the line while I connect you."
+  - If the user doesn't want to be transferred, ask them if you can help them with anything else.
+content: |-
+  Hi there, I'd like to get a quote for a plan
+   I want to purchase your Smart Home Convenience plan
+   who do I talk to about purchasing coverage
+   I want to buy a service plan
+   can I upgrade from the Convenience to the Premier plan?
+   I'd like to buy one of your plans for my home
+   who do I talk to about getting coverage
+   I'm a potential new client for you and I'm interested in your services
+   Hi there, I don't currently have a plan with you but I'm interested in buying one
+   how would I go about getting set up with one of your plans
+   I'm interested in getting one of your plans
+  How much are your services?
+
+  I'm so glad you called and asked that today! I'm excited to get you more information about our services and how we are prepared to protect your home and improve the quality of your life. May I connect you to a colleague who's more familiar with your area to answer your question?
+example_queries:
+  - How much do your services cost?
+  - I'm following up on a quote
+  - Could you quote me for a 800 sqft apartment
+  - Would you be able to give me a quote for my home? It's a standalone residence about 4000 square
+    feet
+  - Could I get some pricing information?
+  - can I get a quote?
+  - I need to get an estimate
+  - you guys sent me a quote for $2000 last week, and I just wanted to follow up on that
+  - Does the pricing depend on the size of my home?
+  - does the cost of a plan depend on the size of my home?

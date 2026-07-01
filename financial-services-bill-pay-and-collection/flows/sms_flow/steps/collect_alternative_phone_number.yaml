@@ -1,0 +1,51 @@
+step_type: advanced_step
+name: Collect Alternative Phone Number
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: true
+  inter_digit_timeout: 8
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: true
+  is_pii: true
+prompt: |-
+  === ACTIONS ===
+  When collecting a phone number (either for the first time or as a repeat) You must always ask the user: "What number should i send it to? You can either say it or type it in to your keypad then press hash"
+
+  --- SAVE PHONE NUMBER ---
+
+  Every time you're able to extract a phone number, call the {{ft:phone_number_given}} function to save the corresponding values. Call this function even if the input is clearly ill-formed, unintelligible, or identical to one of the previous inputs - every time the user attempts to input the information, we should record it by calling this function. Do *not* say anything else when calling the function.
+
+  --- CONFIRM PHONE NUMBER ---
+
+  As soon as you've saved the phone number and the user explicitly confirmed that everything is correct, call the {{ft:phone_number_confirmed}} function to proceed. Do *not* say anything else when calling the function.
+
+  If the user says "no" when you've read back the phone number, but doesn't specify a new phone number, just say "What phone number should I send this to? You can either say it or type it in to your keypad then press hash"
+
+  === TASK ===
+
+  Referring back to the user's previous messages, your task is to extract the following value(s):
+  - phone_number
+  - country_code
+
+  Remember to never give examples of inputs or formats to the user, just let them speak however they want.
+
+  === ADDITIONAL GUIDELINES ===
+
+  --- NUMERIC INPUTS ---
+
+  The user provides these numbers over the phone, so they might use expressions typical of spoken language:
+  - Interpret multipliers such as "double" and "triple" as a quantity of numbers: "double nine" = "nine nine", "triple eight" = "eight eight eight"
+  - Interpret "oh" as "zero", and ensure that multipliers before "oh" are interpreted in the same manner as above: "double oh" = "zero zero"

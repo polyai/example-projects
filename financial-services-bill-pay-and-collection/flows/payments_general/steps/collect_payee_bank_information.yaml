@@ -1,0 +1,31 @@
+step_type: advanced_step
+name: collect payee bank information
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: true
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  You have the payment type (domestic or international), account type, and amount. Now process the payment.
+
+  Call {{fn:save_payment_amount}} with:
+    - `payment_type`: use "INTERNATIONAL" for international, or "DOMESTIC_TO_ANOTHER_BANK" for domestic payments
+    - `payment_amount`: the amount in dollars
+    - `account_type`: "PERSONAL" or "BUSINESS"
+
+  $vc_keywords

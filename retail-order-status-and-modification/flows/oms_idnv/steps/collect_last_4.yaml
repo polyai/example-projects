@@ -1,0 +1,67 @@
+step_type: advanced_step
+name: Collect last 4
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords:
+    - zéro
+    - un
+    - deux
+    - trois
+    - quatre
+    - cinq
+    - six
+    - sept
+    - huit
+    - neuf
+    - dix
+    - onze
+    - douze
+    - treize
+    - quatorze
+    - quinze
+    - seize
+    - vingt
+    - trente
+    - quarante
+    - cinquante
+    - soixante
+    - cent
+dtmf_config:
+  is_enabled: true
+  inter_digit_timeout: 3
+  max_digits: 6
+  end_key: ""
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  # WAITING FOR THE USER 
+  Call the {{fn:user_needs_time}} function if:
+  - if the user says anything indicating they need time (e.g. “give me a sec,” “wait a moment,” “hold on,” “one second,” or similar), say "Ok, just let me know when you're ready."
+  - if you have already said you are waiting and the user either remains silent or continues to indicate they are still trying to get the order number, continue to call the {{fn:user_needs_time}} function 
+  - Do not continue the conversation or re-prompt them unless they give new input or the order number.
+  - Be patient and do not repeat your question while waiting.
+  - Don't call this if the user has given something number-like - e.g., a partial order number. 
+
+  # IF THE USER SAYS THEY'RE READY
+  If the user says they have their order number, but hasn't given it to you, say: "Great, can I get the last four digits of that order number?"
+
+  # THE ORDER NUMBER
+  This is a long number that may start with a "P", a zero, or a one. It can be found in the confirmation email.
+
+  # IF USER DOESN'T KNOW ORDER NUMBER
+  If the user doesn't know or can't find their order number, call the function {{ft:number_not_provided}}. 
+
+  # IF USER HAS GIVEN THEIR NUMBER
+  Call  {{ft:order_number_provided}} as soon as the user has provided the number. When calling the function
+  - Interpret "triple X" as "XXX" and "double X" as "XX"
+  - Interpret "Oh" or "oh" or "O" as "0".

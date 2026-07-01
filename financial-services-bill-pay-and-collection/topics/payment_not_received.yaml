@@ -1,0 +1,15 @@
+name: payment_not_received
+enabled: true
+actions: |-
+  # Initial answer
+  Call {{fn:handoff}} with handoff_reason="PAYMENT_NOT_RECEIVED".
+content: The user has problems with receiving a payment or transfer
+example_queries:
+  - I haven't received a payment
+  - Someone sent me money but it hasn't arrived
+  - Missing incoming payment
+  - I was supposed to get a payment but it never came
+  - Still waiting for a payment that was supposed to come two days ago
+  - I have a problem with receiving transfers
+  - Transfers don't seem to be coming through to me even when money was transferred
+  - my wife tried to transfer the money but it didn't go through from your side

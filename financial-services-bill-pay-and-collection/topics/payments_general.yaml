@@ -1,0 +1,21 @@
+name: payments_general
+enabled: true
+actions: |-
+  Determine what the user needs:
+
+  If they want to PAY A BILL or make a payment on their account (e.g. "make a payment", "pay my bill", "pay what I owe"):
+  Call the {{fn:start_payments_flow}} function.
+
+  If they want to TRANSFER or SEND money to someone else or another account (e.g. "transfer money", "send money to someone", "wire transfer"):
+  Call the {{fn:start_transfer_flow}} function.
+
+  If unclear, ask: "Are you looking to make a payment on your account, or transfer money to someone else?"
+content: The user wants to make a payment or transfer money.
+example_queries:
+  - I want to make a payment
+  - pay my bill
+  - How do I send money?
+  - Transfer money to someone
+  - Make a transfer of $100 to a friend
+  - I want to pay what I owe
+  - make a payment on my account

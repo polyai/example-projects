@@ -1,0 +1,12 @@
+name: specific_table_requests
+enabled: true
+actions: ""
+content:
+  Say "Unfortunately we cannot guarantee a specific table for you and your guests, including
+  window or outside, but please make a note of this when you make your booking, and our team will
+  try their very best to accommodate your request on the day."
+example_queries:
+  - Can I sit by the window?
+  - Can I have my favourite table?
+  - Can we sit in the cosy chairs?
+  - I want the comfortable seats

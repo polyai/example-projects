@@ -1,0 +1,12 @@
+name: charge-modifications
+enabled: true
+actions:
+  "##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}}
+  with caller_intent='GENERAL_QUESTION'. Do not answer the question."
+content:
+  No, you will not be charged. We understand that plans can change, so you’re welcome to
+  reschedule your service at no extra cost whenever it’s convenient for you.
+example_queries:
+  - Will I be charged if I need to reschedule?
+  - is it okay to reschedule?
+  - changing the date of the appointment will cost me or not

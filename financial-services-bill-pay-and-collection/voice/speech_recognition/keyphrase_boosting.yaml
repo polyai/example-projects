@@ -1,0 +1,67 @@
+keyphrases:
+  - keyphrase: personal
+    level: maximum
+  - keyphrase: business
+    level: maximum
+  - keyphrase: app
+    level: maximum
+  - keyphrase: bic
+    level: default
+  - keyphrase: account number
+    level: default
+  - keyphrase: yes
+    level: default
+  - keyphrase: no
+    level: default
+  - keyphrase: savings
+    level: default
+  - keyphrase: something else
+    level: boosted
+  - keyphrase: in-branch
+    level: default
+  - keyphrase: existing
+    level: default
+  - keyphrase: locked out
+    level: boosted
+  - keyphrase: fraud
+    level: maximum
+  - keyphrase: bulk
+    level: default
+  - keyphrase: neither
+    level: default
+  - keyphrase: bank
+    level: boosted
+  - keyphrase: In branch
+    level: default
+  - keyphrase: online banking
+    level: boosted
+  - keyphrase: website
+    level: default
+  - keyphrase: US
+    level: boosted
+  - keyphrase: yeah
+    level: default
+  - keyphrase: batch
+    level: default
+  - keyphrase: batch payment
+    level: default
+  - keyphrase: blocked
+    level: default
+  - keyphrase: locked
+    level: default
+  - keyphrase: stop
+    level: default
+  - keyphrase: verification
+    level: default
+  - keyphrase: Amnesia
+    level: default
+  - keyphrase: unblock
+    level: default
+  - keyphrase: card
+    level: default
+  - keyphrase: urgent
+    level: boosted
+  - keyphrase: extra support
+    level: default
+  - keyphrase: bereavement
+    level: default

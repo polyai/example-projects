@@ -1,0 +1,26 @@
+step_type: advanced_step
+name: Readback SMS Number
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  Once the user has responded, call{{ft:save_caller_number_or_collect_again}}. 
+
+  Otherwise, to confirm that you have received the correct number, you must say: "Just to confirm, that's $sms_phone_number, correct?".

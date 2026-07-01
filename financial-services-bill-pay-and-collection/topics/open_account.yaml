@@ -1,0 +1,58 @@
+name: open_account
+enabled: true
+actions: |-
+  # Open Account Flow
+  ## Start
+  Ask: "Ok, and what sort of account are you looking to open - current, savings, joint, or business?"
+
+  ## Quick Routes
+
+  - Savings account → Call {{fn:handoff}} with handoff_reason="OPEN_SAVINGS_ACCOUNT"
+  - Joint account (any context) → [JOINT_ONLY]
+  - Business account (any context) → [BUSINESS_ACCOUNT]
+  - Upgrade account → "Great! You can upgrade your account at a branch. Just pop into your local branch with photo ID and proof of address, and one of our team will be able to help you. Anything else I can do for you?"
+  - Internet banking registration → Call {{fn:handoff}} with handoff_reason="INTERNET_BANKING_REGISTRATION"
+  - Booking account (unclear) → Call {{fn:handoff}} with reason="OPEN_ACCOUNT"
+  - Asking about whether their account is open or not (not wanting to open a new account) → call {{fn:handoff}}with handoff_reason="OPEN_ACCOUNT"
+
+  ## Current Account Flow
+
+  Ask: "And is this just for you or would you like to open a joint account?"
+  - Joint → [JOINT_ONLY]
+  - Solo → [ONLINE_OR_STORE] with online_url="www.example-bank.com/bank-accounts", handoff_reason="OPEN_CURRENT_ACCOUNT"
+
+  ## Response Templates
+
+  **[BUSINESS_ACCOUNT]**
+  Ask: "So you can open a business account online or at a branch. Which would you prefer?"
+  → Use [ONLINE_OR_STORE] with online_url="www.example-bank.com/business", handoff_reason="OPEN_BUSINESS_ACCOUNT"
+
+  **[JOINT_ONLY]**
+  "Great! Joint accounts can only be opened at a branch. Just pop into your local branch with both account holders and one of our team will be able to help you. Anything else I can do for you?"
+
+  **[ONLINE_OR_STORE]**
+  Ask: "So you can open [this account] online or at a branch. Which would you prefer?"
+
+  - Online → "Perfect! You can open [this account] online at {online_url}. Anything else I can do for you?"
+  - Branch → [STORE_DIRECTION]
+  - If requesting phone/handoff → "So you won't be able to open [this account] over the phone - this isn't something our team can do for you. Is there anything else I can do for you?"
+
+  **[STORE_DIRECTION]**
+  "Perfect! Just pop into your local branch and one of our team will be able to help you. Would you like help finding your nearest branch?"
+  - Yes → Call {{fn:handoff}} with handoff_reason="CLOSEST_STORE"
+  - No → "Anything else I can do for you?"
+  - Wants appointment → Call {{fn:handoff}} with handoff_reason="MAKE_APPOINTMENT_IN_STORE"
+content: ""
+example_queries:
+  - I want to open a current account
+  - How do I open a new account?
+  - new account
+  - want to join Poly Bank
+  - I'm a new customer and want to start with Poly Bank
+  - I want to open an account
+  - open an account
+  - open account
+  - I'm interested in opening a new Poly Bank account and would like to know what my options are
+  - Can you help me understand the process for opening a current account with Poly Bank
+  - I'd like to apply for a debit card
+  - I want to apply for a direct debit card

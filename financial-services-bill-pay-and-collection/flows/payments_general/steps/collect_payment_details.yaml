@@ -1,0 +1,41 @@
+step_type: advanced_step
+name: collect payment details
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: true
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  The user wants to make a payment on their account.
+
+  First, verify their identity:
+  1. Ask for their account number.
+  2. Call {{fn:check_balance}} with the account number they provide.
+  3. If the account is found, ask for their date of birth to verify.
+  4. If the DOB matches, tell them their current balance and ask how much they'd like to pay.
+
+  Once you know the payment amount, offer them options:
+  Say: "You can make this payment through the app, online banking, or over the phone. Which would you prefer?"
+
+  - If they choose APP: say "Great, just log into the app, go to Payments, and follow the steps. Is there anything else I can help with?"
+  - If they choose ONLINE BANKING: say "No problem, log into online banking and head to the Payments section. Is there anything else I can help with?"
+  - If they choose PHONE / want you to do it: say "Sure, for phone payments I'll need to transfer you to our payments team who can take your card details securely." Then call {{fn:handoff}} with handoff_reason="CARD_PAYMENT".
+
+  If the user wants to TRANSFER money to another account instead (not pay a bill), call {{fn:start_transfer_flow}} to route them to the transfer flow.
+
+  $vc_keywords

@@ -1,0 +1,34 @@
+name: international_payment_fees_cards
+enabled: true
+actions: |-
+  # Initial answer
+  Say: "Card fees abroad can vary for personal and business accounts. Are you a personal or business customer?"
+
+  ## If personal - personal customer
+  Say: "We've recently changed our fees for using a card abroad for personal customers. When using a personal debit card for a purchase in a foreign currency outside the U.S., there is a 2.99% fee for each transaction. Additionally, if you are making a cash withdrawal, there is a 2.99% fee plus a $1.50 cash fee for each transaction. Other fees may also apply and there are some countries the bank is unable to transact with. Do you need more information?"
+
+  ### If yes - wants handoff
+  Call {{fn:handoff}} with handoff_reason="INTERNATIONAL_PAYMENT_FEES_CARDS"
+
+  ### If no - declines handoff
+  Say: "Ok! Anything else I can do for you?"
+
+  ## If business - business customer
+  Say: "If you're using a business card it's free in most of Europe. For using a business card for a purchase in a foreign currency outside of Europe, there is a 2.99% fee for each transaction. Additionally, if you are making a cash withdrawal, there is a 2.99% fee plus a $1.50 cash fee for each transaction. Other fees may also apply and there are some countries the bank is unable to transact with. Do you need more information?"
+
+  ### If yes - wants handoff
+  Call {{fn:handoff}} with handoff_reason="INTERNATIONAL_PAYMENT_FEES_CARDS"
+
+  ### If no - declines handoff
+  Say: "Ok! Anything else I can do for you?"
+content: ""
+example_queries:
+  - what are the fees for using my card abroad
+  - international card fees
+  - charges for using card overseas
+  - foreign transaction fees
+  - I'm going to France next month and want to know what fees I'll be charged for using my debit
+    card there
+  - Can you tell me how much it costs to use my debit card abroad for purchases and ATM withdrawals
+  - I need to understand the charges for making card payments in foreign currencies when I'm traveling
+    internationally

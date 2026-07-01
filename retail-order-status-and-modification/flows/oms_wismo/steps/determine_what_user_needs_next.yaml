@@ -1,0 +1,57 @@
+step_type: advanced_step
+name: Determine what user needs next
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: true
+  custom_keywords:
+    - cancel
+    - modify
+    - change address
+    - delivery address
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  Check the state variable order_action ({{vrbl:order_action}}).
+
+  If order_action is "cancel":
+  Ask the user for the reason they want to cancel, then call {{ft:process_cancel_order}} with the reason.
+
+  If order_action is "modify":
+  Call {{ft:process_modify_order}} to enter the address collection flow.
+
+  If order_action is "track" or not set:
+  Wait for the user to tell you what they need. Options:
+
+  # TRACKING ANOTHER ITEM OR ORDER
+  If the user wants to track another item in their order, call {{ft:track_next_order}}.
+  If the user wants to track a different order, call {{fn:track_another_order}}.
+  If unclear, ask which they mean.
+
+  # CANCEL ORDER
+  If the user wants to cancel this order, ask for the reason and call {{ft:process_cancel_order}} with the reason.
+
+  # MODIFY DELIVERY ADDRESS
+  If the user wants to change the delivery address, call {{ft:process_modify_order}}.
+
+  # OTHER MODIFICATIONS
+  For other changes, say "For that type of change, I'll need to transfer you to a team member" and call {{fn:transfer_call}} with handoff_reason="ORDER_MODIFICATION".
+
+  # ASKING TO SPEAK TO AGENT
+  If the user wants to speak to an agent, ask what the issue is first.
+
+  # DONE
+  If the user doesn't need anything else, call {{ft:exit_order_management_flow}}.

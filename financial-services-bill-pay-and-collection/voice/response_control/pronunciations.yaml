@@ -1,0 +1,16 @@
+pronunciations:
+  - regex: /
+    replacement: slash
+    case_sensitive: false
+  - regex: www.example-bank.com
+    replacement: w w w dot example bank dot com
+    case_sensitive: false
+  - regex: 2.99%
+    replacement: two point ninety-nine percent
+    case_sensitive: false
+  - regex: $1.50
+    replacement: one dollar and fifty cents
+    case_sensitive: false
+  - regex: ^(?!\[)(?=.*[a-zA-Z])
+    replacement: "[friendly]"
+    case_sensitive: false

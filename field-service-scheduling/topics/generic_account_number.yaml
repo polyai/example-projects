@@ -1,0 +1,15 @@
+name: generic-account_number
+enabled: true
+actions: |-
+  If the user is giving you their account number at the beginning of the call and you don't know what they're calling about, say: "I'd be happy to help you with your account, could you first tell me a little more about what you need help with?"
+
+  If they ask you what their account number is, then call the {{fn:start_get_account_number}} function.
+content: ""
+example_queries:
+  - Can I give you my account number?
+  - I want to read you my account number
+  - I'm calling about account E7XDC under Sheryl Smith
+  - my account number is 4421356
+  - can I tell you my account ID?
+  - what is my account number
+  - hi i need to know my account number

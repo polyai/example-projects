@@ -1,0 +1,24 @@
+name: app_general
+enabled: true
+actions: |-
+  # Initial answer - if the user says something vague about their app (but not if they specifically say it's not working)
+  Say: "Oh, so how can I help with the app?"
+
+  ## If login - can't log in
+  Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING"
+
+  ## If register - wants to register
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  ## If not working - general not working
+  Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING"
+
+  ## If incompatible device - device not compatible
+  Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING_INCOMPATIBLE"
+content: ""
+example_queries:
+  - it's my app
+  - asking about my app
+  - mobile banking application
+  - mobile banking
+  - I want to deregister my device

@@ -1,0 +1,55 @@
+name: fraud
+enabled: true
+actions: |-
+  # Initial response
+  Say: "Ok, let's get this sorted for you. Are you worried about fraud on your card or with a bank transfer? Or do you think your internet banking details might be at risk?"
+  --------
+  ## If CARD - card fraud (e.g. Card, Fraud on my card, Fraudulent card transaction)
+  Say: "Ok, I can put you through to our team for this. Would that be ok?"
+
+  ### If yes - accepts handoff
+  Call {{fn:handoff}} with reason="CARD_FRAUD"
+
+  --------
+  ## If BANK TRANSFER - bank transfer fraud (e.g. Bank transfer, Bank transfer fraud, Fraudulent bank transfer)
+  Say: "Ok, I can put you through to our team for this. Would that be ok?"
+
+  ### If yes - accepts handoff
+  Call {{fn:handoff}} with reason="PAYMENT_FRAUD"
+  --------
+  ## If ONLINE BANKING DETAILS / INTERNET BANKING DETAILS - details at risk (e.g. Online banking details, Internet banking details, ... at risk)
+  Say: "Ok, I can put you through to our team for this. Would that be ok?"
+
+  ### If yes - accepts handoff
+  Call {{fn:handoff}} with reason="INTERNET_BANK_DETAILS_COMPROMISED"
+  --------
+
+  ## If AFFIRM - user said "Yes"
+  Say: "Please confirm from the following. Is this to do with fraud on your card, fraud relating to a bank transfer or internet banking details might be at risk?"
+
+  ### If CARD - card fraud
+  Say: "Ok, I can put you through to our team for this. Would that be ok?"
+  #### If yes - accepts handoff
+  Call {{fn:handoff}} with reason="CARD_FRAUD"
+
+  ### If BANK TRANSFER / PAYMENTS - bank transfer or payment fraud (e.g. Bank transfer, Payments, Payment fraud, Fraudulent payment)
+  Say: "Ok, I can put you through to our team for this. Would that be ok?"
+  #### If yes - accepts handoff
+  Call {{fn:handoff}} with reason="PAYMENT_FRAUD"
+
+  ### If ONLINE BANKING DETAILS / INTERNET BANKING DETAILS - details at risk
+  Say: "Ok, I can put you through to our team for this. Would that be ok?"
+  #### If yes - accepts handoff
+  Call {{fn:handoff}} with reason="INTERNET_BANK_DETAILS_COMPROMISED"
+
+  --------
+  ## If DENY / NONE - user said "No", "None" or "Neither"
+  Say: "Oh, sorry! Is there anything else I can help you with?"
+content: ""
+example_queries:
+  - fraud
+  - I've been scammed
+  - someone hacked my account
+  - there's a payment on my account I don't recognize
+  - my account details were stolen
+  - reporting fraud

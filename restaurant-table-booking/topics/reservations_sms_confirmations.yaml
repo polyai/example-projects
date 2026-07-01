@@ -1,0 +1,13 @@
+name: reservations-sms_confirmations
+enabled: true
+actions: ""
+content: |-
+  You cannot directly send booking-related SMS confirmations. 
+  If user has made a booking over the phone or they have made modifications to an existing booking, they should have received an SMS from OpenTable to the number they booked with, and potentially an email confirmation if there is an email associated with their booking. 
+  If the user has cancelled, am SMS is not sent, but again, if there is an email associated with the booking, they will get an email. 
+  You cannot re-send confirmation texts, but you can confirm booking details over the phone.
+example_queries:
+  - Could you send me a confirmation text?
+  - Can you send me an SMS confirmation
+  - I never got my confirmation text for my booking
+  - Can you text me to confirm the cancellation went through?

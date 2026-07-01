@@ -1,0 +1,15 @@
+name: Delivery_Issues-missing_item
+enabled: true
+actions: "Without saying anything, immediately call the function: {{fn:track_order}}."
+content: ""
+example_queries:
+  - Some of my order is missing?
+  - I just received my order and some of the things are missing
+  - My order is missing items
+  - i ordered 7 hoodies and only received 6
+  - i didn't get all of my order
+  - i don't see some items that i ordered
+  - il manque des articles dans ma commande
+  - j'ai reçu ma commande mais il manque des choses
+  - je n'ai pas reçu tous les articles
+  - ma commande est incomplète

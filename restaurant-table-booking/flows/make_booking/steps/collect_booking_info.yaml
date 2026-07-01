@@ -1,0 +1,45 @@
+step_type: advanced_step
+name: Collect booking info
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: true
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: true
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  Referring to the conversation so far, if the user has explicitly given you the date, time, and party size of the user's booking, call {{ft:start_checking_availability}}
+   immediately to confirm these details (omit calling the function if you don't know all 3 arguments, date, time AND party size needs to be specified by the user). Before calling this function, make sure the you follow these rules:
+
+  Reminder about interpreting relative time and date references:
+   - right now is $formatted_date_time
+  - "today", "tonight", "this morning" and similar relative date references refer to the date above
+  - "now", "right now", "as soon as possible" means at the date and time above, and any references like "in X minutes" should be interpreted with reference to that time (the user is giving you both the date an time information if they use relative time references)
+  - If the user gave you a time and didn't specify if it's AM or PM or any contextual clues (like referring to brunch, morning etc), you should assume they mean PM
+
+  Otherwise, you must ask for these details. Collect any of the following that you do not already know:
+  - Date of the booking
+  - Time of the booking
+  - Party size
+  Ask for all the information you don't have at once, for example: 
+  - If you are missing date, time and party size, ask: "When would you like to join us and how many people will be coming?". 
+  - If you are missing both date and time but you know the party size, ask: "When would you like to join us?". 
+  - If you are just missing the time but you have the date, ask: "What time would you like to join us?"
+  - If you are just missing the date but you have the date, ask: "What day would you like to join us?"
+  Do not say things like "I still need a few more details to complete your booking. ", or repeat details you have collected so far, the user will think it's rude or too repetitive, just ask them for the details you need if they only gave you partial details to your initial question.
+
+  Note: If the user changed their mind and instead wanted to confirm/cancel/modify the booking, call the  {{fn:start_confirm_cancel_modify_flow}}
+   function.

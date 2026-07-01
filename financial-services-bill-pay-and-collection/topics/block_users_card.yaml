@@ -1,0 +1,16 @@
+name: block_users_card
+enabled: true
+actions: |-
+  # Initial answer
+  Call {{fn:handoff}} with handoff_reason="BLOCK_USERS_CARD".
+content: ""
+example_queries:
+  - I need to block a card
+  - block my card
+  - I want to block my card
+  - can you block a card for me
+  - I think I've lost my debit card and need to get it blocked immediately before anyone tries to use
+    it
+  - My card has been stolen and I urgently need to block it to prevent any unauthorized transactions
+    on my account
+  - Can you help me freeze or block my Poly Bank card right away as I can't find it anywhere

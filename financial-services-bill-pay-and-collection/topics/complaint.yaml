@@ -1,0 +1,17 @@
+name: complaint
+enabled: true
+actions: |-
+  # Initial response
+  Call {{fn:handoff}} with handoff_reason="COMPLAINT".
+content: ""
+example_queries:
+  - I want to make a formal complaint about the service I received
+  - I'm very disappointed with how I've been treated and need to speak to someone about this
+  - This is unacceptable and I want to escalate this to a manager or supervisor
+  - I've been trying to resolve this issue for weeks and nobody has got back to me
+  - I'm considering reporting this to the CFPB or taking legal action
+  - I believe I'm entitled to compensation for the poor service I've experienced
+  - I've been treated unfairly
+  - complaint
+  - compensation
+  - escalate

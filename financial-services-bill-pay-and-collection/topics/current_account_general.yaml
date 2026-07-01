@@ -1,0 +1,31 @@
+name: current_account_general
+enabled: true
+actions: |-
+  # Initial answer
+  Say: "For current account problems, we've got loads of support on our website to help you. Have you already gone online?"
+
+  ## If yes - already checked online
+  Say: "Ok, if you can't do this online I can put you through to someone on our team to try and help you, but this is likely to take you longer. Do you want me to transfer you over anyway?"
+
+  ### If yes - wants handoff
+  Call {{fn:handoff}} with handoff_reason="CURRENT_ACCOUNT_GENERAL"
+
+  ### If no - declines handoff
+  Say: "No problem. Anything else I can do for you?"
+
+  ## If no - hasn't checked online
+  Say: "Ok, amazing, so if you go to www.example-bank.com you'll see a 'help' button in the top right of the screen. If you click on that and type in your question you should find some help for this."
+
+  ### If accepts - satisfied with answer
+  Say: "You're welcome!"
+
+  ## If wants handoff - needs more help
+  Call {{fn:handoff}} with handoff_reason="CURRENT_ACCOUNT_GENERAL"
+content: ""
+example_queries:
+  - I have a question about my current account
+  - current account help
+  - current account query
+  - I need some assistance with my current account as I'm not sure how something works
+  - Can you help me understand some features of my current account that I haven't used before
+  - I've got a question about the way my current account operates and need someone to explain it to me

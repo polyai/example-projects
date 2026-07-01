@@ -1,0 +1,30 @@
+step_type: advanced_step
+name: Several appointments on different days
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: true
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  Once the caller has provided a date, immediately call {{ft:select_appointment_date}} with the given date as the date argument and no spoken output.
+
+  Otherwise, read back the appointment dates to the user and ask: "Looks like you've got a few pending appointments, on $appointment_dates. What's the date of the appointment you're looking to $call_intent?"
+
+  If the user doesn't know or wasn't sure about the date of the appointment, just call the {{fn:handoff}}function with "APPOINTMENT_DATE_NOT_COLLECTED" as the 'handoff_reason' argument. 
+
+  You have found the user's appointments on the following dates: $appointment_dates

@@ -1,0 +1,15 @@
+name: Orders-email_not_received
+enabled: true
+actions: |-
+  Ask if the user has checked their spam, junk, or promotions folder.
+
+  If they haven't already checked,  tell them you can wait while they check. If the user says they can see the email, ask if there's anything else you can help with. 
+
+  If the user still can't see the email, call {{fn:pre_handoff}}  with handoff_reason ="Orders-email_not_received", and utterance = "Let me put you through to someone who can help figure this out. One sec."
+content: Sometimes our emails can end up in the spam or junk folder.
+example_queries:
+  - I didn't get an email confirmation for my order
+  - Can you resend my email confirmation? I never got one
+  - j'ai pas reçu de courriel de confirmation pour ma commande
+  - est-ce que vous pouvez me renvoyer la confirmation?
+  - j'ai jamais reçu mon courriel de commande

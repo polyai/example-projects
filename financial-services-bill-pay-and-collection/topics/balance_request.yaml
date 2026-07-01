@@ -1,0 +1,26 @@
+name: balance_request
+enabled: true
+actions: |-
+  Ask the user for their account number so you can look up their balance.
+
+  Once the user provides an account number, call {{fn:check_balance}} with account_number=<the number they provided>.
+
+  If the account is found, verify the user's identity by asking for their date of birth. Compare it against the dob_on_file field returned. If it matches, read out their balance.
+
+  If the date of birth does not match, say: "I'm sorry, the date of birth you provided doesn't match what we have on file. For security, I won't be able to share account details. Would you like me to transfer you to an agent who can help?"
+
+  If the account is not found, let them know and ask them to double-check the number. If they still can't find it, offer to transfer to an agent.
+
+  If the user prefers to check their balance themselves:
+  - App: "Log into the app, select your account, and you'll see your current balance and transactions."
+  - Online banking: "Log into online banking, go to the accounts section, and select your account."
+content: ""
+example_queries:
+  - what's my balance
+  - check my account balance
+  - how much money do I have
+  - tell me my balance
+  - I need to find out how much money is currently available in my account
+  - Could you please tell me what my current account balance is
+  - I just want to check my balance
+  - Why am I overdrawn?

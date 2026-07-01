@@ -1,0 +1,48 @@
+name: Returns-return_policy
+enabled: true
+actions: |-
+  TAILOR your answer to the user's question using the available content.
+
+  {{attr:defective_return_instructions}}
+
+  If it's not already clear, ask the user whether they purchased the item online or in store before giving return information — the process is different for each.
+
+  If the user purchased ONLINE and says yes to receiving a text message, call {{fn:send_sms_message}} with sms_id="Returns-return_policy".
+
+  If the user has already started a return and says yes to receiving a text message to track their return, call {{fn:send_sms_message}} with sms_id="Refunds-track_refund".
+
+  For in-store purchases, follow the instructions in {{attr:instore_return_policy}}.
+content: |-
+  # First, if it's not already clear from what they've said, ask the user whether they purchased the item online or in store, and whether they have already started a refund.
+
+  # If they purchased the item ONLINE and haven't started a refund, tailor your response using the information below:
+  - You can return your items either in store, or online, using our returns portal at {{attr:returns_url}}. Online return shipping is free for loyalty program members, and 6.99 for non-members. Do you want me to text you a link to our returns portal?
+  - You can return the item to any Poly Store location, regardless of where you bought the item.
+  - For online returns, for non loyalty program members, the 6.99 return label fee will be deducted from your return value.
+  - If you want to return an item you believe is defective, you must return it within 45 days.
+
+  # If they purchased the item IN STORE and haven't started a refund, tailor your response using the information below:
+  - {{attr:instore_return_policy}}
+  - If you've lost the receipt for an item you bought in store, a team member will be able to help you out in store.
+  - If you want to return an item you believe is defective, you must return it within 45 days.
+
+  # If they have already started a refund (online return via the returns portal), tailor your response using the information below:
+  - For credit/debit card refunds, you can expect up to two weeks for processing once your return arrives back at our returns facility. Once we've processed your request, credit and debit refunds typically take 5 to 7 business days. Klarna refunds may take a little longer.
+  - You can track your refund or exchange on the returns portal, at {{attr:returns_url}}. Do you want me to text you the link?
+  - Returns typically take 5 to 6 business days to reach our returns facility, but sometimes holidays, back to school season, and weather issues may make this a little longer. Return orders can be tracked using the returns portal.
+
+  # If the user is waiting for a refund on an online purchase, ask if it has been more than two weeks since the last order status on the returns portal.
+  - If the user says no, it has not been longer than two weeks, remind them that they can keep tracking their return on the returns portal, and to call back if they haven't received their refund after two weeks.
+  - If it has been longer than two weeks, call {{fn:pre_handoff}} with handoff_reason ="Refunds-track_refund", and utterance = "Okay - let me put you through to someone who can help. One sec."
+example_queries:
+  - What's your return policy?
+  - how much is return shipping?
+  - refund policy
+  - lost receipt and want to return
+  - need to know the process on returns and receiving a refund
+  - i have an order from you but need to know how i can return it
+  - i have an order but need to return it
+  - can i get a refund for my order
+  - can i return instore?
+  - if i bought instore can I return online?
+  - text me the returns link

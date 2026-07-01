@@ -1,0 +1,8 @@
+name: dress_code
+enabled: true
+actions: ""
+content: "{{attr:dress_code_info}}"
+example_queries:
+  - Is there a specific dress code?
+  - Can I wear trainers?
+  - Do I have do dress smartly?

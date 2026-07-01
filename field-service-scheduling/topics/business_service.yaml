@@ -1,0 +1,14 @@
+name: business-service
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='COMMERCIAL_SERVICE'. Do not answer the question.
+
+  ##Otherwise, ask the user if they would like to set up a business service.
+  If the user says yes, call {{fn:handoff}} function with
+  'handoff_destination'='COMMERCIAL' and
+  'handoff_reason'='BUSINESS_SERVICE' and
+  "handoff_utterance" = "I'm going to transfer you to a colleague who specializes in business accounts and can take great care of you. One moment please."
+content: ""
+example_queries:
+  - Do you provide field services for businesses?
+  - commercial service

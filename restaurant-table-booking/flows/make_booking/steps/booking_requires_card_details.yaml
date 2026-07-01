@@ -1,0 +1,31 @@
+step_type: advanced_step
+name: Booking requires card details
+asr_biasing:
+  is_enabled: false
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  **Never ask or accept card detail from the user, they should submit these details via a text once the booking is completed**
+
+  This booking requires user's payment information to be fully completed. Confirm with them they are happy with this, and if yes, call  {{ft:payment_requirement_accepted}}
+
+  Otherwise, immediately call {{fn:try_transfer_call}}
+   with
+  "handoff_reason" = "card_details_rejected", 
+  "handoff_utterance" = "Let me put you through to the restaurant who may be able to help you with that. One moment please", and "handoff_to" = "default"

@@ -1,0 +1,22 @@
+name: locations-faq
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='NEW_SALE'. Do not answer the question.
+
+  call {{fn:handoff}}
+   function with 
+  'handoff_destination'='INSIDE_SALES' and
+  'handoff_reason'='LOCATIONS_FAQ' and
+  "handoff_utterance" = "We have many locations across the country. Let me transfer you to an agent who can check to see if we have a branch that can service your new address."
+content: ""
+example_queries:
+  - I have multiple homes - I need service in different locations
+  - Do you have different locations in different states?
+  - I have an existing account with you guys and I'm looking to add a new a second location
+  - Can I get service in my Philadelphia apartment as well as my New Jersey mansion?
+  - would it be possible to get set up with you at my new house
+  - I have an existing account but I want to add my new apartment to the coverage
+  - adding a new address
+  - new location
+  - i was calling to see if you guys serviced my address
+  - i needed to know the service range

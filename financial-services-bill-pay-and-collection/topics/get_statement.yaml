@@ -1,0 +1,70 @@
+name: get_statement
+enabled: true
+actions: |-
+  Initial question
+  Say: "Just to check, have you already had any issues trying to get a statement?
+
+  ## If Yes - has issues in accessing statements
+  Say: "Ok, so statements are generated in the first week of every month and are available online and on the app  between the second and ninth working day . Paper statements are posted out between the 5th and 12th working day of the month."
+
+  ###If the customer is not happy, requires a handoff or still has not received their statements 
+  Call {{fn:handoff}} with reason="GET_STATEMENT"
+
+  ###If the customer says provides an affirmative response i.e. yes or okay
+  Say: "Ok! Anything else I can do for you?"
+
+  ##If No - Does not have issues in accessing statements or the customer would like to understand how to download statements 
+  Say: "Ok, so to get a statement, you can use our mobile app or online banking, which would you prefer?"
+
+  ###If the customer confirms they would like to use the app to download a statement
+  Say: "Ok! So after you've logged into the mobile app, select the relevant account, then click on the menu icon in the top right hand corner and tap 'Statements'. You should see all your account statements here. Please also ensure you’re using the latest version of the app."
+
+  ####If the customer is having issues with the steps for mobile app
+  Call {{fn:handoff}} with reason="GET_STATEMENT"
+
+  ###If the customer confirms they would like to use the Online Banking to download a statement
+  Say: "Ok! So after you've logged into online banking, select the account you want to download the statement for and then choose 'Documents' at the top. From there, select 'Account Statements' to view and download your monthly statements."
+
+  ####If the customer is having issues with the steps for online banking
+  Call {{fn:handoff}} with reason="GET_STATEMENT"
+
+  Say: "Ok! So after you've logged into online banking, select the account you want to download the statement for and then choose 'Documents' at the top. From there, select 'Account Statements' to view and download your monthly statements."
+
+  ###If the customer says they would like to use neither, none or deny using online banking or the mobile app
+  Say: "Ok, so getting set up with the mobile app or online banking will let you access your statements whenever you want. Can I help you register for either of these?;Would you be ok to register for online banking or mobile banking?"
+
+  ####If the customer says yes
+  Say: "And which would you like to register for, the mobile app or online banking?"
+
+  ##### If yes - wants to register to online banking
+  Call {{fn:handoff}} with handoff_reason="INTERNET_BANKING_REGISTRATION"
+
+  ##### If yes - wants to register to mobile app
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  #### If yes - wants to register to online banking
+  Call {{fn:handoff}} with handoff_reason="INTERNET_BANKING_REGISTRATION"
+
+  #### If yes - wants to register to mobile app
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  ####If the customer says no
+  Say: "No worries. Shall I transfer you to our team to get you a statement?"
+
+  #####If yes
+  Call {{fn:handoff}} with reason="GET_STATEMENT"
+
+  #####If no
+  Say: "Ok! Anything else I can do for you?"
+content: ""
+example_queries:
+  - I need a statement
+  - how do I get a statement
+  - download statement
+  - send me a statement
+  - I need to get a copy of my bank statement for the last three months for a mortgage application
+  - Can you help me download my bank statement as my accountant needs it for my tax return
+  - I'm trying to access my account statement but I'm not sure where to find it online or how to get a
+    paper copy
+  - I need to download a copy of my statement
+  - bank statement get a copy

@@ -1,0 +1,10 @@
+corrections:
+  - name: service
+    description: Field service corrections
+    regular_expressions:
+      - regular_expression: h back
+        replacement: HVAC
+        replacement_type: partial
+      - regular_expression: appointment
+        replacement: appointment
+        replacement_type: partial

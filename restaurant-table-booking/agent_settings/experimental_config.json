@@ -1,0 +1,86 @@
+{
+  "asr": {
+    "disable_itn": true,
+    "disable_punctuation": true,
+    "eager_final": true,
+    "flow_overrides": {
+      "confirm_cancel_modify_booking": {
+        "steps": {
+          "Collect phone number": {
+            "model": "parakeet-tdt-0.6b-v3-multi",
+            "provider": "riva"
+          }
+        }
+      },
+      "make_booking": {
+        "steps": {
+          "Collect Customer Name": {
+            "model": "parakeet-tdt-0.6b-v3-multi",
+            "provider": "riva"
+          },
+          "Collect phone number": {
+            "model": "parakeet-tdt-0.6b-v3-multi",
+            "provider": "riva"
+          }
+        }
+      },
+      "sms_flow": {
+        "steps": {
+          "Ask this number": {
+            "model": "parakeet-tdt-0.6b-v3-multi",
+            "provider": "riva"
+          },
+          "Collect phone number": {
+            "model": "parakeet-tdt-0.6b-v3-multi",
+            "provider": "riva"
+          },
+          "SMS sending failed": {
+            "model": "parakeet-tdt-0.6b-v3-multi",
+            "provider": "riva"
+          }
+        }
+      }
+    },
+    "model": "poly-latency",
+    "provider": "default",
+    "use_asr_lib": true
+  },
+  "background_track": {
+    "loudness": -50,
+    "name": "restaurant-ambiance"
+  },
+  "barge_in": {
+    "flow_overrides": {
+      "confirm_cancel_modify_booking": {
+        "is_enabled": false
+      },
+      "make_booking": {
+        "is_enabled": false
+      }
+    }
+  },
+  "conversation_control": {
+    "max_silence_count": 10
+  },
+  "llm": {
+    "include_kb_functions_in_flows": true
+  },
+  "prompts": {
+    "context_information_precursor": "Your TASK is to answer questions and perform certain actions based on the CONTEXT_INFORMATION list below.\nEach entry consists of \"faq_id\", \"faq_example_questions\", \"faq_description\", and \"faq_instructions\":\n- You must always follow the instructions in \"faq_instructions\".\n- You can only answer questions with reference to the information in \"faq_description\".\n- If the user's query is unclear, ask for clarification.",
+    "silence": "The user is silent.",
+    "step_footer": "Make sure to address any question the user asks before proceeding.\nAlways collect all required pieces of information from the user before proceeding.\nIf you already said you are waiting for the user to find the requested information and the user remains silent or asks for more time to find required information, continue calling the user_requested_more_time function. Do not continue the conversation or re-prompt them unless they give you new input. Be patient and do not repeat your question while waiting.\n\nRemember to be conversational and brief. Avoid repeating date, time and number of people to the user more than once."
+  },
+  "ragdoll": {
+    "top_k": 7
+  },
+  "smart_vad": {
+    "gated_functions": {
+      "confirm_cancel_modify_booking": [
+        "cancel_booking"
+      ],
+      "make_booking": [
+        "finalize_booking"
+      ]
+    }
+  }
+}

@@ -1,0 +1,20 @@
+name: charge-followup
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='GENERAL_QUESTION'. Do not answer the question.
+
+  If the user wants to schedule a follow up appointment, call {{fn:start_make_appointment}}
+content:
+  Great question! For your regular service plan, we’ve got you covered with free warranty services
+  between your scheduled visits. If any issues come up, just let us know, and we’ll get
+  you scheduled!
+example_queries:
+  - Do you charge for followup?
+  - are the follow ups free?
+  - how do you treat follow up visits?
+  - Is there a fee for follow-up
+  - Are follow-up appointments free of charge?
+  - free follow up
+  - Is there a charge for any follow-up or re-treatment
+  - Do I need to pay for follow-up services
+  - Will I be charged for follow-up services?

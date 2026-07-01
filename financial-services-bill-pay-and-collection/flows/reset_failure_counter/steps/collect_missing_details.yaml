@@ -1,0 +1,65 @@
+step_type: advanced_step
+name: Collect Missing Details
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords:
+    - customer number
+    - username
+    - password
+    - security number
+    - phone number
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 0
+  max_digits: 0
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: false
+prompt: |-
+  === ACTIONS ===
+
+  Determine which login details the user is missing for Online Banking.
+
+  If the user has already mentioned which details they are missing, route them immediately using {{ft:route_missing_details}} below.
+
+  If the user has NOT yet mentioned what's missing, say exactly:
+  "In order to log in to Online Banking, you will need your 12 digit customer number, password, and your 8 digit security number. You may also need access to your registered phone number. Do you have all these?"
+
+  Based on the user's response, call {{ft:route_missing_details}} with the appropriate missing_detail value:
+
+  ## User has ALL details
+  Call {{ft:route_missing_details}} with missing_detail="has_all_details"
+
+  ## User is UNSURE what they need
+  Call {{ft:route_missing_details}} with missing_detail="unsure"
+
+  ## User is missing their CUSTOMER NUMBER or USERNAME only
+  Call {{ft:route_missing_details}} with missing_detail="customer_number"
+
+  ## User is missing their PASSWORD only
+  Call {{ft:route_missing_details}} with missing_detail="password"
+
+  ## User is missing their SECURITY NUMBER only
+  Call {{ft:route_missing_details}} with missing_detail="security_number"
+
+  ## User is missing BOTH their SECURITY NUMBER and PASSWORD
+  Call {{fn:handoff}} with reason="NEW_MAGIC_WORD", requested_by_user=false, account_type="N/A", handoff_required_by_faq=true
+
+  ## User is missing their PHONE NUMBER (or does not have access to their registered phone)
+  Call {{fn:handoff}} with reason="CHANGE_CUSTOMER_PHONE_NUMBER", requested_by_user=false, account_type="N/A", handoff_required_by_faq=true
+
+  === ADDITIONAL GUIDELINES ===
+
+  - If the user mentions multiple missing details that include both security number and password, treat it as the "security number and password" case.
+  - If the user says they don't have access to their phone, treat it as the "phone number" case.
+  - Do not assume which details are missing — always ask or confirm before routing.

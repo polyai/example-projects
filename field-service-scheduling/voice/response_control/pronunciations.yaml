@@ -1,0 +1,22 @@
+pronunciations:
+  - regex: This appointment is confirmed by PolyAI.
+    replacement: .
+    case_sensitive: false
+  - regex: PolyAI
+    replacement: us
+    case_sensitive: false
+  - regex: \b(\d)(\d)(\d)(\d)(\d)[\s\-]?\b
+    replacement: \1 \2 \3 \4 \5
+    case_sensitive: false
+  - regex: "!"
+    replacement: .
+    case_sensitive: false
+  - regex: \b(\d)(\d)(\d)[\s\-]?(\d)(\d)(\d)[\s\-]?(\d)(\d)(\d)(\d)\b
+    replacement: \1 \2 \3 <break time="0.4s"/> \4 \5 \6 <break time="0.4s"/> \7 \8 \9 \10
+    case_sensitive: false
+  - regex: ACH
+    replacement: A C H
+    case_sensitive: true
+  - regex: Reservice
+    replacement: Re-service
+    case_sensitive: false

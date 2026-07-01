@@ -1,0 +1,20 @@
+name: site_opening_hours
+enabled: true
+actions: |-
+  To get opening hours for specific day, call 
+  {{fn:get_opening_hours}}
+  with the relevant date or day of the week as an argument to get the opening hours for a specific day (if date or weekday hasn't been provided, use "-" as an argument).
+
+  Also use this function for checking opening times if user says they have a booking outside of opening times, as some days have different opening hours.
+content: ""
+example_queries:
+  - when are you open?
+  - When can I come in?
+  - When can I make a booking for?
+  - What time are you open today?
+  - What are your opening hours?
+  - Are you open on Monday night?
+  - Are you closed tomorrow?
+  - Will you be open tomorrow?
+  - Are you open for breakfast on Sundays?
+  - I have a booking at 8:45am but it says the site only opens at 9:00am, can I come in early?

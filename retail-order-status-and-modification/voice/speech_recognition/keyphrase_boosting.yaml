@@ -1,0 +1,5 @@
+keyphrases:
+  - keyphrase: oui
+    level: boosted
+  - keyphrase: non
+    level: boosted

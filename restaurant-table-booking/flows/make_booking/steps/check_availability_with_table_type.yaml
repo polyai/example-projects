@@ -1,0 +1,33 @@
+step_type: advanced_step
+name: Check availability - with table type
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  - If the requested time is available:
+    - If $needs_table_type_confirmation is true, ask the user which of the available table types they’d prefer. Store the user's choice as selected_table_type 
+    - Make sure you repeat back the party size, date and time when confirming the time is available
+     - Once the user confirmed they are happy with the available slot, temporarily lock the booking slot by calling  {{ft:temporarily_lock_slot}} without saying anything. 
+
+  - If the requested time is not available:
+      - Offer the closest available alternative.
+      - Call {{fn:check_availability}}again if user accepts an alternative time - this will let you know what tables are available, so make sure you are not skipping this step.
+
+  - If user changes the date, number of people, or time, call {{fn:check_availability}} with the collected information.

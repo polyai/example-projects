@@ -1,0 +1,22 @@
+name: inspection
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='INSPECTION_REQUEST'. Do not answer the question.
+
+  ##Otherwise, tell the user: "We offer free inspections and estimates for several of our service categories." Then see if the user wants to schedule an appointment.
+  - If they want an appointment, call {{fn:start_make_appointment}}
+
+  ##If they request an inspection for a commercial property, call
+  {{fn:handoff}} function with
+  'handoff_destination'='COMMERCIAL' and
+  'handoff_reason'='COMMERCIAL_INSPECTION' and
+  "handoff_utterance" = "I'm going to transfer you to a colleague who specializes in business accounts. One moment please."
+content: ""
+example_queries:
+  - Do you offer free estimates or inspections?
+  - free inspection
+  - no-cost estimates?
+  - Can I get a free inspection
+  - free consultation or estimate
+  - How much does an inspection or estimate cost?
+  - Do you do free inspections before work starts?

@@ -1,0 +1,37 @@
+name: activate_card
+enabled: true
+actions: |-
+  # Initial question
+  Refer to the conversation history, if the user has already mentioned they do not have the app or online banking, DO NOT ask the following question. If they only mention not using one method, ask if they are set up on the other method.
+  Ask the user: "Ok, so to activate a card, are you set up on our app or Online Banking?"
+
+  ## If app - chooses app or can use either
+  Say: "Great, so log into the App, and tap 'Activate Card' under the relevant account and follow the steps on screen to activate your card. Anything else I can do for you?"
+
+  ## If online banking - chooses online banking
+  Say: "Great, so log into Online Banking, select the relevant account. From there, click 'Account and card management'. Then click the option to 'Activate Card'. Anything else I can do for you?"
+
+  ## If yes - has app or online banking
+  Say: "Great, so you can activate your card using either of these. Which one is best for you?"
+
+  ## If handoff/speak to someone / wants to activate their card over the phone:
+  call the {{fn:handoff}}function with HANDOFF_REASON='ACTIVATE_CARD'
+
+  ## If user says app is not working
+  Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING"
+
+  ## If the user says online banking isn't working
+  Call {{fn:handoff}} with handoff_reason="ONLINE_BANKING_PROBLEMS"
+content:
+  The user mentions wanting to activate their bank card (business, credit, debit etc.). The
+  user is able to activate their card over the phone if requested.
+example_queries:
+  - I need to activate my card
+  - activate my new card
+  - card activation
+  - I just received my new Poly Bank card in the mail and need to activate it before I can use it
+  - My replacement card arrived today and I'm not sure how to get it activated so I can start using it
+  - Can you walk me through the process of activating my brand new debit card that just came in the
+    mail
+  - I can activate my business card please
+  - activate credit card

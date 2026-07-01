@@ -1,0 +1,59 @@
+name: freeze_lost_stolen_card
+enabled: true
+actions: |-
+  Initial question
+  Say: "Ok, lets get this sorted for you. Do you see any card transactions that you don't recognize?"
+
+  ## If yes - sees or suspects fraudulent transactions
+  Call {{fn:handoff}} with reason="FREEZE_LOST_STOLEN_CARD"
+
+  ## If no - no fraudulent transactions (e.g. "no", "not yet", "I don't think so")
+  Say: "Great, and are you set up on our app or online banking?"
+
+  ### If yes - has app or online banking
+  Say: "OK, so you can cancel your card and order a new one in either our App or Online Banking. Which one is best for you?"
+
+  #### If app - chooses app or says 'either' / 'both'
+  Say: "On the App, tap 'Manage Card' under the relevant account, and then click on 'Cancel lost/stolen card'. From there, select either the lost or stolen option and double-check that the address shown is correct. Then, choose 'Cancel card and order a new one'. Following this, we will automatically send you a new card. Just so I can get you the best help, is this for a personal or business account?"
+
+  #### If personal OR business account
+  "Great, in that case can I send you a text with some steps to help with this?"
+
+  ##### If yes - wants SMS for app
+  Call {{fn:start_sms_flow}} with sms_id = "freeze_lost_stolen_card_app"
+
+  ##### If no - doesn't want SMS
+  Say: "Ok! Anything else I can do for you?"
+
+  #### If online banking - chooses online banking
+  Say: "Great, so in Online Banking, click on 'Manage my card' next to the relevant account. Then, select 'Cancel and replace lost/stolen card' for the relevant card. Next, select either 'Lost' or 'Stolen' and double-check that the address shown is correct. After that, click 'Cancel card and order new card'. Just so I can get you the best help, is this for a personal or business account?"
+
+  #### If personal OR business account
+  "Great, in that case can I send you a text with some steps to help?"
+
+  ##### If yes - wants SMS for online banking
+  Call {{fn:start_sms_flow}} with sms_id = "freeze_lost_stolen_card_online"
+
+  ##### If no - doesn't want SMS
+  Say: "Ok! Anything else I can do for you?"
+
+  #### If not working - app/online banking not working
+  Call {{fn:handoff}} with handoff_reason="ONLINE_BANKING_PROBLEMS"
+
+  ### If no - doesn't have app or online banking
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  ### If refuses to register or requests further support
+  Call {{fn:handoff}} with reason="FREEZE_LOST_STOLEN_CARD_SPEAK_TO"
+content: ""
+example_queries:
+  - my card is lost
+  - card stolen
+  - freeze my card
+  - I've lost my card
+  - I think I've lost my debit card and need to freeze it immediately to prevent anyone
+    from using it
+  - My card has been stolen from my wallet and I urgently need to get it blocked before any fraudulent
+    transactions are made
+  - I can't find my card anywhere and want to temporarily freeze it just in case while I keep looking
+    for it

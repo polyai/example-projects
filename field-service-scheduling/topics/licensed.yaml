@@ -1,0 +1,10 @@
+name: licensed
+enabled: true
+actions:
+  "##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}}
+  with caller_intent='GENERAL_QUESTION'. Do not answer the question."
+content: Yes! Our company is licensed and insured!
+example_queries:
+  - Is the company licensed and insured?
+  - Is Poly Services licensed and insured?
+  - Are you licensed?

@@ -1,0 +1,21 @@
+name: update_billing-info
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='BILLING_QUESTION'. Do not answer the question.
+
+  answer the question and if the user confirms that they want to receive a text, call
+  {{fn:start_send_sms}}
+   with sms_id="update-billing-info"
+content:
+  No problem at all! We can send you a text with a link to your online portal. From
+  there, you’ll be able to log in and update your billing information. Your username will be your
+  Account Number.
+example_queries:
+  - How do I update my billing information?
+  - update billing info
+  - change billing details
+  - we had to change our credit card and I think our credit card was stopped. I'd like to put another
+    credit card down.
+  - update payment information
+  - update card on file
+  - update card

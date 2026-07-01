@@ -1,0 +1,17 @@
+name: technician-eta
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='GENERAL_QUESTION'. Do not answer the question.
+
+  call {{fn:handoff}}
+   function with 
+  'handoff_destination'='CUSTOMER_CARE' and
+  'handoff_reason'='TECHNICIAN_IS_LATE' and
+  "handoff_utterance" = "Sorry about that. One moment while I put you through to a customer care team member."
+content: ""
+example_queries:
+  - the technician is late
+  - to confirm an appointment because the technician is late.
+  - the tech is not here yet
+  - it's past the time of my appointment and the guy is not here
+  - Ah, nobody showed up for my appointment.

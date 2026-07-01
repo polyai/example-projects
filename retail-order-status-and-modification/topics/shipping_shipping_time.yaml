@@ -1,0 +1,7 @@
+name: Shipping-shipping_time
+enabled: true
+actions: ""
+content: "{{attr:shipping_time_info}}"
+example_queries:
+  - How quickly can you ship?
+  - If I order today, how soon can I get my item?

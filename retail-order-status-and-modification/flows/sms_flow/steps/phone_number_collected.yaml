@@ -1,0 +1,68 @@
+step_type: advanced_step
+name: Phone number collected
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords:
+    - zéro
+    - un
+    - deux
+    - trois
+    - quatre
+    - cinq
+    - six
+    - sept
+    - huit
+    - neuf
+    - dix
+    - onze
+    - douze
+    - treize
+    - quatorze
+    - quinze
+    - seize
+    - vingt
+    - trente
+    - quarante
+    - cinquante
+    - soixante
+    - cent
+dtmf_config:
+  is_enabled: true
+  inter_digit_timeout: 3
+  max_digits: 10
+  end_key: "#"
+  collect_while_agent_speaking: false
+  is_pii: true
+prompt: |-
+  As soon as the user has told you the phone number, immediately call the function: {{ft:validate_sms_phone_number}}
+
+  Only if the user has NOT already told you an alternative phone number, ask the user to tell you the phone number you can send the text to. Then call the function: {{ft:validate_sms_phone_number}}
+
+  ## Spoken digit patterns — resolve these BEFORE calling the function
+  - "oh" or "O" → 0
+  - "double five" → 55, "triple eight" → 888
+  - French digits: "zéro" → 0, "un" → 1, "deux" → 2, "trois" → 3, "quatre" → 4, "cinq" → 5, "six" → 6, "sept" → 7, "huit" → 8, "neuf" → 9
+  - French teens: "dix" → 10, "onze" → 11, "douze" → 12, "treize" → 13, "quatorze" → 14, "quinze" → 15, "seize" → 16
+  - French compound numbers: "soixante-dix" → 70, "soixante et onze" → 71, "soixante-douze" → 72, "soixante-treize" → 73, "soixante-quatorze" → 74, "soixante-quinze" → 75, "soixante-seize" → 76, "soixante-dix-sept" → 77, "soixante-dix-huit" → 78, "soixante-dix-neuf" → 79
+  - "quatre-vingts" → 80, "quatre-vingt-un" → 81, "quatre-vingt-dix" → 90, "quatre-vingt-onze" → 91, "quatre-vingt-douze" → 92, etc.
+  - "sept cent quinze" → 715 (sept=7, cent=100, quinze=15 → 715)
+  - "trois cent deux" → 302
+  - Common ASR misrecognitions of French numbers: "zet"/"set" → sept → 7, "sank"/"sunk" → cinq → 5, "weet"/"wheat" → huit → 8, "nuf"/"nerve" → neuf → 9, "duh" → deux → 2, "cat" → quatre → 4, "cease"/"sees" → six → 6, "twah" → trois → 3
+  - Ignore filler words: "um", "euh", "c'est le", "alors"
+  - Extract all digits into a single digit-only string before calling the function
+
+  ## DTMF fallback
+  If the user is struggling to say their number clearly, tell them they can also type it on their keypad followed by the pound key.
+
+  If, and ONLY if, the user fails to provide a valid phone number after you have attempted to collect it TWO times, call {{fn:transfer_call}} with
+  "handoff_reason" = "CANNOT_COLLECT_PHONE_NUMBER" and "handoff_utterance" = "DEFAULT"

@@ -1,0 +1,29 @@
+name: Orders-track_order
+enabled: true
+actions: |-
+  IMPORTANT: If the user wants to CANCEL, CHANGE, or MODIFY their order (not track it), do NOT call {{fn:track_order}}. Instead tell them: once an order has been placed, we are unable to change or cancel it, but they can start a return once they've received the item. Ask if they'd like a text with the link to the returns portal. If yes, call {{fn:send_sms_message}} with sms_id="Returns-return_policy". For French-speaking callers, say: une fois qu'une commande a été passée, nous ne pouvons ni la modifier ni l'annuler.
+
+  Otherwise, without saying anything, immediately call the function: {{fn:track_order}}.
+
+  IMPORTANT: Do NOT ask the user for their order number yourself. The {{fn:track_order}} function handles all order number collection. Your only job is to call the function.
+content: Immediately call the track_order function.
+example_queries:
+  - Where's my order?
+  - can you give me an update on my order?
+  - when will my order be shipping
+  - how long until I get my shoes
+  - I need you to track my order for me.
+  - confirm order status
+  - My package still hasn't arrived, can you check on my order
+  - I ordered some shoes from you online and I've been waiting and waiting.
+  - where are my sneakers
+  - où est ma commande?
+  - j'aimerais savoir où en est ma commande
+  - je veux suivre ma commande
+  - est-ce que je peux avoir une mise à jour sur ma commande?
+  - quand est-ce que ma commande va arriver?
+  - je veux savoir le statut de ma commande
+  - j'attends toujours mon colis
+  - est-ce que vous pouvez vérifier ma commande?
+  - can you send me a tracking link by text?
+  - envoyez-moi le lien de suivi par texto

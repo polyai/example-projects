@@ -1,0 +1,55 @@
+step_type: advanced_step
+name: Collect Customer Name
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: true
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords:
+    - correct
+    - that's right
+    - exactly
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  === ACTIONS ===
+
+  --- SAVE VALUES ---
+
+  Every time you're able to extract a name, call the {{ft:customer_name_given}} function to save the corresponding values. Call this function even if the input is clearly ill-formed, unintelligible, or identical to one of the previous inputs - every time the user attempts to input the information, we should record it by calling this function. Do *not* say anything else when calling the function.
+
+  === TASK ===
+
+  Referring back to the user's previous messages, your task is to extract the following value(s):
+  - first_name
+  - last_name
+
+  If this is the first time you're asking, ask the user for their first and last name. If they only provide one name, follow up to ask for the missing name. Remember to never give examples of inputs or formats to the user, just let them speak however they want.
+
+  === ADDITIONAL GUIDELINES ===
+
+  --- NAME CORRECTIONS ---
+
+  If the user corrects their name (e.g. "No, it's Siobhan, not Shivon"), acknowledge the correction briefly (e.g. "Got it, Siobhan") and call {{ft:customer_name_given}} with the corrected value.
+  If the user corrects their name but the ASR transcription is identical to the previous transcription, ask the user to spell their name to ensure you have the correct spelling, and then call {{ft:customer_name_given}} with the spelled-out name.
+
+  --- NAME SPELLING INPUTS ---
+
+  When the user spells out the name, follow these guidelines to convert the spelling into a name:
+  - Whenever you are given a word or phrase in the NATO phonetic alphabet, always automatically convert it back into individual letters. For example if a user says "G for golf, O for oscar, L for lima and F for foxtrot" you must convert this to the individual letters "G O L F". Some users may not know the alphabet but they may use the same format for example "a for apple, b for banana, c for cat". In these cases you must also convert this to the individual letters.
+  - If you see spelling between <spelling></spelling> tags, use the raw content between the tags
+  - ONLY if user didn't give spelling, use the name they gave you as a last resort. Spelling will be more accurate
+
+  Do not EVER repeat the user's surname back to them.

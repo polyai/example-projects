@@ -1,0 +1,9 @@
+name: Orders-tracking_number_not_working
+enabled: true
+actions: Without saying anything, immediately call the function {{fn:track_order}}
+content: ""
+example_queries:
+  - My tracking number doesn't work
+  - I can't track my order
+  - mon numéro de suivi ne fonctionne pas
+  - je ne peux pas suivre ma commande

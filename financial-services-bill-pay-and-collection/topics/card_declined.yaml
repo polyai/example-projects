@@ -1,0 +1,41 @@
+name: card_declined
+enabled: true
+actions: |-
+  # Initial answer
+  You MUST first say: "Do you have access to our app?"
+
+  ## If yes - has app
+  Say: "In that case, our Live Chat team can help you with this. Click on the 'Chat To Us' button in the bottom right-hand corner of our App. Would that be ok?"
+
+  ## If no - doesn't have app or doesn't want to use the app
+  Say: "Ok, if your card is getting declined, do you need to activate your card?"
+
+  ### If yes - needs to activate card
+  Call {{fn:handoff}} with handoff_reason="ACTIVATE_CARD"
+
+  ### If unsure - doesn't know if card activated
+  Say: "You need to activate a new card before you can use it to make a payment. Have you activated your card?"
+
+  ### If no - card is already activated
+  Say: "And do you have enough funds in the account to complete the transaction?"
+
+  #### If yes - has enough funds
+  Call {{fn:handoff}} with handoff_reason="CARD_DECLINED"
+
+  #### If no - doesn't have enough funds or is unsure if they have enough funds
+  Say: "Ok, so please check you have enough money in your account and then try making the payment again. Is there anything else I can help you with?"
+content: The user has mentioned a payment on their card has been stopped or declined
+example_queries:
+  - my card was declined
+  - card not working
+  - why was my card declined
+  - card transaction failed
+  - I tried to make a purchase at the shop today but my Poly Bank card was declined and I don't
+    understand why
+  - My debit card keeps getting rejected when I try to use it even though I know I have money in my
+    account
+  - I was really embarrassed when my card got declined at the checkout and I need to know what's going
+    on with it
+  - declined payment
+  - A payment I made that has been stopped.
+  - A payment i made on my card has been stopped I want to speak to someone

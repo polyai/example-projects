@@ -1,0 +1,39 @@
+step_type: advanced_step
+name: Negotiate appointment time
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: true
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  If the user has already previously indicated a time and date preference, go ahead and immediately call {{ft:find_slot_availability}}
+
+  You are now trying to collect the user's preferred date and time of visit.
+
+  If this is your second or more effort at collecting the user's preference, you don't need to ask "What date and time would you prefer for your appointment" because you've already asked this when you said "No problem! When would be a better time for your appointment?"
+
+  If the user needs a specific date and/or time slot:
+  - Refer back to previous user messages and collect any of the following that you do not already know, remembering it's currently $formatted_date_time:
+      - date of the appointment (note: date of booking cannot be before $current_date)
+      - time of the appointment
+
+  Allow for flexible dates and times e.g. if the user says "can we do sometime next week", set the date parameter to a date in the middle of that week. If the user does not express a time preference, set the start_time to "NA" and end_time also to "NA". Do not insist on getting a time if the user does not insist on having a specific time window, just set "NA" for those two parameters.
+
+  If the user wants a time earlier than 8am, let them know that the earliest a field expert can get to their property is 8am and with a time window of 2 hours so arriving between 8am and 10am, so let them know this and ask them if this is ok before getting slot availability - make sure to call {{ft:find_slot_availability}} with 8am as the start time and 10am as the end time if the user agrees to this.
+
+  Once the user has provided a preferred date and time, call {{ft:find_slot_availability}}.

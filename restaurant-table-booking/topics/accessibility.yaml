@@ -1,0 +1,9 @@
+name: accessibility
+enabled: true
+actions: ""
+content: "{{attr:accessibility_info}}"
+example_queries:
+  - Is there handicap parking?
+  - Is there wheelchair access into the dining room?
+  - I'm disabled
+  - I can't walk

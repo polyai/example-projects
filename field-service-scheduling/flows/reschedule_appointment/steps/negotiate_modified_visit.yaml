@@ -1,0 +1,40 @@
+step_type: advanced_step
+name: Negotiate modified visit
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: true
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  If they have not given you any details already, collect the user preference by asking them when they would like to reschedule their appointment for.
+
+  If the user needs a specific date and/or time slot:
+  - Refer back to previous user messages and collect any of the following that you do not already know, remembering it's currently $formatted_date_time:
+      - new date of the appointment (note: date of appointment cannot be before $current_date)
+      - new time of the appointment
+
+  Allow for flexible dates and times e.g. if the user says "can we do sometime next week", set the date parameter to a date in the middle of that week. If the user does not express a time preference, set the start_time to "NA" and end_time also to "NA". Do not insist on getting a time if the user does not insist on having a specific time window, just set "NA" for those two parameters.
+
+  If the user wants a time earlier than 8am, let them know that the earliest a field expert can get to their property is 8am and with a time window of 2 hours so arriving between 8am and 10am, so let them know this and ask them if this is ok before getting slot availability - make sure to call {{ft:check_slot_availability}} with 8am as the start time and 10am as the end time if the user agrees to this.
+
+  If the user changes their mind about rescheduling (e.g. "we can just keep the appointment") or says "yes" when asked if they want to keep the original appointment, you MUST immediately call {{ft:exit_reschedule_appointment_flow}} with no spoken output.
+  If the user mentions that they want to change the appointment to a completely different day, (e.g. if they say "it's going to be a whole complete different day"), say: "No problem, let's find a new time for the appointment. When works best for you?"
+
+  When you know the user's preferred date and/or time, immediately call {{ft:check_slot_availability}} with no spoken output. Do NOT confirm the date/time back to the user before calling.
+
+  If the user asks to change the appointment type (location, service type, etc), call {{fn:handoff}} with "handoff_destination"='CUSTOMER_CARE' and 'handoff_reason' = 'CHANGE_APPOINTMENT_TYPE' and "handoff_utterance" = "For that, I'll need to connect you to a colleague. One second please."

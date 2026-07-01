@@ -1,0 +1,34 @@
+step_type: advanced_step
+name: Order picked up
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  If the user says anything that suggests they might want to track *another* item in their order, call the function:
+  {{ft:track_next_order_1}}
+
+  If the user mentions something else unrelated to order tracking, call the function: 
+  {{ft:exit_order_management_1}} 
+  ​ 
+  $product_description
+
+  Feel free to mention the product(s) you're talking about.
+
+  Tell the user that you see that the item(s) has been picked up. ​

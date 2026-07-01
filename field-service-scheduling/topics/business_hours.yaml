@@ -1,0 +1,12 @@
+name: business-hours
+enabled: true
+actions: Immediately call {{fn:handle_business_hours_faq}}.
+content: ""
+example_queries:
+  - What are your hours?
+  - When are you open?
+  - What time do you open?
+  - What time do you close?
+  - Are you open on weekends?
+  - What are your business hours?
+  - When is the office open?

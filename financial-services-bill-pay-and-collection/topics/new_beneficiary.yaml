@@ -1,0 +1,59 @@
+name: new_beneficiary
+enabled: true
+actions: |-
+  # Initial answer:
+  Say: "Sure, just to check, is this for an international or domestic payment?"
+
+  ## If domestic - user wants to set up a new beneficiary for a domestic payment
+  Say: "So the easiest way to add a new beneficiary is through our app or online banking, are you set up with either of these?"
+
+  ### If yes - has app
+  Say: "Great! Once you're logged in, select the ‘Pay and Transfer’ option, then choose 'Pay a person or bill' and select 'Create new payee'. Follow the steps to add a new payee. Would you like me to repeat that?"
+
+  ### If yes - has online banking
+  Say: "Great! Once you're logged into Online banking, select the 'Send money' option next to the relevant account, then click on 'New payee' and follow the steps to add a new payee. Would you like me to repeat that?"
+
+  ### If yes - doesn't say which one
+  Say: "Which one would you prefer to use: the app or online banking?"
+
+  ### If yes - but has issues
+  Call {{fn:handoff}} with handoff_reason="ONLINE_BANKING_PROBLEMS"
+
+  ### If no - doesn't have either
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  #### If refuses to set up the app
+  Call {{fn:handoff}} with reason="NEW_BENEFICIARY_DOMESTIC"
+
+  ## If international - user wants to set up a new beneficiary for an international payment
+  Say: "So the easiest way to add a new beneficiary is through our app. Are you set up on the mobile app?"
+
+  ### If yes - has app
+  Say: "Great! Once you're logged in, select the ‘Pay and Transfer’ option, then choose 'International payment', then select 'Create payee' and follow the steps to add a new payee. Would you like me to repeat that?"
+
+  ### If yes - but has issues
+  Call {{fn:handoff}} with handoff_reason="ONLINE_BANKING_PROBLEMS"
+
+  ### If no - doesn't have access to the app
+  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
+
+  #### If has online banking and refuses to set up the app (regardless of whether has online banking or not)
+  Call {{fn:handoff}} with reason="NEW_BENEFICIARY_INTERNATIONAL"
+
+  EXAMPLE CONVERSATION:
+  AGENT: Hi, thanks for calling Poly Bank, you're speaking to the virtual assistant! How can I help?
+  USER:  Hi, I'd like to add a new international payee. Could you help me with that?
+  AGENT: "So the easiest way to add a new beneficiary is through our app. Are you set up on the mobile app?"
+content: ""
+example_queries:
+  - add a new payee
+  - set up new beneficiary
+  - add someone to my payees
+  - new payee
+  - I need to add a new payee to my account so I can start making regular payments to them
+  - Can you help me set up a new beneficiary on my account as I need to send them money
+  - I want to add someone to my saved payees list so it's easier to send them payments in the future
+  - add international payee
+  - international beneficiary
+  - I want to add a payee that's international
+  - Hi I want to know how to add an international payee to my account

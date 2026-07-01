@@ -1,0 +1,36 @@
+name: confirm-appointment
+enabled: true
+actions: |-
+  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='CONFIRM_APPOINTMENT'. Do not answer the question.
+
+  Don't say anything, immediately call {{fn:start_confirm_appointment}}
+content: |-
+  I just wanted to confirm when my next service visit is
+  I just wanted to confirm the time of my appointment tomorrow
+  I wanted to confirm my appointment slot
+  confirm that my scheduling went through
+  I just like to check the details of my next service please
+  check the details of my service
+  I need to confirm an appointment for tomorrow
+  I got a text/email/message saying you're coming on Wednesday and I just wanted to double check
+  I don't remember when my next appointment is
+  I was wondering when somebody was going to come for our next service
+  Can you tell me if I have any other appointments scheduled?
+  is somebody coming to service me today?
+  is somebody scheduled to come by today?
+  I'm calling to confirm a visit to my house for tomorrow.
+  when will the technician be here?
+  I want to know if someone is coming to my house.
+  when are you guys coming out next
+  hi i wanted to see if i have an appointment scheduled
+example_queries:
+  - I just wanted to check when my next appointment is
+  - How do I confirm or change my appointment time?
+  - check on an appointment
+  - I think there's supposed to be someone coming at 10am but I just wanted to double check
+  - appointment confirmation
+  - I need to check when the tech is coming
+  - my upcoming appointment details
+  - check the status of a visit
+  - what time is the appointment
+  - when is my next service visit?

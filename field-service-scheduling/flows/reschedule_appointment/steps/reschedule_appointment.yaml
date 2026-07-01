@@ -1,0 +1,51 @@
+step_type: advanced_step
+name: Reschedule appointment
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: true
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  Await the user response.
+
+  - If the user responds with "yes", "sure", or any other affirmative response confirming the offered slot $potential_slot, you MUST immediately call {{ft:reschedule_appointment}} with no spoken output. Do NOT say anything like "Perfect" or "Great" before calling.
+
+  - If the user says "no" but also mentions a specific day or time (e.g. "no, anything for Tuesday?"), this is a request for a different slot — immediately call {{ft:check_slot_availability}} with the mentioned date/time. Do NOT treat it as a plain denial.
+  - If the user responds with "no", "nope", or any other denying response without specifying an alternative day/time, immediately call {{ft:go_back_to_find_appointment_time}} with no spoken output.
+
+  - If the user insists that they want an appointment "today", call the {{fn:handoff}}function with 'SAME_DAY_SERVICE' as the 'handoff_reason' argument. 
+
+  If the user wants a time earlier than 8am, let them know that the earliest a field expert can get to their property is 8am and with a time window of 2 hours so arriving between 8am and 10am, so let them know this and ask them if this is ok before getting slot availability - make sure to call {{ft:check_slot_availability}} with 8am as the start time and 10am as the end time if the user agrees to this.
+
+  If the user mentions a new time constraint or preference, such as:
+  - "can you come in the morning"
+  - “can you come before 3”
+  - “I’ll only be home after 5”
+  - “is there anything earlier/later”
+  - “any chance of a morning slot”
+  - “I have to leave before 3”
+  - “I need to pick up my kids at 3 so can you come before that”
+  - "can you come in the afternoon"
+  OR if the user uses phrases like "make sure", "can you do", "is there a", "any chance", "I’d prefer", "can it be", or "only available after/before", DO NOT treat it as a confirmation. Instead, this is a request for a different time, so you MUST call either {{ft:check_slot_availability}} or {{ft:go_back_to_find_appointment_time}}, depending on if the user has given a specific time preference or not. If the user is clear on either the date or the time, go ahead and call the function, no need to further clarify with them.
+
+  - If the user asks for the day of the week the offered appointment slot is, make sure to check the date knowing that it's currently $formatted_date_time
+
+  - If the user changes their mind about rescheduling the appointment (e.g. "we can just keep the appointment") or says "yes" when asked if they would like to keep the original appointment, you MUST immediately call {{ft:exit_reschedule_appointment_flow}} with no spoken output.
+  If none of the time slots you could offer are working for the user,  call the {{fn:handoff}}function with 'RESCHEDULE_OFFERED_SLOTS_REJECTED' as the 'handoff_reason' argument and "Let me transfer you to a colleague who can help with modifying your appointment." as the 'handoff_utterance' argument. 
+
+  Once you have received a clear confirmation from the caller that they are happy with the proposed appointment time $potential_slot (i.e. they have said "yes" or similar), you MUST immediately call {{ft:reschedule_appointment}} with no spoken output.

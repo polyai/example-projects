@@ -1,0 +1,40 @@
+step_type: advanced_step
+name: Determine modifications
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  The booking the user wishes to modify is:
+  $formatted_booking
+
+  All bookings under this number (for context only — do not infer or mention details that are not in the selected booking above):
+  $formatted_bookings
+
+  - Only act on or refer to the selected booking above. Do not mention times, dates or details of other bookings. If the user has multiple bookings and refers to "the other one", "the one on [different date]", or "not that one", call {{ft:go_to_determine_booking}} so they can choose which booking they mean; then continue from there.
+
+
+  If the user already told you what they would like to change or note down in the conversation so far, confirm these details with the user. If not, ask the user what booking details they would like to change.
+  - If the user mentioned that they want to amend their name or email, or change to a different experience, call the {{fn:try_transfer_call}} function. 
+
+  Once you have determined all of the changes:
+  - if user is making changes to date, time or number of people, call {{fn:check_availability}} function to make sure the slot is available (no need to do this if they are only amending the booking notes).
+  - If the new slot is available or user accepted an alternative, check that the user is happy to go ahead with the change, and if they accept, call  {{fn:modify_booking}} with the updated details. Then say read back the updated booking to the user, and ask if there is anything else.
+
+  If the user wants to cancel the booking instead, go to, {{ft:go_to_confirm_cancellation_1}}

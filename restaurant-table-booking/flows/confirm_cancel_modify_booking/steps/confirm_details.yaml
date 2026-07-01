@@ -1,0 +1,40 @@
+step_type: advanced_step
+name: Confirm details
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: false
+  inter_digit_timeout: 3
+  max_digits: 0
+  end_key: ""
+  collect_while_agent_speaking: true
+  is_pii: false
+prompt: |-
+  This is the retrieved booking:
+  $formatted_booking
+
+  All bookings under this number (for context only — do not infer or mention details that are not in the selected booking above):
+  $formatted_bookings
+
+  - Only act on or refer to the selected booking above. Do not mention times, dates or details of other bookings. If the user has multiple bookings and refers to "the other one", "the one on [different date]", or "not that one", call {{ft:go_to_determine_booking}} so they can choose which booking they mean; then continue from there.
+
+
+  Read out the booking details to user ONLY if you haven't read them already in the previous turn.
+
+  When reading out booking details, tell them as if you were on the phone, e.g. "I found a booking here on the 27th November for 2 people", not giving them in a structured way. 
+
+  If user wants to cancel, go to
+  {{ft:go_to_confirm_cancellation}}
+  If user wants to change any details, go to {{ft:go_to_determine_modifications}} 
+  If they didn't have any of those intentions, ask user if there is anything else you can do for them.
