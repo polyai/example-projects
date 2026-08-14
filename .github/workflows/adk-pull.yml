@@ -1,0 +1,133 @@
+name: ADK pull
+
+# Keeps every template project's Agent Studio config in sync locally.
+# Structure follows polyai/adk-deployments' sync_projects.yml: discover
+# projects in one job, then pull/commit each in its own matrix job so a
+# conflict or failure in one project can't block the others.
+on:
+  schedule:
+    - cron: "0 6 * * *" # daily at 06:00 UTC
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: "Project folder to sync (blank or * for all)"
+        required: false
+        default: "*"
+      branch:
+        description: "Branch to sync"
+        required: false
+        default: "main"
+
+permissions:
+  contents: write
+
+jobs:
+  find-projects:
+    runs-on: ubuntu-latest
+    outputs:
+      projects: ${{ steps.find.outputs.projects }}
+      has_projects: ${{ steps.find.outputs.has_projects }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch || 'main' }}
+
+      - name: Find projects
+        id: find
+        env:
+          INPUT_PROJECT_ID: ${{ inputs.project_id }}
+        run: |
+          set -euo pipefail
+          FILTER="${INPUT_PROJECT_ID:-*}"
+          PROJECTS=()
+
+          # An "agent folder" is any top-level directory containing a project.yaml.
+          while IFS= read -r file; do
+            dir=$(dirname "$file")
+            if [ "$FILTER" = "*" ] || [ "$FILTER" = "$dir" ]; then
+              PROJECTS+=("$dir")
+            fi
+          done < <(find . -maxdepth 2 -name project.yaml | sed 's|^\./||')
+
+          if [ ${#PROJECTS[@]} -eq 0 ]; then
+            echo "::error::No projects found"
+            echo "has_projects=false" >> "$GITHUB_OUTPUT"
+            echo "projects=[]" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          PROJECTS_JSON=$(printf '%s\n' "${PROJECTS[@]}" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "projects=$PROJECTS_JSON" >> "$GITHUB_OUTPUT"
+          echo "has_projects=true" >> "$GITHUB_OUTPUT"
+          echo "Found projects: $PROJECTS_JSON"
+
+  sync-projects:
+    name: Sync ${{ matrix.project }}
+    needs: find-projects
+    if: needs.find-projects.outputs.has_projects == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ${{ fromJson(needs.find-projects.outputs.projects) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch || 'main' }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install ADK
+        run: pip install polyai-adk
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Pull from Agent Studio
+        env:
+          POLY_ADK_KEY: ${{ secrets.POLY_ADK_KEY }}
+          POLY_ADK_KEY_US: ${{ secrets.POLY_ADK_KEY_US }}
+        run: |
+          set -euo pipefail
+          echo "Pulling ${{ matrix.project }} from Agent Studio..."
+          (cd "${{ matrix.project }}" && poly pull --force --format)
+
+      - name: Commit and push
+        env:
+          TARGET_BRANCH: ${{ inputs.branch || 'main' }}
+        run: |
+          set -euo pipefail
+          PROJECT_PATH="${{ matrix.project }}"
+
+          if [ -z "$(git status --porcelain "$PROJECT_PATH")" ]; then
+            echo "No changes detected for $PROJECT_PATH"
+            exit 0
+          fi
+
+          git add "$PROJECT_PATH"
+          git commit -m "chore($PROJECT_PATH): poly pull latest agent config"
+
+          # Retry with rebase — matrix jobs push to the same branch in parallel.
+          for attempt in $(seq 1 5); do
+            echo "Pushing (attempt $attempt/5)..."
+            git fetch origin "$TARGET_BRANCH"
+            if ! git rebase "origin/$TARGET_BRANCH"; then
+              echo "::warning::Rebase failed"
+              git rebase --abort
+              exit 1
+            fi
+            if git push --force-with-lease origin "HEAD:$TARGET_BRANCH"; then
+              echo "Pushed successfully"
+              exit 0
+            fi
+            echo "Push failed, retrying..."
+            sleep 1
+          done
+
+          echo "::error::Failed to push after 5 attempts"
+          exit 1
