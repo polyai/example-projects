@@ -12,8 +12,6 @@ Working example voice agent projects for the [PolyAI Agent Development Kit (ADK)
 | [`restaurant-table-booking`](restaurant-table-booking) | Takes, confirms, modifies, and cancels restaurant table reservations. |
 | [`retail-order-status-and-modification`](retail-order-status-and-modification) | Verifies a customer, looks up orders, gives shipping updates, and handles cancellations/modifications. |
 
-Each folder has its own README with the flows it demonstrates and test data to try.
-
 ## Prerequisites
 
 Install the ADK, which provides the `poly` CLI:
@@ -30,13 +28,11 @@ These folders are pulled directly from Agent Studio, so cloning this repo alone 
 
 ```bash
 poly init                              # or `poly start`, if you don't have a project yet
-poly template load --region us-1       # interactive picker — search by name, e.g. "healthcare"
+poly template load                     # interactive picker — search by name, e.g. "healthcare"
 poly chat
 ```
 
 `poly template load` copies the template's resources into your current project without needing any permissions on the original. Run `poly push` afterwards if you want to save it to your own Agent Studio project.
-
-Each template's README below lists test data (phone numbers, names, etc.) to try the happy path once it's loaded.
 
 ## Project structure
 
