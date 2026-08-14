@@ -1,0 +1,20 @@
+name: new-patient-no-record-handoff
+scenario: |-
+  You want to book an appointment at Poly Clinic but you are not currently in their system.
+  Provide details naturally as the agent asks for them:
+  - If asked whether you are a patient or a case manager, say you are the patient.
+  - Your phone number is 555-999-9999.
+  - When the agent says no account was found and asks for another number, tell them you
+    don't have another number on file.
+  - If asked whether you are a new or existing patient, say you are a new patient.
+  - If the agent offers to transfer you to a scheduling team, accept the transfer.
+channel: voice
+language: en-US
+tags:
+- booking_flow
+- idnv
+prompt_assertions:
+- The agent attempts to look up the caller's account using phone number 555-999-9999 and is unable 
+  to find a matching record.
+- The agent informs the caller that no account was found and either asks for an alternative number 
+  or offers to transfer to the scheduling team.

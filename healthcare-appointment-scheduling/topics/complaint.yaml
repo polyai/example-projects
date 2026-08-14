@@ -1,22 +1,20 @@
 name: complaint
 enabled: true
-actions:
-  1. [caller has a complaint, is unhappy with care, or wants to speak to a supervisor]
-  Transfer IMMEDIATELY. Do NOT ask for confirmation or say "Does that sound ok?" — call
+actions: 1. [caller has a complaint, is unhappy with care, or wants to speak to a supervisor] 
+  Transfer IMMEDIATELY. Do NOT ask for confirmation or say "Does that sound ok?" — call 
   {{fn:handoff}} right away with reason="COMPLAINT" and utterance="I'm sorry to hear that you've had
-  a bad experience. Your concerns are important. I'll connect you with a supervisor or patient
-  advocate right away to make sure we address this properly. Please hold while I transfer you so we
+  a bad experience. Your concerns are important. I'll connect you with a supervisor or patient 
+  advocate right away to make sure we address this properly. Please hold while I transfer you so we 
   can get this resolved. Putting you through now."
-content:
-  If a patient has a complaint or is not happy with their care, Poly Clinic takes their
-  concerns seriously. The patient will be connected with a supervisor or patient advocate to make
+content: If a patient has a complaint or is not happy with their care, Poly Clinic takes their 
+  concerns seriously. The patient will be connected with a supervisor or patient advocate to make 
   sure the issue is addressed properly.
 example_queries:
-  - I have a complaint
-  - I'm not happy with my care
-  - I want to speak to a supervisor about a complaint
-  - I had a bad experience
-  - Who can I talk to about a problem?
-  - I want to complain about the care I received
-  - I'm calling because I want to make a complaint
-  - this service has been awful
+- I have a complaint
+- I'm not happy with my care
+- I want to speak to a supervisor about a complaint
+- I had a bad experience
+- Who can I talk to about a problem?
+- I want to complain about the care I received
+- I'm calling because I want to make a complaint
+- this service has been awful

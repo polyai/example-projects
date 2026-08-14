@@ -1,0 +1,23 @@
+name: reschedule-type-in-readback
+scenario: |-
+  You want to reschedule an upcoming appointment at Poly Clinic but you're not sure
+  of the exact date. Just say you need to reschedule "my appointment" without naming
+  the type or date.
+  Provide details naturally as the agent asks for them:
+  - If asked whether you are a patient or a case manager, say you are the patient.
+  - Your phone number is 555-000-1234.
+  - Your date of birth is March 15, 1985.
+  - Your name is Jane Smith.
+  - When the agent tells you which appointment you have coming up, confirm that is the
+    one you want to reschedule.
+  - Accept whatever new slot the agent offers.
+channel: voice
+language: en-US
+tags:
+- reschedule_flow
+- idnv
+prompt_assertions:
+- The agent verifies Jane Smith's identity using phone number, date of birth, and name.
+- When the agent reads back the upcoming appointment, it mentions the appointment type (e.g. 
+  recheck) along with the date, not just the date alone.
+- The agent offers a new appointment slot and confirms the reschedule.

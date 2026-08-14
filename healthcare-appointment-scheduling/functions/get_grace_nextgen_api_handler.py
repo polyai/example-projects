@@ -2,7 +2,6 @@ from _gen import *  # <AUTO GENERATED>
 
 from .api_handler import (  # noqa: F401
     NextGenApiError,
-    NextGenApiHandler,  # noqa: F401
     NextGenDuplicatePersonError,
     NextGenHttpError,
     get_api_handler,

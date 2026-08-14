@@ -28,13 +28,11 @@ REASON_TO_TARGET = {
 @func_description("[Agent Behaviour] Transfers the call to a live agent")
 @func_parameter(
     "reason",
-    "The handoff code which represents the reason the user was handed off. "
-    "It's provided in the transfer instructions. Copy it faithfully from the prompt.",
+    "The handoff code which represents the reason the user was handed off. It's provided in the transfer instructions. Copy it faithfully from the prompt.",
 )
 @func_parameter(
     "utterance",
-    "[OPTIONAL] This is to be said before handing off. If not provided, a default "
-    "transfer message will be used.",
+    "[OPTIONAL] This is to be said before handing off. If not provided, a default transfer message will be used.",
 )
 def handoff(conv: Conversation, reason: str, utterance: str):
     utterance = utterance or DEFAULT_HANDOFF_UTTERANCE

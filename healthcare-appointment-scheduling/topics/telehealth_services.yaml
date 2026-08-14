@@ -9,9 +9,9 @@ content: |-
 
   To schedule a telehealth appointment, you'll need a smartphone or computer with internet access. You'll receive a link via email or text before your appointment. Make sure you're in a private area during the call and have any devices you may need ready, like a blood pressure cuff.
 example_queries:
-  - Do you offer telehealth?
-  - Can I see a doctor virtually?
-  - Video appointments available?
-  - Do you have virtual appointments?
-  - Can I do a virtual visit?
-  - Online doctor appointment
+- Do you offer telehealth?
+- Can I see a doctor virtually?
+- Video appointments available?
+- Do you have virtual appointments?
+- Can I do a virtual visit?
+- Online doctor appointment

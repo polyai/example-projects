@@ -1,10 +1,10 @@
 """Load upcoming appointments into state for the reschedule flow (before entering Reschedule Flow)."""
 
+from _gen import *  # <AUTO GENERATED>
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 
 import plog
-from _gen import *  # <AUTO GENERATED>
 from functions.appointment_selection import filter_upcoming_active
 from functions.get_grace_nextgen_api_handler import get_grace_nextgen_api_handler
 from functions.nextgen_response_models import Appointment
@@ -39,7 +39,9 @@ def load_reschedule_upcoming_appointments_for_state(
     elif patient is not None:
         pid = getattr(patient, "id", None)
     if not patient or not pid:
-        plog.info(f"{_LOG_PREFIX} missing identified_patient or id", has_patient=bool(patient))
+        plog.info(
+            f"{_LOG_PREFIX} missing identified_patient or id", has_patient=bool(patient)
+        )
         conv.log.warning("Reschedule flow preload: no identified_patient on state")
         return LoadRescheduleAppointmentsResult(
             ok=False,
@@ -70,7 +72,9 @@ def load_reschedule_upcoming_appointments_for_state(
         )
     except Exception as e:
         plog.info(f"{_LOG_PREFIX} get_person_appointments failed error='{e}'")
-        conv.log.error("Reschedule flow preload: get_person_appointments failed", error=str(e))
+        conv.log.error(
+            "Reschedule flow preload: get_person_appointments failed", error=str(e)
+        )
         return LoadRescheduleAppointmentsResult(
             ok=False,
             utterance="We couldn't look up your appointments right now. Please try again later.",

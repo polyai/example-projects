@@ -1,5 +1,5 @@
-import plog
 from _gen import *  # <AUTO GENERATED>
+import plog
 from functions.appointment_selection import is_follow_up_appointment
 from functions.get_grace_nextgen_api_handler import get_grace_nextgen_api_handler
 from functions.handoff import handoff
@@ -27,7 +27,9 @@ def _select_cancel_reason_id(
         )
         return other or next((r.id for r in reasons if r.id), None)
 
-    numbered = "\n".join(f"{i + 1}. {r.name or '(unnamed)'}" for i, r in enumerate(reasons))
+    numbered = "\n".join(
+        f"{i + 1}. {r.name or '(unnamed)'}" for i, r in enumerate(reasons)
+    )
     prompt = (
         "You are matching a patient's stated cancellation reason to the closest option "
         "from a predefined list.\n\n"
@@ -51,8 +53,12 @@ def _select_cancel_reason_id(
             )
             return matched_id
     except Exception as e:
-        conv.log.error("cancel_reason_provided: prompt_llm matching failed", error=str(e))
-        plog.info(f"{log_prefix} prompt_llm matching failed error='{e}'; using fallback")
+        conv.log.error(
+            "cancel_reason_provided: prompt_llm matching failed", error=str(e)
+        )
+        plog.info(
+            f"{log_prefix} prompt_llm matching failed error='{e}'; using fallback"
+        )
 
     fallback_id = _other_or_first_id()
     plog.info(
@@ -62,7 +68,9 @@ def _select_cancel_reason_id(
     return fallback_id
 
 
-@func_description("Store the user's cancellation reason and execute the appointment cancellation.")
+@func_description(
+    "Store the user's cancellation reason and execute the appointment cancellation."
+)
 @func_parameter(
     "cancellation_reason",
     "The reason the user gave for cancelling their appointment, in their own words. Pass an empty string if they declined to give a reason.",
@@ -72,11 +80,15 @@ def cancel_reason_provided(conv: Conversation, flow: Flow, cancellation_reason: 
     log_prefix = "[cancel_reason_provided.cancel_reason_provided]: "
 
     conv.state.cancel_user_reason = cancellation_reason
-    plog.info(f"{log_prefix} stored cancel_user_reason length={len(cancellation_reason)}")
+    plog.info(
+        f"{log_prefix} stored cancel_user_reason length={len(cancellation_reason)}"
+    )
 
     appointment_id = getattr(conv.state, "cancel_target_appointment_id", None)
     ap_last4 = (
-        str(appointment_id)[-4:] if appointment_id and len(str(appointment_id)) >= 4 else "none"
+        str(appointment_id)[-4:]
+        if appointment_id and len(str(appointment_id)) >= 4
+        else "none"
     )
     plog.info(f"{log_prefix} cancel_target_appointment_id_last4={ap_last4!r}")
 
@@ -84,7 +96,9 @@ def cancel_reason_provided(conv: Conversation, flow: Flow, cancellation_reason: 
         plog.info(f"{log_prefix} missing cancel_target_appointment_id; exiting")
         conv.log.error("cancel_reason_provided: no cancel_target_appointment_id")
         conv.exit_flow()
-        return {"utterance": "We couldn't complete the cancellation. Please try again later."}
+        return {
+            "utterance": "We couldn't complete the cancellation. Please try again later."
+        }
 
     try:
         handler = get_grace_nextgen_api_handler(conv)
@@ -92,7 +106,7 @@ def cancel_reason_provided(conv: Conversation, flow: Flow, cancellation_reason: 
     except Exception as e:
         plog.info(f"{log_prefix} get_appointment failed error='{e}'")
         conv.log.error("cancel_reason_provided: get_appointment failed", error=str(e))
-        conv.write_metric("CANCEL_FLOW_API_ERROR")
+        conv.write_metric("CANCEL_FLOW_API_ERROR", True)
         conv.exit_flow()
         return {
             "utterance": (
@@ -101,7 +115,9 @@ def cancel_reason_provided(conv: Conversation, flow: Flow, cancellation_reason: 
         }
 
     if current is None:
-        plog.info(f"{log_prefix} get_appointment returned None; cannot verify visit type")
+        plog.info(
+            f"{log_prefix} get_appointment returned None; cannot verify visit type"
+        )
         conv.log.error("cancel_reason_provided: get_appointment returned None")
         conv.exit_flow()
         return {
@@ -115,7 +131,7 @@ def cancel_reason_provided(conv: Conversation, flow: Flow, cancellation_reason: 
             f"{log_prefix} execute guard: not follow-up event_id='{current.event_id}' "
             "handoff CANCEL_NON_FOLLOW_UP"
         )
-        conv.write_metric("CANCEL_OOS")
+        conv.write_metric("CANCEL_OOS", True)
         return handoff(
             conv,
             reason="CANCEL_NON_FOLLOW_UP",
@@ -127,7 +143,7 @@ def cancel_reason_provided(conv: Conversation, flow: Flow, cancellation_reason: 
             f"{log_prefix} execute guard: appointment already rescheduled; "
             "handoff CANCEL_ALREADY_RESCHEDULED"
         )
-        conv.write_metric("CANCEL_FLOW_ALREADY_RESCHEDULED")
+        conv.write_metric("CANCEL_FLOW_ALREADY_RESCHEDULED", True)
         return handoff(
             conv,
             reason="CANCEL_ALREADY_RESCHEDULED",
@@ -141,8 +157,10 @@ def cancel_reason_provided(conv: Conversation, flow: Flow, cancellation_reason: 
         reasons = handler.get_cancel_reasons()
     except Exception as e:
         plog.info(f"{log_prefix} get_cancel_reasons failed error='{e}'")
-        conv.log.error("cancel_reason_provided: get_cancel_reasons failed", error=str(e))
-        conv.write_metric("CANCEL_FLOW_API_ERROR")
+        conv.log.error(
+            "cancel_reason_provided: get_cancel_reasons failed", error=str(e)
+        )
+        conv.write_metric("CANCEL_FLOW_API_ERROR", True)
         conv.exit_flow()
         return {
             "utterance": (
@@ -152,7 +170,9 @@ def cancel_reason_provided(conv: Conversation, flow: Flow, cancellation_reason: 
 
     plog.info(f"{log_prefix} cancel_reasons_count={len(reasons)}")
 
-    cancel_reason_id = _select_cancel_reason_id(conv, cancellation_reason, reasons, log_prefix)
+    cancel_reason_id = _select_cancel_reason_id(
+        conv, cancellation_reason, reasons, log_prefix
+    )
 
     if not cancel_reason_id:
         plog.info(f"{log_prefix} no cancel_reason_id resolved; exiting")
@@ -171,8 +191,10 @@ def cancel_reason_provided(conv: Conversation, flow: Flow, cancellation_reason: 
         )
     except Exception as e:
         plog.info(f"{log_prefix} cancel_appointment failed error='{e}'")
-        conv.log.error("cancel_reason_provided: cancel_appointment failed", error=str(e))
-        conv.write_metric("CANCEL_FLOW_API_ERROR")
+        conv.log.error(
+            "cancel_reason_provided: cancel_appointment failed", error=str(e)
+        )
+        conv.write_metric("CANCEL_FLOW_API_ERROR", True)
         conv.exit_flow()
         return {
             "utterance": (
@@ -187,7 +209,7 @@ def cancel_reason_provided(conv: Conversation, flow: Flow, cancellation_reason: 
         is_cancelled=is_cancelled,
     )
 
-    conv.write_metric("CANCEL_FLOW_COMPLETED")
+    conv.write_metric("CANCEL_FLOW_COMPLETED", True)
     conv.log.info(
         "Cancel flow: appointment cancelled",
         appointment_id_last4=(
@@ -202,6 +224,8 @@ def cancel_reason_provided(conv: Conversation, flow: Flow, cancellation_reason: 
     plog.info(f"{log_prefix} flow exit after success")
     is_cm = getattr(conv.state, "caller_is_case_manager", False)
     base = (
-        "I've cancelled that appointment." if is_cm else "I've cancelled that appointment for you."
+        "I've cancelled that appointment."
+        if is_cm
+        else "I've cancelled that appointment for you."
     )
     return {"utterance": base + detail + " Is there anything else I can help with?"}

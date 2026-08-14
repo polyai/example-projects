@@ -1,10 +1,10 @@
 """Load upcoming appointments into state for the cancel flow (before entering Cancel Flow)."""
 
+from _gen import *  # <AUTO GENERATED>
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 
 import plog
-from _gen import *  # <AUTO GENERATED>
 from functions.appointment_selection import filter_upcoming_active
 from functions.get_grace_nextgen_api_handler import get_grace_nextgen_api_handler
 from functions.nextgen_response_models import Appointment
@@ -21,7 +21,9 @@ class LoadCancelAppointmentsResult:
 _LOG_PREFIX = "[load_cancel_upcoming_appointments]: "
 
 
-def load_cancel_upcoming_appointments_for_state(conv: Conversation) -> LoadCancelAppointmentsResult:
+def load_cancel_upcoming_appointments_for_state(
+    conv: Conversation,
+) -> LoadCancelAppointmentsResult:
     """
     Fetch upcoming visits for ``conv.state.identified_patient`` and store them on
     ``conv.state.cancel_upcoming_appointments`` (JSON-serializable dicts).
@@ -37,7 +39,9 @@ def load_cancel_upcoming_appointments_for_state(conv: Conversation) -> LoadCance
     elif patient is not None:
         pid = getattr(patient, "id", None)
     if not patient or not pid:
-        plog.info(f"{_LOG_PREFIX} missing identified_patient or id", has_patient=bool(patient))
+        plog.info(
+            f"{_LOG_PREFIX} missing identified_patient or id", has_patient=bool(patient)
+        )
         conv.log.warning("Cancel flow preload: no identified_patient on state")
         return LoadCancelAppointmentsResult(
             ok=False,
@@ -68,7 +72,9 @@ def load_cancel_upcoming_appointments_for_state(conv: Conversation) -> LoadCance
         )
     except Exception as e:
         plog.info(f"{_LOG_PREFIX} get_person_appointments failed error='{e}'")
-        conv.log.error("Cancel flow preload: get_person_appointments failed", error=str(e))
+        conv.log.error(
+            "Cancel flow preload: get_person_appointments failed", error=str(e)
+        )
         return LoadCancelAppointmentsResult(
             ok=False,
             utterance="We couldn't look up your appointments right now. Please try again later.",
@@ -130,5 +136,7 @@ def load_cancel_upcoming_appointments_for_state(conv: Conversation) -> LoadCance
 )
 def load_cancel_upcoming_appointments(conv: Conversation) -> None:
     """Platform entry point for this module (helpers are imported directly)."""
-    log_prefix = "[load_cancel_upcoming_appointments.load_cancel_upcoming_appointments]: "
+    log_prefix = (
+        "[load_cancel_upcoming_appointments.load_cancel_upcoming_appointments]: "
+    )
     plog.info(f"{log_prefix} invoked")

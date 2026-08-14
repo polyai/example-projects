@@ -1,6 +1,7 @@
 from typing import Any
 
 import plog
+
 from _gen import *  # <AUTO GENERATED>
 from functions.nextgen_response_models import AppointmentSlot
 
@@ -18,15 +19,21 @@ def user_accepted_slot(conv: Conversation, flow: Flow) -> dict[str, Any]:
 
     if not appointment_id:
         plog.info(f"{log_prefix} missing reschedule_target_appointment_id; exiting")
-        conv.log.error("user_accepted_slot: no reschedule_target_appointment_id on state")
+        conv.log.error(
+            "user_accepted_slot: no reschedule_target_appointment_id on state"
+        )
         conv.exit_flow()
-        return {"utterance": "We couldn't complete the rescheduling. Please try again later."}
+        return {
+            "utterance": "We couldn't complete the rescheduling. Please try again later."
+        }
 
     if not offered_slot_data:
         plog.info(f"{log_prefix} missing reschedule_offered_slot; exiting")
         conv.log.error("user_accepted_slot: no reschedule_offered_slot on state")
         conv.exit_flow()
-        return {"utterance": "We couldn't complete the rescheduling. Please try again later."}
+        return {
+            "utterance": "We couldn't complete the rescheduling. Please try again later."
+        }
 
     slot = AppointmentSlot.model_validate(offered_slot_data)
     ap_last4 = str(appointment_id)[-4:] if len(str(appointment_id)) >= 4 else "****"
@@ -45,9 +52,13 @@ def user_accepted_slot(conv: Conversation, flow: Flow) -> dict[str, Any]:
             is_pii=True,
         )
         conv.exit_flow()
-        return {"utterance": "We couldn't complete the rescheduling. Please try again later."}
+        return {
+            "utterance": "We couldn't complete the rescheduling. Please try again later."
+        }
 
-    plog.info(f"{log_prefix} slot confirmed; transitioning to Collect Reschedule Reason")
+    plog.info(
+        f"{log_prefix} slot confirmed; transitioning to Collect Reschedule Reason"
+    )
     flow.goto_step("Collect Reschedule Reason")
     is_cm = getattr(conv.state, "caller_is_case_manager", False)
     if is_cm:

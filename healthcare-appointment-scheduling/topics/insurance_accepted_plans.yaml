@@ -14,10 +14,10 @@ content: |-
   ## Private Insurance Plans
   Yes, we accept most commercial and private insurance plans. We are enrolled with many different HMO and private insurance companies.
 example_queries:
-  - Do you accept Medicaid?
-  - Will you take Medicare?
-  - Is government insurance okay?
-  - Do you take private insurance?
-  - Can I come if I have Blue Cross insurance?
-  - Is my insurance plan accepted?
-  - Do you accept Blue Cross?
+- Do you accept Medicaid?
+- Will you take Medicare?
+- Is government insurance okay?
+- Do you take private insurance?
+- Can I come if I have Blue Cross insurance?
+- Is my insurance plan accepted?
+- Do you accept Blue Cross?

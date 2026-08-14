@@ -3,16 +3,15 @@ enabled: true
 actions: |-
   1. [caller says they are running late, stuck in traffic, delayed, or will be a few minutes late to their appointment] Transfer them to scheduling so staff can note the late arrival. Call {{fn:handoff}} with reason="SPEAK_TO" and utterance="Let me transfer you to our scheduling team so they can note that for you. Putting you through now."
   Do NOT offer to reschedule or cancel. The caller wants to keep their appointment.
-content:
-  If you're running late to your appointment, we can let the scheduling team know. They'll
-  note it on your file so your provider is aware. No need to reschedule — just let us connect you
+content: If you're running late to your appointment, we can let the scheduling team know. They'll 
+  note it on your file so your provider is aware. No need to reschedule — just let us connect you 
   with the team.
 example_queries:
-  - I'm running late to my appointment
-  - I'm going to be late
-  - I'm stuck in traffic
-  - I might be a few minutes late
-  - I'm behind a train
-  - I'll be there in 5 minutes
-  - Can you let them know I'm running late
-  - I'm on my way but running behind
+- I'm running late to my appointment
+- I'm going to be late
+- I'm stuck in traffic
+- I might be a few minutes late
+- I'm behind a train
+- I'll be there in 5 minutes
+- Can you let them know I'm running late
+- I'm on my way but running behind

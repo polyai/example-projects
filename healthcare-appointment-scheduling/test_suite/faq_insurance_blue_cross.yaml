@@ -1,0 +1,13 @@
+name: faq-insurance-blue-cross
+scenario: |-
+  You are calling Poly Clinic to ask whether they accept Blue Cross insurance.
+  Simply ask if they take Blue Cross. You have no appointment and do not need
+  to verify your identity.
+channel: voice
+language: en-US
+tags:
+- FAQ
+prompt_assertions:
+- The agent answers the insurance question without asking for identity verification.
+- The agent confirms that Poly Clinic accepts Blue Cross (or most commercial/private insurance 
+  plans, of which Blue Cross is an example).

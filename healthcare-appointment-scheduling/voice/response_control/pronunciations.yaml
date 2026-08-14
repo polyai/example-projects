@@ -1,16 +1,28 @@
 pronunciations:
-  - regex: 24/7
-    replacement: twenty four seven
-    case_sensitive: false
-  - regex: Dr.
-    replacement: doctor
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b([A-Z])\.\s
-    replacement: $1
-    case_sensitive: true
-    language_code: en-US
-  - regex: \baddress\b
-    replacement: ADD-ress
-    case_sensitive: false
-    language_code: en-US
+- regex: 24/7
+  replacement: twenty four seven
+  case_sensitive: false
+- regex: Dr.
+  replacement: doctor
+  case_sensitive: false
+  language_code: en-US
+- regex: \b([A-Z])\.\s
+  replacement: $1
+  case_sensitive: true
+  language_code: en-US
+- regex: \baddress\b
+  replacement: ADD-ress
+  case_sensitive: false
+  language_code: en-US
+- regex: \b10([ -])digit
+  replacement: ten\1digit
+  case_sensitive: false
+- regex: \b10([ -])digit
+  replacement: ten\1digit
+  case_sensitive: false
+- regex: \b7([ -])digit
+  replacement: seven\1digit
+  case_sensitive: false
+- regex: \b7([ -])digit
+  replacement: seven\1digit
+  case_sensitive: false

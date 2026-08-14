@@ -46,6 +46,8 @@ def is_ooh_clinic(conv: Conversation) -> bool:
     return not (OPENING_TIME <= now.time() < CLOSING_TIME)
 
 
-@func_description("[Utils] Utility functions for current time and out-of-hours behavior")
+@func_description(
+    "[Utils] Utility functions for current time and out-of-hours behavior"
+)
 def time_utils(conv: Conversation):
     pass

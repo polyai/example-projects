@@ -1,0 +1,23 @@
+name: reschedule-by-type
+scenario: |-
+  You want to reschedule your Recheck appointment at Poly Clinic. You don't remember
+  the exact date — you just know it's a Recheck.
+  Provide details naturally as the agent asks for them:
+  - If asked whether you are a patient or a case manager, say you are the patient.
+  - Your phone number is 555-000-1234.
+  - Your date of birth is March 15, 1985.
+  - Your name is Jane Smith.
+  - When asked which appointment to reschedule, say "my Recheck appointment."
+  - When the agent reads back the date and asks if that's the right one, confirm yes.
+  - Accept whatever new appointment slot the agent offers.
+channel: voice
+language: en-US
+tags:
+- reschedule_flow
+- idnv
+prompt_assertions:
+- The agent verifies Jane Smith's identity using her phone number, date of birth, and name.
+- After the caller says "my Recheck appointment," the agent reads back the appointment date and asks
+  if that is the one to reschedule (rather than immediately transferring).
+- The agent offers at least one available new appointment slot.
+- The agent confirms the appointment has been rescheduled.

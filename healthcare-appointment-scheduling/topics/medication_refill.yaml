@@ -1,6 +1,7 @@
 name: medication_refill
 enabled: true
-actions: 1. Call {{fn:handoff}} with reason="SCHEDULING" and utterance="Let me transfer you to our team to help with your medication refill. Putting you through now."
+actions: 1. Call {{fn:handoff}} with reason="SCHEDULING" and utterance="Let me transfer you to our 
+  team to help with your medication refill. Putting you through now."
 content: |-
   If you're requesting a prescription refill, we're happy to help. Let me connect you with our team to assist.
 
@@ -8,8 +9,8 @@ content: |-
 
   If no refills are left, you will need to leave your name, date of birth, and the name of the medication you need refilled. Requests are processed within two business days.
 example_queries:
-  - I need to refill my medication
-  - Medication refill
-  - How do I refill my prescription?
-  - Need a medication refill
-  - Prescription refill request
+- I need to refill my medication
+- Medication refill
+- How do I refill my prescription?
+- Need a medication refill
+- Prescription refill request

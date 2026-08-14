@@ -8,9 +8,9 @@ content: |-
   the agent will transfer them to the scheduling team who can route the call
   to the correct department.
 example_queries:
-  - I need to talk to someone
-  - Can I speak with my doctor?
-  - I'd like to speak with my provider
-  - Transfer me to my doctor please
-  - Someone from the office called me and I need to speak back with them
-  - I need to speak back with my provider
+- I need to talk to someone
+- Can I speak with my doctor?
+- I'd like to speak with my provider
+- Transfer me to my doctor please
+- Someone from the office called me and I need to speak back with them
+- I need to speak back with my provider

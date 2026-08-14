@@ -1,0 +1,13 @@
+name: faq-clinic-hours
+scenario: |-
+  You are calling Poly Clinic to find out what their opening hours are.
+  Simply ask what the clinic hours are. You have no appointment and do not need
+  to verify your identity.
+channel: voice
+language: en-US
+tags:
+- FAQ
+prompt_assertions:
+- The agent answers the question about clinic hours without asking for identity verification.
+- The agent provides general clinic hours that include weekday hours (Monday through Friday) and 
+  states the clinic is closed on weekends.

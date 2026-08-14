@@ -1,5 +1,5 @@
-import plog
 from _gen import *  # <AUTO GENERATED>
+import plog
 from functions.start_sms_flow import offer_handoff_after_sms_failed
 
 
@@ -7,11 +7,16 @@ from functions.start_sms_flow import offer_handoff_after_sms_failed
 @func_parameter(
     "phone_number", "The phone number provided by the user (excluding the country code)"
 )
-@func_parameter("country_code", 'Country code, without leading "+". Default to 0 if not provided.')
-def phone_number_given(conv: Conversation, flow: Flow, phone_number: int, country_code: int):
+@func_parameter(
+    "country_code", 'Country code, without leading "+". Default to 0 if not provided.'
+)
+def phone_number_given(
+    conv: Conversation, flow: Flow, phone_number: int, country_code: int
+):
     log_prefix = "[phone_number_given]: "
     plog.info(
-        f"{log_prefix} phone_number='{phone_number}', country_code='{country_code}'", is_pii=True
+        f"{log_prefix} phone_number='{phone_number}', country_code='{country_code}'",
+        is_pii=True,
     )
     # regional constants
     min_digits = 10 if conv.language == "en-US" else 9

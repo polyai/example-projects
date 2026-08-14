@@ -2,10 +2,9 @@ greeting:
   welcome_message: Hi, thanks for calling Poly Clinic! How can I help you today?
   language_code: en-US
 style_prompt:
-  prompt:
-    Speak at a steady, moderate pace throughout. Keep a consistent rhythm whether the sentence
+  prompt: Speak at a steady, moderate pace throughout. Keep a consistent rhythm whether the sentence
     is short or long.
 disclaimer_messages:
-  message: ""
+  message: ''
   enabled: false
   language_code: en-US

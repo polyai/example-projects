@@ -1,6 +1,7 @@
 from typing import Any
 
 import plog
+
 from _gen import *  # <AUTO GENERATED>
 from functions.extract_time_preference import extract_time_preference_from_conversation
 from functions.handoff import handoff
@@ -19,14 +20,19 @@ def user_wants_different_slot(conv: Conversation, flow: Flow) -> dict[str, Any]:
     """Find and offer the next best slot after the user declines the current one."""
     log_prefix = "[user_wants_different_slot.user_wants_different_slot]: "
     plog.info(f"{log_prefix} flow_current_step={getattr(flow, 'current_step', None)!r}")
-    conv.write_metric("RESCHEDULE_FLOW_SLOT_DECLINED")
+    conv.write_metric("RESCHEDULE_FLOW_SLOT_DECLINED", True)
 
     # Record the declined slot so we don't re-offer it
     offered_slot_data = getattr(conv.state, "reschedule_offered_slot", None)
-    declined_starts: list[str] = getattr(conv.state, "reschedule_declined_slot_starts", None) or []
+    declined_starts: list[str] = (
+        getattr(conv.state, "reschedule_declined_slot_starts", None) or []
+    )
     if offered_slot_data:
         declined_slot = AppointmentSlot.model_validate(offered_slot_data)
-        if declined_slot.start_date and str(declined_slot.start_date) not in declined_starts:
+        if (
+            declined_slot.start_date
+            and str(declined_slot.start_date) not in declined_starts
+        ):
             declined_starts = list(declined_starts) + [str(declined_slot.start_date)]
     conv.state.reschedule_declined_slot_starts = declined_starts
     plog.info(f"{log_prefix} declined_starts_count={len(declined_starts)}")
@@ -39,7 +45,7 @@ def user_wants_different_slot(conv: Conversation, flow: Flow) -> dict[str, Any]:
 
     if not remaining:
         plog.info(f"{log_prefix} no remaining slots; handing off")
-        conv.write_metric("RESCHEDULE_FLOW_NO_MORE_SLOTS")
+        conv.write_metric("RESCHEDULE_FLOW_NO_MORE_SLOTS", True)
         return handoff(
             conv,
             reason="RESCHEDULE_NO_REMAINING_SLOTS",
@@ -71,7 +77,7 @@ def user_wants_different_slot(conv: Conversation, flow: Flow) -> dict[str, Any]:
 
     if offered is None:
         plog.info(f"{log_prefix} no slot selected after preference check; handing off")
-        conv.write_metric("RESCHEDULE_FLOW_NO_MORE_SLOTS")
+        conv.write_metric("RESCHEDULE_FLOW_NO_MORE_SLOTS", True)
         return handoff(
             conv,
             reason="RESCHEDULE_NO_REMAINING_SLOTS",
@@ -98,7 +104,7 @@ def user_wants_different_slot(conv: Conversation, flow: Flow) -> dict[str, Any]:
         f"display='{conv.state.reschedule_offered_slot_display}'",
         is_pii=True,
     )
-    conv.write_metric("RESCHEDULE_FLOW_SLOT_OFFERED")
+    conv.write_metric("RESCHEDULE_FLOW_SLOT_OFFERED", True)
 
     flow.goto_step("Offer Slot")
 

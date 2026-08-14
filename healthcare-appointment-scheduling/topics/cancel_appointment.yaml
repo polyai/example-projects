@@ -9,13 +9,12 @@ actions: |-
      1.1 [wants to reschedule] Call {{fn:start_rescheduling_flow}}
      1.2 [wants to cancel only] Call {{fn:start_cancellation_flow}}
   2. [caller explicitly says they want to cancel] Call {{fn:start_cancellation_flow}}
-content:
-  Patients can cancel or reschedule their appointment by calling Poly Clinic. The agent will
-  ask what area they are scheduled to see and whether they would like to reschedule or just cancel
+content: Patients can cancel or reschedule their appointment by calling Poly Clinic. The agent will 
+  ask what area they are scheduled to see and whether they would like to reschedule or just cancel 
   the visit.
 example_queries:
-  - I need to cancel my appointment
-  - Cancel my visit for tomorrow
-  - I want to cancel my appointment
-  - Can't make my visit
-  - I need to change my appointment
+- I need to cancel my appointment
+- Cancel my visit for tomorrow
+- I want to cancel my appointment
+- Can't make my visit
+- I need to change my appointment

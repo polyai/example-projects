@@ -1,8 +1,12 @@
 from datetime import datetime
 
 import plog
+
 from _gen import *  # <AUTO GENERATED>
-from functions.appointment_selection import is_follow_up_appointment
+from functions.appointment_selection import (
+    appointment_type_label,
+    is_follow_up_appointment,
+)
 from functions.handoff import handoff
 from functions.nextgen_response_models import Appointment
 
@@ -12,7 +16,9 @@ def _readable_date(raw_dt: object) -> str:
     s = str(raw_dt).strip() if raw_dt else ""
     if len(s) >= 10 and s[4] == "-" and s[7] == "-":
         try:
-            return datetime.fromisoformat(s[:10]).strftime("%B %d, %Y").replace(" 0", " ")
+            return (
+                datetime.fromisoformat(s[:10]).strftime("%B %d, %Y").replace(" 0", " ")
+            )
         except ValueError:
             pass
     return s or "an unknown date"
@@ -31,14 +37,16 @@ def suggest_next_cancel_appointment(conv: Conversation, flow: Flow) -> dict:
     eligible = [
         a
         for a in appointments
-        if is_follow_up_appointment(a) and a.appointment_date and a.is_rescheduled is not True
+        if is_follow_up_appointment(a)
+        and a.appointment_date
+        and a.is_rescheduled is not True
     ]
     eligible.sort(key=lambda a: str(a.appointment_date))
     plog.info(f"{log_prefix} eligible_follow_up_count={len(eligible)}")
 
     if not eligible:
         plog.info(f"{log_prefix} no eligible appointments; handing off")
-        conv.write_metric("CANCEL_DATE_UNKNOWN_NO_ELIGIBLE_APPT")
+        conv.write_metric("CANCEL_DATE_UNKNOWN_NO_ELIGIBLE_APPT", True)
         return handoff(
             conv,
             reason="CANCELLING_DATE_UNAVAILABLE",
@@ -47,25 +55,26 @@ def suggest_next_cancel_appointment(conv: Conversation, flow: Flow) -> dict:
 
     next_appt = eligible[0]
     readable = _readable_date(next_appt.appointment_date)
+    type_label = appointment_type_label(next_appt.event_id)
     plog.info(
         f"{log_prefix} next_eligible_appointment_date='{str(next_appt.appointment_date)[:10]}'",
         is_pii=True,
     )
-    conv.write_metric("CANCEL_DATE_UNKNOWN_SUGGESTED_NEXT_APPT")
+    conv.write_metric("CANCEL_DATE_UNKNOWN_SUGGESTED_NEXT_APPT", True)
 
     is_cm = getattr(conv.state, "caller_is_case_manager", False)
     if is_cm:
         return {
             "content": (
-                f"The patient's next upcoming eligible follow-up visit is on {readable}. "
-                f"Say something like: 'I can see the patient's next visit is on {readable} — is that "
+                f"The patient's next upcoming eligible visit is a {type_label} on {readable}. "
+                f"Say something like: 'I can see the patient's next visit is a {type_label} on {readable} — is that "
                 f"the one they're looking to cancel?' Keep it natural and brief."
             )
         }
     return {
         "content": (
-            f"The patient's next upcoming eligible follow-up visit is on {readable}. "
-            f"Say something like: 'I can see your next visit is on {readable} — is that "
+            f"The patient's next upcoming eligible visit is a {type_label} on {readable}. "
+            f"Say something like: 'I can see your next visit is a {type_label} on {readable} — is that "
             f"the one you're looking to cancel?' Keep it natural and brief."
         )
     }

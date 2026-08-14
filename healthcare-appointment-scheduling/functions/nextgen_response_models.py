@@ -1,7 +1,6 @@
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
-from _gen import *  # <AUTO GENERATED>
 from pydantic import (
     AliasChoices,
     BaseModel,
@@ -10,6 +9,8 @@ from pydantic import (
     model_validator,
 )
 
+from _gen import *  # <AUTO GENERATED>
+
 
 class NextGenResponseModel(BaseModel):
     model_config = ConfigDict(populate_by_name=True, extra="ignore")
@@ -17,17 +18,21 @@ class NextGenResponseModel(BaseModel):
 
 class Person(NextGenResponseModel):
     id: str = Field(alias="id")
-    first_name: Optional[str] = Field(default=None, alias="firstName")
-    last_name: Optional[str] = Field(default=None, alias="lastName")
-    date_of_birth: Optional[str] = Field(default=None, alias="dateOfBirth")
-    sex: Optional[str] = Field(default=None, alias="sex")
-    home_phone: Optional[str] = Field(default=None, alias="homePhone")
-    cell_phone: Optional[str] = Field(default=None, alias="cellPhone")
-    is_patient: Optional[bool] = Field(default=None, alias="isPatient")
-    primary_care_provider_id: Optional[str] = Field(default=None, alias="primaryCareProviderId")
-    uds_language_barrier_id: Optional[str] = Field(default=None, alias="udsLanguageBarrierId")
+    first_name: str | None = Field(default=None, alias="firstName")
+    last_name: str | None = Field(default=None, alias="lastName")
+    date_of_birth: str | None = Field(default=None, alias="dateOfBirth")
+    sex: str | None = Field(default=None, alias="sex")
+    home_phone: str | None = Field(default=None, alias="homePhone")
+    cell_phone: str | None = Field(default=None, alias="cellPhone")
+    is_patient: bool | None = Field(default=None, alias="isPatient")
+    primary_care_provider_id: str | None = Field(
+        default=None, alias="primaryCareProviderId"
+    )
+    uds_language_barrier_id: str | None = Field(
+        default=None, alias="udsLanguageBarrierId"
+    )
     # /persons/{id} uses preferredLanguageId; lookup may still send languageId.
-    language_id: Optional[str] = Field(
+    language_id: str | None = Field(
         default=None,
         validation_alias=AliasChoices(
             "preferredLanguageId",
@@ -37,46 +42,48 @@ class Person(NextGenResponseModel):
 
 
 class Appointment(NextGenResponseModel):
-    appointment_id: Optional[str] = Field(default=None, alias="appointmentId")
-    id: Optional[str] = Field(default=None, alias="id")
-    person_id: Optional[str] = Field(default=None, alias="personId")
-    event_id: Optional[str] = Field(default=None, alias="eventId")
-    resource_id: Optional[str] = Field(default=None, alias="resourceId")
-    encounter_id: Optional[str] = Field(
+    appointment_id: str | None = Field(default=None, alias="appointmentId")
+    id: str | None = Field(default=None, alias="id")
+    person_id: str | None = Field(default=None, alias="personId")
+    event_id: str | None = Field(default=None, alias="eventId")
+    resource_id: str | None = Field(default=None, alias="resourceId")
+    encounter_id: str | None = Field(
         default=None, validation_alias=AliasChoices("encounterId", "EncounterId")
     )
-    appointment_date: Optional[str] = Field(default=None, alias="appointmentDate")
-    is_cancelled: Optional[bool] = Field(default=None, alias="isCancelled")
-    is_rescheduled: Optional[bool] = Field(default=None, alias="isRescheduled")
-    rescheduled_appointment_id: Optional[str] = Field(
+    appointment_date: str | None = Field(default=None, alias="appointmentDate")
+    is_cancelled: bool | None = Field(default=None, alias="isCancelled")
+    is_rescheduled: bool | None = Field(default=None, alias="isRescheduled")
+    rescheduled_appointment_id: str | None = Field(
         default=None,
-        validation_alias=AliasChoices("rescheduledAppointmentId", "RescheduledAppointmentId"),
+        validation_alias=AliasChoices(
+            "rescheduledAppointmentId", "RescheduledAppointmentId"
+        ),
     )
-    is_kept: Optional[bool] = Field(default=None, alias="isKept")
-    details: Optional[str] = Field(default=None, alias="details")
+    is_kept: bool | None = Field(default=None, alias="isKept")
+    details: str | None = Field(default=None, alias="details")
 
 
 class AppointmentSlot(NextGenResponseModel):
-    id: Optional[str] = Field(default=None, alias="id")
-    start_date: Optional[str] = Field(
+    id: str | None = Field(default=None, alias="id")
+    start_date: str | None = Field(
         default=None, validation_alias=AliasChoices("startDate", "appointmentDateTime")
     )
-    end_date: Optional[str] = Field(default=None, alias="endDate")
-    appointment_count: Optional[int] = Field(default=None, alias="appointmentCount")
-    location_id: Optional[str] = Field(default=None, alias="locationId")
-    location_name: Optional[str] = Field(default=None, alias="locationName")
-    resource_id: Optional[str] = Field(default=None, alias="resourceId")
-    resource_name: Optional[str] = Field(default=None, alias="resourceName")
-    resource_names: Optional[list[str]] = Field(default=None, alias="resourceNames")
-    event_id: Optional[str] = Field(default=None, alias="eventId")
-    category_id: Optional[str] = Field(default=None, alias="categoryId")
-    begin_time: Optional[str] = Field(default=None, alias="beginTime")
-    duration_minutes: Optional[int] = Field(
+    end_date: str | None = Field(default=None, alias="endDate")
+    appointment_count: int | None = Field(default=None, alias="appointmentCount")
+    location_id: str | None = Field(default=None, alias="locationId")
+    location_name: str | None = Field(default=None, alias="locationName")
+    resource_id: str | None = Field(default=None, alias="resourceId")
+    resource_name: str | None = Field(default=None, alias="resourceName")
+    resource_names: list[str] | None = Field(default=None, alias="resourceNames")
+    event_id: str | None = Field(default=None, alias="eventId")
+    category_id: str | None = Field(default=None, alias="categoryId")
+    begin_time: str | None = Field(default=None, alias="beginTime")
+    duration_minutes: int | None = Field(
         default=None, validation_alias=AliasChoices("durationMinutes", "duration")
     )
-    resource_ids: Optional[list[str]] = Field(default=None, alias="resourceIds")
-    location_ids: Optional[list[str]] = Field(default=None, alias="locationIds")
-    time_slot_count: Optional[int] = Field(
+    resource_ids: list[str] | None = Field(default=None, alias="resourceIds")
+    location_ids: list[str] | None = Field(default=None, alias="locationIds")
+    time_slot_count: int | None = Field(
         default=None, validation_alias=AliasChoices("timeSlotCount", "timeslotCount")
     )
 
@@ -119,92 +126,106 @@ class AppointmentSlot(NextGenResponseModel):
 
 
 class RecallPlan(NextGenResponseModel):
-    person_id: Optional[str] = Field(default=None, alias="personId")
-    recall_plan_id: Optional[str] = Field(default=None, alias="recallPlanId")
-    id: Optional[int] = Field(default=None, alias="id")
-    description: Optional[str] = Field(default=None, alias="description")
-    is_active: Optional[bool] = Field(default=None, alias="isActive")
-    expected_return_date: Optional[str] = Field(default=None, alias="expectedReturnDate")
-    event_id: Optional[str] = Field(default=None, alias="eventId")
-    event_description: Optional[str] = Field(default=None, alias="eventDescription")
-    resource_id: Optional[str] = Field(default=None, alias="resourceId")
-    location_id: Optional[str] = Field(default=None, alias="locationId")
-    location_name: Optional[str] = Field(default=None, alias="locationName")
+    person_id: str | None = Field(default=None, alias="personId")
+    recall_plan_id: str | None = Field(default=None, alias="recallPlanId")
+    id: int | None = Field(default=None, alias="id")
+    description: str | None = Field(default=None, alias="description")
+    is_active: bool | None = Field(default=None, alias="isActive")
+    expected_return_date: str | None = Field(
+        default=None, alias="expectedReturnDate"
+    )
+    event_id: str | None = Field(default=None, alias="eventId")
+    event_description: str | None = Field(default=None, alias="eventDescription")
+    resource_id: str | None = Field(default=None, alias="resourceId")
+    location_id: str | None = Field(default=None, alias="locationId")
+    location_name: str | None = Field(default=None, alias="locationName")
 
 
 class Practice(NextGenResponseModel):
-    id: Optional[str] = Field(default=None, alias="id")
-    name: Optional[str] = Field(default=None, alias="name")
+    id: str | None = Field(default=None, alias="id")
+    name: str | None = Field(default=None, alias="name")
 
 
 class Provider(NextGenResponseModel):
-    id: Optional[str] = Field(default=None, alias="id")
-    first_name: Optional[str] = Field(default=None, alias="firstName")
-    last_name: Optional[str] = Field(default=None, alias="lastName")
-    display_name: Optional[str] = Field(default=None, alias="displayName")
+    id: str | None = Field(default=None, alias="id")
+    first_name: str | None = Field(default=None, alias="firstName")
+    last_name: str | None = Field(default=None, alias="lastName")
+    display_name: str | None = Field(default=None, alias="displayName")
 
 
 class Resource(NextGenResponseModel):
-    id: Optional[str] = Field(default=None, alias="id")
-    provider_id: Optional[str] = Field(default=None, alias="providerId")
-    resource_display_name: Optional[str] = Field(default=None, alias="resourceDisplayName")
-    resource_type: Optional[str] = Field(default=None, alias="resourceType")
+    id: str | None = Field(default=None, alias="id")
+    provider_id: str | None = Field(default=None, alias="providerId")
+    resource_display_name: str | None = Field(
+        default=None, alias="resourceDisplayName"
+    )
+    resource_type: str | None = Field(default=None, alias="resourceType")
 
 
 class AppointmentCategory(NextGenResponseModel):
-    id: Optional[str] = Field(default=None, alias="id")
-    name: Optional[str] = Field(default=None, alias="name")
+    id: str | None = Field(default=None, alias="id")
+    name: str | None = Field(default=None, alias="name")
 
 
 class Event(NextGenResponseModel):
-    id: Optional[str] = Field(default=None, alias="id")
-    name: Optional[str] = Field(default=None, alias="name")
+    id: str | None = Field(default=None, alias="id")
+    name: str | None = Field(default=None, alias="name")
 
 
 class Location(NextGenResponseModel):
-    id: Optional[str] = Field(default=None, alias="id")
-    name: Optional[str] = Field(default=None, alias="name")
+    id: str | None = Field(default=None, alias="id")
+    name: str | None = Field(default=None, alias="name")
 
 
 class Payer(NextGenResponseModel):
-    id: Optional[str] = Field(default=None, alias="id")
-    name: Optional[str] = Field(default=None, alias="name")
+    id: str | None = Field(default=None, alias="id")
+    name: str | None = Field(default=None, alias="name")
 
 
 class PersonInsurance(NextGenResponseModel):
-    person_id: Optional[str] = Field(default=None, alias="personId")
-    person_payer_id: Optional[str] = Field(default=None, alias="personPayerId")
-    payer_id: Optional[str] = Field(default=None, alias="payerId")
-    payer_name: Optional[str] = Field(default=None, alias="payerName")
-    default_cob: Optional[int] = Field(default=None, alias="defaultCob")
-    policy_effective_date: Optional[str] = Field(default=None, alias="policyEffectiveDate")
-    policy_expiration_date: Optional[str] = Field(default=None, alias="policyExpirationDate")
-    insured_person_id: Optional[str] = Field(default=None, alias="insuredPersonId")
-    relationship: Optional[str] = Field(default=None, alias="relationship")
-    is_patient_insurance: Optional[bool] = Field(default=None, alias="isPatientInsurance")
-    is_active: Optional[bool] = Field(default=None, alias="isActive")
-    is_deleted: Optional[bool] = Field(default=None, alias="isDeleted")
-    is_available: Optional[bool] = Field(default=None, alias="isAvailable")
-    is_employer_insurance: Optional[bool] = Field(default=None, alias="isEmployerInsurance")
-    links: Optional[list[dict[str, Any]]] = Field(default=None, alias="_links")
+    person_id: str | None = Field(default=None, alias="personId")
+    person_payer_id: str | None = Field(default=None, alias="personPayerId")
+    payer_id: str | None = Field(default=None, alias="payerId")
+    payer_name: str | None = Field(default=None, alias="payerName")
+    default_cob: int | None = Field(default=None, alias="defaultCob")
+    policy_effective_date: str | None = Field(
+        default=None, alias="policyEffectiveDate"
+    )
+    policy_expiration_date: str | None = Field(
+        default=None, alias="policyExpirationDate"
+    )
+    insured_person_id: str | None = Field(default=None, alias="insuredPersonId")
+    relationship: str | None = Field(default=None, alias="relationship")
+    is_patient_insurance: bool | None = Field(
+        default=None, alias="isPatientInsurance"
+    )
+    is_active: bool | None = Field(default=None, alias="isActive")
+    is_deleted: bool | None = Field(default=None, alias="isDeleted")
+    is_available: bool | None = Field(default=None, alias="isAvailable")
+    is_employer_insurance: bool | None = Field(
+        default=None, alias="isEmployerInsurance"
+    )
+    links: list[dict[str, Any]] | None = Field(default=None, alias="_links")
 
 
 class ChartAlert(NextGenResponseModel):
-    id: Optional[str] = Field(default=None, alias="id")
-    person_id: Optional[str] = Field(default=None, alias="personId")
-    message_id: Optional[str] = Field(default=None, alias="messageId")
-    alert_type_id: Optional[str] = Field(default=None, alias="alertTypeId")
-    alert_type_description: Optional[str] = Field(default=None, alias="alertTypeDescription")
-    comment: Optional[str] = Field(default=None, alias="comment")
-    description: Optional[str] = Field(default=None, alias="description")
-    is_deleted: Optional[bool] = Field(default=None, alias="isDeleted")
-    is_flagged: Optional[bool] = Field(default=None, alias="isFlagged")
+    id: str | None = Field(default=None, alias="id")
+    person_id: str | None = Field(default=None, alias="personId")
+    message_id: str | None = Field(default=None, alias="messageId")
+    alert_type_id: str | None = Field(default=None, alias="alertTypeId")
+    alert_type_description: str | None = Field(
+        default=None, alias="alertTypeDescription"
+    )
+    comment: str | None = Field(default=None, alias="comment")
+    description: str | None = Field(default=None, alias="description")
+    is_deleted: bool | None = Field(default=None, alias="isDeleted")
+    is_flagged: bool | None = Field(default=None, alias="isFlagged")
 
 
 class ListItem(NextGenResponseModel):
-    id: Optional[str] = Field(default=None, alias="id")
-    name: Optional[str] = Field(default=None, alias="name")
-    type: Optional[str] = Field(default=None, alias="type")
+    id: str | None = Field(default=None, alias="id")
+    name: str | None = Field(default=None, alias="name")
+    type: str | None = Field(default=None, alias="type")
 
 
 @func_description("EHR API response models")

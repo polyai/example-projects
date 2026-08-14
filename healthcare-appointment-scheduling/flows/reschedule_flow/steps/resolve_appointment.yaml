@@ -1,25 +1,5 @@
 step_type: advanced_step
 name: Resolve Appointment
-asr_biasing:
-  is_enabled: false
-  alphanumeric: false
-  name_spelling: false
-  numeric: false
-  party_size: false
-  precise_date: false
-  relative_date: false
-  single_number: false
-  time: false
-  yes_no: false
-  address: false
-  custom_keywords: []
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 0
-  max_digits: 0
-  end_key: "#"
-  collect_while_agent_speaking: false
-  is_pii: false
 prompt: |-
   === FIRST TURN ON THIS STEP ===
 
@@ -36,15 +16,28 @@ prompt: |-
   Call this function every time the user attempts to give the date—even if the input is unclear or repeats
   a prior attempt. Do *not* say anything else when calling the function.
 
+  --- USER REFERS TO APPOINTMENT BY TYPE (e.g. "my Recheck", "the sick visit") ---
+
+  If the user identifies the appointment by its type or description (e.g. "my Recheck",
+  "the recheck appointment", "my sick visit") rather than by date or position:
+    1. Call {{ft:suggest_next_reschedule_appointment}}. The function will look up their next
+       eligible visit and return its date and type.
+    2. Read back both the appointment type and date naturally, and ask if that is the one they want to reschedule.
+    3. If the caller confirms, extract its date and call {{ft:reschedule_date_of_appointment_given}}
+       with those date parts.
+    4. If the caller says no, call {{fn:handoff}} with reason="RESCHEDULING_DATE_UNAVAILABLE",
+       utterance="Please hold while I transfer you to someone who can help. Putting you through now.",
+       destination="DEFAULT".
+
   --- USER REFERS TO "THE NEXT ONE" / "MY NEXT APPOINTMENT" ---
 
   If the user says they want to reschedule their next appointment, the next one, the upcoming one,
   or otherwise refers to the appointment by position rather than by date:
-    1. Call {{ft:suggest_next_reschedule_appointment}}. The function will return the date of their
-       next upcoming eligible visit. Read it back naturally and ask if that is the one they are
+    1. Call {{ft:suggest_next_reschedule_appointment}}. The function will return the date and type of their
+       next upcoming eligible visit. Read back both the appointment type and date naturally, and ask if that is the one they are
        calling about:
-         - If $caller_is_case_manager is true: "I can see their next visit is on [date] — is that the one they're looking to reschedule?"
-         - Otherwise: "I can see your next visit is on [date] — is that the one you're looking to reschedule?"
+         - If $caller_is_case_manager is true: "I can see the patient's next visit is a [type] on [date] — is that the one they're looking to reschedule?"
+         - Otherwise: "I can see your next visit is a [type] on [date] — is that the one you're looking to reschedule?"
     2. If the caller confirms that appointment is correct, extract its date from the conversation
        and call {{ft:reschedule_date_of_appointment_given}} with those date parts.
     3. If the caller says no, that is not the right appointment, or still does not know after
@@ -60,11 +53,11 @@ prompt: |-
 
   If the user says they want to reschedule their last appointment, the last one, the furthest one,
   or otherwise refers to the appointment at the end of their list:
-    1. Call {{ft:suggest_last_reschedule_appointment}}. The function will return the date of their
-       last (furthest out) upcoming eligible visit. Read it back naturally and ask if that is the
+    1. Call {{ft:suggest_last_reschedule_appointment}}. The function will return the date and type of their
+       last (furthest out) upcoming eligible visit. Read back both the appointment type and date naturally, and ask if that is the
        one they are calling about:
-         - If $caller_is_case_manager is true: "I can see their last upcoming visit is on [date] — is that the one they're looking to reschedule?"
-         - Otherwise: "I can see your last upcoming visit is on [date] — is that the one you're looking to reschedule?"
+         - If $caller_is_case_manager is true: "I can see the patient's last upcoming visit is a [type] on [date] — is that the one they're looking to reschedule?"
+         - Otherwise: "I can see your last upcoming visit is a [type] on [date] — is that the one you're looking to reschedule?"
     2. If the caller confirms that appointment is correct, extract its date from the conversation
        and call {{ft:reschedule_date_of_appointment_given}} with those date parts.
     3. If the caller says no, that is not the right appointment, call

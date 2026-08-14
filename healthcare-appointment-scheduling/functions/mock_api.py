@@ -1,7 +1,6 @@
 import copy
 import uuid
 from datetime import UTC, datetime, timedelta
-from typing import Optional
 
 from _gen import *  # <AUTO GENERATED>
 
@@ -265,7 +264,7 @@ class MockApiHandler:
     def lookup_patients(
         self,
         phone_number: str,
-        date_of_birth: Optional[str] = None,
+        date_of_birth: str | None = None,
         **kwargs,
     ) -> list[Person]:
         # Strip non-digit chars for flexible matching
@@ -281,19 +280,21 @@ class MockApiHandler:
             results.append(Person.model_validate(person_data))
         return results
 
-    def get_person(self, person_id: str) -> Optional[Person]:
+    def get_person(self, person_id: str) -> Person | None:
         data = _PERSONS.get(person_id)
         if data is None:
             return None
         return Person.model_validate(data)
 
-    def get_appointment(self, appointment_id: str, expand=None) -> Optional[Appointment]:
+    def get_appointment(
+        self, appointment_id: str, expand=None
+    ) -> Appointment | None:
         data = _APPOINTMENTS.get(appointment_id)
         if data is None:
             return None
         return Appointment.model_validate(data)
 
-    def create_patient(self, payload: PersonCreateRequest) -> Optional[Person]:
+    def create_patient(self, payload: PersonCreateRequest) -> Person | None:
         new_id = _mock_id()
         person_data = {
             "id": new_id,
@@ -313,7 +314,9 @@ class MockApiHandler:
                 _PHONE_INDEX.setdefault(digits, []).append(new_id)
         return Person.model_validate(person_data)
 
-    def update_person_cell_phone(self, person_id: str, cell_phone: str) -> Optional[Person]:
+    def update_person_cell_phone(
+        self, person_id: str, cell_phone: str
+    ) -> Person | None:
         data = _PERSONS.get(person_id)
         if data is None:
             return None
@@ -335,8 +338,8 @@ class MockApiHandler:
     def get_person_appointments(
         self,
         person_id: str,
-        start_date_iso: Optional[str] = None,
-        end_date_iso: Optional[str] = None,
+        start_date_iso: str | None = None,
+        end_date_iso: str | None = None,
         **kwargs,
     ) -> list[Appointment]:
         results: list[Appointment] = []
@@ -353,7 +356,9 @@ class MockApiHandler:
         results.sort(key=lambda a: a.appointment_date or "")
         return results
 
-    def create_appointment(self, payload: AppointmentCreateRequest) -> Optional[Appointment]:
+    def create_appointment(
+        self, payload: AppointmentCreateRequest
+    ) -> Appointment | None:
         new_id = _mock_id()
         appt_data = {
             "appointmentId": new_id,
@@ -372,7 +377,7 @@ class MockApiHandler:
 
     def cancel_appointment(
         self, appointment_id: str, cancel_reason_id: str
-    ) -> Optional[Appointment]:
+    ) -> Appointment | None:
         appt = _APPOINTMENTS.get(appointment_id)
         if appt is None:
             return None
@@ -381,7 +386,7 @@ class MockApiHandler:
 
     def reschedule_appointment(
         self, appointment_id: str, payload: AppointmentRescheduleRequest
-    ) -> Optional[Appointment]:
+    ) -> Appointment | None:
         old_appt = _APPOINTMENTS.get(appointment_id)
         if old_appt is None:
             return None
@@ -423,9 +428,9 @@ class MockApiHandler:
     def search_appointment_slots(
         self,
         start_date_iso: str,
-        end_date_iso: Optional[str] = None,
-        location_id: Optional[str] = None,
-        resource_id: Optional[str] = None,
+        end_date_iso: str | None = None,
+        location_id: str | None = None,
+        resource_id: str | None = None,
         **kwargs,
     ) -> list[AppointmentSlot]:
         results: list[AppointmentSlot] = []
@@ -457,7 +462,7 @@ class MockApiHandler:
     def list_resources(self, **kwargs) -> list[Resource]:
         return [Resource.model_validate(r) for r in _RESOURCES.values()]
 
-    def get_resource(self, resource_id: str) -> Optional[Resource]:
+    def get_resource(self, resource_id: str) -> Resource | None:
         data = _RESOURCES.get(resource_id)
         if data is None:
             return None

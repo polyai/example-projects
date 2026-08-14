@@ -1,38 +1,49 @@
-import plog
+from datetime import datetime
+
 from _gen import *  # <AUTO GENERATED>
+from functions.appointment_selection import appointment_type_label
+from functions.load_reschedule_upcoming_appointments import (
+    load_reschedule_upcoming_appointments_for_state,
+)
+from functions.nextgen_response_models import Appointment
+
+
+def _format_date(raw: str) -> str:
+    s = str(raw).strip() if raw else ""
+    if len(s) >= 10 and s[4] == "-" and s[7] == "-":
+        try:
+            return (
+                datetime.fromisoformat(s[:10]).strftime("%B %d, %Y").replace(" 0", " ")
+            )
+        except ValueError:
+            pass
+    return s or "an unknown date"
 
 
 def reschedule_entry(conv: Conversation, flow: Flow):
-    """Reschedule Flow entry: route based on triage and caller-type state."""
+    """Reschedule Flow entry: load appointments and go to Resolve Appointment."""
+    if not getattr(conv.state, "reschedule_upcoming_appointments", None):
+        identified = getattr(conv.state, "identified_patient", None)
+        if isinstance(identified, dict) and identified.get("id"):
+            load_reschedule_upcoming_appointments_for_state(conv)
 
-    log_prefix = "[reschedule_entry]: "
-    triage_done = getattr(conv.state, "reschedule_triage_done", False)
-    plog.info(f"{log_prefix} reschedule_triage_done={triage_done}")
+    flow.goto_step("Resolve Appointment")
 
-    if triage_done:
-        plog.info(f"{log_prefix} triage already done, goto_step='Resolve Appointment'")
-        flow.goto_step("Resolve Appointment", "Reschedule triage already done")
-        return {"content": ("Ask the caller which appointment they would like to reschedule.")}
-
-    caller_type_known = getattr(conv.state, "caller_is_case_manager", None) is not None
-    if caller_type_known:
-        plog.info(
-            f"{log_prefix} triage not done (caller type known), goto_step='Triage Appointment Type'"
-        )
-        flow.goto_step(
-            "Triage Appointment Type",
-            "Fresh reschedule entry — caller type already known",
-        )
+    raw = getattr(conv.state, "reschedule_upcoming_appointments", None) or []
+    appts = [Appointment.model_validate(x) for x in raw]
+    appts.sort(key=lambda a: str(a.appointment_date))
+    if appts:
+        lines = []
+        for a in appts:
+            type_label = appointment_type_label(a.event_id)
+            lines.append(f"- {type_label} on {_format_date(a.appointment_date)}")
         return {
             "content": (
-                "Entering Reschedule Flow. Review conversation history"
-                " to determine appointment type."
+                "Their upcoming appointments:\n"
+                + "\n".join(lines)
+                + "\n\nRead back the appointment type and date for each, and ask which one they want to reschedule."
             )
         }
-
-    plog.info(f"{log_prefix} triage not done, goto_step='Collect Caller Type'")
-    flow.goto_step(
-        "Collect Caller Type",
-        "Fresh reschedule entry — collect caller type first",
-    )
-    return {"content": "Ask whether the caller is a patient or a case manager."}
+    return {
+        "content": "Ask the caller which appointment they would like to reschedule."
+    }

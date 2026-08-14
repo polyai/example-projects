@@ -1,0 +1,23 @@
+name: reschedule-appointment
+scenario: |-
+  You want to move your existing appointment to a different day at Poly Clinic.
+  Provide details naturally as the agent asks for them:
+  - If asked whether you are a patient or a case manager, say you are the patient.
+  - Your phone number is 555-000-1234.
+  - Your date of birth is March 15, 1985.
+  - Your name is Jane Smith.
+  - You have a Recheck appointment coming up. When the agent reads back its date or asks
+    which appointment to reschedule, confirm that is the right one.
+  - Accept whatever new appointment slot the agent offers.
+channel: voice
+language: en-US
+tags:
+- reschedule_flow
+- idnv
+prompt_assertions:
+- The agent collects Jane Smith's phone number (555-000-1234), date of birth (March 15, 1985), and 
+  name to verify her identity.
+- The agent identifies Jane Smith's upcoming Recheck appointment and confirms it is the one to 
+  reschedule.
+- The agent offers at least one available new appointment slot (with a provider name and time).
+- The agent confirms the appointment has been rescheduled.

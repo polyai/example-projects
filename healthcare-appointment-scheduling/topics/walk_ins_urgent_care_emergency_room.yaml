@@ -18,23 +18,23 @@ content: |-
   ## Feeling Unwell Advice
   If it's not life-threatening, the best first step is to call Poly Clinic. Nurses are available 24/7 to talk through symptoms. They will help decide if the patient can be safely treated at home, if they should come into the office, or if they should go to the ER.
 example_queries:
-  - Can I walk in without an appointment?
-  - I'm not feeling well. Should I go to you or the ER?
-  - I'm sick. Do you have urgent care?
-  - Do you accept walk-ins?
-  - Is this an urgent care?
-  - Do you treat emergencies?
-  - Need medical advice.
-  - Walk in hours
-  - I have a headache
-  - I have a sore throat
-  - I have a cough
-  - I've been throwing up
-  - I have a rash
-  - I think I have a cold
-  - My ear hurts
-  - I'm feeling really sick
-  - I have a stomach ache
-  - I got a bug bite and it's swollen
-  - I cut my hand
-  - I feel dizzy
+- Can I walk in without an appointment?
+- I'm not feeling well. Should I go to you or the ER?
+- I'm sick. Do you have urgent care?
+- Do you accept walk-ins?
+- Is this an urgent care?
+- Do you treat emergencies?
+- Need medical advice.
+- Walk in hours
+- I have a headache
+- I have a sore throat
+- I have a cough
+- I've been throwing up
+- I have a rash
+- I think I have a cold
+- My ear hurts
+- I'm feeling really sick
+- I have a stomach ache
+- I got a bug bite and it's swollen
+- I cut my hand
+- I feel dizzy

@@ -1,8 +1,10 @@
-import plog
 from _gen import *  # <AUTO GENERATED>
+import plog
 
 
-@func_description("[Flow] Handle the user's response to the offer of being sent a text message")
+@func_description(
+    "[Flow] Handle the user's response to the offer of being sent a text message"
+)
 @func_parameter(
     "sms_id",
     "The ID of the text message to send. Always use the one provided to you in the relevant prompt.",
@@ -18,7 +20,7 @@ def start_sms_flow(conv: Conversation, sms_id: str):
     log_prefix = "[start_sms_flow]: "
     plog.info(f"{log_prefix} sms_id='{sms_id}'")
 
-    conv.write_metric("SMS_ACCEPTED")
+    conv.write_metric("SMS_ACCEPTED", True)
 
     # check that the SMS template id is defined on the SMS page
     if not conv.sms_templates.get(sms_id) and sms_id != "TEST":
@@ -34,7 +36,9 @@ def start_sms_flow(conv: Conversation, sms_id: str):
     if conv.caller_number:
         conv.goto_flow("SMS flow")
         if conv.language and conv.language.startswith("en-"):
-            return {"utterance": "Am I ok to send this to the number you're calling from?"}
+            return {
+                "utterance": "Am I ok to send this to the number you're calling from?"
+            }
         else:
             return "Ask the user if you're ok to send this text message to the number they're calling from."
     else:
@@ -53,7 +57,7 @@ def send_sms(conv: Conversation, phone_number, repeat_sms=False):
     try:
         conv.send_sms_template(phone_number, conv.state.sms_id)
         conv.state.sms_phone_number = phone_number
-        conv.write_metric("SMS_SENT")
+        conv.write_metric("SMS_SENT", True)
         if conv.language and conv.language.startswith("en-"):
             if repeat_sms:
                 return {
@@ -71,7 +75,7 @@ def send_sms(conv: Conversation, phone_number, repeat_sms=False):
 def offer_handoff_after_sms_failed(conv: Conversation):
     """Offer handoff if the SMS fails"""
 
-    conv.write_metric("SMS_FAILED")
+    conv.write_metric("SMS_FAILED", True)
     conv.exit_flow()
     if conv.language and conv.language.startswith("en-"):
         return {

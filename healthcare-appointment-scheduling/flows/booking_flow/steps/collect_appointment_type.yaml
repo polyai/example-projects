@@ -1,0 +1,31 @@
+step_type: advanced_step
+name: Collect Appointment Type
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: false
+  address: false
+  custom_keywords:
+  - illness
+  - sick
+  - follow up
+  - follow-up
+  - wellness
+  - annual
+  - checkup
+  - physical
+  - new issue
+prompt: |-
+  Ask: "What type of appointment are you looking to schedule? For example, a sick visit, a follow-up, or an annual wellness check?"
+
+  Once the user provides the appointment type, call {{ft:appointment_type_confirmed}} with the appropriate type:
+  - Sick visit / illness / new issue / not feeling well: appointment_type="ill"
+  - Follow-up / recheck: appointment_type="recheck"
+  - Wellness / annual / physical / checkup: appointment_type="wellness"

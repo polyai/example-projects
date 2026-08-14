@@ -1,12 +1,12 @@
 """Extract the caller's date/time preference from conversation history via LLM."""
 
+from _gen import *  # <AUTO GENERATED>
 import json
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Optional
 
 import plog
-from _gen import *  # <AUTO GENERATED>
 
 
 @dataclass(frozen=True)
@@ -14,14 +14,20 @@ class TimePreferenceResult:
     """Structured date/time preference extracted from conversation."""
 
     has_preference: bool
-    requested_date: Optional[str]  # Resolved ISO date, weekday name, or relative like "next week"
-    requested_time: Optional[str]  # Normalized time string compatible with select_closest_slot
+    requested_date: Optional[
+        str
+    ]  # Resolved ISO date, weekday name, or relative like "next week"
+    requested_time: Optional[
+        str
+    ]  # Normalized time string compatible with select_closest_slot
 
 
 _LOG_PREFIX = "[extract_time_preference]: "
 
 
-def extract_time_preference_from_conversation(conv: Conversation) -> TimePreferenceResult:
+def extract_time_preference_from_conversation(
+    conv: Conversation,
+) -> TimePreferenceResult:
     """
     Use prompt_llm with full conversation history to detect any date/time preference
     the caller expressed. Returns the MOST RECENTLY expressed preference.
@@ -91,8 +97,12 @@ def extract_time_preference_from_conversation(conv: Conversation) -> TimePrefere
 
     except Exception as e:
         plog.info(f"{_LOG_PREFIX} failed to extract preference error='{e}'")
-        conv.log.warning("extract_time_preference: failed to parse LLM response", error=str(e))
-        return TimePreferenceResult(has_preference=False, requested_date=None, requested_time=None)
+        conv.log.warning(
+            "extract_time_preference: failed to parse LLM response", error=str(e)
+        )
+        return TimePreferenceResult(
+            has_preference=False, requested_date=None, requested_time=None
+        )
 
 
 @func_description(

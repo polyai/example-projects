@@ -1,5 +1,5 @@
-import plog
 from _gen import *  # <AUTO GENERATED>
+import plog
 from functions.handoff import handoff
 from functions.match_spelled_name_to_account import (
     account_display_name,
@@ -91,7 +91,9 @@ def match_name_to_account(conv: Conversation, flow: Flow):
         "You must return **ONLY** one of these two words. No other text."
     )
 
-    conv.log.info(f"Transcript alternatives = {conv.transcript_alternatives}", is_pii=True)
+    conv.log.info(
+        f"Transcript alternatives = {conv.transcript_alternatives}", is_pii=True
+    )
 
     try:
         result = conv.utils.prompt_llm(prompt, show_history=True)
@@ -117,8 +119,10 @@ def match_name_to_account(conv: Conversation, flow: Flow):
     if is_match:
         return _handle_name_matched(conv, log_prefix)
 
-    conv.write_metric("IDNV_NAME_SPELLING_ATTEMPTED")
-    flow.goto_step("Collect Spelled Name", "spoken name did not match; asking caller to spell")
+    conv.write_metric("IDNV_NAME_SPELLING_ATTEMPTED", True)
+    flow.goto_step(
+        "Collect Spelled Name", "spoken name did not match; asking caller to spell"
+    )
     return {
         "utterance": "I wasn't able to match that name to the account. Could you spell your first and last name for me?",
     }

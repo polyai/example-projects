@@ -8,7 +8,7 @@ def end_function(conv: Conversation):
     agent_hangup = getattr(conv.state, "agent_hangup", None)
     conv.log.info(f"{log_prefix} agent_hangup", agent_hangup=agent_hangup)
     if not agent_hangup:
-        conv.write_metric("USER_HANGUP")
+        conv.write_metric("USER_HANGUP", True)
 
     # SMS offered metrics
     for turn in conv.history:
@@ -22,7 +22,9 @@ def end_function(conv: Conversation):
     # Last event metrics
     flow_name = conv.current_flow
     step_name = conv.current_step
-    last_qa_value = next((m.value for m in reversed(conv.metric_events) if m.name == "QA"), None)
+    last_qa_value = next(
+        (m.value for m in reversed(conv.metric_events) if m.name == "QA"), None
+    )
     if flow_name and step_name:
         conv.write_metric("LAST_EVENT_TYPE", flow_name)
         conv.write_metric("LAST_EVENT", flow_name + " | " + step_name)

@@ -1,19 +1,19 @@
 step_type: default_step
 name: Collect Name
 conditions:
-  - name: Name collected
-    condition_type: step_condition
-    description: When the user has provided their name for verification.
-    child_step: match_name_to_account
-    required_entities:
-      - full_name
-  - name: User refuses to provide name
-    condition_type: step_condition
-    description: When the user refuses to provide their name.
-    child_step: name_collection_failed
-    required_entities: []
-extracted_entities:
+- name: Name collected
+  condition_type: step_condition
+  description: When the user has provided their name for verification.
+  child_step: match_name_to_account
+  required_entities:
   - full_name
+- name: User refuses to provide name
+  condition_type: step_condition
+  description: When the user refuses to provide their name.
+  child_step: name_collection_failed
+  required_entities: []
+extracted_entities:
+- full_name
 prompt: |-
   ## Goal
   Collect the name on the account as the final verification step.

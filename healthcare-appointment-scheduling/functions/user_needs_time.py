@@ -5,7 +5,7 @@ from _gen import *  # <AUTO GENERATED>
     "[Agent Behaviour] Call when user explicitly requested you to wait for them, or was silent after you told them you are happy to wait. Do not call it if the agent requested time, or if user has not requested time."
 )
 def user_needs_time(conv: Conversation):
-    conv.write_metric("USER_REQUESTED_TIME")
+    conv.write_metric("USER_REQUESTED_TIME", True)
 
     # Determine if user was silent this turn
     user_silent = False

@@ -1,7 +1,7 @@
+from _gen import *  # <AUTO GENERATED>
 from datetime import date
 
 import plog
-from _gen import *  # <AUTO GENERATED>
 from functions.handoff import handoff
 
 _MINOR_AGE_THRESHOLD = 18
@@ -64,22 +64,26 @@ def match_dob_and_identify(conv: Conversation, flow: Flow):
     candidates = getattr(conv.state, "idnv_candidate_patients", None) or []
     plog.info(f"{log_prefix} candidate_count={len(candidates)}")
     if not candidates:
-        plog.info(f"{log_prefix} no idnv_candidate_patients; handoff IDNV_NO_CANDIDATES")
+        plog.info(
+            f"{log_prefix} no idnv_candidate_patients; handoff IDNV_NO_CANDIDATES"
+        )
         conv.log.warning("match_dob_and_identify called but no idnv_candidate_patients")
         conv.state.post_idnv_flow_name = None
-        conv.write_metric("IDNV_NO_MATCHES")
+        conv.write_metric("IDNV_NO_MATCHES", True)
         return handoff(
             conv,
             reason="IDNV_NO_CANDIDATES",
             utterance="Please hold while I transfer you to someone who can help.",
         )
-    dob_value = conv.entities.date_of_birth.value if conv.entities.date_of_birth else None
+    dob_value = (
+        conv.entities.date_of_birth.value if conv.entities.date_of_birth else None
+    )
     dob_norm = _normalize_dob(dob_value)
     if not dob_norm:
         plog.info(f"{log_prefix} no date_of_birth entity; handoff IDNV_NO_DOB")
         conv.log.warning("match_dob_and_identify called but no date_of_birth entity")
         conv.state.post_idnv_flow_name = None
-        conv.write_metric("IDNV_DOB_NOT_COLLECTED")
+        conv.write_metric("IDNV_DOB_NOT_COLLECTED", True)
         return handoff(
             conv,
             reason="IDNV_COLLECTION_FAILED",
@@ -116,7 +120,7 @@ def match_dob_and_identify(conv: Conversation, flow: Flow):
         )
         if dob_attempts >= 3:
             conv.state.post_idnv_flow_name = None
-            conv.write_metric("IDNV_PATIENT_NOT_FOUND")
+            conv.write_metric("IDNV_PATIENT_NOT_FOUND", True)
             return handoff(
                 conv,
                 reason="IDNV_NO_MATCH",
@@ -125,7 +129,9 @@ def match_dob_and_identify(conv: Conversation, flow: Flow):
             )
         flow.goto_step("Collect Date of Birth", "Retry Collect DOB")
         return {
-            "content": ("Tell the user that date of birth didn't match — ask them to try again.")
+            "content": (
+                "Tell the user that date of birth didn't match — ask them to try again."
+            )
         }
     if len(matches) > 1:
         plog.info(
@@ -139,7 +145,7 @@ def match_dob_and_identify(conv: Conversation, flow: Flow):
             is_pii=True,
         )
         conv.state.post_idnv_flow_name = None
-        conv.write_metric("IDNV_PATIENT_AMBIGUOUS")
+        conv.write_metric("IDNV_PATIENT_AMBIGUOUS", True)
         return handoff(
             conv,
             reason="IDNV_NO_MATCH",
@@ -148,8 +154,8 @@ def match_dob_and_identify(conv: Conversation, flow: Flow):
         )
     matched = matches[0]
     conv.state.identified_patient = _patient_to_state_dict(matched)
-    conv.write_metric("IDNV_DOB_CONFIRMED")
-    conv.write_metric("IDNV_FLOW_DOB_COLLECTED")
+    conv.write_metric("IDNV_DOB_CONFIRMED", True)
+    conv.write_metric("IDNV_FLOW_DOB_COLLECTED", True)
     _pid = _patient_id(matched)
     plog.info(f"{log_prefix} IDNV identified patient person_id={_pid!r}", is_pii=True)
 
@@ -158,12 +164,16 @@ def match_dob_and_identify(conv: Conversation, flow: Flow):
         dob_date = date.fromisoformat(dob_norm)
         today = date.today()
         age = (
-            today.year - dob_date.year - ((today.month, today.day) < (dob_date.month, dob_date.day))
+            today.year
+            - dob_date.year
+            - ((today.month, today.day) < (dob_date.month, dob_date.day))
         )
         plog.info(f"{log_prefix} patient_age={age}", is_pii=True)
         if age < _MINOR_AGE_THRESHOLD:
-            plog.info(f"{log_prefix} patient is a minor (age={age}); handing off", is_pii=True)
-            conv.write_metric("IDNV_MINOR_DETECTED")
+            plog.info(
+                f"{log_prefix} patient is a minor (age={age}); handing off", is_pii=True
+            )
+            conv.write_metric("IDNV_MINOR_DETECTED", True)
             conv.state.post_idnv_flow_name = None
             return handoff(
                 conv,
@@ -175,7 +185,8 @@ def match_dob_and_identify(conv: Conversation, flow: Flow):
             )
     except (ValueError, TypeError):
         plog.info(
-            f"{log_prefix} could not parse DOB for age check dob_norm='{dob_norm}'", is_pii=True
+            f"{log_prefix} could not parse DOB for age check dob_norm='{dob_norm}'",
+            is_pii=True,
         )
 
     _pid_last4 = str(_pid)[-4:] if _pid and len(str(_pid)) >= 4 else "****"

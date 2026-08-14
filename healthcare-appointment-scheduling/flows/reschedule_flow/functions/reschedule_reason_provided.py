@@ -1,11 +1,17 @@
+from _gen import *  # <AUTO GENERATED>
 from typing import Any
 
 import plog
-from _gen import *  # <AUTO GENERATED>
-from functions.appointment_selection import EVENT_ID_BY_APPOINTMENT_TYPE, FOLLOW_UP_EVENT_ID
+from functions.appointment_selection import (
+    EVENT_ID_BY_APPOINTMENT_TYPE,
+    FOLLOW_UP_EVENT_ID,
+)
 from functions.get_grace_nextgen_api_handler import get_grace_nextgen_api_handler
 from functions.handoff import handoff
-from functions.nextgen_request_models import AppointmentPatchRequest, AppointmentRescheduleRequest
+from functions.nextgen_request_models import (
+    AppointmentPatchRequest,
+    AppointmentRescheduleRequest,
+)
 from functions.nextgen_response_models import AppointmentSlot, ListItem
 
 
@@ -38,7 +44,9 @@ def _select_reschedule_reason_id(
         )
         return fallback_id
 
-    numbered = "\n".join(f"{i + 1}. {r.name or '(unnamed)'}" for i, r in enumerate(reasons))
+    numbered = "\n".join(
+        f"{i + 1}. {r.name or '(unnamed)'}" for i, r in enumerate(reasons)
+    )
     prompt = (
         "You are matching a patient's stated rescheduling reason to the closest option "
         "from a predefined list.\n\n"
@@ -62,8 +70,12 @@ def _select_reschedule_reason_id(
             )
             return matched_id
     except Exception as e:
-        conv.log.error("reschedule_reason_provided: prompt_llm matching failed", error=str(e))
-        plog.info(f"{log_prefix} prompt_llm matching failed error='{e}'; using fallback")
+        conv.log.error(
+            "reschedule_reason_provided: prompt_llm matching failed", error=str(e)
+        )
+        plog.info(
+            f"{log_prefix} prompt_llm matching failed error='{e}'; using fallback"
+        )
 
     fallback_id = _other_or_first_id()
     plog.info(
@@ -73,7 +85,9 @@ def _select_reschedule_reason_id(
     return fallback_id
 
 
-@func_description("Store the user's rescheduling reason and execute the appointment reschedule.")
+@func_description(
+    "Store the user's rescheduling reason and execute the appointment reschedule."
+)
 @func_parameter(
     "rescheduling_reason",
     "The reason the user gave for rescheduling their appointment, in their own words. Pass an empty string if they declined to give a reason.",
@@ -87,22 +101,32 @@ def reschedule_reason_provided(
 
     appointment_id = getattr(conv.state, "reschedule_target_appointment_id", None)
     ap_last4 = (
-        str(appointment_id)[-4:] if appointment_id and len(str(appointment_id)) >= 4 else "none"
+        str(appointment_id)[-4:]
+        if appointment_id and len(str(appointment_id)) >= 4
+        else "none"
     )
     plog.info(f"{log_prefix} reschedule_target_appointment_id_last4={ap_last4!r}")
 
     if not appointment_id:
         plog.info(f"{log_prefix} missing reschedule_target_appointment_id; exiting")
-        conv.log.error("reschedule_reason_provided: no reschedule_target_appointment_id")
+        conv.log.error(
+            "reschedule_reason_provided: no reschedule_target_appointment_id"
+        )
         conv.exit_flow()
-        return {"utterance": "We couldn't complete the rescheduling. Please try again later."}
+        return {
+            "utterance": "We couldn't complete the rescheduling. Please try again later."
+        }
 
     offered_slot_data = getattr(conv.state, "reschedule_offered_slot", None)
     if not offered_slot_data:
         plog.info(f"{log_prefix} missing reschedule_offered_slot; exiting")
-        conv.log.error("reschedule_reason_provided: no reschedule_offered_slot on state")
+        conv.log.error(
+            "reschedule_reason_provided: no reschedule_offered_slot on state"
+        )
         conv.exit_flow()
-        return {"utterance": "We couldn't complete the rescheduling. Please try again later."}
+        return {
+            "utterance": "We couldn't complete the rescheduling. Please try again later."
+        }
 
     slot = AppointmentSlot.model_validate(offered_slot_data)
     plog.info(
@@ -115,8 +139,10 @@ def reschedule_reason_provided(
         reasons = handler.get_reschedule_reasons()
     except Exception as e:
         plog.info(f"{log_prefix} get_reschedule_reasons failed error='{e}'")
-        conv.log.error("reschedule_reason_provided: get_reschedule_reasons failed", error=str(e))
-        conv.write_metric("RESCHEDULE_FLOW_API_ERROR")
+        conv.log.error(
+            "reschedule_reason_provided: get_reschedule_reasons failed", error=str(e)
+        )
+        conv.write_metric("RESCHEDULE_FLOW_API_ERROR", True)
         conv.exit_flow()
         return {
             "utterance": (
@@ -150,7 +176,11 @@ def reschedule_reason_provided(
     # Fall back to FOLLOW_UP_EVENT_ID if the stored event_id is absent or unrecognised.
     _known_ids = {v.lower() for v in EVENT_ID_BY_APPOINTMENT_TYPE.values()}
     _target_event_id = getattr(conv.state, "reschedule_target_event_id", None) or ""
-    event_id = _target_event_id if _target_event_id.lower() in _known_ids else FOLLOW_UP_EVENT_ID
+    event_id = (
+        _target_event_id
+        if _target_event_id.lower() in _known_ids
+        else FOLLOW_UP_EVENT_ID
+    )
     plog.info(f"{log_prefix} using event_id='{event_id}' (target='{_target_event_id}')")
 
     payload_data: dict = {
@@ -169,8 +199,10 @@ def reschedule_reason_provided(
         result = handler.reschedule_appointment(str(appointment_id), reschedule_payload)
     except Exception as e:
         plog.info(f"{log_prefix} reschedule_appointment failed error='{e}'")
-        conv.log.error("reschedule_reason_provided: reschedule_appointment failed", error=str(e))
-        conv.write_metric("RESCHEDULE_FLOW_API_ERROR")
+        conv.log.error(
+            "reschedule_reason_provided: reschedule_appointment failed", error=str(e)
+        )
+        conv.write_metric("RESCHEDULE_FLOW_API_ERROR", True)
         is_cm = getattr(conv.state, "caller_is_case_manager", False)
         return handoff(
             conv,
@@ -209,18 +241,24 @@ def reschedule_reason_provided(
                 new_appt_id = new_appt.appointment_id or new_appt.id
                 existing_details = new_appt.details or ""
                 patched_details = (
-                    f"(polyra) {existing_details}".strip() if existing_details else "(polyra)"
+                    f"(polyra) {existing_details}".strip()
+                    if existing_details
+                    else "(polyra)"
                 )
                 handler.patch_appointment(
                     str(new_appt_id),
-                    AppointmentPatchRequest.model_validate({"Details": patched_details}),
+                    AppointmentPatchRequest.model_validate(
+                        {"Details": patched_details}
+                    ),
                 )
                 plog.info(
                     f"{log_prefix} patched new appointment details with (polyra) "
                     f"new_appt_id_last4='{str(new_appt_id)[-4:]}'"
                 )
             else:
-                plog.info(f"{log_prefix} could not find rescheduled appointment to patch details")
+                plog.info(
+                    f"{log_prefix} could not find rescheduled appointment to patch details"
+                )
         else:
             plog.info(f"{log_prefix} no person_id; skipping (polyra) details patch")
     except Exception as e:
@@ -228,18 +266,24 @@ def reschedule_reason_provided(
         conv.log.error("reschedule_reason_provided: details patch failed", error=str(e))
 
     _slot_str = str(slot.start_date) if slot.start_date else ""
-    conv.write_metric("RESCHEDULE_FLOW_APPOINTMENT_DATE", _slot_str[:10] if _slot_str else None)
     conv.write_metric(
-        "RESCHEDULE_FLOW_APPOINTMENT_TIME", _slot_str[11:16] if len(_slot_str) > 10 else None
+        "RESCHEDULE_FLOW_APPOINTMENT_DATE", _slot_str[:10] if _slot_str else None
     )
-    conv.write_metric("RESCHEDULE_FLOW_COMPLETED")
+    conv.write_metric(
+        "RESCHEDULE_FLOW_APPOINTMENT_TIME",
+        _slot_str[11:16] if len(_slot_str) > 10 else None,
+    )
+    conv.write_metric("RESCHEDULE_FLOW_COMPLETED", True)
     conv.log.info(
         "Reschedule flow: appointment successfully rescheduled",
         appointment_id_last4=ap_last4,
         new_slot_start=str(slot.start_date),
         is_pii=True,
     )
-    plog.info(f"{log_prefix} reschedule successful new_slot_start='{slot.start_date}'", is_pii=True)
+    plog.info(
+        f"{log_prefix} reschedule successful new_slot_start='{slot.start_date}'",
+        is_pii=True,
+    )
 
     display = getattr(conv.state, "reschedule_offered_slot_display", "your new time")
     is_cm = getattr(conv.state, "caller_is_case_manager", False)

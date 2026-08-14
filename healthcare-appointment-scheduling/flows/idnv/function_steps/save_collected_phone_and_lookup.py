@@ -1,5 +1,5 @@
-import plog
 from _gen import *  # <AUTO GENERATED>
+import plog
 from functions.get_grace_nextgen_api_handler import (
     get_grace_nextgen_api_handler,
 )
@@ -14,19 +14,25 @@ from functions.handoff import handoff
 def save_collected_phone_and_lookup(conv: Conversation, flow: Flow):
     """Save collected phone to state, look up patients, then DOB or collect number."""
     log_prefix = "[save_collected_phone_and_lookup]: "
-    phone_entity = conv.entities.phone_number.value if conv.entities.phone_number else None
+    phone_entity = (
+        conv.entities.phone_number.value if conv.entities.phone_number else None
+    )
     state_phone = getattr(conv.state, "idnv_collected_phone", None)
     plog.info(
         f"{log_prefix} phone_number_entity='{phone_entity}' state_phone='{state_phone}'",
         is_pii=True,
     )
+    # Prefer the LLM-collected digits (from phone_number_collected function call)
+    # over the entity, which may mis-extract spoken numbers.
     raw_source = None
-    if phone_entity:
-        raw_source = str(phone_entity).strip()
-    elif state_phone:
+    if state_phone:
         raw_source = str(state_phone).strip()
+    elif phone_entity:
+        raw_source = str(phone_entity).strip()
     if not raw_source:
-        conv.log.warning("save_collected_phone_and_lookup: no phone number from entity or state")
+        conv.log.warning(
+            "save_collected_phone_and_lookup: no phone number from entity or state"
+        )
         conv.exit_flow()
         return {
             "content": (
@@ -43,7 +49,9 @@ def save_collected_phone_and_lookup(conv: Conversation, flow: Flow):
     conv.log.info(
         "IDNV using collected number",
         phone_last_digits=(
-            conv.state.idnv_phone_number[-4:] if len(conv.state.idnv_phone_number) >= 4 else "***"
+            conv.state.idnv_phone_number[-4:]
+            if len(conv.state.idnv_phone_number) >= 4
+            else "***"
         ),
     )
     phone = conv.state.idnv_phone_number
@@ -52,7 +60,7 @@ def save_collected_phone_and_lookup(conv: Conversation, flow: Flow):
         patients = handler.lookup_patients(phone)
     except Exception as e:
         conv.log.error("IDNV lookup_patients failed", error=str(e))
-        conv.write_metric("IDNV_FLOW_API_ERROR")
+        conv.write_metric("IDNV_FLOW_API_ERROR", True)
         return handoff(
             conv,
             reason="IDNV_API_FAILURE",
@@ -70,8 +78,14 @@ def save_collected_phone_and_lookup(conv: Conversation, flow: Flow):
         }
     conv.state.idnv_candidate_patients = patients
     conv.write_metric("IDNV_CANDIDATES_FOUND", len(patients))
-    conv.write_metric("IDNV_FLOW_PHONE_COLLECTED")
+    conv.write_metric("IDNV_FLOW_PHONE_COLLECTED", True)
     ids = [p.id for p in patients]
-    conv.log.info("IDNV candidates found", count=len(patients), person_ids=ids, is_pii=True)
+    conv.log.info(
+        "IDNV candidates found", count=len(patients), person_ids=ids, is_pii=True
+    )
     flow.goto_step("Collect Date of Birth", "Phone Number Matched")
-    return {"content": ("Ask for their date of birth so we can confirm which account is theirs.")}
+    return {
+        "content": (
+            "Ask for their date of birth so we can confirm which account is theirs."
+        )
+    }

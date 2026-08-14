@@ -6,8 +6,7 @@ from _gen import *  # <AUTO GENERATED>
 )
 def backout(conv: Conversation):
     # Write metric
-    conv.write_metric("BACKOUT")
+    conv.write_metric("BACKOUT", True)
 
     # Exit current flow
     conv.exit_flow()
-    return

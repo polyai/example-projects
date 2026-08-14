@@ -12,9 +12,9 @@ content: |-
 
   **Pharmacy hours:** 8 AM to 5:30 PM, Monday through Friday.
 example_queries:
-  - What are your hours?
-  - When are you open?
-  - Are you open on weekends?
-  - When is the dental clinic open?
-  - What are the pharmacy hours?
-  - How late is the pharmacy open?
+- What are your hours?
+- When are you open?
+- Are you open on weekends?
+- When is the dental clinic open?
+- What are the pharmacy hours?
+- How late is the pharmacy open?

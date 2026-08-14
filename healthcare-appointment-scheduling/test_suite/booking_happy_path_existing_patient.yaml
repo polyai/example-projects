@@ -1,0 +1,22 @@
+name: booking-happy-path-existing-patient
+scenario: |-
+  You want to schedule an appointment at Poly Clinic. You are an existing patient.
+  Provide details naturally as the agent asks for them:
+  - If asked whether you are a patient or a case manager, say you are the patient.
+  - Your phone number is 555-000-1234.
+  - Your date of birth is March 15, 1985.
+  - Your name is Jane Smith.
+  - If asked whether you are a new or existing patient, confirm you are an existing patient.
+  - If asked what kind of appointment you need or what brings you in, say you have a new health issue.
+  - Accept whatever appointment slot the agent offers.
+channel: voice
+language: en-US
+tags:
+- booking_flow
+- idnv
+prompt_assertions:
+- The agent collects Jane Smith's phone number (555-000-1234), date of birth (March 15, 1985), and 
+  name in order to verify her identity.
+- The agent confirms Jane Smith's identity is verified and proceeds into the booking process.
+- The agent offers at least one available appointment slot (with a provider name and time).
+- The agent confirms the appointment has been booked for Jane Smith.

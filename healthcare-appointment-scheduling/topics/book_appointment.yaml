@@ -24,22 +24,21 @@ actions: |-
   2. [if the caller does NOT describe a walk-in eligible symptom, or does not mention any
      symptom at all] Call {{fn:start_booking_flow}}. Do not say anything else when calling
      the function.
-content:
-  Handles appointment booking requests, including when callers ask to see a specific provider
-  by name (e.g. "I need an appointment with Dr. Smith", "I'd like to see my doctor"). Any request
-  to book, schedule, or see a doctor or provider is a booking request.
+content: Handles appointment booking requests, including when callers ask to see a specific provider
+  by name (e.g. "I need an appointment with Dr. Smith", "I'd like to see my doctor"). Any request to
+  book, schedule, or see a doctor or provider is a booking request.
 example_queries:
-  - I'd like to schedule an appointment
-  - Can I book an appointment?
-  - I need to see a doctor.
-  - I'd like to schedule due to a work injury
-  - I want like to schedule an appointment due to an auto accident
-  - I have a cough
-  - I'm not feeling well
-  - I have a sore throat
-  - I have a headache and need to be seen
-  - I need to see my doctor about a rash
-  - I've been feeling dizzy and want to schedule something
-  - I need an appointment with my provider
-  - I'd like to see Dr. Smith
-  - I need to schedule with my doctor
+- I'd like to schedule an appointment
+- Can I book an appointment?
+- I need to see a doctor.
+- I'd like to schedule due to a work injury
+- I want like to schedule an appointment due to an auto accident
+- I have a cough
+- I'm not feeling well
+- I have a sore throat
+- I have a headache and need to be seen
+- I need to see my doctor about a rash
+- I've been feeling dizzy and want to schedule something
+- I need an appointment with my provider
+- I'd like to see Dr. Smith
+- I need to schedule with my doctor

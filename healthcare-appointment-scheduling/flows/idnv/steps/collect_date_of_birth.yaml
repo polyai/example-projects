@@ -1,22 +1,21 @@
 step_type: default_step
 name: Collect Date of Birth
 conditions:
-  - name: Date of birth collected
-    condition_type: step_condition
-    description: When the user has provided their date of birth for verification.
-    child_step: Confirm Date of Birth
-    required_entities:
-      - date_of_birth
-  - name: User refuses or cannot provide date of birth
-    condition_type: step_condition
-    description:
-      When the user refuses to provide their date of birth, OR when the user has been asked
-      for the missing part of their date of birth twice and still cannot provide a complete date
-      (month, day, AND year). Do not ask more than twice.
-    child_step: dob_collection_failed
-    required_entities: []
-extracted_entities:
+- name: Date of birth collected
+  condition_type: step_condition
+  description: When the user has provided their date of birth for verification.
+  child_step: Confirm Date of Birth
+  required_entities:
   - date_of_birth
+- name: User refuses or cannot provide date of birth
+  condition_type: step_condition
+  description: When the user refuses to provide their date of birth, OR when the user has been asked
+    for the missing part of their date of birth twice and still cannot provide a complete date 
+    (month, day, AND year). Do not ask more than twice.
+  child_step: dob_collection_failed
+  required_entities: []
+extracted_entities:
+- date_of_birth
 prompt: |-
   ## Goal
   Collect the patient's FULL date of birth — month, day, AND year — for verification.

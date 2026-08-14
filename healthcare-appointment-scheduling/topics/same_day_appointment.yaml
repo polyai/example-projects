@@ -12,9 +12,9 @@ content: |-
   day. Walk-in appointments are also available for minor issues like colds, coughs, and sore
   throats.
 example_queries:
-  - Do you have same-day appointments?
-  - Can I be seen today?
-  - Book appointment today.
-  - Can I get an appointment today?
-  - Is there anything available for today?
-  - I need an appointment for today.
+- Do you have same-day appointments?
+- Can I be seen today?
+- Book appointment today.
+- Can I get an appointment today?
+- Is there anything available for today?
+- I need an appointment for today.

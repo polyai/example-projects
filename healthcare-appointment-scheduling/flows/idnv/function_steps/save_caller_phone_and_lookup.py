@@ -1,5 +1,5 @@
-import plog
 from _gen import *  # <AUTO GENERATED>
+import plog
 from functions.get_grace_nextgen_api_handler import (
     get_grace_nextgen_api_handler,
 )
@@ -37,12 +37,16 @@ def save_caller_phone_and_lookup(conv: Conversation, flow: Flow):
         conv.state.idnv_phone_number = digits[-10:] if len(digits) > 10 else digits
     else:
         conv.state.idnv_phone_number = raw
-    lookup_src = "phone_number_entity" if conv.entities.phone_number else "caller_number"
+    lookup_src = (
+        "phone_number_entity" if conv.entities.phone_number else "caller_number"
+    )
     conv.log.info(
         "IDNV phone for lookup",
         source=lookup_src,
         phone_last_digits=(
-            conv.state.idnv_phone_number[-4:] if len(conv.state.idnv_phone_number) >= 4 else "***"
+            conv.state.idnv_phone_number[-4:]
+            if len(conv.state.idnv_phone_number) >= 4
+            else "***"
         ),
     )
     phone = conv.state.idnv_phone_number
@@ -51,7 +55,7 @@ def save_caller_phone_and_lookup(conv: Conversation, flow: Flow):
         patients = handler.lookup_patients(phone)
     except Exception as e:
         conv.log.error("IDNV lookup_patients failed", error=str(e))
-        conv.write_metric("IDNV_FLOW_API_ERROR")
+        conv.write_metric("IDNV_FLOW_API_ERROR", True)
         return handoff(
             conv,
             reason="IDNV_API_FAILURE",
@@ -66,8 +70,14 @@ def save_caller_phone_and_lookup(conv: Conversation, flow: Flow):
         }
     conv.state.idnv_candidate_patients = patients
     conv.write_metric("IDNV_CANDIDATES_FOUND", len(patients))
-    conv.write_metric("IDNV_FLOW_PHONE_COLLECTED")
+    conv.write_metric("IDNV_FLOW_PHONE_COLLECTED", True)
     ids = [p.id for p in patients]
-    conv.log.info("IDNV candidates found", count=len(patients), person_ids=ids, is_pii=True)
+    conv.log.info(
+        "IDNV candidates found", count=len(patients), person_ids=ids, is_pii=True
+    )
     flow.goto_step("Collect Date of Birth", "Phone number collected")
-    return {"content": ("Ask for their date of birth so we can confirm which account is theirs.")}
+    return {
+        "content": (
+            "Ask for their date of birth so we can confirm which account is theirs."
+        )
+    }

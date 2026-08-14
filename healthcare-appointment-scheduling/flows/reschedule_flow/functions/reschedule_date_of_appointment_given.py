@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import plog
+
 from _gen import *  # <AUTO GENERATED>
 from functions.appointment_selection import (
     appointment_type_label,
@@ -16,7 +17,9 @@ def _readable_date(raw_dt: object) -> str:
     s = str(raw_dt).strip() if raw_dt else ""
     if len(s) >= 10 and s[4] == "-" and s[7] == "-":
         try:
-            return datetime.fromisoformat(s[:10]).strftime("%B %d, %Y").replace(" 0", " ")
+            return (
+                datetime.fromisoformat(s[:10]).strftime("%B %d, %Y").replace(" 0", " ")
+            )
         except ValueError:
             pass
     return s or "an unknown date"
@@ -66,7 +69,9 @@ def reschedule_date_of_appointment_given(
     year_of_appointment_date: str,
 ):
     """Map structured date parts to a loaded appointment; follow-up only, else hand off."""
-    log_prefix = "[reschedule_date_of_appointment_given.reschedule_date_of_appointment_given]: "
+    log_prefix = (
+        "[reschedule_date_of_appointment_given.reschedule_date_of_appointment_given]: "
+    )
     raw = getattr(conv.state, "reschedule_upcoming_appointments", None) or []
     appointments = [Appointment.model_validate(x) for x in raw]
     plog.info(
@@ -87,7 +92,9 @@ def reschedule_date_of_appointment_given(
     if parse_err == "invalid_components":
         plog.info(f"{log_prefix} parse_err=invalid_components")
         return {
-            "utterance": ("I didn't quite get that date—could you tell me the month and day again?")
+            "utterance": (
+                "I didn't quite get that date—could you tell me the month and day again?"
+            )
         }
 
     plog.info(f"{log_prefix} match_count={len(matches)}")
@@ -107,21 +114,29 @@ def reschedule_date_of_appointment_given(
     if len(matches) > 1:
         plog.info(
             f"{log_prefix} ambiguous date; match_count={len(matches)}",
-            appointment_ids_last4=[str(m.appointment_id or m.id or "")[-4:] for m in matches[:10]],
+            appointment_ids_last4=[
+                str(m.appointment_id or m.id or "")[-4:] for m in matches[:10]
+            ],
         )
         conv.write_metric("RESCHEDULE_FLOW_AMBIGUOUS_DATE", len(matches))
 
         # Try to build disambiguation labels — first by type, then by time
         type_labels = [appointment_type_label(m.event_id) for m in matches]
         unique_types = set(type_labels)
-        can_disambiguate_by_type = len(unique_types) > 1 and "appointment" not in unique_types
+        can_disambiguate_by_type = (
+            len(unique_types) > 1 and "appointment" not in unique_types
+        )
 
         if can_disambiguate_by_type:
             labels = [f"the {lbl}" for lbl in type_labels]
         else:
             # Try time-based disambiguation using already-loaded appointment data
-            plog.info(f"{log_prefix} type labels insufficient ({type_labels}); trying time-based")
-            times: list[str | None] = [_readable_time(m.appointment_date) for m in matches]
+            plog.info(
+                f"{log_prefix} type labels insufficient ({type_labels}); trying time-based"
+            )
+            times: list[str | None] = [
+                _readable_time(m.appointment_date) for m in matches
+            ]
 
             non_none_times = [t for t in times if t is not None]
             can_disambiguate_by_time = len(non_none_times) == len(matches) and len(
@@ -139,7 +154,9 @@ def reschedule_date_of_appointment_given(
                 )
 
         # Store matches for the disambiguation step
-        conv.state.reschedule_ambiguous_matches = [m.model_dump(mode="json") for m in matches]
+        conv.state.reschedule_ambiguous_matches = [
+            m.model_dump(mode="json") for m in matches
+        ]
         when = _readable_date(matches[0].appointment_date)
         options = " or ".join(labels)
         plog.info(f"{log_prefix} disambiguating: {options}", is_pii=True)
@@ -167,8 +184,8 @@ def reschedule_date_of_appointment_given(
     )
 
     if not is_follow_up_appointment(chosen):
-        conv.write_metric("RESCHEDULE_FLOW_NON_FOLLOW_UP")
-        conv.write_metric("RESCHEDULE_OOS")
+        conv.write_metric("RESCHEDULE_FLOW_NON_FOLLOW_UP", True)
+        conv.write_metric("RESCHEDULE_OOS", True)
         return handoff(
             conv,
             reason="RESCHEDULE_NON_FOLLOW_UP",
@@ -180,7 +197,7 @@ def reschedule_date_of_appointment_given(
 
     if chosen.is_rescheduled is True:
         plog.info(f"{log_prefix} appointment already rescheduled; exiting flow")
-        conv.write_metric("RESCHEDULE_FLOW_ALREADY_RESCHEDULED")
+        conv.write_metric("RESCHEDULE_FLOW_ALREADY_RESCHEDULED", True)
         conv.state.pending_transfer_reason = "RESCHEDULE_ALREADY_RESCHEDULED"
         conv.exit_flow()
         return {
