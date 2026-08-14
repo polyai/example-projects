@@ -42,9 +42,9 @@ content: |-
 
   3. Some codes have expiry dates; has the discount code expired?
 example_queries:
-  - Why is my discount code not working?
-  - mon code promo marche pas
-  - pourquoi mon code de réduction fonctionne pas?
-  - j'arrive pas à appliquer mon rabais
-  - text me the promo link
-  - envoyez-moi le lien des promotions par texto
+- Why is my discount code not working?
+- mon code promo marche pas
+- pourquoi mon code de réduction fonctionne pas?
+- j'arrive pas à appliquer mon rabais
+- text me the promo link
+- envoyez-moi le lien des promotions par texto

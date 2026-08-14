@@ -1,25 +1,16 @@
+from _gen import *  # <AUTO GENERATED>
 from collections import Counter
 from dataclasses import dataclass
 from typing import Any, Optional
 from urllib.parse import parse_qs, urlparse
 
-import requests
-from _gen import *  # <AUTO GENERATED>
-from utils.secret_vault import secret_vault
 
 from .narvar_client import get_shipping_status_detail
 
 
 def _normalize_postal_code(raw: str) -> str:
-    """Normalize a postal code — strip spaces, uppercase, take first part before dash."""
+    """Normalize a postal code -- strip spaces, uppercase, take first part before dash."""
     return raw.split("-")[0].replace(" ", "").upper()
-
-
-def _banner_id_for(conv) -> Optional[int]:
-    brand = conv.state.brand
-    if brand == "Poly Store":
-        return 1
-    return None
 
 
 @dataclass
@@ -64,13 +55,17 @@ class OrderLine:
         return getattr(self, item)
 
     @classmethod
-    def parse_consignment_entries(cls, order: Any, order_line: int) -> list[Consignment]:
+    def parse_consignment_entries(
+        cls, order: Any, order_line: int
+    ) -> list[Consignment]:
         consignments = order.get("consignments", [])
         result = []
         for consignment in consignments:
             for entry in consignment["consignmentEntries"]:
                 if entry["requestingSystemLineNo"] == str(order_line):
-                    qty = next((qty for k, qty in entry.items() if k.endswith("Qty")), 0)
+                    qty = next(
+                        (qty for k, qty in entry.items() if k.endswith("Qty")), 0
+                    )
                     for _ in range(qty):
                         result.append(
                             Consignment(
@@ -97,12 +92,19 @@ class OrderLine:
                 status_str = next(status_counter.elements())
             else:
                 status_str = ", ".join(
-                    [f"{status} ({count} item(s))" for status, count in status_counter.items()]
+                    [
+                        f"{status} ({count} item(s))"
+                        for status, count in status_counter.items()
+                    ]
                 )
 
             # We assume tracking_url will be the same
             shipping_order_number = next(
-                (qty.get_narvar_order_number() for qty in self.consignments if qty.tracking_url),
+                (
+                    qty.get_narvar_order_number()
+                    for qty in self.consignments
+                    if qty.tracking_url
+                ),
                 None,
             )
             self.narvar_order_number = shipping_order_number
@@ -113,7 +115,8 @@ class OrderLine:
         carrier = None
         if self.consignments:
             carrier = next(
-                (c.carrier_display for c in self.consignments if c.carrier_display), None
+                (c.carrier_display for c in self.consignments if c.carrier_display),
+                None,
             )
 
         res = (
@@ -145,9 +148,15 @@ class OrderLine:
                 )
                 if narvar_shipping_details:
                     self.narvar_shipping_status = narvar_shipping_details.status
-                    self.narvar_shipment_status_code = narvar_shipping_details.status_code
-                    self.narvar_shipping_status_location = narvar_shipping_details.status_location
-                    self.narvar_shipment_delivery_date = narvar_shipping_details.delivery_date
+                    self.narvar_shipment_status_code = (
+                        narvar_shipping_details.status_code
+                    )
+                    self.narvar_shipping_status_location = (
+                        narvar_shipping_details.status_location
+                    )
+                    self.narvar_shipment_delivery_date = (
+                        narvar_shipping_details.delivery_date
+                    )
                     res += narvar_shipping_details.get_line_description()
             except Exception as e:
                 # Gracefully degrade if Narvar returns 404 or anything else
@@ -158,7 +167,9 @@ class OrderLine:
                     narvar_order_number=shipping_order_number,
                 )
 
-        tracking_urls = {c.tracking_url for c in self.consignments or [] if c.tracking_url}
+        tracking_urls = {
+            c.tracking_url for c in self.consignments or [] if c.tracking_url
+        }
         conv.log.info(
             "line_description:tracking_urls",
             order_line=self.order_line_number,
@@ -189,178 +200,45 @@ class Order:
         return getattr(self, item)
 
 
-def _parse_order_details(order: Any) -> Order:
-    return Order(
-        order["order"]["orderStatus"].get("orderNumber")
-        or order["order"]["orderRequest"]["flRequestId"],
-        _normalize_postal_code(order["order"]["orderHeader"]["billingAddress"]["postalCode"]),
-        order["order"]["orderHeader"]["billingAddress"].get("countryCode", "US"),
-        order["order"]["user"]["firstName"],
-        order["order"]["user"]["lastName"],
-        order["order"]["user"]["email"],
-        order["order"]["user"]["type"],
-        order["order"]["user"]["id"],
-        order["order"]["user"].get("loyaltyId", None),
-        order["order"]["orderStatus"]["orderStatus"],
-        [
-            OrderLine(
-                group["fullfillmentType"],
-                line["lineNumber"],
-                line["shipMethodDesc"],
-                line.get("expectedDeliveryDate", None),
-                line["product"]["name"],
-                line["product"]["size"],
-                line["product"]["color"],
-                line["product"]["brand"],
-                line["product"].get("category", None),
-                line["quantity"],
-                line["product"]["sku"],
-                line["product"]["productNumber"],
-                OrderLine.parse_consignment_entries(order["order"], line["lineNumber"]) or [],
-            )
-            for group in order["order"]["fullfillmentGrouping"]
-            for line in group["orderLines"]
-        ],
-        order["order"]["orderHeader"].get("orderDateTime", None),
-    )
+def get_orders_by_phone_number(
+    conv: Conversation, phone_number: str, timeout=None
+) -> list[Order]:
+    """Look up orders by phone number.
 
-
-def get_orders_by_phone_number(conv: Conversation, phone_number: str, timeout=None) -> list[Order]:
-    """Get orders by phone number. Delegates to MAO SearchV2 when USE_MAO_API flag is set.
-
-    When USE_MAO_API is set, tries MAO first. If no results found and we're in the
-    transition window, falls back to the legacy OMS/Apigee API for historical orders.
+    Delegates to the mock/real backend returned by get_oms_api().
+    Replace get_oms_api() with your OMS integration.
     """
-    mock = get_oms_api(conv)
-    if mock:
-        return mock.get_orders_by_phone_number(conv, phone_number, timeout=timeout)
-
-    return _get_orders_by_phone_legacy(conv, phone_number, timeout=timeout)
-
-
-def _get_orders_by_phone_legacy(conv: Conversation, phone_number: str, timeout=None) -> list[Order]:
-    """Get orders by phone number via legacy OMS/Apigee API."""
-    banner_id = _banner_id_for(conv)
-    if banner_id is None:
-        conv.log.error("OMS legacy: unknown brand for phone lookup", brand=conv.state.brand)
-        return []
-
-    conv.log.info("OMS legacy: phone search", banner_id=banner_id)
-    resp = _make_request(
-        conv,
-        "GET",
-        f"orders/banners/{banner_id}/orders/?phone={phone_number}",
-        None,
-        timeout=timeout,
+    api = get_oms_api(conv)
+    if api:
+        return api.get_orders_by_phone_number(conv, phone_number, timeout=timeout)
+    # No real implementation -- add your OMS integration here.
+    conv.log.warning(
+        "oms_connector: no backend configured for get_orders_by_phone_number"
     )
-    conv.log.info("OMS legacy: phone search result", order_count=len(resp))
-    return [_parse_order_details(order) for order in resp]
+    return []
 
 
-def get_orders_by_email(conv: Conversation, email: str, timeout=None) -> list[Order]:
-    """Get orders by email"""
-    banner_id = _banner_id_for(conv)
-    if banner_id is None:
-        conv.log.error("OMS: unknown brand for email lookup", brand=conv.state.brand)
-        return []
-
-    resp = _make_request(
-        conv,
-        "GET",
-        f"orders/banners/{banner_id}/orders/?email={email}",
-        None,
-        timeout=timeout,
-    )
-    return [_parse_order_details(order) for order in resp]
-
-
-def get_order_details(conv: Conversation, order_number: str, timeout=None) -> Optional[Order]:
-    """Get order by order number. Delegates to MAO when USE_MAO_API flag is set.
-
-    When USE_MAO_API is set, tries MAO Order API first (full detail with tracking).
-    Falls back to legacy OMS for historical orders during transition.
-    """
-    mock = get_oms_api(conv)
-    if mock:
-        return mock.get_order_details(conv, order_number, timeout=timeout)
-
-    return _get_order_details_legacy(conv, order_number, timeout=timeout)
-
-
-def _get_order_details_legacy(
+def get_order_details(
     conv: Conversation, order_number: str, timeout=None
 ) -> Optional[Order]:
-    """Get order by order number via legacy OMS/Apigee API."""
-    conv.log.info("OMS legacy: order lookup", order_number=order_number)
-    resp = _make_request(conv, "GET", f"orders/{order_number}", None, timeout=timeout)
+    """Look up a single order by order number.
 
-    if "errors" in resp:
-        conv.log.info("OMS legacy: order not found", order_number=order_number)
-        return None
-
-    order = _parse_order_details(resp)
-    conv.log.info(
-        "OMS legacy: order found",
-        order_number=order.order_number,
-        order_status=order.order_status,
-    )
-    return order
-
-
-def _make_request(
-    conv: Conversation,
-    http_method: str,
-    endpoint: str,
-    payload: Optional[dict[str, Any]],
-    timeout: Optional[int] = None,
-):
-    vault_name = "oms_mock_api" if conv.state.OMS_API_USE_MOCK else "oms_api"
-    vault = secret_vault(vault_name)
-    if conv.real_time_config.get("oms_api_env") == "prod" or conv.env == "live":
-        vault = secret_vault("oms_prod_api")
-    x_api_key = vault.get("API_KEY")
-    base_url = vault.get("BASE_URL")
-
-    headers = {"Content-Type": "application/json", "X-API-KEY": x_api_key}
-
-    full_url = f"{base_url}/{endpoint}"
-    conv.log.info(
-        "OMS legacy: request",
-        http_method=http_method,
-        url=full_url,
-        vault=vault_name,
-        timeout=timeout,
-    )
-    response = requests.request(
-        method=http_method, url=full_url, headers=headers, json=payload, timeout=timeout
-    )
-    try:
-        response_data = response.json()
-    except ValueError:
-        response_data = response.text
-
-    if response.status_code not in [200, 404]:
-        conv.log.error(
-            "OMS legacy: request error",
-            status_code=response.status_code,
-            url=full_url,
-            http_method=http_method,
-            response=response_data,
-        )
-    else:
-        conv.log.info(
-            "OMS legacy: request complete",
-            status_code=response.status_code,
-            url=full_url,
-            response=response_data,
-        )
-
-    response.raise_for_status()
-    return response_data
+    Delegates to the mock/real backend returned by get_oms_api().
+    Replace get_oms_api() with your OMS integration.
+    """
+    api = get_oms_api(conv)
+    if api:
+        return api.get_order_details(conv, order_number, timeout=timeout)
+    # No real implementation -- add your OMS integration here.
+    conv.log.warning("oms_connector: no backend configured for get_order_details")
+    return None
 
 
 def get_oms_api(conv):
-    """Return MockOmsConnector when USE_MOCK_API is set, otherwise None (use module functions directly)."""
+    """Return MockOmsConnector when USE_MOCK_API is set, otherwise None.
+
+    To integrate a real OMS, return your client object here instead of None.
+    """
     if getattr(conv.state, "USE_MOCK_API", False):
         from .mock_api import get_mock_oms
 
@@ -368,15 +246,6 @@ def get_oms_api(conv):
     return None
 
 
-@func_description(
-    "Connector for OMS APIs. It's used to for OMS operations such as retrieving order details."
-)
-@func_parameter("phone_number", "phone number")
-def oms_connector(conv: Conversation, phone_number: str):
-    # Add your function definition here.
-    # You can optionally return a string that will be fed back to the LLM.
-    resp = get_order_details(conv, phone_number)
-    if resp is not None:
-        for order in resp.order_lines:
-            print(order.line_description(conv))
-    return str(resp)
+@func_description("Connector for OMS APIs")
+def oms_connector(conv: Conversation):
+    pass

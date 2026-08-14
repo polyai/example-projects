@@ -8,8 +8,8 @@ actions: |-
   If the user still can't see the email, call {{fn:pre_handoff}}  with handoff_reason ="Orders-email_not_received", and utterance = "Let me put you through to someone who can help figure this out. One sec."
 content: Sometimes our emails can end up in the spam or junk folder.
 example_queries:
-  - I didn't get an email confirmation for my order
-  - Can you resend my email confirmation? I never got one
-  - j'ai pas reçu de courriel de confirmation pour ma commande
-  - est-ce que vous pouvez me renvoyer la confirmation?
-  - j'ai jamais reçu mon courriel de commande
+- I didn't get an email confirmation for my order
+- Can you resend my email confirmation? I never got one
+- j'ai pas reçu de courriel de confirmation pour ma commande
+- est-ce que vous pouvez me renvoyer la confirmation?
+- j'ai jamais reçu mon courriel de commande

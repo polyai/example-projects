@@ -1,6 +1,5 @@
 import re
 from collections.abc import Iterator
-from typing import Optional
 
 from _gen import *  # <AUTO GENERATED>
 from functions.transfer_call import transfer_call
@@ -56,7 +55,7 @@ def invert_list_dict(list_dict) -> dict:
 
 
 def try_alternative_transcripts(
-    conv: Conversation, digits: int, max_digits: Optional[int] = None
+    conv: Conversation, digits: int, max_digits: int | None = None
 ) -> Iterator[str]:
     """
     Match all number with `digits` count but not more than `max_digits`. By default, max_digits == digits
@@ -65,7 +64,9 @@ def try_alternative_transcripts(
         max_digits = digits
     pattern = re.compile(rf"\b(?:\d[\s\.\-]*){{{digits},{max_digits}}}\b")
     for transcript in conv.transcript_alternatives:
-        cleaned = re.sub(r"(?<=\d)\s+(?=\d)", "", transcript)  # remove space between digits
+        cleaned = re.sub(
+            r"(?<=\d)\s+(?=\d)", "", transcript
+        )  # remove space between digits
         print(">>>>1", cleaned)
         yield from pattern.findall(cleaned)
 
@@ -73,7 +74,9 @@ def try_alternative_transcripts(
         text = transcript
         for incorrect, correct in invert_list_dict(DIGIT_ASR_CORRECTIONS).items():
             text = re.sub(incorrect, correct, text, flags=re.IGNORECASE)
-        cleaned_text = re.sub(r"(?<=\d)\s+(?=\d)", "", text)  # remove space between digits
+        cleaned_text = re.sub(
+            r"(?<=\d)\s+(?=\d)", "", text
+        )  # remove space between digits
         print(">>>>2", cleaned_text)
         yield from pattern.findall(cleaned_text)
 

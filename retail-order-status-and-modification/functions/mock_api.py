@@ -1,7 +1,7 @@
+from _gen import *  # <AUTO GENERATED>
 from datetime import datetime, timedelta
 from typing import Any, Optional
 
-from _gen import *  # <AUTO GENERATED>
 
 from .oms_connector import Consignment, Order, OrderLine
 
@@ -52,7 +52,9 @@ _ORDER_001 = Order(
                     shipping_status="SHIPPED",
                     cancel_reason=None,
                     tracking_url="https://tracking.example.com/track?order_number=NAR-P1032847561&carrier=UPS",
-                    modified_date=(_NOW - timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    modified_date=(_NOW - timedelta(days=1)).strftime(
+                        "%Y-%m-%dT%H:%M:%SZ"
+                    ),
                     carrier_display="UPS",
                 ),
             ],
@@ -75,7 +77,9 @@ _ORDER_001 = Order(
                     shipping_status="SHIPPED",
                     cancel_reason=None,
                     tracking_url="https://tracking.example.com/track?order_number=NAR-P1032847561&carrier=UPS",
-                    modified_date=(_NOW - timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    modified_date=(_NOW - timedelta(days=1)).strftime(
+                        "%Y-%m-%dT%H:%M:%SZ"
+                    ),
                     carrier_display="UPS",
                 ),
             ],
@@ -100,7 +104,9 @@ _ORDER_002 = Order(
             fulfilment_type="SHIP",
             order_line_number=1,
             ship_method="Standard Shipping",
-            expected_delivery_date=(_NOW + timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            expected_delivery_date=(_NOW + timedelta(days=7)).strftime(
+                "%Y-%m-%dT%H:%M:%SZ"
+            ),
             product_name="Backpack",
             product_size="One Size",
             product_color="Navy",
@@ -147,7 +153,9 @@ _ORDER_003 = Order(
             fulfilment_type="SHIP",
             order_line_number=1,
             ship_method="Express Shipping",
-            expected_delivery_date=(_NOW - timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            expected_delivery_date=(_NOW - timedelta(days=7)).strftime(
+                "%Y-%m-%dT%H:%M:%SZ"
+            ),
             product_name="Sneakers",
             product_size="8",
             product_color="White/Pink",
@@ -161,7 +169,9 @@ _ORDER_003 = Order(
                     shipping_status="PICKED_BY_CUST",
                     cancel_reason=None,
                     tracking_url="https://tracking.example.com/track?order_number=NAR-P1031956738&carrier=FedEx",
-                    modified_date=(_NOW - timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    modified_date=(_NOW - timedelta(days=7)).strftime(
+                        "%Y-%m-%dT%H:%M:%SZ"
+                    ),
                     carrier_display="FedEx",
                 ),
             ],
@@ -195,9 +205,15 @@ _CUSTOMERS_BY_PHONE: dict[str, dict] = {
 class MockOmsConnector:
     """Drop-in replacement for oms_connector functions."""
 
-    def get_orders_by_phone_number(self, conv, phone_number: str, timeout=10) -> list[Order]:
+    def get_orders_by_phone_number(
+        self, conv, phone_number: str, timeout=10
+    ) -> list[Order]:
         # Strip leading country code '1' if present
-        digits = phone_number.lstrip("+").lstrip("1") if len(phone_number) > 10 else phone_number
+        digits = (
+            phone_number.lstrip("+").lstrip("1")
+            if len(phone_number) > 10
+            else phone_number
+        )
         conv.log.info("MockOmsConnector:get_orders_by_phone_number", phone=digits)
         return list(_ORDERS_BY_PHONE.get(digits, []))
 
@@ -283,7 +299,11 @@ class MockZendeskClient:
 
     def search_user_phone(self, conv, phone_number: str):
         conv.log.info("MockZendeskClient:search_user_phone", phone=phone_number)
-        digits = phone_number.lstrip("+").lstrip("1") if len(phone_number) > 10 else phone_number
+        digits = (
+            phone_number.lstrip("+").lstrip("1")
+            if len(phone_number) > 10
+            else phone_number
+        )
         customer = _CUSTOMERS_BY_PHONE.get(digits)
         if customer:
             return {
@@ -328,8 +348,14 @@ class MockZendeskClient:
 class MockCustomerCoreApi:
     """Stub replacement for customer_core_api functions."""
 
-    def get_customers_by_phone(self, conv, phone_number: str, country_code: str = "1", timeout=10):
-        digits = phone_number.lstrip("+").lstrip("1") if len(phone_number) > 10 else phone_number
+    def get_customers_by_phone(
+        self, conv, phone_number: str, country_code: str = "1", timeout=10
+    ):
+        digits = (
+            phone_number.lstrip("+").lstrip("1")
+            if len(phone_number) > 10
+            else phone_number
+        )
         conv.log.info("MockCustomerCoreApi:get_customers_by_phone", phone=digits)
         customer = _CUSTOMERS_BY_PHONE.get(digits)
         if customer:
@@ -337,7 +363,11 @@ class MockCustomerCoreApi:
         return {"results": []}
 
     def get_email_by_phone(self, conv, phone_number: str, timeout=10) -> Optional[str]:
-        digits = phone_number.lstrip("+").lstrip("1") if len(phone_number) > 10 else phone_number
+        digits = (
+            phone_number.lstrip("+").lstrip("1")
+            if len(phone_number) > 10
+            else phone_number
+        )
         conv.log.info("MockCustomerCoreApi:get_email_by_phone", phone=digits)
         customer = _CUSTOMERS_BY_PHONE.get(digits)
         return customer["email"] if customer else None

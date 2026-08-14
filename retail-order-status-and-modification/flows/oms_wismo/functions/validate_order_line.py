@@ -1,5 +1,6 @@
-# from flows.oms_wismo.functions.determine_order_status import determine_order_status, _shipment_key
 from _gen import *  # <AUTO GENERATED>
+
+# from flows.oms_wismo.functions.determine_order_status import determine_order_status, _shipment_key
 from flows.oms_wismo.functions.determine_order_status import (
     _status_bucket_key,
     determine_order_status,
@@ -18,7 +19,9 @@ def validate_order_line(
     if order_line_number not in [str(order.order_line_number) for order in lines]:
         return "The order with the given number can't be found. Please try again."
 
-    picked = next(order for order in lines if str(order.order_line_number) == order_line_number)
+    picked = next(
+        order for order in lines if str(order.order_line_number) == order_line_number
+    )
     # key = _shipment_key(picked)
     key = _status_bucket_key(picked)
 

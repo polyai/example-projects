@@ -6,7 +6,9 @@ from _gen import *  # <AUTO GENERATED>
 def process_cancel_order(conv: Conversation, flow: Flow, reason: str):
     order = conv.state.order_details
     if not order:
-        return {"content": "No order loaded. The customer needs to go through verification first."}
+        return {
+            "content": "No order loaded. The customer needs to go through verification first."
+        }
 
     order_number = order.order_number
 

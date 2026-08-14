@@ -8,22 +8,22 @@ actions: |-
   IMPORTANT: Do NOT ask the user for their order number yourself. The {{fn:track_order}} function handles all order number collection. Your only job is to call the function.
 content: Immediately call the track_order function.
 example_queries:
-  - Where's my order?
-  - can you give me an update on my order?
-  - when will my order be shipping
-  - how long until I get my shoes
-  - I need you to track my order for me.
-  - confirm order status
-  - My package still hasn't arrived, can you check on my order
-  - I ordered some shoes from you online and I've been waiting and waiting.
-  - where are my sneakers
-  - où est ma commande?
-  - j'aimerais savoir où en est ma commande
-  - je veux suivre ma commande
-  - est-ce que je peux avoir une mise à jour sur ma commande?
-  - quand est-ce que ma commande va arriver?
-  - je veux savoir le statut de ma commande
-  - j'attends toujours mon colis
-  - est-ce que vous pouvez vérifier ma commande?
-  - can you send me a tracking link by text?
-  - envoyez-moi le lien de suivi par texto
+- Where's my order?
+- can you give me an update on my order?
+- when will my order be shipping
+- how long until I get my shoes
+- I need you to track my order for me.
+- confirm order status
+- My package still hasn't arrived, can you check on my order
+- I ordered some shoes from you online and I've been waiting and waiting.
+- where are my sneakers
+- où est ma commande?
+- j'aimerais savoir où en est ma commande
+- je veux suivre ma commande
+- est-ce que je peux avoir une mise à jour sur ma commande?
+- quand est-ce que ma commande va arriver?
+- je veux savoir le statut de ma commande
+- j'attends toujours mon colis
+- est-ce que vous pouvez vérifier ma commande?
+- can you send me a tracking link by text?
+- envoyez-moi le lien de suivi par texto

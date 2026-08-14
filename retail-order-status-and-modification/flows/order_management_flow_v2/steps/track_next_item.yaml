@@ -13,13 +13,6 @@ asr_biasing:
   yes_no: false
   address: false
   custom_keywords: []
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 3
-  max_digits: 0
-  end_key: ""
-  collect_while_agent_speaking: true
-  is_pii: false
 prompt: |-
   If the user mentioned that they'd like to track another item, and has mentioned the item by name, immediately call the function:  {{ft:validate_order_line_1}} 
   with the "Order Line" best matching $next_item. If the user said "yes" to your offer to track a specific item, then the order line is that specific item. 

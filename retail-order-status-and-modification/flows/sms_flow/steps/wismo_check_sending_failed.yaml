@@ -13,13 +13,6 @@ asr_biasing:
   yes_no: false
   address: false
   custom_keywords: []
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 3
-  max_digits: 0
-  end_key: ""
-  collect_while_agent_speaking: true
-  is_pii: false
 prompt: |-
   # TRACKING OTHER ITEMS IN THE CURRENT ORDER
   If user mentions they want to track another item in their order, call the function: {{ft:track_another_item}} 

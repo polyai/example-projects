@@ -1,22 +1,21 @@
 name: Delivery_Issues-wrong_item_received
 enabled: true
-actions:
-  If the user says they've received the wrong item in their order, immediately, without
-  saying anything, call {{fn:pre_handoff}} with handoff_reason
+actions: If the user says they've received the wrong item in their order, immediately, without 
+  saying anything, call {{fn:pre_handoff}} with handoff_reason 
   ="Delivery_Issues-wrong_item_received", and utterance = "Let me put you through to someone who can
   help. One sec"
-content: ""
+content: ''
 example_queries:
-  - I received the wrong item
-  - My order just came and it's the wrong one
-  - My order was wrong
-  - I received sneakers in a size 9, but I ordered an 8
-  - I got the wrong pair of shoes in my parcel
-  - I ordered the black and gold, but you sent me the white and silver colorway
-  - You guys messed up my order
-  - I just opened my package and you've sent the wrong pair of sneakers
-  - I ordered an XXL but I received an XL
-  - j'ai reçu le mauvais article
-  - ma commande est pas la bonne
-  - vous m'avez envoyé la mauvaise taille
-  - j'ai reçu les mauvais souliers
+- I received the wrong item
+- My order just came and it's the wrong one
+- My order was wrong
+- I received sneakers in a size 9, but I ordered an 8
+- I got the wrong pair of shoes in my parcel
+- I ordered the black and gold, but you sent me the white and silver colorway
+- You guys messed up my order
+- I just opened my package and you've sent the wrong pair of sneakers
+- I ordered an XXL but I received an XL
+- j'ai reçu le mauvais article
+- ma commande est pas la bonne
+- vous m'avez envoyé la mauvaise taille
+- j'ai reçu les mauvais souliers

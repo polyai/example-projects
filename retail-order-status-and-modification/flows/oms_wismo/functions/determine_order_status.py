@@ -48,14 +48,18 @@ def determine_order_status(conv: Conversation, flow: Flow):
     ):
         order_items_listing = ""
         for item in conv.state.order_details.order_lines:
-            order_items_listing += f"- {item.line_description(conv=conv, include_status=False)}.\n"
+            order_items_listing += (
+                f"- {item.line_description(conv=conv, include_status=False)}.\n"
+            )
         conv.state.order_items_listing = order_items_listing
         flow.goto_step("Decide which item to look at")
         return
 
     # caller has picked an item, or there's only one item, or all item share the same shipping_status and fullfillment type
     item = conv.state.picked_order or conv.state.order_details.order_lines[0]
-    conv.state.item_fulfilment_type = "shipping" if item["fulfilment_type"] == "SHIP" else "pick up"
+    conv.state.item_fulfilment_type = (
+        "shipping" if item["fulfilment_type"] == "SHIP" else "pick up"
+    )
 
     auto_scope = getattr(conv.state, "picked_shipment_lines", None)
     if not auto_scope or len(auto_scope) == 1:
@@ -150,7 +154,9 @@ def determine_order_status(conv: Conversation, flow: Flow):
     else:
         description = "The items are as follows:\n"
         for it in items_in_scope:
-            description += f"- {it.line_description(conv=conv, include_line_number=False)}\n"
+            description += (
+                f"- {it.line_description(conv=conv, include_line_number=False)}\n"
+            )
         conv.state.product_description = description
 
     # FOR TESTING PROMPTING
@@ -284,7 +290,9 @@ def determine_order_status(conv: Conversation, flow: Flow):
         # flow.goto_step("Handoff")
 
     elif conv.state.order_status == "CANCELLED":
-        if item.consignments and all(qty.cancel_reason == "NLA" for qty in item.consignments):
+        if item.consignments and all(
+            qty.cancel_reason == "NLA" for qty in item.consignments
+        ):
             # NLA = item no longer available
             print(">>>>>002")
             return {
@@ -305,7 +313,11 @@ def determine_order_status(conv: Conversation, flow: Flow):
                 "Ah, I've found your order but I think you'll need to speak to someone else about it. One sec while I put you through.",
             )
 
-    elif conv.state.order_status in ["SUBMITTED", "WAIT_FRAUD_SYSTEM_CHECK", "FRAUD_CHECKED"]:
+    elif conv.state.order_status in [
+        "SUBMITTED",
+        "WAIT_FRAUD_SYSTEM_CHECK",
+        "FRAUD_CHECKED",
+    ]:
         print(">>>>>004")
         if conv.state.item_fulfilment_type == "shipping":
             return {
@@ -356,7 +368,9 @@ def determine_order_status(conv: Conversation, flow: Flow):
                     "Ah, I see your order but I think you'll need to speak to someone else about it. One sec while I put you through.",
                 )
 
-        elif scope_consignments and all(s in ["CREATED", "SUBMITTED"] for s in scope_statuses):
+        elif scope_consignments and all(
+            s in ["CREATED", "SUBMITTED"] for s in scope_statuses
+        ):
             print(">>>>>3")
             if conv.state.item_fulfilment_type == "shipping":
                 return {
@@ -379,7 +393,11 @@ def determine_order_status(conv: Conversation, flow: Flow):
         elif scope_consignments and all(s == "SHIPPED" for s in scope_statuses):
             print(">>>>>4")
             # Aggregate ALL tracking links for the current scope
-            urls = {c.tracking_url for c in scope_consignments if getattr(c, "tracking_url", None)}
+            urls = {
+                c.tracking_url
+                for c in scope_consignments
+                if getattr(c, "tracking_url", None)
+            }
             conv.state.tracking_urls = list(urls)
             conv.state.tracking_url = next(iter(urls), "")  # legacy single link
             return {
@@ -452,7 +470,11 @@ def determine_order_status(conv: Conversation, flow: Flow):
         elif scope_consignments and shipping_statuses.issubset(["SHIPPED"]):
             print(">>>>>D")
             # Aggregate ALL tracking links for the current scope
-            urls = {c.tracking_url for c in scope_consignments if getattr(c, "tracking_url", None)}
+            urls = {
+                c.tracking_url
+                for c in scope_consignments
+                if getattr(c, "tracking_url", None)
+            }
             conv.state.tracking_urls = list(urls)
             conv.state.tracking_url = next(iter(urls), "")
             return {
@@ -471,7 +493,12 @@ def determine_order_status(conv: Conversation, flow: Flow):
             print(">>>>>E")
             # Representative link from scope if present (usually empty here)
             conv.state.tracking_url = next(
-                (c.tracking_url for c in scope_consignments if getattr(c, "tracking_url", None)), ""
+                (
+                    c.tracking_url
+                    for c in scope_consignments
+                    if getattr(c, "tracking_url", None)
+                ),
+                "",
             )
             return {
                 "content": conv.state.pickedup_content,
@@ -496,7 +523,9 @@ def setup_order_entries_disambiguation_step(conv: Conversation, item):
         f"Fulfillment Type: {item.fulfilment_type}. "
     )
 
-    status_counter = Counter(f"{consignment.shipping_status}" for consignment in item.consignments)
+    status_counter = Counter(
+        f"{consignment.shipping_status}" for consignment in item.consignments
+    )
 
     item_entries_description = ""
     for status, count in status_counter.items():

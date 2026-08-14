@@ -31,7 +31,9 @@ def user_spoke_since_last_silence(conv: Conversation):
     "Whether the user has requested time or not in a previous turn. Check up to the last THREE user turns to make sure this value is correct; if the user has asked you to wait in one of the last three turns, this value will be TRUE. Defaults to TRUE.",
 )
 @func_parameter("times_called", "Number of times this function has been called")
-def handle_wait_and_silence(conv: Conversation, user_requested_wait: bool, times_called: int):
+def handle_wait_and_silence(
+    conv: Conversation, user_requested_wait: bool, times_called: int
+):
     # Determine if user was silent this turn
     user_silent = True  # Defaults to silent if no user event found
     for event in reversed(conv.history):
@@ -62,7 +64,9 @@ def handle_wait_and_silence(conv: Conversation, user_requested_wait: bool, times
     # User is silent
     if conv.state.user_requested_wait:
         # In wait mode, track wait turns
-        conv.state.wait_turns = conv.state.wait_turns + 1 if conv.state.wait_turns else 1
+        conv.state.wait_turns = (
+            conv.state.wait_turns + 1 if conv.state.wait_turns else 1
+        )
         # User exceeds wait period
         if conv.state.wait_turns >= 2:
             conv.state.user_requested_wait = False  # Exit wait mode

@@ -1,7 +1,7 @@
+from _gen import *  # <AUTO GENERATED>
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from _gen import *  # <AUTO GENERATED>
 
 from .utterances import utterance
 

@@ -1,5 +1,7 @@
 from _gen import *  # <AUTO GENERATED>
-from functions.is_ooh import is_ooh  # refactored this out so can be shared with pre-handoff
+from functions.is_ooh import (
+    is_ooh,
+)  # refactored this out so can be shared with pre-handoff
 
 from .create_call_summary import get_call_summary_prompt
 from .utterances import utterance as get_utterance

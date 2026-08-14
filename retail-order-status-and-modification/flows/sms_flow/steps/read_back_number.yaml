@@ -13,13 +13,6 @@ asr_biasing:
   yes_no: true
   address: false
   custom_keywords: []
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 3
-  max_digits: 0
-  end_key: ""
-  collect_while_agent_speaking: true
-  is_pii: false
 prompt: |-
   Read back the phone number digit by digit in groups of 3-3-4 with pauses between groups.
   Say each digit individually — never as a large number.

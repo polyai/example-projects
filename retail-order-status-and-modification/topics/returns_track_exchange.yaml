@@ -29,11 +29,11 @@ content: |-
   # If purchased in store:
   {{attr:instore_exchange_policy}}
 example_queries:
-  - My exchange hasn't arrived
-  - Where's my exchange?
-  - i got a refund instead of my exchange
-  - why didn't I get my exchange
-  - missing exchange
-  - status of return
-  - return status
-  - text me the exchange tracking link
+- My exchange hasn't arrived
+- Where's my exchange?
+- i got a refund instead of my exchange
+- why didn't I get my exchange
+- missing exchange
+- status of return
+- return status
+- text me the exchange tracking link

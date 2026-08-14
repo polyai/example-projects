@@ -11,7 +11,9 @@ def extract_and_group_items(text):
     text = re.sub(r"^(The item is |The items are )", "", text, flags=re.IGNORECASE)
 
     # Regex pattern for item name + URL
-    pattern = re.compile(r"(.*?)\s+in\s+.*?\s+category\..*?(https?://\S+)", re.IGNORECASE)
+    pattern = re.compile(
+        r"(.*?)\s+in\s+.*?\s+category\..*?(https?://\S+)", re.IGNORECASE
+    )
 
     groups = defaultdict(list)
 

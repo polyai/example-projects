@@ -5,7 +5,10 @@ from functions.utterances import utterance
 @func_description("Determine what the user needs next.")
 def ask_what_user_needs_next(conv: Conversation, flow: Flow):
     # if conv.state.remaining_items and len(conv.state.remaining_items) >= 1:
-    if conv.state.looked_at and len(conv.state.looked_at) < conv.state.total_order_lines:
+    if (
+        conv.state.looked_at
+        and len(conv.state.looked_at) < conv.state.total_order_lines
+    ):
         if conv.state.user_wants_all_items:
             return {
                 "utterance": utterance(conv, "wismo_next_item"),

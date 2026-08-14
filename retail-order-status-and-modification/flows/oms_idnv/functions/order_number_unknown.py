@@ -9,4 +9,6 @@ def order_number_unknown(conv: Conversation, flow: Flow):
         conv.state.full_order_number_not_given = True
         conv.say(utterance(conv, "idnv_order_hint"))
         flow.goto_step("Collect full order number")
-    return transfer_call(conv, "DEFAULT", "IDNV_FAILED", utterance(conv, "transfer_one_second"))
+    return transfer_call(
+        conv, "DEFAULT", "IDNV_FAILED", utterance(conv, "transfer_one_second")
+    )

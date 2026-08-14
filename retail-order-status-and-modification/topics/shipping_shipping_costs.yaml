@@ -15,6 +15,6 @@ content: |-
 
   Would you like me to text you a link to our shipping costs information?
 example_queries:
-  - How much will shipping cost?
-  - how much is overnight shipping?
-  - text me the shipping info
+- How much will shipping cost?
+- how much is overnight shipping?
+- text me the shipping info

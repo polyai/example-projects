@@ -19,7 +19,9 @@ def validate_order_line_1(conv: Conversation, flow: Flow, order_line_number: str
         if str(order.order_line_number) == order_line_number
     )
     conv.state.remaining_items = [
-        order for order in conv.state.order_details.order_lines if order != conv.state.picked_order
+        order
+        for order in conv.state.order_details.order_lines
+        if order != conv.state.picked_order
     ]
 
     determine_order_status_1(conv, flow)

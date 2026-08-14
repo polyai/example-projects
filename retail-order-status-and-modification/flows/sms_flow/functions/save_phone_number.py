@@ -2,7 +2,9 @@ from _gen import *  # <AUTO GENERATED>
 
 
 @func_description("Save user phone number")
-@func_parameter("sms_phone_number", "the number to use (must have been confirmed by the user)")
+@func_parameter(
+    "sms_phone_number", "the number to use (must have been confirmed by the user)"
+)
 def save_phone_number(conv: Conversation, flow: Flow, sms_phone_number: str):
     from flows.sms_flow.functions.validate_sms_phone_number import (
         cleanup_phone_number,

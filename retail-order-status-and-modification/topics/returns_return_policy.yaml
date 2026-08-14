@@ -35,14 +35,14 @@ content: |-
   - If the user says no, it has not been longer than two weeks, remind them that they can keep tracking their return on the returns portal, and to call back if they haven't received their refund after two weeks.
   - If it has been longer than two weeks, call {{fn:pre_handoff}} with handoff_reason ="Refunds-track_refund", and utterance = "Okay - let me put you through to someone who can help. One sec."
 example_queries:
-  - What's your return policy?
-  - how much is return shipping?
-  - refund policy
-  - lost receipt and want to return
-  - need to know the process on returns and receiving a refund
-  - i have an order from you but need to know how i can return it
-  - i have an order but need to return it
-  - can i get a refund for my order
-  - can i return instore?
-  - if i bought instore can I return online?
-  - text me the returns link
+- What's your return policy?
+- how much is return shipping?
+- refund policy
+- lost receipt and want to return
+- need to know the process on returns and receiving a refund
+- i have an order from you but need to know how i can return it
+- i have an order but need to return it
+- can i get a refund for my order
+- can i return instore?
+- if i bought instore can I return online?
+- text me the returns link

@@ -1,7 +1,7 @@
+from _gen import *  # <AUTO GENERATED>
 import json
 import logging
 
-from _gen import *  # <AUTO GENERATED>
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +49,9 @@ def try_normalize_order_number(conv: Conversation, raw_order_number: str) -> str
     ).replace("$raw_order_number", raw_order_number)
 
     try:
-        result = conv.utils.prompt_llm(prompt=prompt, show_history=False, return_json=True)
+        result = conv.utils.prompt_llm(
+            prompt=prompt, show_history=False, return_json=True
+        )
         if isinstance(result, str):
             result = json.loads(result)
 
@@ -63,6 +65,8 @@ def try_normalize_order_number(conv: Conversation, raw_order_number: str) -> str
     return None
 
 
-@func_description("LLM-based order number normalization for French/English spoken input.")
+@func_description(
+    "LLM-based order number normalization for French/English spoken input."
+)
 def normalize_order_number(conv: Conversation, flow: Flow):
     pass

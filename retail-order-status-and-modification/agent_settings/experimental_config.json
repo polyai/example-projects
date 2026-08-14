@@ -144,14 +144,6 @@
       }
     }
   },
-  "memory": {
-    "repeat_caller": {
-      "analytics_enabled": true,
-      "state_keys": [
-        "zd_requester_id"
-      ]
-    }
-  },
   "prompts": {
     "silence": "The user is silent."
   },

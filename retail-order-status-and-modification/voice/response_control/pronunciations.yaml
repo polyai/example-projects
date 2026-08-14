@@ -1,310 +1,316 @@
 pronunciations:
-  - regex: \$(\d)\.99
-    replacement: \1 ninety nine
-    case_sensitive: false
-    language_code: en-US
-  - regex: "!"
-    replacement: .
-    case_sensitive: false
-  - regex: \.com\/loyalty
-    replacement: dot com <break time="0.3s" /> slash loyalty
-    case_sensitive: false
-    language_code: en-US
-  - regex: launch101
-    replacement: Launch one-oh-one
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b(\d)(\d)(\d)(\d)(\d)\b
-    replacement: \1 \2 \3 \4 \5
-    case_sensitive: false
-  - regex: size 0?(\d)(\.0)?,?
-    replacement: size \1
-    case_sensitive: false
-    language_code: en-US
-  - regex: size (\d\d)(\.0)?,?
-    replacement: size \1
-    case_sensitive: false
-    language_code: en-US
-  - regex: size (\d\d)\.5,?
-    replacement: size \1 and a half
-    case_sensitive: false
-    language_code: en-US
-  - regex: size 0?(\d)\.5,?
-    replacement: size \1 and a half
-    case_sensitive: false
-    language_code: en-US
-  - regex: sizes 0?(\d)(\.0)?,?
-    replacement: sizes \1
-    case_sensitive: false
-    language_code: en-US
-  - regex: sizes (\d\d)(\.0)?,?
-    replacement: sizes \1
-    case_sensitive: false
-    language_code: en-US
-  - regex: sizes 0?(\d)\.5,?
-    replacement: sizes \1 and a half
-    case_sensitive: false
-    language_code: en-US
-  - regex: sizes (\d\d)\.5,?
-    replacement: sizes \1 and a half
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b0(\d)\.0,?
-    replacement: \1
-    case_sensitive: false
-  - regex: \b(\d\d)\.0,?
-    replacement: \1
-    case_sensitive: false
-  - regex: \b0(\d)\.5,?
-    replacement: \1 and a half
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b(\d\d)\.5,?
-    replacement: \1 and a half
-    case_sensitive: false
-    language_code: en-US
-  - regex: \.5,?
-    replacement: and a half
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b1\b
-    replacement: one
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b2\b
-    replacement: two
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b3\b
-    replacement: three
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b4\b
-    replacement: four
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b5\b
-    replacement: five
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b6\b
-    replacement: six
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b7\b
-    replacement: seven
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b8\b
-    replacement: eight
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b9\b
-    replacement: nine
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b0\b
-    replacement: zero
-    case_sensitive: false
-    language_code: en-US
-  - regex: 3\s?\-\s?5 (business )?days
-    replacement: three to five business days
-    case_sensitive: false
-    language_code: en-US
-  - regex: \bsize L\b
-    replacement: size large
-    case_sensitive: false
-    language_code: en-US
-  - regex: \bsize M\b
-    replacement: size medium
-    case_sensitive: false
-    language_code: en-US
-  - regex: \bsize S\b
-    replacement: size small
-    case_sensitive: false
-    language_code: en-US
-  - regex: www.example-store.com
-    replacement: W, W, W, dot, example store, dot com
-    case_sensitive: false
-    language_code: en-US
-  - regex: support@example-store.com
-    replacement: support, at example store, dot com
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b(\d)(\d)(\d)-?(\d)(\d)(\d)-?(\d)(\d)(\d)\b
-    replacement: \1 \2 \3; \4 \5 \6; \7 \8 \9
-    case_sensitive: false
-    language_code: en-US
-  - regex: \b(\d)(\d)(\d)(\d)(\d)(\d)\b
-    replacement: \1 \2 \3; \4 \5 \6
-    case_sensitive: false
-  - regex: \b\+?(Plus )?(plus )?(\d)(\d)(\d)(\d)-?(\d)(\d)(\d)-?(\d)(\d)(\d)(\d)\b
-    replacement: \1 \2 \3; \4 \5 \6; \7 \8 \9; \10 \11
-    case_sensitive: false
-  - regex: (\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)
-    replacement: \1 \2 \3 \4; \5 \6 \7 \8; \9 \10 \11 \12; \13 \14 \15 \16; \17 \18 \19
-    case_sensitive: false
-  - regex: 3\-5
-    replacement: three to five
-    case_sensitive: false
-    language_code: en-US
-  - regex: 3\-7
-    replacement: three to seven
-    case_sensitive: false
-    language_code: en-US
-  - regex: \$9\.99
-    replacement: nine dollars and ninety-nine cents
-    case_sensitive: false
-    language_code: en-US
-  - regex: \$19\.99
-    replacement: nineteen dollars and ninety-nine cents
-    case_sensitive: false
-    language_code: en-US
-  - regex: \$29\.99
-    replacement: twenty-nine dollars and ninety-nine cents
-    case_sensitive: false
-    language_code: en-US
-  - regex: (\d+),99\s?\$
-    replacement: \1 dollars et quatre-vingt-dix-neuf cents
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \$(\d+)\.99
-    replacement: \1 dollars et quatre-vingt-dix-neuf cents
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: launch101
-    replacement: Launch un-zéro-un
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: taille 0?(\d)(\.0)?,?
-    replacement: taille \1
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: taille (\d\d)(\.0)?,?
-    replacement: taille \1
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: taille (\d\d)\.5,?
-    replacement: taille \1 et demi
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: taille 0?(\d)\.5,?
-    replacement: taille \1 et demi
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: tailles 0?(\d)(\.0)?,?
-    replacement: tailles \1
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: tailles (\d\d)(\.0)?,?
-    replacement: tailles \1
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: tailles 0?(\d)\.5,?
-    replacement: tailles \1 et demi
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: tailles (\d\d)\.5,?
-    replacement: tailles \1 et demi
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \b0(\d)\.5,?
-    replacement: \1 et demi
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \b(\d\d)\.5,?
-    replacement: \1 et demi
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \.5,?
-    replacement: et demi
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \b1\b
-    replacement: un
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \b2\b
-    replacement: deux
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \b3\b
-    replacement: trois
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \b4\b
-    replacement: quatre
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \b5\b
-    replacement: cinq
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \b6\b
-    replacement: six
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \b7\b
-    replacement: sept
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \b8\b
-    replacement: huit
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \b9\b
-    replacement: neuf
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \b0\b
-    replacement: zéro
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: 3\s?\-\s?5 (jours )?ouvrables
-    replacement: trois à cinq jours ouvrables
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \btaille G\b
-    replacement: taille grande
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \btaille M\b
-    replacement: taille moyenne
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \btaille P\b
-    replacement: taille petite
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \b(\d)(\d)(\d)-?(\d)(\d)(\d)-?(\d)(\d)(\d)\b
-    replacement: \1 \2 \3; \4 \5 \6; \7 \8 \9
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: 3\-5
-    replacement: trois à cinq
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: 3\-7
-    replacement: trois à sept
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \$9\.99
-    replacement: neuf dollars et quatre-vingt-dix-neuf cents
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \$19\.99
-    replacement: dix-neuf dollars et quatre-vingt-dix-neuf cents
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: \$29\.99
-    replacement: vingt-neuf dollars et quatre-vingt-dix-neuf cents
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: www.example-store.com
-    replacement: W, W, W, point, example store, point com
-    case_sensitive: false
-    language_code: fr-CA
-  - regex: support@example-store.com
-    replacement: support, arobase, example store, point com
-    case_sensitive: false
-    language_code: fr-CA
+- regex: \$(\d)\.99
+  replacement: \1 ninety nine
+  case_sensitive: false
+  language_code: en-US
+- regex: '!'
+  replacement: .
+  case_sensitive: false
+- regex: \.com\/loyalty
+  replacement: dot com <break time="0.3s" /> slash loyalty
+  case_sensitive: false
+  language_code: en-US
+- regex: launch101
+  replacement: Launch one-oh-one
+  case_sensitive: false
+  language_code: en-US
+- regex: \b(\d)(\d)(\d)(\d)(\d)\b
+  replacement: \1 \2 \3 \4 \5
+  case_sensitive: false
+- regex: size 0?(\d)(\.0)?,?
+  replacement: size \1
+  case_sensitive: false
+  language_code: en-US
+- regex: size (\d\d)(\.0)?,?
+  replacement: size \1
+  case_sensitive: false
+  language_code: en-US
+- regex: size (\d\d)\.5,?
+  replacement: size \1 and a half
+  case_sensitive: false
+  language_code: en-US
+- regex: size 0?(\d)\.5,?
+  replacement: size \1 and a half
+  case_sensitive: false
+  language_code: en-US
+- regex: sizes 0?(\d)(\.0)?,?
+  replacement: sizes \1
+  case_sensitive: false
+  language_code: en-US
+- regex: sizes (\d\d)(\.0)?,?
+  replacement: sizes \1
+  case_sensitive: false
+  language_code: en-US
+- regex: sizes 0?(\d)\.5,?
+  replacement: sizes \1 and a half
+  case_sensitive: false
+  language_code: en-US
+- regex: sizes (\d\d)\.5,?
+  replacement: sizes \1 and a half
+  case_sensitive: false
+  language_code: en-US
+- regex: \b0(\d)\.0,?
+  replacement: \1
+  case_sensitive: false
+- regex: \b(\d\d)\.0,?
+  replacement: \1
+  case_sensitive: false
+- regex: \b0(\d)\.5,?
+  replacement: \1 and a half
+  case_sensitive: false
+  language_code: en-US
+- regex: \b(\d\d)\.5,?
+  replacement: \1 and a half
+  case_sensitive: false
+  language_code: en-US
+- regex: \.5,?
+  replacement: and a half
+  case_sensitive: false
+  language_code: en-US
+- regex: \b1\b
+  replacement: one
+  case_sensitive: false
+  language_code: en-US
+- regex: \b2\b
+  replacement: two
+  case_sensitive: false
+  language_code: en-US
+- regex: \b3\b
+  replacement: three
+  case_sensitive: false
+  language_code: en-US
+- regex: \b4\b
+  replacement: four
+  case_sensitive: false
+  language_code: en-US
+- regex: \b5\b
+  replacement: five
+  case_sensitive: false
+  language_code: en-US
+- regex: \b6\b
+  replacement: six
+  case_sensitive: false
+  language_code: en-US
+- regex: \b7\b
+  replacement: seven
+  case_sensitive: false
+  language_code: en-US
+- regex: \b8\b
+  replacement: eight
+  case_sensitive: false
+  language_code: en-US
+- regex: \b9\b
+  replacement: nine
+  case_sensitive: false
+  language_code: en-US
+- regex: \b0\b
+  replacement: zero
+  case_sensitive: false
+  language_code: en-US
+- regex: 3\s?\-\s?5 (business )?days
+  replacement: three to five business days
+  case_sensitive: false
+  language_code: en-US
+- regex: \bsize L\b
+  replacement: size large
+  case_sensitive: false
+  language_code: en-US
+- regex: \bsize M\b
+  replacement: size medium
+  case_sensitive: false
+  language_code: en-US
+- regex: \bsize S\b
+  replacement: size small
+  case_sensitive: false
+  language_code: en-US
+- regex: www.example-store.com
+  replacement: W, W, W, dot, example store, dot com
+  case_sensitive: false
+  language_code: en-US
+- regex: support@example-store.com
+  replacement: support, at example store, dot com
+  case_sensitive: false
+  language_code: en-US
+- regex: \b(\d)(\d)(\d)-?(\d)(\d)(\d)-?(\d)(\d)(\d)\b
+  replacement: \1 \2 \3; \4 \5 \6; \7 \8 \9
+  case_sensitive: false
+  language_code: en-US
+- regex: \b(\d)(\d)(\d)(\d)(\d)(\d)\b
+  replacement: \1 \2 \3; \4 \5 \6
+  case_sensitive: false
+- regex: \b\+?(Plus )?(plus )?(\d)(\d)(\d)(\d)-?(\d)(\d)(\d)-?(\d)(\d)(\d)(\d)\b
+  replacement: \1 \2 \3; \4 \5 \6; \7 \8 \9; \10 \11
+  case_sensitive: false
+- regex: (\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)
+  replacement: \1 \2 \3 \4; \5 \6 \7 \8; \9 \10 \11 \12; \13 \14 \15 \16; \17 \18 \19
+  case_sensitive: false
+- regex: 3\-5
+  replacement: three to five
+  case_sensitive: false
+  language_code: en-US
+- regex: 3\-7
+  replacement: three to seven
+  case_sensitive: false
+  language_code: en-US
+- regex: \$9\.99
+  replacement: nine dollars and ninety-nine cents
+  case_sensitive: false
+  language_code: en-US
+- regex: \$19\.99
+  replacement: nineteen dollars and ninety-nine cents
+  case_sensitive: false
+  language_code: en-US
+- regex: \$29\.99
+  replacement: twenty-nine dollars and ninety-nine cents
+  case_sensitive: false
+  language_code: en-US
+- regex: (\d+),99\s?\$
+  replacement: \1 dollars et quatre-vingt-dix-neuf cents
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \$(\d+)\.99
+  replacement: \1 dollars et quatre-vingt-dix-neuf cents
+  case_sensitive: false
+  language_code: fr-CA
+- regex: launch101
+  replacement: Launch un-zéro-un
+  case_sensitive: false
+  language_code: fr-CA
+- regex: taille 0?(\d)(\.0)?,?
+  replacement: taille \1
+  case_sensitive: false
+  language_code: fr-CA
+- regex: taille (\d\d)(\.0)?,?
+  replacement: taille \1
+  case_sensitive: false
+  language_code: fr-CA
+- regex: taille (\d\d)\.5,?
+  replacement: taille \1 et demi
+  case_sensitive: false
+  language_code: fr-CA
+- regex: taille 0?(\d)\.5,?
+  replacement: taille \1 et demi
+  case_sensitive: false
+  language_code: fr-CA
+- regex: tailles 0?(\d)(\.0)?,?
+  replacement: tailles \1
+  case_sensitive: false
+  language_code: fr-CA
+- regex: tailles (\d\d)(\.0)?,?
+  replacement: tailles \1
+  case_sensitive: false
+  language_code: fr-CA
+- regex: tailles 0?(\d)\.5,?
+  replacement: tailles \1 et demi
+  case_sensitive: false
+  language_code: fr-CA
+- regex: tailles (\d\d)\.5,?
+  replacement: tailles \1 et demi
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \b0(\d)\.5,?
+  replacement: \1 et demi
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \b(\d\d)\.5,?
+  replacement: \1 et demi
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \.5,?
+  replacement: et demi
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \b1\b
+  replacement: un
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \b2\b
+  replacement: deux
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \b3\b
+  replacement: trois
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \b4\b
+  replacement: quatre
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \b5\b
+  replacement: cinq
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \b6\b
+  replacement: six
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \b7\b
+  replacement: sept
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \b8\b
+  replacement: huit
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \b9\b
+  replacement: neuf
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \b0\b
+  replacement: zéro
+  case_sensitive: false
+  language_code: fr-CA
+- regex: 3\s?\-\s?5 (jours )?ouvrables
+  replacement: trois à cinq jours ouvrables
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \btaille G\b
+  replacement: taille grande
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \btaille M\b
+  replacement: taille moyenne
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \btaille P\b
+  replacement: taille petite
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \b(\d)(\d)(\d)-?(\d)(\d)(\d)-?(\d)(\d)(\d)\b
+  replacement: \1 \2 \3; \4 \5 \6; \7 \8 \9
+  case_sensitive: false
+  language_code: fr-CA
+- regex: 3\-5
+  replacement: trois à cinq
+  case_sensitive: false
+  language_code: fr-CA
+- regex: 3\-7
+  replacement: trois à sept
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \$9\.99
+  replacement: neuf dollars et quatre-vingt-dix-neuf cents
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \$19\.99
+  replacement: dix-neuf dollars et quatre-vingt-dix-neuf cents
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \$29\.99
+  replacement: vingt-neuf dollars et quatre-vingt-dix-neuf cents
+  case_sensitive: false
+  language_code: fr-CA
+- regex: www.example-store.com
+  replacement: W, W, W, point, example store, point com
+  case_sensitive: false
+  language_code: fr-CA
+- regex: support@example-store.com
+  replacement: support, arobase, example store, point com
+  case_sensitive: false
+  language_code: fr-CA
+- regex: \b10([ -])digit
+  replacement: ten\1digit
+  case_sensitive: false
+- regex: \b10([ -])digit
+  replacement: ten\1digit
+  case_sensitive: false

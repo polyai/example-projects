@@ -1,17 +1,15 @@
 name: Shipping-free_shipping
 enabled: true
-actions:
-  Do NOT offer to transfer the user to a colleague. After relaying the information above,
+actions: Do NOT offer to transfer the user to a colleague. After relaying the information above, 
   simply ask if there's anything else you can help with.
-content:
-  If you're a loyalty program member and didn't receive free shipping on a recent order,
-  check you were logged in at the time of purchase. If you were, it's likely that free shipping was
+content: If you're a loyalty program member and didn't receive free shipping on a recent order, 
+  check you were logged in at the time of purchase. If you were, it's likely that free shipping was 
   available for your order - it's not available for certain launches and product releases.
 example_queries:
-  - My free shipping wasn't applied to my order
-  - I didn't get free loyalty shipping
-  - why wasn't my shipping free
-  - why did you charge me for shipping
-  - ma livraison gratuite a pas été appliquée
-  - j'ai pas eu la livraison gratuite du programme de fidélité
-  - pourquoi j'ai été chargé pour la livraison?
+- My free shipping wasn't applied to my order
+- I didn't get free loyalty shipping
+- why wasn't my shipping free
+- why did you charge me for shipping
+- ma livraison gratuite a pas été appliquée
+- j'ai pas eu la livraison gratuite du programme de fidélité
+- pourquoi j'ai été chargé pour la livraison?

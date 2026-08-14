@@ -8,7 +8,10 @@ def SMS_failed(conv: Conversation, flow: Flow):
     if conv.state.coming_from_WISMO:
         return {
             "utterance": utterance(conv, "sms_failed_text"),
-            "transition": {"goto_flow": "SMS flow", "goto_step": "WISMO check - sending failed"},
+            "transition": {
+                "goto_flow": "SMS flow",
+                "goto_step": "WISMO check - sending failed",
+            },
         }
     else:
         return {

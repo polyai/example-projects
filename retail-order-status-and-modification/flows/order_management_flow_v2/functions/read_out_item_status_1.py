@@ -4,7 +4,9 @@ from _gen import *  # <AUTO GENERATED>
 @func_description("Provide more information about item with the given shipping status.")
 @func_parameter("status", "Item shipping status")
 def read_out_item_status_1(conv: Conversation, flow: Flow, status: str):
-    if not any(status == qty.shipping_status for qty in conv.state.item_to_look_at.consignments):
+    if not any(
+        status == qty.shipping_status for qty in conv.state.item_to_look_at.consignments
+    ):
         return "The entry is the given status is not found. Please try again."
 
     item = conv.state.item_to_look_at

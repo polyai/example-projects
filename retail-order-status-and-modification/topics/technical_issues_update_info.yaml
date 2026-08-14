@@ -6,19 +6,18 @@ actions: |-
   If and ONLY if the user still says explicitly that they need further help, you can offer to transfer them to someone. If they say yes, call {{fn:pre_handoff}} with handoff_reason ="Technical_Issues-update_info", and utterance = "Let me put you through to someone who can help with this. One sec." 
 
   If they say no, ask if there's anything else you can help with.
-content:
-  To update your account information, first log in to your account - then navigate to
-  Personal Info. Click Profile to manage your contact details, Addresses to update shipping and
+content: To update your account information, first log in to your account - then navigate to 
+  Personal Info. Click Profile to manage your contact details, Addresses to update shipping and 
   billing addresses, and Payment to update your payment info. If you've already placed an order, you
-  won't be able to update the shipping address or payment information for that order. That includes
+  won't be able to update the shipping address or payment information for that order. That includes 
   if an order is pending.
 example_queries:
-  - I can't update my phone number on my account
-  - How do I update my account information
-  - how do i update my billing address?
-  - change account information and details
-  - change my payment info
-  - update credit card
-  - comment mettre à jour mes informations de compte?
-  - je veux changer mon adresse de facturation
-  - je veux modifier mon mode de paiement
+- I can't update my phone number on my account
+- How do I update my account information
+- how do i update my billing address?
+- change account information and details
+- change my payment info
+- update credit card
+- comment mettre à jour mes informations de compte?
+- je veux changer mon adresse de facturation
+- je veux modifier mon mode de paiement

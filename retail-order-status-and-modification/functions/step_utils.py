@@ -1,9 +1,9 @@
+from _gen import *  # <AUTO GENERATED>
 import datetime as dt
 import re
 from typing import Optional, Union
 from zoneinfo import ZoneInfo
 
-from _gen import *  # <AUTO GENERATED>
 
 name_suffixes_to_remove = [
     "jr.",
@@ -33,7 +33,9 @@ def normalize_text(text: str) -> str:
     return re.sub(r"[^a-zA-Z0-9]", "", text.lower())
 
 
-def validate_multiple_choice(value: str, valid_options: list[str]) -> tuple[bool, Optional[str]]:
+def validate_multiple_choice(
+    value: str, valid_options: list[str]
+) -> tuple[bool, Optional[str]]:
     """
     Validate if a value matches one of the valid options for a multiple choice question.
 
@@ -134,7 +136,9 @@ def fuzzy_match(input_string: str, string_to_match: str) -> float:
 
 
 def verify_value(
-    collected_value: str, reference_values: Union[str, list[str]], fuzzy_match_threshold: int
+    collected_value: str,
+    reference_values: Union[str, list[str]],
+    fuzzy_match_threshold: int,
 ) -> tuple[bool, Union[str, None]]:
     """
     Check if collected value matches any reference value using fuzzy matching.
@@ -160,7 +164,10 @@ def verify_value(
             reference_value,
             collected_value,
         )
-        if fuzzy_match(str(collected_value), str(reference_value)) >= fuzzy_match_threshold:
+        if (
+            fuzzy_match(str(collected_value), str(reference_value))
+            >= fuzzy_match_threshold
+        ):
             return True, reference_value
 
     return False, None

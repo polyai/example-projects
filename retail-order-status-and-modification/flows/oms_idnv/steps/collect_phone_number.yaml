@@ -13,34 +13,34 @@ asr_biasing:
   yes_no: false
   address: false
   custom_keywords:
-    - zéro
-    - un
-    - deux
-    - trois
-    - quatre
-    - cinq
-    - six
-    - sept
-    - huit
-    - neuf
-    - dix
-    - onze
-    - douze
-    - treize
-    - quatorze
-    - quinze
-    - seize
-    - vingt
-    - trente
-    - quarante
-    - cinquante
-    - soixante
-    - cent
+  - zéro
+  - un
+  - deux
+  - trois
+  - quatre
+  - cinq
+  - six
+  - sept
+  - huit
+  - neuf
+  - dix
+  - onze
+  - douze
+  - treize
+  - quatorze
+  - quinze
+  - seize
+  - vingt
+  - trente
+  - quarante
+  - cinquante
+  - soixante
+  - cent
 dtmf_config:
   is_enabled: true
   inter_digit_timeout: 3
   max_digits: 10
-  end_key: ""
+  end_key: ''
   collect_while_agent_speaking: true
   is_pii: false
 prompt: |-
@@ -58,6 +58,6 @@ prompt: |-
   - asks to wait after you've requested their order number, immediately call
   {{ft:try_order_number}}. Do not ask for their phone number again.
 
-  If the user provides an order number - a 19 or 20 digit number which may start with a "P", "0" or "1" - call the function:  {{ft:order_number_collected}}. 
+  If the user provides an order number - a nineteen or twenty digit number which may start with a "P", "0" or "1" - call the function:  {{ft:order_number_collected}}.
 
   If the user asks to wait, let them know to take their time and provide the number when they're ready.

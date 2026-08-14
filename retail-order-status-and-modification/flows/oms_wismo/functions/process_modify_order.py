@@ -5,7 +5,9 @@ from _gen import *  # <AUTO GENERATED>
 def process_modify_order(conv: Conversation, flow: Flow):
     order = conv.state.order_details
     if not order:
-        return {"content": "No order loaded. The customer needs to go through verification first."}
+        return {
+            "content": "No order loaded. The customer needs to go through verification first."
+        }
 
     shipped_statuses = {"SHIPPED", "PICKED_BY_CUST", "DELIVERED"}
     has_shipped = any(

@@ -13,34 +13,34 @@ asr_biasing:
   yes_no: false
   address: false
   custom_keywords:
-    - zéro
-    - un
-    - deux
-    - trois
-    - quatre
-    - cinq
-    - six
-    - sept
-    - huit
-    - neuf
-    - dix
-    - onze
-    - douze
-    - treize
-    - quatorze
-    - quinze
-    - seize
-    - vingt
-    - trente
-    - quarante
-    - cinquante
-    - soixante
-    - cent
+  - zéro
+  - un
+  - deux
+  - trois
+  - quatre
+  - cinq
+  - six
+  - sept
+  - huit
+  - neuf
+  - dix
+  - onze
+  - douze
+  - treize
+  - quatorze
+  - quinze
+  - seize
+  - vingt
+  - trente
+  - quarante
+  - cinquante
+  - soixante
+  - cent
 dtmf_config:
   is_enabled: true
   inter_digit_timeout: 3
   max_digits: 6
-  end_key: ""
+  end_key: ''
   collect_while_agent_speaking: false
   is_pii: false
 prompt: |-

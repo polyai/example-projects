@@ -1,5 +1,5 @@
-import requests
 from _gen import *  # <AUTO GENERATED>
+import requests
 from flows.oms_idnv.functions.idnv_utils import ActionsIterator, get_bullet_points
 from functions.oms_connector import get_order_details
 from functions.step_utils import is_ca_from_order

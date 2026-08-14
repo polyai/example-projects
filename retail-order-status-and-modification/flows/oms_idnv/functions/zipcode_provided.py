@@ -133,7 +133,9 @@ def _handle_invalid_postcode(conv):
 
 def _check_international_handoff(conv, candidates):
     """Hand off if any candidate order has a billing country outside US/CA."""
-    if conv.real_time_config.get("ignore_international_billing_zip_handoff_for_testing"):
+    if conv.real_time_config.get(
+        "ignore_international_billing_zip_handoff_for_testing"
+    ):
         return None
     international = next(
         (
@@ -178,7 +180,9 @@ def zipcode_provided(conv: Conversation, flow: Flow, billing_postal_code: str):
     # ---------- CA path: validate as 6-char postal code ----------
     if is_ca:
         conv.state.billing_postal_code = _cleanup_postcode(billing_postal_code)
-        conv.log.info("Collected postal code", postal_code=conv.state.billing_postal_code)
+        conv.log.info(
+            "Collected postal code", postal_code=conv.state.billing_postal_code
+        )
 
         if not _is_valid_postcode(conv.state.billing_postal_code):
             alt = _try_postcode_alternatives(conv)
@@ -236,7 +240,8 @@ def _save_and_match(conv, flow, is_ca: bool):
     # International check on matched/candidate orders
     if (
         order_matched
-        and getattr(order_matched, "billing_country_code", "US") not in SUPPORTED_COUNTRIES
+        and getattr(order_matched, "billing_country_code", "US")
+        not in SUPPORTED_COUNTRIES
     ):
         conv.write_metric("INTERNATIONAL_BILLING_ZIP")
         return conv.functions.transfer_call(
@@ -248,7 +253,8 @@ def _save_and_match(conv, flow, is_ca: bool):
     if not order_matched:
         candidates = _get_candidates(conv)
         if candidates and all(
-            getattr(o, "billing_country_code", "US") not in SUPPORTED_COUNTRIES for o in candidates
+            getattr(o, "billing_country_code", "US") not in SUPPORTED_COUNTRIES
+            for o in candidates
         ):
             conv.write_metric("INTERNATIONAL_BILLING_ZIP")
             return conv.functions.transfer_call(
@@ -317,7 +323,9 @@ def _save_and_match(conv, flow, is_ca: bool):
         if hasattr(conv.state, key):
             setattr(conv.state, key, None)
 
-    should_collect_last6 = conv.state.using_phone_number and not conv.state.singleton_order
+    should_collect_last6 = (
+        conv.state.using_phone_number and not conv.state.singleton_order
+    )
 
     if should_collect_last6:
         flow.goto_step("Collect last 4")

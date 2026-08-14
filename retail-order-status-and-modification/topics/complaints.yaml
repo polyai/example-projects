@@ -1,17 +1,16 @@
 name: Complaints
 enabled: true
-actions:
-  Immediately, without saying anything, you MUST call the function {{fn:transfer_call}} with
+actions: Immediately, without saying anything, you MUST call the function {{fn:transfer_call}} with 
   "handoff_reason" ="Complaints"
-content: ""
+content: ''
 example_queries:
-  - want to report an employee
-  - complaint
-  - feedback
-  - want to make a complaint about staff
-  - dissatisfied with service
-  - unhappy want to complain
-  - je veux porter plainte
-  - je veux faire une plainte contre un employé
-  - je suis pas satisfait du service
-  - je veux me plaindre
+- want to report an employee
+- complaint
+- feedback
+- want to make a complaint about staff
+- dissatisfied with service
+- unhappy want to complain
+- je veux porter plainte
+- je veux faire une plainte contre un employé
+- je suis pas satisfait du service
+- je veux me plaindre

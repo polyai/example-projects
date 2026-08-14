@@ -1,7 +1,7 @@
+from _gen import *  # <AUTO GENERATED>
 import re
 from datetime import datetime
 
-from _gen import *  # <AUTO GENERATED>
 from functions.customer_core_api import get_email_by_phone
 from functions.is_ooh import is_ooh
 from functions.oms_connector import get_orders_by_phone_number
@@ -27,7 +27,10 @@ def run_ani_lookup(conv: Conversation, flow: Flow):
             conv.state.customer_email = None
             conv.state.customer_core_response = None
         else:
-            conv.log.info("CUSTOMER_CORE: searching by phone", phone_len=len(str(phone_for_lookup)))
+            conv.log.info(
+                "CUSTOMER_CORE: searching by phone",
+                phone_len=len(str(phone_for_lookup)),
+            )
             email = get_email_by_phone(conv, phone_for_lookup, timeout=3)
             conv.state.customer_email = email
             conv.log.info(

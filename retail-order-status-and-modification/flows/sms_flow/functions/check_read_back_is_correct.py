@@ -13,7 +13,10 @@ from functions.utterances import utterance
     "Default to False. Set to True only if the user has already provided a new phone number to use.",
 )
 def check_read_back_is_correct(
-    conv: Conversation, flow: Flow, readback_number_correct: bool, phone_number_provided: bool
+    conv: Conversation,
+    flow: Flow,
+    readback_number_correct: bool,
+    phone_number_provided: bool,
 ):
     if conv.state.readback_occurred and not readback_number_correct:
         return transfer_call(

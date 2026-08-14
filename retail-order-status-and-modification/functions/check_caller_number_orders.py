@@ -21,7 +21,9 @@ def check_caller_number_orders(conv: Conversation):
         if len(orders) == 1:
             conv.state.singleton_order = True
             return {
-                "utterance": utterance(conv, "idnv_single_order", postal_label=postal_label),
+                "utterance": utterance(
+                    conv, "idnv_single_order", postal_label=postal_label
+                ),
                 "transition": {"goto_flow": "OMS_IDNV", "goto_step": step_name},
             }
         else:
@@ -35,5 +37,8 @@ def check_caller_number_orders(conv: Conversation):
     else:
         return {
             "utterance": utterance(conv, "idnv_no_orders_ask_phone"),
-            "transition": {"goto_flow": "OMS_IDNV", "goto_step": "Collect phone number"},
+            "transition": {
+                "goto_flow": "OMS_IDNV",
+                "goto_step": "Collect phone number",
+            },
         }

@@ -1,18 +1,17 @@
 name: Delivery_Issues-damaged_parcel
 enabled: true
-actions:
-  If the user says one of their packages has arrived damaged, immediately call
-  {{fn:pre_handoff}}with handoff_reason ="Delivery_Issues-damaged_parcel", and utterance = "Let me
+actions: If the user says one of their packages has arrived damaged, immediately call 
+  {{fn:pre_handoff}}with handoff_reason ="Delivery_Issues-damaged_parcel", and utterance = "Let me 
   put you through to someone who can help. One sec." ​
-content: ""
+content: ''
 example_queries:
-  - My order arrived but the box is ripped open
-  - My package arrived damaged
-  - I just got my parcel and it's damaged
-  - order came with a sensor tag
-  - defective item received
-  - my order is defective
-  - mon colis est arrivé endommagé
-  - ma commande est arrivée brisée
-  - j'ai reçu un article défectueux
-  - la boîte était ouverte quand je l'ai reçue
+- My order arrived but the box is ripped open
+- My package arrived damaged
+- I just got my parcel and it's damaged
+- order came with a sensor tag
+- defective item received
+- my order is defective
+- mon colis est arrivé endommagé
+- ma commande est arrivée brisée
+- j'ai reçu un article défectueux
+- la boîte était ouverte quand je l'ai reçue

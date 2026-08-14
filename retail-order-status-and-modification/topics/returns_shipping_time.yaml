@@ -20,5 +20,5 @@ content: |-
   # If purchased in store:
   {{attr:instore_return_policy}}
 example_queries:
-  - How long does return shipping take?
-  - text me the return tracking link
+- How long does return shipping take?
+- text me the return tracking link

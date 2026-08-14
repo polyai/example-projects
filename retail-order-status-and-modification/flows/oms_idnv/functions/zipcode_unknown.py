@@ -7,4 +7,6 @@ from functions.utterances import utterance
     "Use only if the user cannot or will not provide a billing zipcode or postal code."
 )
 def zipcode_unknown(conv: Conversation, flow: Flow):
-    return transfer_call(conv, "DEFAULT", "IDNV_FAILED", utterance(conv, "transfer_one_second"))
+    return transfer_call(
+        conv, "DEFAULT", "IDNV_FAILED", utterance(conv, "transfer_one_second")
+    )

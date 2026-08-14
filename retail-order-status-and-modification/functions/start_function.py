@@ -1,6 +1,6 @@
+from _gen import *  # <AUTO GENERATED>
 import re
 
-from _gen import *  # <AUTO GENERATED>
 
 from .zendesk_client import search_user, search_user_phone
 
@@ -29,7 +29,9 @@ def _detect_language(conv: Conversation) -> str:
             "Unsupported RTC language; falling back to SIP/ASR",
             rtc_language=rtc_lang,
         )
-    lang_header = conv.sip_headers.get("X-Language", "") or conv.sip_headers.get("x-language", "")
+    lang_header = conv.sip_headers.get("X-Language", "") or conv.sip_headers.get(
+        "x-language", ""
+    )
     raw_lang = lang_override or lang_header or conv.language or "en-US"
     if raw_lang.lower().startswith("fr") or (
         raw_lang in _LANGUAGE_MAP and _LANGUAGE_MAP[raw_lang] == "fr-CA"
@@ -63,7 +65,9 @@ def find_zendesk_user_by_email(conv: Conversation) -> bool:
     # Prefer email from Customer Core; fallback to SIP header email
     preferred_email = (conv.state.customer_email or conv.state.email or "").strip()
     if not preferred_email:
-        conv.log.info("find_zendesk_user_by_email: no email available (customer_core + SIP empty)")
+        conv.log.info(
+            "find_zendesk_user_by_email: no email available (customer_core + SIP empty)"
+        )
         return False
 
     try:
@@ -140,11 +144,15 @@ def find_zendesk_user_by_phone(conv: Conversation) -> bool:
         try:
             res = search_user_phone(conv, number)
         except Exception as e:
-            conv.log.error("Zendesk search_user failed", attempt=label, number=number, error=str(e))
+            conv.log.error(
+                "Zendesk search_user failed", attempt=label, number=number, error=str(e)
+            )
             continue
 
         count = int(res.get("count", 0) or 0)
-        conv.log.info("Zendesk user search attempt", attempt=label, number=number, count=count)
+        conv.log.info(
+            "Zendesk user search attempt", attempt=label, number=number, count=count
+        )
 
         if count > 0 and res.get("results"):
             user = res["results"][0]
@@ -172,7 +180,8 @@ def find_zendesk_user_by_phone(conv: Conversation) -> bool:
             return True
 
     conv.log.info(
-        "Zendesk user not found after all attempts", attempts=[lbl for _, lbl in ordered_attempts]
+        "Zendesk user not found after all attempts",
+        attempts=[lbl for _, lbl in ordered_attempts],
     )
     return False
 
@@ -258,7 +267,9 @@ def start_function(conv: Conversation):
 
     #  for checking users number is ok to send an SMS to:
     if conv.state.phone_number:
-        conv.state.caller_number_cleanedup = cleanup_phone_number(conv.state.phone_number)
+        conv.state.caller_number_cleanedup = cleanup_phone_number(
+            conv.state.phone_number
+        )
 
     TESTING_ENV = ["sandbox", "draft", "pre-release"]
 

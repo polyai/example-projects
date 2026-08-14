@@ -15,7 +15,10 @@ def track_another_order(conv: Conversation):
                 "goto_step": "Check should collect phone number",
             },
         }
-    elif conv.state.use_alternative_number and len(conv.state.orders_from_phone_number) > 1:
+    elif (
+        conv.state.use_alternative_number
+        and len(conv.state.orders_from_phone_number) > 1
+    ):
         return {
             "utterance": utterance(conv, "track_another_same_number"),
             "transition": {
@@ -26,10 +29,16 @@ def track_another_order(conv: Conversation):
     elif conv.state.order_from_full_order_number:
         return {
             "utterance": utterance(conv, "track_another_order_number"),
-            "transition": {"goto_flow": "OMS_IDNV", "goto_step": "Collect full order number"},
+            "transition": {
+                "goto_flow": "OMS_IDNV",
+                "goto_step": "Collect full order number",
+            },
         }
     else:
         return {
             "utterance": utterance(conv, "track_another_phone_number"),
-            "transition": {"goto_flow": "OMS_IDNV", "goto_step": "Collect phone number"},
+            "transition": {
+                "goto_flow": "OMS_IDNV",
+                "goto_step": "Collect phone number",
+            },
         }

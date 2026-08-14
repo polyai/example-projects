@@ -11,7 +11,10 @@ from .utterances import utterance
 def handle_silence_loop(conv: Conversation):
     if conv.state.transfer_on_silence_loop:
         return transfer_call(
-            conv, "DEFAULT", "EMPTY_INPUT_LOOP", utterance(conv, "silence_loop_transfer")
+            conv,
+            "DEFAULT",
+            "EMPTY_INPUT_LOOP",
+            utterance(conv, "silence_loop_transfer"),
         )
 
     conv.state.call_outcome = "hangup"

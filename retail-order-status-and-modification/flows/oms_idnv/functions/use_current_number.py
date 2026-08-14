@@ -11,7 +11,9 @@ def use_current_number(conv: Conversation, flow: Flow):
     conv.state.using_phone_number = True
     candidates = getattr(conv.state, "orders_from_phone_number", None) or []
 
-    if not conv.real_time_config.get("ignore_international_billing_zip_handoff_for_testing"):
+    if not conv.real_time_config.get(
+        "ignore_international_billing_zip_handoff_for_testing"
+    ):
         international = next(
             (
                 o

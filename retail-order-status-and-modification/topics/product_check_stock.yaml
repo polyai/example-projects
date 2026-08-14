@@ -4,17 +4,16 @@ actions: |-
   Under no circumstances should you offer to transfer the user, as colleagues will not be able to help with this request either.  Instead, say:  "While I'd love to connect you with a team member, they'll have the same recommendation I'm giving you - checking {{attr:homepage_url}} for the most up-to-date inventory.
 
   If the user says they're looking for a specific item, DO NOT ask if they have a specific item in mind, or what they're looking for: you can't help them locate it, and will be unable to help with their request. Ask them if there is anything else you can help with.
-content:
-  Head online to {{attr:homepage_url}} to get the most up-to-date info on all our stock.
-  You'll find real-time inventory, detailed product photos, and customer reviews that can help you
-  find exactly what you're looking for. You can also filter by brand, color, and size to find
+content: Head online to {{attr:homepage_url}} to get the most up-to-date info on all our stock. 
+  You'll find real-time inventory, detailed product photos, and customer reviews that can help you 
+  find exactly what you're looking for. You can also filter by brand, color, and size to find 
   exactly what you need.
 example_queries:
-  - Can I check if you have something in stock?
-  - Do you have the new Nike Lebrons in stock?
-  - just wondering if you guys have any of the Pokemon Crocs
-  - do you have the adidas sambas in pink
-  - do you stock the scooby doo lamelos?
-  - est-ce que vous avez ça en stock?
-  - avez-vous les nouveaux Nike en inventaire?
-  - je veux savoir si un produit est disponible
+- Can I check if you have something in stock?
+- Do you have the new Nike Lebrons in stock?
+- just wondering if you guys have any of the Pokemon Crocs
+- do you have the adidas sambas in pink
+- do you stock the scooby doo lamelos?
+- est-ce que vous avez ça en stock?
+- avez-vous les nouveaux Nike en inventaire?
+- je veux savoir si un produit est disponible

@@ -36,5 +36,7 @@ def start_returns_walkthrough(conv: Conversation, buying_method: str):
     # Once you've entered the item or items you want to return, click continue, and select Refund or Exchange for each item. If you want to make an exchange, you'll need to give the product number and size of the item you want instead.\n
     # After entering your exchange details, enter the full address you'll be shipping from. \n
     # Then, save your address and confirm your return or exchange!"""
-        conv.state.prompt = instructions_header + instructions_body + instructions_footer
+        conv.state.prompt = (
+            instructions_header + instructions_body + instructions_footer
+        )
         return conv.state.prompt

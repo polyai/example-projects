@@ -35,6 +35,8 @@ def track_next_item(conv: Conversation, flow: Flow):
     conv.state.picked_shipment_lines = group_lines
     conv.state.picked_order = picked
     conv.state.looked_at.append(picked)
-    conv.state.remaining_items = [ol for ol in all_lines if ol not in conv.state.looked_at]
+    conv.state.remaining_items = [
+        ol for ol in all_lines if ol not in conv.state.looked_at
+    ]
 
     return determine_order_status(conv, flow)

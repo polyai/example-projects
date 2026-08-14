@@ -9,7 +9,9 @@ from functions.utterances import utterance
 @func_description("Save provided phone number.")
 def save_phone_number(conv: Conversation, flow: Flow):
     try:
-        orders_found = get_orders_by_phone_number(conv, conv.state.phone_number, timeout=10)
+        orders_found = get_orders_by_phone_number(
+            conv, conv.state.phone_number, timeout=10
+        )
     except Exception as e:
         conv.log.error("Get orders by phone number API error", e=str(e))
         conv.state.call_summary_additional_context = (

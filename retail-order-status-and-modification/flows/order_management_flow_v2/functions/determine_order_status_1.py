@@ -34,7 +34,9 @@ def determine_order_status_1(conv: Conversation, flow: Flow):
     # caller has picked an item, or there's only one item, or all item share the same shipping_status and fullfillment type
 
     item = conv.state.picked_order or conv.state.order_details.order_lines[0]
-    conv.state.item_fulfilment_type = "shipping" if item["fulfilment_type"] == "SHIP" else "pick up"
+    conv.state.item_fulfilment_type = (
+        "shipping" if item["fulfilment_type"] == "SHIP" else "pick up"
+    )
 
     if conv.state.picked_order or len(conv.state.order_details.order_lines) == 1:
         conv.state.product_description = (
@@ -57,7 +59,9 @@ def determine_order_status_1(conv: Conversation, flow: Flow):
     # flow.goto_step("Handoff")
 
     elif conv.state.order_status == "CANCELLED":
-        if item.consignments and all(qty.cancel_reason == "NLA" for qty in item.consignments):
+        if item.consignments and all(
+            qty.cancel_reason == "NLA" for qty in item.consignments
+        ):
             # NLA = item no longer available
             print(">>>>>002")
             flow.goto_step("Item cancelled")
@@ -70,7 +74,11 @@ def determine_order_status_1(conv: Conversation, flow: Flow):
                 "CANCELLED_BY_STORE_NOT_NLA",
                 "Ah, I've found your order but I think you'll need to speak to someone else about it. One sec while I put you through.",
             )
-    elif conv.state.order_status in ["SUBMITTED", "WAIT_FRAUD_SYSTEM_CHECK", "FRAUD_CHECKED"]:
+    elif conv.state.order_status in [
+        "SUBMITTED",
+        "WAIT_FRAUD_SYSTEM_CHECK",
+        "FRAUD_CHECKED",
+    ]:
         print(">>>>>004")
         flow.goto_step("Order not shipped yet")
 
@@ -97,7 +105,9 @@ def determine_order_status_1(conv: Conversation, flow: Flow):
                     "CANCELLED_BY_STORE_NOT_NLA",
                     "Ah, I see your order but I think you'll need to speak to someone else about it. One sec while I put you through.",
                 )
-        elif all(qty.shipping_status in ["CREATED", "SUBMITTED"] for qty in item.consignments):
+        elif all(
+            qty.shipping_status in ["CREATED", "SUBMITTED"] for qty in item.consignments
+        ):
             print(">>>>>3")
             flow.goto_step("Order not shipped yet")
         elif all(qty.shipping_status == "SHIPPED" for qty in item.consignments):
@@ -161,7 +171,9 @@ def setup_order_entries_disambiguation_step(conv: Conversation, item):
         f"Fulfillment Type: {item.fulfilment_type}. "
     )
 
-    status_counter = Counter(f"{consignment.shipping_status}" for consignment in item.consignments)
+    status_counter = Counter(
+        f"{consignment.shipping_status}" for consignment in item.consignments
+    )
 
     item_entries_description = ""
     for status, count in status_counter.items():

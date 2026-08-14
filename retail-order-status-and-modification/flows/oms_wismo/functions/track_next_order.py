@@ -5,7 +5,8 @@ from _gen import *  # <AUTO GENERATED>
     "Call this function as soon as the user mentions something else they need help with, for example, if they want to track another item"
 )
 @func_parameter(
-    "next_item", "(Optional) The product that the user just mentioned, if they mentioned one."
+    "next_item",
+    "(Optional) The product that the user just mentioned, if they mentioned one.",
 )
 def track_next_order(conv: Conversation, flow: Flow, next_item: str):
     print(conv.state.order_items_listing)

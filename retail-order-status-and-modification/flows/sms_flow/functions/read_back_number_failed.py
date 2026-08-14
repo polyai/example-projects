@@ -13,7 +13,9 @@ def read_back_number_failed(conv: Conversation, flow: Flow, readback_failed_once
     if conv.state.readback_failed_once:
         conv.write_metric("SMS_FAILED")
         failed_step = (
-            "WISMO check - sending failed" if conv.state.coming_from_WISMO else "SMS failed"
+            "WISMO check - sending failed"
+            if conv.state.coming_from_WISMO
+            else "SMS failed"
         )
         return {
             "utterance": utterance(conv, "sms_failed_text"),

@@ -15,12 +15,12 @@ content: |-
 
   IMPORTANT: If the user is returning a defective item, you MUST tell them that defective returns must be made within 45 days of purchase, in addition to the standard return options.
 example_queries:
-  - How do I return/exchange my parcel?
-  - I need a returns label
-  - I want to make a return
-  - I ordered my shoes too big can i get another size
-  - my shoes don't fit can I return them
-  - can i return a defective item
-  - shoes are falling apart can i return?
-  - return TEST
-  - can you text me the return link?
+- How do I return/exchange my parcel?
+- I need a returns label
+- I want to make a return
+- I ordered my shoes too big can i get another size
+- my shoes don't fit can I return them
+- can i return a defective item
+- shoes are falling apart can i return?
+- return TEST
+- can you text me the return link?

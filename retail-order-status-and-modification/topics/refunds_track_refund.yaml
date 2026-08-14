@@ -28,9 +28,9 @@ content: |-
   # For in-store purchases:
   {{attr:instore_return_policy}}. The store team will process the refund directly.
 example_queries:
-  - How long will my refund take?
-  - I haven't received my refund yet
-  - where's my refund
-  - returned my order but have't got money back
-  - where's my money
-  - text me the link to track my refund
+- How long will my refund take?
+- I haven't received my refund yet
+- where's my refund
+- returned my order but have't got money back
+- where's my money
+- text me the link to track my refund

@@ -1,6 +1,6 @@
+from _gen import *  # <AUTO GENERATED>
 import re
 
-from _gen import *  # <AUTO GENERATED>
 from flows.oms_idnv.functions.full_order_number_provided import (
     cleanup_full_order_number,
     full_order_number_provided,
@@ -53,7 +53,8 @@ def phone_number_provided(conv: Conversation, flow: Flow, phone_number: str):
             conv.state.phone_number = cleanup_phone_number(alternative)
             if is_valid_US_number(conv.state.phone_number):
                 conv.log.info(
-                    "Trying alternative phone number", phone_number=conv.state.phone_number
+                    "Trying alternative phone number",
+                    phone_number=conv.state.phone_number,
                 )
                 break
         else:
@@ -94,7 +95,9 @@ def phone_number_provided(conv: Conversation, flow: Flow, phone_number: str):
 
 def save_phone_number(conv: Conversation, flow: Flow):
     try:
-        orders_found = get_orders_by_phone_number(conv, conv.state.phone_number, timeout=10)
+        orders_found = get_orders_by_phone_number(
+            conv, conv.state.phone_number, timeout=10
+        )
         conv.state.using_phone_number = True
     except Exception as e:
         conv.log.error("Get orders by phone number API error", e=str(e))
@@ -132,7 +135,9 @@ def save_phone_number(conv: Conversation, flow: Flow):
             ],
         ).get_next(conv)
 
-    if len(orders_found) == 1 and getattr(orders_found[0], "billing_country_code", "US") not in (
+    if len(orders_found) == 1 and getattr(
+        orders_found[0], "billing_country_code", "US"
+    ) not in (
         "US",
         "CA",
     ):
@@ -161,10 +166,14 @@ def save_phone_number(conv: Conversation, flow: Flow):
     step_name = "Collect billing postcode" if is_ca else "Collect billing zipcode"
     if len(orders_found) == 1:
         conv.state.singleton_order = True
-        conv.say(utterance(conv, "idnv_order_found_single_zip", postal_label=postal_label))
+        conv.say(
+            utterance(conv, "idnv_order_found_single_zip", postal_label=postal_label)
+        )
         flow.goto_step(step_name)
     else:
-        conv.say(utterance(conv, "idnv_order_found_multi_zip", postal_label=postal_label))
+        conv.say(
+            utterance(conv, "idnv_order_found_multi_zip", postal_label=postal_label)
+        )
         flow.goto_step(step_name)
 
     # Reset Counter before entering next step

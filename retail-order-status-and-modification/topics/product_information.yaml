@@ -8,26 +8,25 @@ actions: |-
   Under no circumstances should you offer to transfer the user, as colleagues will not be able to help with this request either. Instead, say: "While I'd love to connect you with a team member, they'll have the same recommendation I'm giving you - checking {{attr:homepage_url}} for the most up-to-date inventory."
 
   DO NOT ask if they have a specific item in mind, or what they're looking for: you can't help them locate it, and will be unable to help with their request.
-content:
-  You can head to {{attr:homepage_url}} to get the most up-to-date information on all our
-  products. You'll find real-time inventory, detailed product photos, and customer reviews that can
-  help you find exactly what you're looking for. You can also filter by brand, color, and size to
-  find exactly what you need.Or, if you want access to all the hottest releases on Launch
-  Reservation, head to {{attr:launch101_url}} to get the app. Do you want me to text you a link to
+content: You can head to {{attr:homepage_url}} to get the most up-to-date information on all our 
+  products. You'll find real-time inventory, detailed product photos, and customer reviews that can 
+  help you find exactly what you're looking for. You can also filter by brand, color, and size to 
+  find exactly what you need.Or, if you want access to all the hottest releases on Launch 
+  Reservation, head to {{attr:launch101_url}} to get the app. Do you want me to text you a link to 
   that page?
 example_queries:
-  - can i get some information on a product
-  - how much do the Jordan Retros cost
-  - hey can you tell me about the new nike air max
-  - tell me about the lebron james collab
-  - NBA collaboration
-  - Can you tell me the price of the Nike Air Force one in size 38, please?
-  - How much are the limited edition Nike Air Max in the black/gold colorway?
-  - what colours do the Hoka sneakers come in
-  - do you do Adidas Sambas for kids?
-  - Do you have New Balance on sale
-  - je veux des informations sur un produit
-  - combien coûtent les Jordan Retro?
-  - est-ce que vous avez les Adidas Sambas pour enfants?
-  - text me the product link
-  - envoyez-moi le lien du produit par SMS
+- can i get some information on a product
+- how much do the Jordan Retros cost
+- hey can you tell me about the new nike air max
+- tell me about the lebron james collab
+- NBA collaboration
+- Can you tell me the price of the Nike Air Force one in size 38, please?
+- How much are the limited edition Nike Air Max in the black/gold colorway?
+- what colours do the Hoka sneakers come in
+- do you do Adidas Sambas for kids?
+- Do you have New Balance on sale
+- je veux des informations sur un produit
+- combien coûtent les Jordan Retro?
+- est-ce que vous avez les Adidas Sambas pour enfants?
+- text me the product link
+- envoyez-moi le lien du produit par SMS

@@ -1,20 +1,18 @@
 name: Orders-new_order
 enabled: true
-actions:
-  If and ONLY if the user mentions having trouble placing an order online, offer to transfer
-  them. If they say yes, call {{fn:pre_handoff}} with with handoff_reason ="Orders-new_order", and
+actions: If and ONLY if the user mentions having trouble placing an order online, offer to transfer 
+  them. If they say yes, call {{fn:pre_handoff}} with with handoff_reason ="Orders-new_order", and 
   utterance = "Okay - let me put you through to someone who can help. One sec."
-content:
-  We don't take orders over the phone, but you can head to {{attr:homepage_url}} to place an
-  order online. You'll find real-time inventory, detailed product photos, and customer reviews that
-  can help you find exactly what you're looking for. You can also filter by brand, color, and size
+content: We don't take orders over the phone, but you can head to {{attr:homepage_url}} to place an 
+  order online. You'll find real-time inventory, detailed product photos, and customer reviews that 
+  can help you find exactly what you're looking for. You can also filter by brand, color, and size 
   to find exactly what you need.
 example_queries:
-  - get started on an order
-  - new order
-  - i wanna place an order
-  - I wanna buy some shoes
-  - Can i place an order please
-  - je veux passer une commande
-  - je veux acheter des souliers
-  - comment commander en ligne?
+- get started on an order
+- new order
+- i wanna place an order
+- I wanna buy some shoes
+- Can i place an order please
+- je veux passer une commande
+- je veux acheter des souliers
+- comment commander en ligne?

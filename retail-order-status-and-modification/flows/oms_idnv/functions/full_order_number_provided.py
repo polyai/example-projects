@@ -1,5 +1,5 @@
-import requests
 from _gen import *  # <AUTO GENERATED>
+import requests
 from flows.oms_idnv.functions.idnv_utils import (
     ActionsIterator,
     get_bullet_points,
@@ -38,7 +38,9 @@ def is_valid_full_order_number(order_number: str) -> bool:
 def full_order_number_provided(conv: Conversation, flow: Flow, full_order_number: str):
     conv.state.using_phone_number = False
     conv.state.full_order_number = cleanup_full_order_number(full_order_number)
-    conv.log.info("Collected full order number", order_number=conv.state.full_order_number)
+    conv.log.info(
+        "Collected full order number", order_number=conv.state.full_order_number
+    )
     conv.write_metric("ORDER_NUMBER_COLLECTED")
 
     if not is_valid_full_order_number(conv.state.full_order_number):
@@ -77,7 +79,9 @@ def full_order_number_provided(conv: Conversation, flow: Flow, full_order_number
                             ),
                         },
                         {
-                            "utterance": utterance(conv, "idnv_order_not_found_transfer"),
+                            "utterance": utterance(
+                                conv, "idnv_order_not_found_transfer"
+                            ),
                             "content": get_bullet_points(
                                 "If the user says 'yes', immediately call transfer_call with "
                                 "handoff_reason = 'IDNV_FAILED'",
@@ -114,7 +118,9 @@ def _try_lookup_order(conv, order_number: str):
         if prefix == original_prefix:
             continue
         alt = prefix + digits
-        conv.log.info("Order not found, retrying with prefix", original=order_number, alt=alt)
+        conv.log.info(
+            "Order not found, retrying with prefix", original=order_number, alt=alt
+        )
         order_found = get_order_details(conv, alt, timeout=10)
         if order_found:
             conv.state.full_order_number = alt

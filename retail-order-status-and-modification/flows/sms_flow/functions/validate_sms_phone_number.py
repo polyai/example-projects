@@ -44,7 +44,9 @@ def validate_sms_phone_number(conv: Conversation, flow: Flow, sms_phone_number: 
     if conv.state.sms_phone_number_validation_attempts >= 2:
         conv.write_metric("SMS_FAILED")
         failed_step = (
-            "WISMO check - sending failed" if conv.state.coming_from_WISMO else "SMS failed"
+            "WISMO check - sending failed"
+            if conv.state.coming_from_WISMO
+            else "SMS failed"
         )
         return {
             "utterance": utterance(conv, "sms_failed_text"),
