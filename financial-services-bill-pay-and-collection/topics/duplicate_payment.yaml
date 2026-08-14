@@ -3,8 +3,8 @@ enabled: true
 actions: |-
   # Initial response
   Call {{fn:handoff}} with handoff_reason="DUPLICATED_PAYMENT".
-content: ""
+content: ''
 example_queries:
-  - I've been charged twice
-  - Duplicate payment taken
-  - I had money taken from my account twice for the same thing
+- I've been charged twice
+- Duplicate payment taken
+- I had money taken from my account twice for the same thing

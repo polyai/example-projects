@@ -82,14 +82,14 @@ actions: |-
   - ACCOUNT_TYPE: "INSTANT_ACCESS_ISA", "FIXED_RATE_ISA", "INSTANT_ACCESS_SAVINGS", "FIXED_TERM_SAVINGS", or "SAVINGS_GENERAL"
 
   Examples: "EXISTING_CUSTOMER_INSTANT_ACCESS_ISA", "NEW_CUSTOMER_FIXED_TERM_SAVINGS", "SAVINGS_GENERAL"
-content: ""
+content: ''
 example_queries:
-  - I want to open a savings account
-  - open savings
-  - new savings account
-  - I'd like to open a savings account with Poly Bank and want to know what products are available
-  - Can you help me set up a new savings account so I can start putting money aside each month
-  - I'm interested in opening a Poly Bank savings account and need information about interest rates
-    and access
-  - renew ISA
-  - Open an ISA
+- I want to open a savings account
+- open savings
+- new savings account
+- I'd like to open a savings account with Poly Bank and want to know what products are available
+- Can you help me set up a new savings account so I can start putting money aside each month
+- I'm interested in opening a Poly Bank savings account and need information about interest rates 
+  and access
+- renew ISA
+- Open an ISA

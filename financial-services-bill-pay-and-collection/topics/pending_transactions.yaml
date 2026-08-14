@@ -9,21 +9,20 @@ actions: |-
 
   ## If yes - the user waited for 7 days or longer
   Call {{fn:handoff}} with handoff_reason="PENDING_TRANSACTIONS".
-content:
-  the user has a transaction that they're waiting to go through. This may relate to direct
-  debit payment they've set up for a merchant; or a one time payment that they're sending out or
+content: the user has a transaction that they're waiting to go through. This may relate to direct 
+  debit payment they've set up for a merchant; or a one time payment that they're sending out or 
   expecting to receive.
 example_queries:
-  - I have a pending transaction
-  - pending payment
-  - direct debit transaction hasn't cleared
-  - pending on my account
-  - There's a payment showing as pending on my account and I'm not sure when it will clear
-  - I made a transaction a few days ago that's still showing as pending and I need to know when the
-    money will leave my account
-  - Can you help me understand why a transaction is still pending and how long it typically takes to
-    process
-  - What are pending transaction
-  - What does it mean if a transaction shows up as pending?
-  - I have a direct debit payment that's meant to leave my account today but it hasn't yet
-  - They've taken out the money
+- I have a pending transaction
+- pending payment
+- direct debit transaction hasn't cleared
+- pending on my account
+- There's a payment showing as pending on my account and I'm not sure when it will clear
+- I made a transaction a few days ago that's still showing as pending and I need to know when the 
+  money will leave my account
+- Can you help me understand why a transaction is still pending and how long it typically takes to 
+  process
+- What are pending transaction
+- What does it mean if a transaction shows up as pending?
+- I have a direct debit payment that's meant to leave my account today but it hasn't yet
+- They've taken out the money

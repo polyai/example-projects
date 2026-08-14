@@ -1,7 +1,6 @@
+from _gen import *  # <AUTO GENERATED>
 import datetime as dt
 from zoneinfo import ZoneInfo
-
-from _gen import *  # <AUTO GENERATED>
 
 
 def set_datetime(conv: Conversation):
@@ -163,6 +162,8 @@ def is_mortgage_queue_ooh(conv: Conversation, queue_name: str) -> bool:
     return not (start_time <= current_time < end_time)
 
 
-@func_description("[Utils] Utility functions for current time and out-of-hours behavior")
+@func_description(
+    "[Utils] Utility functions for current time and out-of-hours behavior"
+)
 def time_utils(conv: Conversation):
     pass

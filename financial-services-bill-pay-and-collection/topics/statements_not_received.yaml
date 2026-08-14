@@ -21,16 +21,16 @@ actions: |-
 
   ## If speak to someone - caller requests handoff
   Call {{fn:handoff}}with reason="STATEMENTS_NOT_RECEIVED"
-content: ""
+content: ''
 example_queries:
-  - I haven't received my statements
-  - statements not received
-  - where are my statements
-  - missing statements
-  - I haven't received my monthly bank statement in the post and I'm wondering where it is
-  - My statements haven't arrived this month and I need them for my records so can you help me track
-    them down
-  - I'm missing several bank statements that should have been sent to me and I need to get copies
-  - I'd like to order a paper statement.
-  - Did you stop sending paper statements?
-  - Just send a paper statement
+- I haven't received my statements
+- statements not received
+- where are my statements
+- missing statements
+- I haven't received my monthly bank statement in the post and I'm wondering where it is
+- My statements haven't arrived this month and I need them for my records so can you help me track 
+  them down
+- I'm missing several bank statements that should have been sent to me and I need to get copies
+- I'd like to order a paper statement.
+- Did you stop sending paper statements?
+- Just send a paper statement

@@ -18,18 +18,18 @@ actions: |-
 
   #### If user wants to speak to someone
   Call {{fn:handoff}} with reason="CHANGE_STATEMENT"
-content: ""
+content: ''
 example_queries:
-  - change statement preferences
-  - stop paper statements
-  - switch to electronic statements
-  - change how I receive statements
-  - I want to stop receiving paper statements in the post and switch to getting them electronically
-    instead
-  - Can you help me change my statement preferences so I get digital statements rather than physical
-    ones
-  - I'd like to modify how I receive my bank statements as I prefer to go paperless for environmental
-    reasons
-  - where can I find paper statements? I prefer this
-  - How can I get my statement sent in the post?
-  - I can't seem to get my statements and I wanted to change how I receive them.
+- change statement preferences
+- stop paper statements
+- switch to electronic statements
+- change how I receive statements
+- I want to stop receiving paper statements in the post and switch to getting them electronically 
+  instead
+- Can you help me change my statement preferences so I get digital statements rather than physical 
+  ones
+- I'd like to modify how I receive my bank statements as I prefer to go paperless for environmental 
+  reasons
+- where can I find paper statements? I prefer this
+- How can I get my statement sent in the post?
+- I can't seem to get my statements and I wanted to change how I receive them.

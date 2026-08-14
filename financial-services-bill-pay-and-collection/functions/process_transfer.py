@@ -32,7 +32,9 @@ def process_transfer(
 
     result = MockAccountLookup.make_payment(account_number, amount)
     if result is None:
-        return {"content": "Account not found. Ask the user to verify their account number."}
+        return {
+            "content": "Account not found. Ask the user to verify their account number."
+        }
     if "error" in result:
         return {
             "content": f"Transfer failed: {result['error']}. Let the user know and offer alternatives."

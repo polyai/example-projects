@@ -6,8 +6,12 @@ from _gen import *  # <AUTO GENERATED>
     "phone_number",
     'The phone number provided by the user (excluding the country code). Digits only. Include the initial 0 if and only if the user specifies it in the input. Interpret "oh" as 0, e.g. "oh 7" = "07"',
 )
-@func_parameter("country_code", 'Country code, without leading "+". Default to -1 if not provided.')
-def phone_number_given(conv: Conversation, flow: Flow, phone_number: str, country_code: int):
+@func_parameter(
+    "country_code", 'Country code, without leading "+". Default to -1 if not provided.'
+)
+def phone_number_given(
+    conv: Conversation, flow: Flow, phone_number: str, country_code: int
+):
     # regional constants
     KEY_NAME = "pound" if conv.language == "en-US" else "hash"
     MIN_DIGITS = 10 if conv.language == "en-US" else 9

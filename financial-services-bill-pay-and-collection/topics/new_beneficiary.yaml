@@ -44,16 +44,16 @@ actions: |-
   AGENT: Hi, thanks for calling Poly Bank, you're speaking to the virtual assistant! How can I help?
   USER:  Hi, I'd like to add a new international payee. Could you help me with that?
   AGENT: "So the easiest way to add a new beneficiary is through our app. Are you set up on the mobile app?"
-content: ""
+content: ''
 example_queries:
-  - add a new payee
-  - set up new beneficiary
-  - add someone to my payees
-  - new payee
-  - I need to add a new payee to my account so I can start making regular payments to them
-  - Can you help me set up a new beneficiary on my account as I need to send them money
-  - I want to add someone to my saved payees list so it's easier to send them payments in the future
-  - add international payee
-  - international beneficiary
-  - I want to add a payee that's international
-  - Hi I want to know how to add an international payee to my account
+- add a new payee
+- set up new beneficiary
+- add someone to my payees
+- new payee
+- I need to add a new payee to my account so I can start making regular payments to them
+- Can you help me set up a new beneficiary on my account as I need to send them money
+- I want to add someone to my saved payees list so it's easier to send them payments in the future
+- add international payee
+- international beneficiary
+- I want to add a payee that's international
+- Hi I want to know how to add an international payee to my account

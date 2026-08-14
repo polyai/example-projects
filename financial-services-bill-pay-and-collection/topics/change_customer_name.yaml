@@ -3,10 +3,10 @@ enabled: true
 actions: |-
   # Initial response
   Call {{fn:handoff}} with handoff_reason="CHANGE_CUSTOMER_NAME".
-content: ""
+content: ''
 example_queries:
-  - I want to change the name on my account
-  - change my name
-  - I got married and need to update the name on my account
-  - change my first name
-  - My last name is wrong on the account
+- I want to change the name on my account
+- change my name
+- I got married and need to update the name on my account
+- change my first name
+- My last name is wrong on the account

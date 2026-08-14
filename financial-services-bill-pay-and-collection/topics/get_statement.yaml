@@ -56,15 +56,15 @@ actions: |-
 
   #####If no
   Say: "Ok! Anything else I can do for you?"
-content: ""
+content: ''
 example_queries:
-  - I need a statement
-  - how do I get a statement
-  - download statement
-  - send me a statement
-  - I need to get a copy of my bank statement for the last three months for a mortgage application
-  - Can you help me download my bank statement as my accountant needs it for my tax return
-  - I'm trying to access my account statement but I'm not sure where to find it online or how to get a
-    paper copy
-  - I need to download a copy of my statement
-  - bank statement get a copy
+- I need a statement
+- how do I get a statement
+- download statement
+- send me a statement
+- I need to get a copy of my bank statement for the last three months for a mortgage application
+- Can you help me download my bank statement as my accountant needs it for my tax return
+- I'm trying to access my account statement but I'm not sure where to find it online or how to get a
+  paper copy
+- I need to download a copy of my statement
+- bank statement get a copy

@@ -3,8 +3,8 @@ enabled: true
 actions: |-
   # Initial answer
   Call {{fn:handoff}} with handoff_reason="NO_ONLINE_BANKING_FOR_PAYMENT".
-content: ""
+content: ''
 example_queries:
-  - I need to get my payment approved but I don't have the app
-  - I need payment approval but I don't have online banking
-  - Can you help approve a payment without digital access
+- I need to get my payment approved but I don't have the app
+- I need payment approval but I don't have online banking
+- Can you help approve a payment without digital access

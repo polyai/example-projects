@@ -3,14 +3,14 @@ enabled: true
 actions: |-
   # Initial answer
   Call {{fn:handoff}} with handoff_reason="PHISHING_ATTEMPT".
-content: ""
+content: ''
 example_queries:
-  - I think I've received a phishing email
-  - suspicious email
-  - scam email
-  - phishing attempt
-  - I received a suspicious email claiming to be from the bank and I'm worried it might be a
-    phishing scam
-  - Can you help me verify whether an email I received asking for my account details is legitimate or
-    a phishing attempt
-  - I think someone is trying to scam me with a fake bank email and I want to report it
+- I think I've received a phishing email
+- suspicious email
+- scam email
+- phishing attempt
+- I received a suspicious email claiming to be from the bank and I'm worried it might be a phishing 
+  scam
+- Can you help me verify whether an email I received asking for my account details is legitimate or 
+  a phishing attempt
+- I think someone is trying to scam me with a fake bank email and I want to report it

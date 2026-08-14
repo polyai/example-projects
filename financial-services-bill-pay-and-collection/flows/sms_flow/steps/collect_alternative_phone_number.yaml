@@ -17,7 +17,7 @@ dtmf_config:
   is_enabled: true
   inter_digit_timeout: 8
   max_digits: 0
-  end_key: "#"
+  end_key: '#'
   collect_while_agent_speaking: true
   is_pii: true
 prompt: |-

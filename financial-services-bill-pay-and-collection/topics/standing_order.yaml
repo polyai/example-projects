@@ -36,12 +36,12 @@ actions: |-
 
   ### If online banking not working
   Call {{fn:handoff}} with handoff_reason="ONLINE_BANKING_PROBLEMS"
-content: ""
+content: ''
 example_queries:
-  - set up standing order
-  - cancel standing order
-  - standing order help
-  - manage standing orders
-  - I want to set up a standing order to send a regular monthly payment to my landlord automatically
-  - Can you help me cancel a standing order I set up a while ago that I no longer need
-  - I need assistance with managing my standing orders and making changes to the payment amounts
+- set up standing order
+- cancel standing order
+- standing order help
+- manage standing orders
+- I want to set up a standing order to send a regular monthly payment to my landlord automatically
+- Can you help me cancel a standing order I set up a while ago that I no longer need
+- I need assistance with managing my standing orders and making changes to the payment amounts

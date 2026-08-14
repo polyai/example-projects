@@ -5,7 +5,8 @@ from _gen import *  # <AUTO GENERATED>
     "Save a confirmed recipient detail to state. Call this EVERY TIME the user confirms a detail (first name, last name, SWIFT code, or account number)."
 )
 @func_parameter(
-    "field", 'The field name: "first_name", "last_name", "swift_code", or "account_number"'
+    "field",
+    'The field name: "first_name", "last_name", "swift_code", or "account_number"',
 )
 @func_parameter("value", "The confirmed value")
 @func_parameter("transfer_type", '"DOMESTIC" or "INTERNATIONAL"')

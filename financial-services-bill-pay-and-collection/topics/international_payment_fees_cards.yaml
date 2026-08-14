@@ -21,14 +21,14 @@ actions: |-
 
   ### If no - declines handoff
   Say: "Ok! Anything else I can do for you?"
-content: ""
+content: ''
 example_queries:
-  - what are the fees for using my card abroad
-  - international card fees
-  - charges for using card overseas
-  - foreign transaction fees
-  - I'm going to France next month and want to know what fees I'll be charged for using my debit
-    card there
-  - Can you tell me how much it costs to use my debit card abroad for purchases and ATM withdrawals
-  - I need to understand the charges for making card payments in foreign currencies when I'm traveling
-    internationally
+- what are the fees for using my card abroad
+- international card fees
+- charges for using card overseas
+- foreign transaction fees
+- I'm going to France next month and want to know what fees I'll be charged for using my debit card 
+  there
+- Can you tell me how much it costs to use my debit card abroad for purchases and ATM withdrawals
+- I need to understand the charges for making card payments in foreign currencies when I'm traveling
+  internationally

@@ -95,7 +95,11 @@ def save_payment_amount(
             account_type="PERSONAL",
         )
 
-    if payment_type in ("DOMESTIC_INTERNAL", "DOMESTIC_TO_ANOTHER_BANK", "DOMESTIC_INTERNAL"):
+    if payment_type in (
+        "DOMESTIC_INTERNAL",
+        "DOMESTIC_TO_ANOTHER_BANK",
+        "DOMESTIC_INTERNAL",
+    ):
         if account_type and account_type.upper() == "BUSINESS":
             if payment_amount <= 21000:
                 return BUSINESS_DOMESTIC_PAYMENT

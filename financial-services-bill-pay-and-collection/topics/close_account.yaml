@@ -18,14 +18,13 @@ actions: |-
 
   ### If no - no recent transactions and doesn't need to wait
   Call {{fn:handoff}} with handoff_reason="CLOSE_ACCOUNT".
-content: ""
+content: ''
 example_queries:
-  - I want to close my account
-  - close account
-  - shut down my account
-  - cancel my account
-  - I've decided to close my account and move my banking elsewhere so I need help with the
-    process
-  - Can you help me shut down my current account as I no longer need it and want to consolidate my
-    finances
-  - I'm looking to cancel my account and would like to know what steps I need to take
+- I want to close my account
+- close account
+- shut down my account
+- cancel my account
+- I've decided to close my account and move my banking elsewhere so I need help with the process
+- Can you help me shut down my current account as I no longer need it and want to consolidate my 
+  finances
+- I'm looking to cancel my account and would like to know what steps I need to take

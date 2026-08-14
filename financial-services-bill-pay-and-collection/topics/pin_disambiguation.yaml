@@ -9,12 +9,12 @@ actions: |-
 
   ## If app PIN - app PIN
   Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING"
-content: ""
+content: ''
 example_queries:
-  - I forgot my PIN
-  - forgotten PIN
-  - reset PIN
-  - I can't remember my PIN number and need help resetting it so I can access my account again
-  - Can you help me recover or reset my forgotten PIN as I'm unable to use my card or app
-  - I need to reset my PIN because I've forgotten it and I'm locked out of my account
-  - I ordered a new pin and I'm still waiting to get it
+- I forgot my PIN
+- forgotten PIN
+- reset PIN
+- I can't remember my PIN number and need help resetting it so I can access my account again
+- Can you help me recover or reset my forgotten PIN as I'm unable to use my card or app
+- I need to reset my PIN because I've forgotten it and I'm locked out of my account
+- I ordered a new pin and I'm still waiting to get it

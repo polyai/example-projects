@@ -19,4 +19,6 @@ def set_voice(conv: Conversation, voice_type: str):
         )
         conv.set_voice(voice)
     else:
-        raise ValueError(f"voice_type set to {voice_type}. Must be 'main' or 'disclaimer' instead.")
+        raise ValueError(
+            f"voice_type set to {voice_type}. Must be 'main' or 'disclaimer' instead."
+        )

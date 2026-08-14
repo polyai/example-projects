@@ -1,220 +1,216 @@
 sms_templates:
-  - name: troubleshooting_login
-    text: |-
-      To troubleshoot login issues:
+- name: troubleshooting_login
+  text: |-
+    To troubleshoot login issues:
 
-      1. Go to the Poly Bank website and click 'Help' in the top right-hand corner
+    1. Go to the Poly Bank website and click 'Help' in the top right-hand corner
 
-      2. Search and click on the page titled 'Troubleshooting'
+    2. Search and click on the page titled 'Troubleshooting'
 
-      3. Scroll down the page to 'Clearing your cookies and cache' and choose the appropriate guide for your browser
+    3. Scroll down the page to 'Clearing your cookies and cache' and choose the appropriate guide for your browser
 
-      4. Once you have cleared your cookies, try logging in again
+    4. Once you have cleared your cookies, try logging in again
 
-      5. If you have tried this and are unsuccessful, we recommend for you to reset your password.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: reset_password_unlock
-    text: |-
-      To unlock your account, you can reset your password.
+    5. If you have tried this and are unsuccessful, we recommend for you to reset your password.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: reset_password_unlock
+  text: |-
+    To unlock your account, you can reset your password.
 
-      1. Log in and enter your customer number or username and press 'Continue'
+    1. Log in and enter your customer number or username and press 'Continue'
 
-      2. Click on 'Forgotten your password?' and follow the steps to reset your details
+    2. Click on 'Forgotten your password?' and follow the steps to reset your details
 
-      3. You should clear your cookies or use a different browser before logging in with updated details
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: reset_security_number_unlock
-    text: |-
-      To unlock your account, you can reset your security number.
+    3. You should clear your cookies or use a different browser before logging in with updated details
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: reset_security_number_unlock
+  text: |-
+    To unlock your account, you can reset your security number.
 
-      1. Log in and enter your customer number or username and press 'Continue'
+    1. Log in and enter your customer number or username and press 'Continue'
 
-      2. Click on 'Forgotten your security number?' and follow the steps to reset your details
+    2. Click on 'Forgotten your security number?' and follow the steps to reset your details
 
-      3. You should clear your cookies or use a different browser before logging in with your updated details.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: forgot_customer_number_app
-    text: |-
-      To get your customer number:
+    3. You should clear your cookies or use a different browser before logging in with your updated details.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: forgot_customer_number_app
+  text: |-
+    To get your customer number:
 
-       1. Open our app and tap on the settings icon in the top right-hand corner
+     1. Open our app and tap on the settings icon in the top right-hand corner
 
-       2. Select 'My details'. Your customer number will be shown here. You can also use your username instead of your customer number.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: forgot_customer_number_website
-    text: |-
-      To get your customer number on the Poly Bank website:
+     2. Select 'My details'. Your customer number will be shown here. You can also use your username instead of your customer number.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: forgot_customer_number_website
+  text: |-
+    To get your customer number on the Poly Bank website:
 
-       1. When logging in, click on 'Forgotten your customer number or username?'
+     1. When logging in, click on 'Forgotten your customer number or username?'
 
-       2. Enter your details and we'll send you a text message with your customer number. You can also use your username instead of your customer number.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: mobile_app_registration
-    text: |-
-      To register for our app:
+     2. Enter your details and we'll send you a text message with your customer number. You can also use your username instead of your customer number.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: mobile_app_registration
+  text: |-
+    To register for our app:
 
-      1. Download it from the Apple App Store or Google Play Store.
+    1. Download it from the Apple App Store or Google Play Store.
 
-      2. Find it by searching 'Poly Bank'.
+    2. Find it by searching 'Poly Bank'.
 
-      3. Register with your customer number, your registered mobile number, and the security number and password you use for Online Banking.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: internet_banking_registration
-    text:
-      To register for online banking, please visit our website. Click "Log In" in the top right
-      corner, then "Register for Online Banking".
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: change_personal_address_app
-    text: |-
-      To change your address:
+    3. Register with your customer number, your registered mobile number, and the security number and password you use for Online Banking.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: internet_banking_registration
+  text: To register for online banking, please visit our website. Click "Log In" in the top right 
+    corner, then "Register for Online Banking".
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: change_personal_address_app
+  text: |-
+    To change your address:
 
-       1. Log in to our app
+     1. Log in to our app
 
-       2. Click on the settings icon in the top right-hand corner
+     2. Click on the settings icon in the top right-hand corner
 
-       3. Tap 'My details' and you'll be able to update your address from there.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: change_personal_address_online
-    text: |-
-      To change your address:
+     3. Tap 'My details' and you'll be able to update your address from there.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: change_personal_address_online
+  text: |-
+    To change your address:
 
-       1. Log in to Online Banking
+     1. Log in to Online Banking
 
-       2. Click on 'Settings' and then 'Details'
+     2. Click on 'Settings' and then 'Details'
 
-       3. Then scroll down to find your address and change it.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: freeze_lost_stolen_card_app
-    text: |-
-      If your card has been lost or stolen, you'll need to log into Online Banking:
+     3. Then scroll down to find your address and change it.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: freeze_lost_stolen_card_app
+  text: |-
+    If your card has been lost or stolen, you'll need to log into Online Banking:
 
-      1. Click 'Manage my card' next to the relevant account
+    1. Click 'Manage my card' next to the relevant account
 
-      2. Select 'Cancel and replace lost/stolen card' option for the relevant card
+    2. Select 'Cancel and replace lost/stolen card' option for the relevant card
 
-      3. Click 'Lost' or 'Stolen' and make sure the address shown is correct
+    3. Click 'Lost' or 'Stolen' and make sure the address shown is correct
 
-      4. Select 'Cancel card and order new card'.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: freeze_lost_stolen_card_online
-    text: |-
-      If your card has been lost or stolen:
+    4. Select 'Cancel card and order new card'.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: freeze_lost_stolen_card_online
+  text: |-
+    If your card has been lost or stolen:
 
-      1. In our app, tap 'Manage Card' under the relevant account
+    1. In our app, tap 'Manage Card' under the relevant account
 
-      2. Choose 'Cancel lost/stolen card' and select either the lost or stolen option
+    2. Choose 'Cancel lost/stolen card' and select either the lost or stolen option
 
-      3. Make sure the address shown is correct. Select 'Cancel card and order a new one'. We'll mail you a new card.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: unblock_card
-    text:
-      To unblock your card, just log into our app and tap 'Manage Card' under the relevant
-      account. From there, you'll have the option to unblock your card.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: overdraft_general
-    text:
-      For information on overdrafts, please visit www.example-bank.com, click "help" in the top
-      right hand corner, and then type in "overdraft". From there, you'll find plenty of information
-      to help you. We've also got an eligibility checker, and using it won't affect your credit
-      rating.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: password_reset
-    text: |-
-      Reset your password via our app:
+    3. Make sure the address shown is correct. Select 'Cancel card and order a new one'. We'll mail you a new card.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: unblock_card
+  text: To unblock your card, just log into our app and tap 'Manage Card' under the relevant 
+    account. From there, you'll have the option to unblock your card.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: overdraft_general
+  text: For information on overdrafts, please visit www.example-bank.com, click "help" in the top 
+    right hand corner, and then type in "overdraft". From there, you'll find plenty of information 
+    to help you. We've also got an eligibility checker, and using it won't affect your credit 
+    rating.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: password_reset
+  text: |-
+    Reset your password via our app:
 
-       1. On the login page, click on 'Forgot your password?'
+     1. On the login page, click on 'Forgot your password?'
 
-       2. Follow the steps to reset it via our website
+     2. Follow the steps to reset it via our website
 
-       3. Log in with your new password.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: forgot_security_number
-    text: |-
-      To reset your security number:
+     3. Log in with your new password.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: forgot_security_number
+  text: |-
+    To reset your security number:
 
-       1. On the login page on our app, tap 'Forgot your security number?'
+     1. On the login page on our app, tap 'Forgot your security number?'
 
-       2. Follow the steps to reset it via our website
+     2. Follow the steps to reset it via our website
 
-       3. Reset your PIN using your new security number.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: reset_security_number
-    text: |-
-      To reset your security number:
+     3. Reset your PIN using your new security number.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: reset_security_number
+  text: |-
+    To reset your security number:
 
-      1. Log in and enter your customer number or username and press 'Continue'
+    1. Log in and enter your customer number or username and press 'Continue'
 
-      2. Click on 'Forgotten your security number?' and follow the steps to reset your details
+    2. Click on 'Forgotten your security number?' and follow the steps to reset your details
 
-      3. You should clear your cookies or use a different browser before logging in with your updated details.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: reset_password
-    text: |-
-      To reset your password:
+    3. You should clear your cookies or use a different browser before logging in with your updated details.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: reset_password
+  text: |-
+    To reset your password:
 
-      1. Log in and enter your customer number or username and press 'Continue'
+    1. Log in and enter your customer number or username and press 'Continue'
 
-      2. Click on 'Forgotten your password?' and follow the steps to reset your details
+    2. Click on 'Forgotten your password?' and follow the steps to reset your details
 
-      3. You should clear your cookies or use a different browser before logging in with updated details
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: branch_locator
-    text:
-      To get the details of your local Poly Bank branch, we have an online branch finder. On our
-      home page, click on "Find a branch" in the top right corner and type in your zip code to see your
-      closest branches.
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
+    3. You should clear your cookies or use a different browser before logging in with updated details
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: branch_locator
+  text: To get the details of your local Poly Bank branch, we have an online branch finder. On our 
+    home page, click on "Find a branch" in the top right corner and type in your zip code to see 
+    your closest branches.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'

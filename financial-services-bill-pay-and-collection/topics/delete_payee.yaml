@@ -29,12 +29,12 @@ actions: |-
 
   ## If online banking but doesn't have it - says has online banking but then says doesn't
   Call {{fn:handoff}} with handoff_reason="INTERNET_BANKING_REGISTRATION"
-content: ""
+content: ''
 example_queries:
-  - delete a payee
-  - remove payee
-  - how do I delete a payee
-  - remove someone from payees
-  - I need to remove a payee from my saved list as I no longer make payments to them anymore
-  - Can you walk me through how to delete someone from my payees list on my account
-  - I want to clean up my payee list and remove several people I don't send money to anymore
+- delete a payee
+- remove payee
+- how do I delete a payee
+- remove someone from payees
+- I need to remove a payee from my saved list as I no longer make payments to them anymore
+- Can you walk me through how to delete someone from my payees list on my account
+- I want to clean up my payee list and remove several people I don't send money to anymore

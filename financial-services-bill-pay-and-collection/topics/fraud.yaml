@@ -45,11 +45,11 @@ actions: |-
   --------
   ## If DENY / NONE - user said "No", "None" or "Neither"
   Say: "Oh, sorry! Is there anything else I can help you with?"
-content: ""
+content: ''
 example_queries:
-  - fraud
-  - I've been scammed
-  - someone hacked my account
-  - there's a payment on my account I don't recognize
-  - my account details were stolen
-  - reporting fraud
+- fraud
+- I've been scammed
+- someone hacked my account
+- there's a payment on my account I don't recognize
+- my account details were stolen
+- reporting fraud

@@ -26,16 +26,16 @@ actions: |-
   Say: "Ok, so please check you have enough money in your account and then try making the payment again. Is there anything else I can help you with?"
 content: The user has mentioned a payment on their card has been stopped or declined
 example_queries:
-  - my card was declined
-  - card not working
-  - why was my card declined
-  - card transaction failed
-  - I tried to make a purchase at the shop today but my Poly Bank card was declined and I don't
-    understand why
-  - My debit card keeps getting rejected when I try to use it even though I know I have money in my
-    account
-  - I was really embarrassed when my card got declined at the checkout and I need to know what's going
-    on with it
-  - declined payment
-  - A payment I made that has been stopped.
-  - A payment i made on my card has been stopped I want to speak to someone
+- my card was declined
+- card not working
+- why was my card declined
+- card transaction failed
+- I tried to make a purchase at the shop today but my Poly Bank card was declined and I don't 
+  understand why
+- My debit card keeps getting rejected when I try to use it even though I know I have money in my 
+  account
+- I was really embarrassed when my card got declined at the checkout and I need to know what's going
+  on with it
+- declined payment
+- A payment I made that has been stopped.
+- A payment i made on my card has been stopped I want to speak to someone

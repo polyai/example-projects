@@ -61,14 +61,14 @@ actions: |-
   Agent: Hiya, thanks for calling Poly Bank, you're speaking to the virtual assistant! How can I help?
   User: Hi, I'm having trouble logging into the app. I don't have my password or my security number.
   Agent: OK, if you have forgotten your Security Number and your Password, you will need to re-register with a Magic Word to unlock your account. For this, I'll need to put you through to our team to run through some security checks first. Is that ok?
-content: ""
+content: ''
 example_queries:
-  - my app isn't working
-  - the app won't let me in
-  - I can't log into the app
-  - app problems
-  - I've been trying to access my Poly Bank app for the past hour but it just won't let me log in
-  - The mobile banking app keeps crashing every time I try to open it and I really need to check my
-    account
-  - I'm locked out of the app and can't seem to get back in no matter what I try with my password
-  - I've got issues with my app
+- my app isn't working
+- the app won't let me in
+- I can't log into the app
+- app problems
+- I've been trying to access my Poly Bank app for the past hour but it just won't let me log in
+- The mobile banking app keeps crashing every time I try to open it and I really need to check my 
+  account
+- I'm locked out of the app and can't seem to get back in no matter what I try with my password
+- I've got issues with my app

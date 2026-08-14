@@ -10,4 +10,3 @@ def backout(conv: Conversation):
 
     # Exit current flow
     conv.exit_flow()
-    return

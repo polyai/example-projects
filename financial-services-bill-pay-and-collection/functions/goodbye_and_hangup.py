@@ -24,4 +24,7 @@ def goodbye_and_hangup(conv: Conversation):
             "utterance": "No problem. I hope you have a great rest of your day. Goodbye!",
             "hangup": True,
         }
-    return {"utterance": "Okay. I hope you have a great rest of your day. Goodbye!", "hangup": True}
+    return {
+        "utterance": "Okay. I hope you have a great rest of your day. Goodbye!",
+        "hangup": True,
+    }

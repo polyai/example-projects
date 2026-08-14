@@ -42,17 +42,17 @@ actions: |-
   - Yes → Call {{fn:handoff}} with handoff_reason="CLOSEST_STORE"
   - No → "Anything else I can do for you?"
   - Wants appointment → Call {{fn:handoff}} with handoff_reason="MAKE_APPOINTMENT_IN_STORE"
-content: ""
+content: ''
 example_queries:
-  - I want to open a current account
-  - How do I open a new account?
-  - new account
-  - want to join Poly Bank
-  - I'm a new customer and want to start with Poly Bank
-  - I want to open an account
-  - open an account
-  - open account
-  - I'm interested in opening a new Poly Bank account and would like to know what my options are
-  - Can you help me understand the process for opening a current account with Poly Bank
-  - I'd like to apply for a debit card
-  - I want to apply for a direct debit card
+- I want to open a current account
+- How do I open a new account?
+- new account
+- want to join Poly Bank
+- I'm a new customer and want to start with Poly Bank
+- I want to open an account
+- open an account
+- open account
+- I'm interested in opening a new Poly Bank account and would like to know what my options are
+- Can you help me understand the process for opening a current account with Poly Bank
+- I'd like to apply for a debit card
+- I want to apply for a direct debit card

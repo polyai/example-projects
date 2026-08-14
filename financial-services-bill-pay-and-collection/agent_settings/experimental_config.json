@@ -57,12 +57,6 @@
     },
     "include_kb_functions_in_flows": true
   },
-  "memory": {
-    "repeat_caller": {
-      "analytics_enabled": true,
-      "identifier_blacklist": []
-    }
-  },
   "prompts": {
     "silence": "The user is silent.",
     "webchat_decorator": "IMPORTANT: You're actually conducting this conversation via webchat rather than over the phone. This means several things. Firstly, you're strongly encouraged to use bulletpoints, lists etc. Secondly, you should not offer to send text messages to users. Adapt your style and formatting to be appropriate for a webchat conversation."

@@ -58,14 +58,14 @@ actions: |-
 
   ##### If no - declines handoff
   Say: "No problem. Anything else I can do for you?"
-content: ""
+content: ''
 example_queries:
-  - change my address
-  - update my address
-  - I've moved
-  - new address
-  - I recently moved to a new place and need to update my address details on my Poly Bank account
-  - Can you help me change my registered address as I've relocated to a different city and need my
-    bank details updated
-  - I need to update my home address with the bank because I moved last month and haven't
-    changed it yet
+- change my address
+- update my address
+- I've moved
+- new address
+- I recently moved to a new place and need to update my address details on my Poly Bank account
+- Can you help me change my registered address as I've relocated to a different city and need my 
+  bank details updated
+- I need to update my home address with the bank because I moved last month and haven't changed it 
+  yet

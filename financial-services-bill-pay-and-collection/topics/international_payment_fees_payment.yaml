@@ -6,15 +6,15 @@ actions: |-
 
   # If the user calls about *making* an international payment
   Call {{fn:handoff}} with handoff_reason="INTERNATIONAL_PAYMENTS_GENERAL"
-content: ""
+content: ''
 example_queries:
-  - what are the fees for international payments
-  - international transfer fees
-  - charges for sending money abroad
-  - overseas payment charges
-  - I need to send money to my family in Australia and want to know what fees the bank charges for
-    international transfers
-  - Can you tell me how much it will cost to make an international payment to a bank account in the
-    United States
-  - I'm planning to transfer money overseas and need to understand all the charges and fees that will
-    apply
+- what are the fees for international payments
+- international transfer fees
+- charges for sending money abroad
+- overseas payment charges
+- I need to send money to my family in Australia and want to know what fees the bank charges for 
+  international transfers
+- Can you tell me how much it will cost to make an international payment to a bank account in the 
+  United States
+- I'm planning to transfer money overseas and need to understand all the charges and fees that will 
+  apply

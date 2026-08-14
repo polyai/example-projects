@@ -45,15 +45,14 @@ actions: |-
 
   ### If refuses to register or requests further support
   Call {{fn:handoff}} with reason="FREEZE_LOST_STOLEN_CARD_SPEAK_TO"
-content: ""
+content: ''
 example_queries:
-  - my card is lost
-  - card stolen
-  - freeze my card
-  - I've lost my card
-  - I think I've lost my debit card and need to freeze it immediately to prevent anyone
-    from using it
-  - My card has been stolen from my wallet and I urgently need to get it blocked before any fraudulent
-    transactions are made
-  - I can't find my card anywhere and want to temporarily freeze it just in case while I keep looking
-    for it
+- my card is lost
+- card stolen
+- freeze my card
+- I've lost my card
+- I think I've lost my debit card and need to freeze it immediately to prevent anyone from using it
+- My card has been stolen from my wallet and I urgently need to get it blocked before any fraudulent
+  transactions are made
+- I can't find my card anywhere and want to temporarily freeze it just in case while I keep looking 
+  for it

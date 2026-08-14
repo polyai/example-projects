@@ -11,7 +11,9 @@ from .mock_api import MockAccountLookup
 def process_payment(conv: Conversation, account_number: str, amount: float):
     result = MockAccountLookup.make_payment(account_number, amount)
     if result is None:
-        return {"content": "Account not found. Ask the user to verify their account number."}
+        return {
+            "content": "Account not found. Ask the user to verify their account number."
+        }
     if "error" in result:
         return {
             "content": f"Payment failed: {result['error']}. Let the user know and offer alternatives."

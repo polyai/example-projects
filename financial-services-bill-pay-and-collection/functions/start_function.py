@@ -47,7 +47,6 @@ def start_function(conv: Conversation):
         upfront_message += " " + emergency_message
     if upfront_message and not upfront_message.endswith("."):
         upfront_message += "."
-    upfront_message += " Ringtone."
     upfront_message = upfront_message.strip()
 
     # import re
@@ -59,8 +58,21 @@ def start_function(conv: Conversation):
 
     if conv.channel_type == "webchat.polyai":
         return {"utterance": "Thanks for contacting Poly Bank. How can I help?"}
-    conv.goto_flow("Greet User")
-    return {
-        "utterance": upfront_message
-        # "utterance": tag_sentences(upfront_message)
-    }
+
+    # Out-of-hours: hand off to the Greet User flow, which plays the OOH message
+    # and routes urgent callers.
+    if conv.state.is_ooh:
+        conv.goto_flow("Greet User")
+        # Return a short listen timeout so the Greet User flow's initiate_call
+        # runs immediately (playing the OOH message) rather than waiting for the
+        # caller to speak first, whether or not a disclaimer was spoken upfront.
+        return {"utterance": upfront_message or "", "listen": {"asr": {"timeout": 0.1}}}
+
+    # In-hours: greet proactively on the opening turn (in the main voice) so the
+    # caller hears a real greeting straight away, instead of the old "Ringtone."
+    # placeholder followed by silence until they spoke first.
+    conv.functions.set_voice("main")
+    greeting = "Hi, thanks for calling Poly Bank — you're speaking with our virtual assistant. How can I help you today?"
+    if upfront_message:
+        greeting = f"{upfront_message} {greeting}"
+    return {"utterance": greeting}

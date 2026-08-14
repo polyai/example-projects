@@ -21,11 +21,11 @@ actions: |-
 
   ## If wants handoff - needs more help
   Call {{fn:handoff}} with handoff_reason="CURRENT_ACCOUNT_GENERAL"
-content: ""
+content: ''
 example_queries:
-  - I have a question about my current account
-  - current account help
-  - current account query
-  - I need some assistance with my current account as I'm not sure how something works
-  - Can you help me understand some features of my current account that I haven't used before
-  - I've got a question about the way my current account operates and need someone to explain it to me
+- I have a question about my current account
+- current account help
+- current account query
+- I need some assistance with my current account as I'm not sure how something works
+- Can you help me understand some features of my current account that I haven't used before
+- I've got a question about the way my current account operates and need someone to explain it to me

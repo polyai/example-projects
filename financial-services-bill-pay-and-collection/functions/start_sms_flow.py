@@ -1,7 +1,9 @@
 from _gen import *  # <AUTO GENERATED>
 
 
-@func_description("[Flow] Handle the user's response to the offer of being sent a text message")
+@func_description(
+    "[Flow] Handle the user's response to the offer of being sent a text message"
+)
 @func_parameter(
     "sms_id",
     "The ID of the text message to send. Always use the one provided to you in the relevant prompt.",
@@ -20,7 +22,9 @@ def start_sms_flow(conv: Conversation, sms_id: str):
     if not conv.sms_templates.get(sms_id) and sms_id != "TEST":
         sms_id = sms_id.lower()
     if not conv.sms_templates.get(sms_id) and sms_id != "TEST":
-        conv.log.warning(f"SMS template {sms_id} is not found", sms_templates=conv.sms_templates)
+        conv.log.warning(
+            f"SMS template {sms_id} is not found", sms_templates=conv.sms_templates
+        )
         conv.exit_flow()
         if conv.language and conv.language.startswith("en-"):
             return {
@@ -38,7 +42,9 @@ def start_sms_flow(conv: Conversation, sms_id: str):
     if conv.caller_number:
         conv.goto_flow("SMS flow")
         if conv.language and conv.language.startswith("en-"):
-            return {"utterance": "Am I ok to send this to the number you're calling from?"}
+            return {
+                "utterance": "Am I ok to send this to the number you're calling from?"
+            }
         else:
             return "Ask the user if you're ok to send this text message to the number they're calling from."
     else:

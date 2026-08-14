@@ -8,7 +8,7 @@ actions: |-
   Say: "Amazing. Would you prefer to use the app or the website for this?"
 
   ## If both or app - user has app
-  Say: "Great, so it's really easy to find your customer number on our app. Just tap the settings icon in the top right-hand corner and click on 'My details'. Your 12-digit customer number will be shown here. You can also use your username instead of your customer number. Just to check, is this for a business or personal account?"
+  Say: "Great, so it's really easy to find your customer number on our app. Just tap the settings icon in the top right-hand corner and click on 'My details'. Your twelve-digit customer number will be shown here. You can also use your username instead of your customer number. Just to check, is this for a business or personal account?"
 
   ## If business OR personal
   Say: "Great, in that case, can I send you a text with some help on finding your customer number?"
@@ -45,15 +45,15 @@ actions: |-
 
   ### If requests handoff or has online access issues:
   Call {{fn:handoff}} with handoff_reason="FORGOT_CUSTOMER_NUMBER"
-content: ""
+content: ''
 example_queries:
-  - I've forgotten my customer number
-  - what's my customer number
-  - can't remember customer number
-  - where is my customer number
-  - I need to log into online banking but I can't remember what my customer number is and
-    don't know where to find it
-  - Can you help me locate or retrieve my customer number as I've forgotten it and need it to access
-    my account
-  - I'm trying to register for online banking and they're asking for my customer number which I don't
-    have written down anywhere
+- I've forgotten my customer number
+- what's my customer number
+- can't remember customer number
+- where is my customer number
+- I need to log into online banking but I can't remember what my customer number is and don't know 
+  where to find it
+- Can you help me locate or retrieve my customer number as I've forgotten it and need it to access 
+  my account
+- I'm trying to register for online banking and they're asking for my customer number which I don't 
+  have written down anywhere

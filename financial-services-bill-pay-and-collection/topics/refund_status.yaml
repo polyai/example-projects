@@ -9,14 +9,14 @@ actions: |-
 
   ## If no - hasn't contacted the merchant
   Say: "Ok. In that case, please get in touch with the merchant to check on your refund. Is there anything else I can help you with?"
-content: ""
+content: ''
 example_queries:
-  - where is my refund
-  - refund status
-  - I'm waiting for a refund
-  - has my refund been processed
-  - I'm expecting a refund from a retailer but it hasn't appeared in my account yet and I
-    want to check the status
-  - Can you help me track a refund that was supposed to be processed to my account several days ago
-  - I need to find out when a refund will show up in my account as the merchant said they processed it
-    last week
+- where is my refund
+- refund status
+- I'm waiting for a refund
+- has my refund been processed
+- I'm expecting a refund from a retailer but it hasn't appeared in my account yet and I want to 
+  check the status
+- Can you help me track a refund that was supposed to be processed to my account several days ago
+- I need to find out when a refund will show up in my account as the merchant said they processed it
+  last week

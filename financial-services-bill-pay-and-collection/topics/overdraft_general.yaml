@@ -51,12 +51,12 @@ actions: |-
 
   ### If handoff - wants to speak to someone
   Call {{fn:handoff}} with reason="OVERDRAFT_GENERAL_ENQUIRY"
-content: ""
+content: ''
 example_queries:
-  - I have a question about overdrafts
-  - overdraft information
-  - overdraft limit
-  - I'm interested in applying for an overdraft on my Poly Bank account and want to know what the
-    eligibility requirements are
-  - Can you tell me more about overdraft limits and fees so I can decide if I should apply for one
-  - I have some questions about how overdrafts work at Poly Bank and what interest rates you charge
+- I have a question about overdrafts
+- overdraft information
+- overdraft limit
+- I'm interested in applying for an overdraft on my Poly Bank account and want to know what the 
+  eligibility requirements are
+- Can you tell me more about overdraft limits and fees so I can decide if I should apply for one
+- I have some questions about how overdrafts work at Poly Bank and what interest rates you charge

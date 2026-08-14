@@ -15,10 +15,10 @@ actions: |-
 
   ## If incompatible device - device not compatible
   Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING_INCOMPATIBLE"
-content: ""
+content: ''
 example_queries:
-  - it's my app
-  - asking about my app
-  - mobile banking application
-  - mobile banking
-  - I want to deregister my device
+- it's my app
+- asking about my app
+- mobile banking application
+- mobile banking
+- I want to deregister my device

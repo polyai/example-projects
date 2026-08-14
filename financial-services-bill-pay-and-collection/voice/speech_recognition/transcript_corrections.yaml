@@ -1,109 +1,109 @@
 corrections:
-  - name: general
-    description: General corrections
-    regular_expressions:
-      - regular_expression: fishing
-        replacement: phishing
-        replacement_type: partial
-      - regular_expression: \bcar\b
-        replacement: card
-        replacement_type: partial
-      - regular_expression: buy online making details
-        replacement: my online banking details
-        replacement_type: full
-      - regular_expression: Cont
-        replacement: can't
-        replacement_type: partial
-      - regular_expression: Arsenal
-        replacement: Personal
-        replacement_type: partial
-      - regular_expression: light bucking
-        replacement: online banking
-        replacement_type: full
-      - regular_expression: a double bank
-        replacement: another bank
-        replacement_type: full
-      - regular_expression: personnel
-        replacement: personal
-        replacement_type: partial
-      - regular_expression: mould ova
-        replacement: Moldova
-        replacement_type: full
-      - regular_expression: mould Ava
-        replacement: Moldova
-        replacement_type: full
-      - regular_expression: mountain query
-        replacement: Montenegro
-        replacement_type: full
-      - regular_expression: a p a e
-        replacement: a payee
-        replacement_type: partial
-      - regular_expression: D registration
-        replacement: deregistration
-        replacement_type: partial
-      - regular_expression: D register
-        replacement: deregister
-        replacement_type: partial
-      - regular_expression: broad
-        replacement: fraud
-        replacement_type: full
-      - regular_expression: ad burger
-        replacement: advisor
-        replacement_type: partial
-      - regular_expression: I'm rock my card.
-        replacement: unblock my card
-        replacement_type: partial
-      - regular_expression: I'm rock
-        replacement: unblock
-        replacement_type: partial
-      - regular_expression: carts blocked
-        replacement: cards blocked
-        replacement_type: partial
-      - regular_expression: Reve month
-        replacement: Bereavement
-        replacement_type: partial
-      - regular_expression: pasta
-        replacement: Personal
-        replacement_type: partial
-      - regular_expression: Tesla
-        replacement: Personal
-        replacement_type: partial
-      - regular_expression: fold
-        replacement: fraud
-        replacement_type: partial
-      - regular_expression: Ford
-        replacement: fraud
-        replacement_type: partial
-      - regular_expression: fro team
-        replacement: fraud team
-        replacement_type: partial
-      - regular_expression: Bod team
-        replacement: fraud team
-        replacement_type: partial
-      - regular_expression: sword
-        replacement: fraud
-        replacement_type: partial
-      - regular_expression: Ford
-        replacement: fraud
-        replacement_type: partial
-      - regular_expression: fro team
-        replacement: fraud team
-        replacement_type: partial
-      - regular_expression: Bod team
-        replacement: fraud team
-        replacement_type: partial
-      - regular_expression: sword
-        replacement: fraud
-        replacement_type: partial
-      - regular_expression: food
-        replacement: fraud
-        replacement_type: full
-  - name: banking terms
-    description: Corrections for banking terms
-    regular_expressions:
-      - regular_expression: routing
-        replacement: routing
-        replacement_type: partial
-      - regular_expression: \baccount\b
-        replacement: account
-        replacement_type: partial
+- name: general
+  description: General corrections
+  regular_expressions:
+  - regular_expression: fishing
+    replacement: phishing
+    replacement_type: partial
+  - regular_expression: \bcar\b
+    replacement: card
+    replacement_type: partial
+  - regular_expression: buy online making details
+    replacement: my online banking details
+    replacement_type: full
+  - regular_expression: Cont
+    replacement: can't
+    replacement_type: partial
+  - regular_expression: Arsenal
+    replacement: Personal
+    replacement_type: partial
+  - regular_expression: light bucking
+    replacement: online banking
+    replacement_type: full
+  - regular_expression: a double bank
+    replacement: another bank
+    replacement_type: full
+  - regular_expression: personnel
+    replacement: personal
+    replacement_type: partial
+  - regular_expression: mould ova
+    replacement: Moldova
+    replacement_type: full
+  - regular_expression: mould Ava
+    replacement: Moldova
+    replacement_type: full
+  - regular_expression: mountain query
+    replacement: Montenegro
+    replacement_type: full
+  - regular_expression: a p a e
+    replacement: a payee
+    replacement_type: partial
+  - regular_expression: D registration
+    replacement: deregistration
+    replacement_type: partial
+  - regular_expression: D register
+    replacement: deregister
+    replacement_type: partial
+  - regular_expression: broad
+    replacement: fraud
+    replacement_type: full
+  - regular_expression: ad burger
+    replacement: advisor
+    replacement_type: partial
+  - regular_expression: I'm rock my card.
+    replacement: unblock my card
+    replacement_type: partial
+  - regular_expression: I'm rock
+    replacement: unblock
+    replacement_type: partial
+  - regular_expression: carts blocked
+    replacement: cards blocked
+    replacement_type: partial
+  - regular_expression: Reve month
+    replacement: Bereavement
+    replacement_type: partial
+  - regular_expression: pasta
+    replacement: Personal
+    replacement_type: partial
+  - regular_expression: Tesla
+    replacement: Personal
+    replacement_type: partial
+  - regular_expression: fold
+    replacement: fraud
+    replacement_type: partial
+  - regular_expression: Ford
+    replacement: fraud
+    replacement_type: partial
+  - regular_expression: fro team
+    replacement: fraud team
+    replacement_type: partial
+  - regular_expression: Bod team
+    replacement: fraud team
+    replacement_type: partial
+  - regular_expression: sword
+    replacement: fraud
+    replacement_type: partial
+  - regular_expression: Ford
+    replacement: fraud
+    replacement_type: partial
+  - regular_expression: fro team
+    replacement: fraud team
+    replacement_type: partial
+  - regular_expression: Bod team
+    replacement: fraud team
+    replacement_type: partial
+  - regular_expression: sword
+    replacement: fraud
+    replacement_type: partial
+  - regular_expression: food
+    replacement: fraud
+    replacement_type: full
+- name: banking terms
+  description: Corrections for banking terms
+  regular_expressions:
+  - regular_expression: routing
+    replacement: routing
+    replacement_type: partial
+  - regular_expression: \baccount\b
+    replacement: account
+    replacement_type: partial

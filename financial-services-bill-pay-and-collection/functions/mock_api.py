@@ -6,12 +6,11 @@ billing/payment operations for local development and testing when
 no real backend (DynamoDB, billing API) is available.
 """
 
+from _gen import *  # <AUTO GENERATED>
 import re
 import uuid
 from datetime import datetime
 from typing import Optional
-
-from _gen import *  # <AUTO GENERATED>
 
 
 def _normalize_phone(phone: str) -> str:
@@ -87,7 +86,9 @@ _ACCOUNTS: dict[str, dict] = {
 }
 
 # Phone → account number index
-_PHONE_INDEX: dict[str, str] = {acct["phone"]: acct_num for acct_num, acct in _ACCOUNTS.items()}
+_PHONE_INDEX: dict[str, str] = {
+    acct["phone"]: acct_num for acct_num, acct in _ACCOUNTS.items()
+}
 
 # Confirmation number counter
 _next_confirmation = 200000

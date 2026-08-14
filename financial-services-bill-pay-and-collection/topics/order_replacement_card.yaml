@@ -15,16 +15,15 @@ actions: |-
 
   ### If needs more help and refuses the app
   Call {{fn:handoff}} with handoff_reason="ORDER_REPLACEMENT_CARD"
-content: ""
+content: ''
 example_queries:
-  - I need a replacement card
-  - order new card
-  - get replacement card
-  - card replacement
-  - My card is damaged and I need to order a replacement one before it stops working
-    completely
-  - Can you help me order a new card as mine is about to expire and I need a replacement sent out
-  - I need to get a replacement debit card issued as my current one has been damaged and won't work
-    properly
-  - I lost my card but don't have the app. Can I get another card through you or do I need to go to
-    the bank?
+- I need a replacement card
+- order new card
+- get replacement card
+- card replacement
+- My card is damaged and I need to order a replacement one before it stops working completely
+- Can you help me order a new card as mine is about to expire and I need a replacement sent out
+- I need to get a replacement debit card issued as my current one has been damaged and won't work 
+  properly
+- I lost my card but don't have the app. Can I get another card through you or do I need to go to 
+  the bank?

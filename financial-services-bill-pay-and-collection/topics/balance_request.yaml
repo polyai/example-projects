@@ -14,13 +14,13 @@ actions: |-
   If the user prefers to check their balance themselves:
   - App: "Log into the app, select your account, and you'll see your current balance and transactions."
   - Online banking: "Log into online banking, go to the accounts section, and select your account."
-content: ""
+content: ''
 example_queries:
-  - what's my balance
-  - check my account balance
-  - how much money do I have
-  - tell me my balance
-  - I need to find out how much money is currently available in my account
-  - Could you please tell me what my current account balance is
-  - I just want to check my balance
-  - Why am I overdrawn?
+- what's my balance
+- check my account balance
+- how much money do I have
+- tell me my balance
+- I need to find out how much money is currently available in my account
+- Could you please tell me what my current account balance is
+- I just want to check my balance
+- Why am I overdrawn?

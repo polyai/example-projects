@@ -13,21 +13,21 @@ asr_biasing:
   yes_no: false
   address: false
   custom_keywords:
-    - one
-    - two
-    - three
-    - four
-    - five
-    - "1"
-    - "2"
-    - "3"
-    - "4"
-    - "5"
+  - one
+  - two
+  - three
+  - four
+  - five
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
 dtmf_config:
   is_enabled: true
   inter_digit_timeout: 0
   max_digits: 0
-  end_key: "#"
+  end_key: '#'
   collect_while_agent_speaking: true
   is_pii: false
 prompt: |-

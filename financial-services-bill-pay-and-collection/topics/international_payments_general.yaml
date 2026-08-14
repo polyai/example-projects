@@ -59,17 +59,16 @@ actions: |-
 
   ######## After country provided
   Call {{fn:check_international_country}} with country = country mentioned by user and account_type = "BUSINESS"
-content:
-  The user wants to make an international payment, or has explicitly said the payee is
-  outside of the U.S. (User must mention a paying someone not in the U.S. or must say
-  'international payment')
+content: The user wants to make an international payment, or has explicitly said the payee is 
+  outside of the U.S. (User must mention a paying someone not in the U.S. or must say 'international
+  payment')
 example_queries:
-  - I want to make an international payment
-  - send some money to a recipient outside of the U.S.
-  - need to make a payment to singapore
-  - need to transfer some money to the U.S.
-  - international payment
-  - pay someone not in the U.S.
-  - Pay someone outside of the U.S.
-  - Make payment to Spain
-  - Make payment to international account
+- I want to make an international payment
+- send some money to a recipient outside of the U.S.
+- need to make a payment to singapore
+- need to transfer some money to the U.S.
+- international payment
+- pay someone not in the U.S.
+- Pay someone outside of the U.S.
+- Make payment to Spain
+- Make payment to international account

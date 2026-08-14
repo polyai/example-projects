@@ -3,8 +3,8 @@ enabled: true
 actions: |-
   # Initial response
   Call {{fn:handoff}} with handoff_reason="MISSED_PAYMENT".
-content: ""
+content: ''
 example_queries:
-  - My payment didn't go through
-  - Payment failed
-  - Transaction was declined
+- My payment didn't go through
+- Payment failed
+- Transaction was declined

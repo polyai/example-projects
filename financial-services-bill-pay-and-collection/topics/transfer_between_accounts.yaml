@@ -23,14 +23,14 @@ actions: |-
 
   ## No - does not want to get set up with online banking/wants handoff / wants you to help do the transaction:
   Call {{fn:handoff}} with handoff_reason="TRANSFER_BETWEEN_ACCOUNTS".
-content: ""
+content: ''
 example_queries:
-  - transfer money between my accounts
-  - move money between my own accounts
-  - internal transfer
-  - I need to transfer money from my savings account to my current account and want to know how to do
-    this
-  - Can you help me move funds between my two Poly Bank accounts as I need to transfer money
-    internally
-  - I want to make an internal transfer from one of my accounts to another one and need guidance on
-    the process
+- transfer money between my accounts
+- move money between my own accounts
+- internal transfer
+- I need to transfer money from my savings account to my current account and want to know how to do 
+  this
+- Can you help me move funds between my two Poly Bank accounts as I need to transfer money 
+  internally
+- I want to make an internal transfer from one of my accounts to another one and need guidance on 
+  the process
