@@ -14,11 +14,7 @@ Working example voice agent projects for the [PolyAI Agent Development Kit (ADK)
 
 ## Prerequisites
 
-Install the ADK, which provides the `poly` CLI:
-
-```bash
-pip install polyai-adk
-```
+Install the ADK — see [polyai.github.io/adk](https://polyai.github.io/adk/) for instructions — which provides the `poly` CLI.
 
 Then sign in to your own Agent Studio account — `poly start` for self-serve, or `poly login --region <your-region>` for an enterprise workspace. You don't need access to the account these folders were pulled from; `poly template load` (below) copies a template into a project you already own.
 
@@ -50,7 +46,3 @@ Every template folder contains:
 ```
 
 `project.yaml` is what makes a folder a distinct Agent Studio project — it's how [`poly pull`](https://polyai.github.io/adk/reference/cli/#poly-pull) knows what to sync.
-
-## Keeping templates in sync
-
-[`.github/workflows/adk-pull.yml`](.github/workflows/adk-pull.yml) runs daily and on demand: it finds every folder with a `project.yaml`, runs `poly pull --force --format` in each against Agent Studio, and commits any changes straight to `main`. Trigger it manually from the **Actions** tab if you need an out-of-band sync.
