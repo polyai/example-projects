@@ -1,9 +1,11 @@
 greeting:
-  welcome_message: Hi, thanks for calling {{attr:site_name}}! I can help you make, change, or cancel a reservation for up to 8 guests. I can also answer questions about our menu and hours. How can I help you today?
+  welcome_message: Hi, thanks for calling {{attr:site_name}}! I can help you make, change, or cancel
+    a reservation for up to 8 guests. I can also answer questions about our menu and hours. How can 
+    I help you today?
   language_code: en-US
 style_prompt:
-  prompt: ""
+  prompt: ''
 disclaimer_messages:
-  message: ""
+  message: ''
   enabled: false
   language_code: en-US

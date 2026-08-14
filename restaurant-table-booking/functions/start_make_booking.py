@@ -6,7 +6,9 @@ from functions.start_handle_over_max_group_size import start_handle_over_max_gro
 from functions.write_booking_metric import write_booking_metric
 
 
-@func_description("Initiate the booking process when the user wants to make a booking/reservation")
+@func_description(
+    "Initiate the booking process when the user wants to make a booking/reservation"
+)
 @func_parameter(
     "party_size",
     "party size, if already specified by the user. Use 0 if the user didn't specify it yet.",
@@ -20,7 +22,10 @@ from functions.write_booking_metric import write_booking_metric
     "(Optional) True when the user explicitly or implicitly requests multiple reservations in a single interaction",
 )
 def start_make_booking(
-    conv: Conversation, party_size: int, date: str, user_want_to_make_multiple_bookings: bool
+    conv: Conversation,
+    party_size: int,
+    date: str,
+    user_want_to_make_multiple_bookings: bool,
 ):
     set_datetime(conv)
 

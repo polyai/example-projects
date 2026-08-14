@@ -5,12 +5,12 @@ actions: |-
   handoff_utterance = {{attr:complaint_info}},
   handoff_reason = 'complaint',
   handoff_to = 'STANDARD'.
-content: ""
+content: ''
 example_queries:
-  - I want to make a complaint
-  - Can I submit a formal complaint?
-  - I'm really unhappy about my visit
-  - I had terrible service
-  - Really bad service
-  - Very poor service
-  - I had unsatisfactory service at your restaurant
+- I want to make a complaint
+- Can I submit a formal complaint?
+- I'm really unhappy about my visit
+- I had terrible service
+- Really bad service
+- Very poor service
+- I had unsatisfactory service at your restaurant

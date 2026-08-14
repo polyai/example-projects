@@ -1,9 +1,9 @@
+from _gen import *  # <AUTO GENERATED>
 import datetime as dt
 import math
 from http import HTTPStatus
 
 import plog
-from _gen import *  # <AUTO GENERATED>
 from functions.check_availability import (
     check_availability,
     filter_availability,
@@ -15,9 +15,6 @@ from functions.check_availability import (
 from functions.opentable_api import get_restaurant_api
 from functions.start_handle_over_max_group_size import start_handle_over_max_group_size
 from functions.try_transfer_call import try_transfer_call
-
-BASE_URL = "https://platform.opentable.com/inhouse/v1"
-TIMEOUT = 8
 
 
 @func_description("NOT TO BE CALLED DIRECTLY. Global utils for make_booking flow")
@@ -38,7 +35,10 @@ def _temporarily_lock_slot(
 ):
     if selected_table_type == "standard":
         selected_table_type = "default"
-    if selected_table_type not in ["-", "default"] and not conv.state.table_type_selection_enabled:
+    if (
+        selected_table_type not in ["-", "default"]
+        and not conv.state.table_type_selection_enabled
+    ):
         conv.state.saved_table_type = selected_table_type
     if selected_table_type == "-":
         return "Selected table type is not specified. You can get available table types by calling check_availability."
@@ -48,7 +48,9 @@ def _temporarily_lock_slot(
         elif int(party_size) == 0:
             raise ValueError("Not a valid party size")
     except ValueError:
-        return "You need to specify a party size. Ask the user if you don't know already."
+        return (
+            "You need to specify a party size. Ask the user if you don't know already."
+        )
 
     # Parse values
     parsed_date = None
@@ -76,9 +78,9 @@ def _temporarily_lock_slot(
         "%Y-%m-%dT%H:%M"
     ) not in conv.state.availability_response.get("times", []):
         res = check_availability(conv, date, time, party_size, selected_table_type)
-        if parsed_datetime.strftime("%Y-%m-%dT%H:%M") not in conv.state.availability_response.get(
-            "times", []
-        ):
+        if parsed_datetime.strftime(
+            "%Y-%m-%dT%H:%M"
+        ) not in conv.state.availability_response.get("times", []):
             return res
 
     if conv.state.need_to_check_cancellation_policy:
@@ -154,7 +156,9 @@ def _temporarily_lock_slot(
                     return "You can only reserve slots that are at least 15 minutes after the current time. Ask about the date and time again."
 
         if not res.ok:
-            plog.error("Unhandled error during reservation", response=res.text, data=data)
+            plog.error(
+                "Unhandled error during reservation", response=res.text, data=data
+            )
             return try_transfer_call(
                 conv,
                 "lock_slot_api_fail",
@@ -191,7 +195,9 @@ def _temporarily_lock_slot(
         )
 
 
-def _payment_requirement_accepted(conv: Conversation, flow, date: str, time: str, party_size: int):
+def _payment_requirement_accepted(
+    conv: Conversation, flow, date: str, time: str, party_size: int
+):
     if not conv.state.table_type_selection_enabled:
         return _temporarily_lock_slot(conv, flow, date, time, party_size, "default")
     # Parse values
@@ -273,11 +279,15 @@ def check_cancellation_policy(
     if not experience_id:
         availability = filter_availability(availability, requested_type="Standard")
     else:
-        availability = filter_availability(availability, requested_experience_id=experience_id)
+        availability = filter_availability(
+            availability, requested_experience_id=experience_id
+        )
     for time_available in availability.get("times_available", []):
         if time_available.get("time") == datetime_str:
             for availability_type in time_available.get("availability_types"):
-                if cancellation_type := availability_type.get("cancellationPolicy", {}).get("type"):
+                if cancellation_type := availability_type.get(
+                    "cancellationPolicy", {}
+                ).get("type"):
                     conv.state.cancellation_type = cancellation_type
                 for exp_cancellation_policy in availability_type.get(
                     "experienceCancellationPolicy", {}
@@ -287,7 +297,9 @@ def check_cancellation_policy(
 
     conv.write_metric(
         "BOOKING_CANCELLATION_POLICY",
-        conv.state.cancellation_type.upper() if conv.state.cancellation_type else "NONE",
+        conv.state.cancellation_type.upper()
+        if conv.state.cancellation_type
+        else "NONE",
     )
     if conv.state.cancellation_type == "Deposit":
         flow.goto_step("Booking requires card details")
@@ -328,4 +340,6 @@ def check_cancellation_policy(
            If you have already informed user about the pre-payment policy, there is no need to give them any more information about it unless they specifically ask.
            Otherwise, inform them that once the booking is complete, they will receive an SMS asking for their credit card details to secure the booking - you cannot collect these over the phone (but no need to tell the last bit to the user).
            Ask if they would still like to go ahead with the reservation."""
-    return _payment_requirement_accepted(conv, flow, date=date, time=time, party_size=party_size)
+    return _payment_requirement_accepted(
+        conv, flow, date=date, time=time, party_size=party_size
+    )

@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 import plog
+
 from _gen import *  # <AUTO GENERATED>
 from functions.opentable_api import get_restaurant_api
 
@@ -11,7 +12,8 @@ from functions.opentable_api import get_restaurant_api
     "Phone number that the booking was made under (national significant number). If there are dashes, spaces or leading zeros, make sure to remove them.",
 )
 @func_parameter(
-    "country_code", 'country code, without leading + (assume UK if not given, i.e. "44")'
+    "country_code",
+    'country code, without leading + (assume UK if not given, i.e. "44")',
 )
 @plog.tmp_bind(api_integration="opentable")
 def get_bookings(conv: Conversation, phone_number: str, country_code: str):

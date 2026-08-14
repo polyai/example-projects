@@ -12,12 +12,19 @@ from functions.start_handle_over_max_group_size import start_handle_over_max_gro
 @func_description(
     "Calling this function doesn't confirm the booking, but it allows you to proceed in the booking flow and collect additional information you need to continue making the booking."
 )
-@func_parameter("date", "Date of the selected booking slot, which must be in the YYYY-MM-DD format")
+@func_parameter(
+    "date", "Date of the selected booking slot, which must be in the YYYY-MM-DD format"
+)
 @func_parameter("time", "Time of the selected booking slot in HH:MM format, e.g. 15:00")
 @func_parameter("party_size", "Party size for the booking")
 @func_parameter("experience_id", "selected experience id (or 0 if unknown)")
 def booking_slot_selected(
-    conv: Conversation, flow: Flow, date: str, time: str, party_size: int, experience_id: int
+    conv: Conversation,
+    flow: Flow,
+    date: str,
+    time: str,
+    party_size: int,
+    experience_id: int,
 ):
     conv.state.standard_booking_selected = False
     try:
@@ -26,7 +33,9 @@ def booking_slot_selected(
         elif int(party_size) == 0:
             raise ValueError("Not a valid party size")
     except ValueError:
-        return "You need to specify a party size. Ask the user if you don't know already."
+        return (
+            "You need to specify a party size. Ask the user if you don't know already."
+        )
 
     parsed_date = None
     try:
@@ -55,9 +64,15 @@ def booking_slot_selected(
 
     if experience_id:
         conv.write_metric("EXPERIENCES_REQUESTED", write_once=True)
-        availability = filter_availability(availability, requested_experience_id=experience_id)
-        conv.state.selected_experience = conv.state.active_experiences.get(experience_id)
-        conv.state.selected_experience_formatted = conv.state.selected_experience["formatted"]
+        availability = filter_availability(
+            availability, requested_experience_id=experience_id
+        )
+        conv.state.selected_experience = conv.state.active_experiences.get(
+            experience_id
+        )
+        conv.state.selected_experience_formatted = conv.state.selected_experience[
+            "formatted"
+        ]
         conv.state.selected_experience_name = conv.state.selected_experience["name"]
         conv.write_metric(
             "SELECTED_EXPERIENCE_NAME",
@@ -76,7 +91,9 @@ def booking_slot_selected(
                 flow.goto_step("Select price options")
                 return "This experience has multiple price options. Let the user to select how many party members will want which option."
                 # return try_transfer_call(conv, "multi_price_experience_selected", "Ok, I'll need to get one of my colleagues to help with this booking. One moment please.", "default")
-            conv.state.total_price = price_info["prices"][0]["min_unit_amount"] * party_size
+            conv.state.total_price = (
+                price_info["prices"][0]["min_unit_amount"] * party_size
+            )
             conv.state.party_size_per_price_type = [
                 {"id": price_info["prices"][0]["price_id"], "count": party_size}
             ]
@@ -114,17 +131,28 @@ def booking_slot_selected(
         else:
             conv.write_metric("MULTIPLE_EXPERIENCES_OFFERED", write_once=True)
         flow.goto_step("Upsell experiences")
-        conv.state.available_experiences_formatted = "# Available experiences\n" + "\n\n".join(
-            [experience["formatted"] for experience in available_experiences.values()]
+        conv.state.available_experiences_formatted = (
+            "# Available experiences\n"
+            + "\n\n".join(
+                [
+                    experience["formatted"]
+                    for experience in available_experiences.values()
+                ]
+            )
         )
-        conv.state.unavailable_experiences_formatted = "# Unavailable experiences\n" + "\n\n".join(
-            [
-                experience["formatted"]
-                for experience in conv.state.active_experiences.values()
-                if experience_id not in available_experiences
-            ]
+        conv.state.unavailable_experiences_formatted = (
+            "# Unavailable experiences\n"
+            + "\n\n".join(
+                [
+                    experience["formatted"]
+                    for experience in conv.state.active_experiences.values()
+                    if experience_id not in available_experiences
+                ]
+            )
         )
-        standard_availability = filter_availability(availability, requested_type="Standard")
+        standard_availability = filter_availability(
+            availability, requested_type="Standard"
+        )
         if datetime_str in standard_availability.get("times"):
             if len(available_experiences) == 1:
                 return f"Tell user about the available experience: \n {conv.state.available_experiences_formatted} \n Ask if they would be interested in booking it, or if they would prefer to make a standard booking."

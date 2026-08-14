@@ -6,7 +6,9 @@ from functions.make_booking_utils import _payment_requirement_accepted
     "Call this if the user is happy to give their payment details using the link in the SMS once the booking is completed."
 )
 @func_parameter("date", "Date of the requested booking slot, in YYYY-MM-DD format")
-@func_parameter("time", "Time of the requested booking slot in HH:MM format, e.g. 15:00")
+@func_parameter(
+    "time", "Time of the requested booking slot in HH:MM format, e.g. 15:00"
+)
 @func_parameter("party_size", "Party size for the booking")
 @func_latency_control(
     delay_before_responses_start=0,

@@ -13,13 +13,6 @@ asr_biasing:
   yes_no: false
   address: false
   custom_keywords: []
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 3
-  max_digits: 0
-  end_key: ""
-  collect_while_agent_speaking: true
-  is_pii: false
 prompt: |-
   We could not find any bookings, check with the user that their number is the one they've just mentioned.
   - If the user mentioned a new number right away, call 

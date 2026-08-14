@@ -5,13 +5,13 @@ actions: |-
   If they accept, call 
   {{fn:start_sms_flow}} with
   template_id = 'email'.
-content: "{{attr:private_dining_info}}"
+content: '{{attr:private_dining_info}}'
 example_queries:
-  - Do you have a private dining room available for events?
-  - Can your restaurant be rented out for private events or buyouts?
-  - Do you do private parties or special event bookings?
-  - Is there an option to reserve the whole space for a private event?
-  - Can I speak to someone about renting out the restaurant for a private function?
-  - Do you offer full or partial buyouts for special occasions like weddings or parties?
-  - I'm planning a corporate dinner - do you have accommodations for private dining?
-  - Can I hire the restaurant for a private party?
+- Do you have a private dining room available for events?
+- Can your restaurant be rented out for private events or buyouts?
+- Do you do private parties or special event bookings?
+- Is there an option to reserve the whole space for a private event?
+- Can I speak to someone about renting out the restaurant for a private function?
+- Do you offer full or partial buyouts for special occasions like weddings or parties?
+- I'm planning a corporate dinner - do you have accommodations for private dining?
+- Can I hire the restaurant for a private party?

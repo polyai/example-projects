@@ -1,6 +1,5 @@
-from datetime import datetime
-
 from _gen import *  # <AUTO GENERATED>
+from datetime import datetime
 
 
 @func_description(

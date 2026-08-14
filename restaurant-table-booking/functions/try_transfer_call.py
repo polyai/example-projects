@@ -1,7 +1,6 @@
+from _gen import *  # <AUTO GENERATED>
 from datetime import datetime, time, timedelta
 from zoneinfo import ZoneInfo
-
-from _gen import *  # <AUTO GENERATED>
 
 
 def build_transfer_configs(conv):
@@ -191,10 +190,14 @@ def is_destination_ooh(conv, destination, transfer_configs):
 def try_transfer_call(
     conv: Conversation, handoff_reason: str, handoff_utterance: str, handoff_to: str
 ):
-    default_transfer_destination = conv.real_time_config.get("default_transfer", "STANDARD")
+    default_transfer_destination = conv.real_time_config.get(
+        "default_transfer", "STANDARD"
+    )
     transfer_configs = build_transfer_configs(conv)
     if handoff_reason == "speak_to_human":
-        number_of_turns_in_conv = len([turn for turn in conv.history if turn.role == "user"])
+        number_of_turns_in_conv = len(
+            [turn for turn in conv.history if turn.role == "user"]
+        )
         if number_of_turns_in_conv == 1:
             return {
                 "utterance": "I might be able to help you myself. I can make, amend or cancel bookings and I can also answer questions. Could you tell me what you need?",

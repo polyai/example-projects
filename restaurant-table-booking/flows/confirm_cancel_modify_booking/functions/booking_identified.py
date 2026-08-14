@@ -19,7 +19,9 @@ def booking_identified(conv: Conversation, flow: Flow, booking_id: str):
     booking = find_booking(conv=conv, booking_id=booking_id)
 
     if not booking:
-        return "That booking ID doesn't exist, please try again to determine the booking."
+        return (
+            "That booking ID doesn't exist, please try again to determine the booking."
+        )
 
     conv.state.booking = booking
     conv.state.formatted_booking = format_booking(booking)

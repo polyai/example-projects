@@ -1,14 +1,14 @@
 name: dietary_requirements
 enabled: true
-actions: ""
-content: "{{attr:dietary_requirements_info}}"
+actions: ''
+content: '{{attr:dietary_requirements_info}}'
 example_queries:
-  - Do you have vegan options on the menu?
-  - Do you have a vegan menu?
-  - My friend is gluten free will that be an issue with the menu?
-  - Do you have a gluten free menu?
-  - I can't eat gluten, what dishes do you have that I can eat?
-  - Is your food halal?
-  - are your dishes halal certified?
-  - Do you have vegetarian options on the menu?
-  - Do you have a veggie menu?
+- Do you have vegan options on the menu?
+- Do you have a vegan menu?
+- My friend is gluten free will that be an issue with the menu?
+- Do you have a gluten free menu?
+- I can't eat gluten, what dishes do you have that I can eat?
+- Is your food halal?
+- are your dishes halal certified?
+- Do you have vegetarian options on the menu?
+- Do you have a veggie menu?

@@ -1,8 +1,8 @@
+from _gen import *  # <AUTO GENERATED>
 from datetime import datetime
 from http import HTTPStatus
 
 import plog
-from _gen import *  # <AUTO GENERATED>
 from functions.opentable_api import get_restaurant_api
 from functions.try_transfer_call import try_transfer_call
 from functions.write_booking_metric import write_booking_metric
@@ -22,10 +22,15 @@ from functions.write_booking_metric import write_booking_metric
 @func_latency_control(
     delay_before_responses_start=0,
     silence_after_each_response=2,
-    delay_responses=[("One moment while I complete the booking...", 3), ("One more moment...", 2)],
+    delay_responses=[
+        ("One moment while I complete the booking...", 3),
+        ("One more moment...", 2),
+    ],
 )
 @plog.tmp_bind(api_integration="opentable")
-def finalize_booking(conv: Conversation, booking_notes: str, dietary_requirements: bool):
+def finalize_booking(
+    conv: Conversation, booking_notes: str, dietary_requirements: bool
+):
     # Check that the necessary previous steps were done
     # if not conv.state.first_name_confirmed:
     #   return """You need to call save_first_name with the latest name information before you can proceed with making a reservation.
@@ -97,7 +102,9 @@ def finalize_booking(conv: Conversation, booking_notes: str, dietary_requirement
                     return "The user's first name is required. Ask for the first name again."
                 if code == "LastNameIsMissing":
                     plog.error("Last name is missing", response=res.text, data=data)
-                    return "The user's last name is required. Ask for the last name again."
+                    return (
+                        "The user's last name is required. Ask for the last name again."
+                    )
                 if code == "IllegalPhoneNumber":
                     plog.error("Invalid phone number", response=res.text, data=data)
                     if conv.state.invalid_phone_number:
@@ -112,7 +119,9 @@ def finalize_booking(conv: Conversation, booking_notes: str, dietary_requirement
                     return "The phone number provided is invalid."
                 if code == "ReservationTokenOrRidInvalid":
                     plog.error(
-                        "Invalid reservation token or restaurant ID", response=res.text, data=data
+                        "Invalid reservation token or restaurant ID",
+                        response=res.text,
+                        data=data,
                     )
                     return try_transfer_call(
                         conv,
@@ -129,7 +138,9 @@ def finalize_booking(conv: Conversation, booking_notes: str, dietary_requirement
                         "default",
                     )
                 if code == "RestaurantNotSCEnabled":
-                    plog.error("Restaurant is not SCC enabled", response=res.text, data=data)
+                    plog.error(
+                        "Restaurant is not SCC enabled", response=res.text, data=data
+                    )
                     return "This restaurant cannot process payments or credit card holds. Inform the user that bookings are not possible at this time."
 
         if res.status_code == HTTPStatus.NOT_FOUND:
@@ -166,18 +177,26 @@ def finalize_booking(conv: Conversation, booking_notes: str, dietary_requirement
             write_booking_metric(conv, "BOOKING_SUCCESSFUL_MULTIPLE", None, True)
         else:
             write_booking_metric(conv, "SUCCESSFUL_BOOKING", None, True)
-        write_booking_metric(conv, "SUCCESSFUL_BOOKING_DATE", date.strftime("%Y/%m/%d"), False)
-        write_booking_metric(conv, "SUCCESSFUL_BOOKING_TIME", time.strftime("%H:%M"), False)
+        write_booking_metric(
+            conv, "SUCCESSFUL_BOOKING_DATE", date.strftime("%Y/%m/%d"), False
+        )
+        write_booking_metric(
+            conv, "SUCCESSFUL_BOOKING_TIME", time.strftime("%H:%M"), False
+        )
         write_booking_metric(conv, "SUCCESSFUL_BOOKING_COVERS", party_size, False)
         write_booking_metric(
             conv,
             "SUCCESSFUL_BOOKING_CANCELLATION_POLICY",
-            conv.state.cancellation_type.upper() if conv.state.cancellation_type else "NONE",
+            conv.state.cancellation_type.upper()
+            if conv.state.cancellation_type
+            else "NONE",
             False,
         )
         if experience:
             conv.write_metric(
-                "BOOKED_EXPERIENCE_NAME", value=conv.state.selected_experience_name, write_once=True
+                "BOOKED_EXPERIENCE_NAME",
+                value=conv.state.selected_experience_name,
+                write_once=True,
             )
         conv.state.had_successful_booking = True
         conv.state.origin_flow = None

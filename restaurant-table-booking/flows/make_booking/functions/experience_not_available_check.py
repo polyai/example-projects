@@ -1,13 +1,16 @@
+from _gen import *  # <AUTO GENERATED>
 import ast
 
-from _gen import *  # <AUTO GENERATED>
 from functions.check_availability import check_availability_including_experiences
 
 
-@func_description("If the user requests an experience which is not available proceed to this step")
+@func_description(
+    "If the user requests an experience which is not available proceed to this step"
+)
 @func_parameter("party_size", "Party size for the booking")
 @func_parameter(
-    "time", 'Time of the requested booking slot in HH:MM format, e.g. 15:00, or "-" if unknown'
+    "time",
+    'Time of the requested booking slot in HH:MM format, e.g. 15:00, or "-" if unknown',
 )
 @func_parameter(
     "date",
@@ -48,5 +51,11 @@ def experience_not_available_check(
     except (ValueError, SyntaxError):
         return "selected_experience_ids is not a valid list."
     return check_availability_including_experiences(
-        conv, flow, party_size, time, date, selected_table_type, selected_experience_ids_list
+        conv,
+        flow,
+        party_size,
+        time,
+        date,
+        selected_table_type,
+        selected_experience_ids_list,
     )

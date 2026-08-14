@@ -15,9 +15,9 @@ def start_handle_over_max_group_size(conv: Conversation, party_size: int):
         transfer_utterance = conv.real_time_config.get("large_party_transfers", {}).get(
             "transfer_utterance"
         )
-        transfer_destination = conv.real_time_config.get("large_party_transfers", {}).get(
-            "transfer_destination"
-        )
+        transfer_destination = conv.real_time_config.get(
+            "large_party_transfers", {}
+        ).get("transfer_destination")
 
         conv.write_metric("LARGE_PARTY_COVERS", party_size)
         sms_instruction = (

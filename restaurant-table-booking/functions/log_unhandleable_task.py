@@ -1,9 +1,13 @@
 from _gen import *  # <AUTO GENERATED>
 
 
-@func_description("Logs transcript of unhandleable task and offers transfer to restaurant")
+@func_description(
+    "Logs transcript of unhandleable task and offers transfer to restaurant"
+)
 def log_unhandleable_task(conv: Conversation):
-    transcript = conv.transcript_alternatives[0] if conv.transcript_alternatives else "N/A"
+    transcript = (
+        conv.transcript_alternatives[0] if conv.transcript_alternatives else "N/A"
+    )
     conv.write_metric("UNHANDLEABLE_TASK_TRANSCRIPT", transcript)
     return {
         "utterance": "I'm not sure about that. Would you like me to transfer you to the restaurant to speak to someone who can assist you?",

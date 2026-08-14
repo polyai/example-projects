@@ -1,6 +1,6 @@
+from _gen import *  # <AUTO GENERATED>
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from _gen import *  # <AUTO GENERATED>
 
 # How long to wait for Claude after GPT returns first (seconds)
 CLAUDE_GRACE_PERIOD_SECONDS = 2.0
@@ -21,7 +21,11 @@ def custom_llm_call(conv: Conversation, prompt: str, return_json: bool):
 
     def call_model(prompt: str, return_json: bool, model=None):
         try:
-            kwargs = {"show_history": True, "prompt": prompt, "return_json": return_json}
+            kwargs = {
+                "show_history": True,
+                "prompt": prompt,
+                "return_json": return_json,
+            }
             if model:
                 kwargs["model"] = model
             return conv.utils.prompt_llm(**kwargs)
@@ -29,7 +33,9 @@ def custom_llm_call(conv: Conversation, prompt: str, return_json: bool):
             return None
 
     with ThreadPoolExecutor(max_workers=2) as executor:
-        claude_future = executor.submit(call_model, prompt, return_json, "claude-sonnet-4")
+        claude_future = executor.submit(
+            call_model, prompt, return_json, "claude-sonnet-4"
+        )
         gpt_future = executor.submit(call_model, prompt, return_json, "gpt-4o")
 
         futures = {claude_future: "claude", gpt_future: "gpt"}
@@ -54,14 +60,18 @@ def custom_llm_call(conv: Conversation, prompt: str, return_json: bool):
                 if not claude_future.done():
                     conv.log.info("GPT finished first, waiting briefly for Claude")
                     try:
-                        claude_result = claude_future.result(timeout=CLAUDE_GRACE_PERIOD_SECONDS)
+                        claude_result = claude_future.result(
+                            timeout=CLAUDE_GRACE_PERIOD_SECONDS
+                        )
                         if claude_result is not None:
                             return claude_result
                         conv.log.warning("Claude returned None after grace period")
                     except TimeoutError:
                         conv.log.info("Claude timed out after grace period")
                     except Exception as e:
-                        conv.log.warning("Claude failed during grace period", error=str(e))
+                        conv.log.warning(
+                            "Claude failed during grace period", error=str(e)
+                        )
                     # Grace period ended without valid Claude result - use GPT
                     if gpt_result is not None:
                         conv.log.info("Using GPT fallback")

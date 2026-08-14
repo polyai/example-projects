@@ -4,14 +4,14 @@ actions: |-
   Answer the user's question using the relevant information, then offer an sms with more information.
   If they accept, call {{fn:start_sms_flow}} with
   template_id = 'take_out'.
-content: "{{attr:take_out_info}}"
+content: '{{attr:take_out_info}}'
 example_queries:
-  - Can i place an order for pickup?
-  - Do you do take out?
-  - Wanna order take out
-  - Take out orders
-  - To-go orders please
-  - I want to place an order to go
-  - Pickup orders?
-  - Do you guys do delivery
-  - Do you do takeaway?
+- Can i place an order for pickup?
+- Do you do take out?
+- Wanna order take out
+- Take out orders
+- To-go orders please
+- I want to place an order to go
+- Pickup orders?
+- Do you guys do delivery
+- Do you do takeaway?

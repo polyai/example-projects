@@ -1,8 +1,8 @@
 name: address
 enabled: true
-actions: ""
-content: "{{attr:address_info}}"
+actions: ''
+content: '{{attr:address_info}}'
 example_queries:
-  - What's your address?
-  - I can't find the restaurant
-  - Can I have your address?
+- What's your address?
+- I can't find the restaurant
+- Can I have your address?

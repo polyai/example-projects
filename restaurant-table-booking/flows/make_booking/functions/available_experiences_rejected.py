@@ -8,7 +8,9 @@ from functions.start_handle_over_max_group_size import start_handle_over_max_gro
 @func_description(
     "Should be called if user is not interested in the experience(s) offered. Checks is there is another suitable option we could offer"
 )
-@func_parameter("date", "Date of the selected booking slot, which must be in the YYYY-MM-DD format")
+@func_parameter(
+    "date", "Date of the selected booking slot, which must be in the YYYY-MM-DD format"
+)
 @func_parameter("time", "Time of the selected booking slot in HH:MM format, e.g. 15:00")
 @func_parameter("party_size", "Party size for the booking")
 def available_experiences_rejected(
@@ -21,7 +23,9 @@ def available_experiences_rejected(
         elif int(party_size) == 0:
             raise ValueError("Not a valid party size")
     except ValueError:
-        return "You need to specify a party size. Ask the user if you don't know already."
+        return (
+            "You need to specify a party size. Ask the user if you don't know already."
+        )
 
     parsed_date = None
     try:

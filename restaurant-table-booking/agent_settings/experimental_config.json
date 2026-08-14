@@ -75,10 +75,8 @@
   },
   "smart_vad": {
     "gated_functions": {
-      "confirm_cancel_modify_booking": [
-        "cancel_booking"
-      ],
-      "make_booking": [
+      "": [
+        "cancel_booking",
         "finalize_booking"
       ]
     }

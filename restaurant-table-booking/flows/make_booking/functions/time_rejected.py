@@ -11,9 +11,13 @@ from functions.start_handle_over_max_group_size import start_handle_over_max_gro
 @func_parameter(
     "date", "Date of the requested booking slot, which must be in the YYYY-MM-DD format"
 )
-@func_parameter("time", "Time of the requested booking slot in HH:MM format, e.g. 15:00")
+@func_parameter(
+    "time", "Time of the requested booking slot in HH:MM format, e.g. 15:00"
+)
 @func_parameter("party_size", "Party size for the booking")
-def time_rejected(conv: Conversation, flow: Flow, date: str, time: str, party_size: str):
+def time_rejected(
+    conv: Conversation, flow: Flow, date: str, time: str, party_size: str
+):
     conv.state.experiences_rejected = True
     try:
         if int(party_size) >= int(conv.variant.large_party_size):
@@ -21,7 +25,9 @@ def time_rejected(conv: Conversation, flow: Flow, date: str, time: str, party_si
         elif int(party_size) == 0:
             raise ValueError("Not a valid party size")
     except ValueError:
-        return "You need to specify a party size. Ask the user if you don't know already."
+        return (
+            "You need to specify a party size. Ask the user if you don't know already."
+        )
 
     parsed_date = None
     try:
@@ -55,8 +61,8 @@ def time_rejected(conv: Conversation, flow: Flow, date: str, time: str, party_si
             availability, requested_experience_id=experience_id
         ).get("times")
         if datetime_str in times_available_for_experience:
-            available_alternative_experiences[experience_id] = conv.state.active_experiences.get(
-                experience_id
+            available_alternative_experiences[experience_id] = (
+                conv.state.active_experiences.get(experience_id)
             )
 
     if available_alternative_experiences:
@@ -73,7 +79,9 @@ def time_rejected(conv: Conversation, flow: Flow, date: str, time: str, party_si
                 ]
             )
         )
-        flow.goto_step("Selected experience not available, offer alternative experiences")
+        flow.goto_step(
+            "Selected experience not available, offer alternative experiences"
+        )
         return "User rejected the offered alternative time, but other experiences are available at the requested time."
 
     availability = filter_availability(availability, requested_type="Standard")

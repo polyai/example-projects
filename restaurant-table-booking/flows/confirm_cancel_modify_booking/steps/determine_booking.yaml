@@ -13,13 +13,6 @@ asr_biasing:
   yes_no: false
   address: false
   custom_keywords: []
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 3
-  max_digits: 0
-  end_key: ""
-  collect_while_agent_speaking: true
-  is_pii: false
 prompt: |-
   The only bookings that exist are those listed below — do not refer to or invent any other booking (e.g. a time that is not in the list).
 

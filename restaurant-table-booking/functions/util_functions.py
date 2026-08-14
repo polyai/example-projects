@@ -1,6 +1,6 @@
+from _gen import *  # <AUTO GENERATED>
 import re
 
-from _gen import *  # <AUTO GENERATED>
 from functions.guest_search import is_guest_search_enabled
 
 DOUBLE = "DOUBLE"
@@ -13,7 +13,10 @@ def transform_name_spelling_string(name_spelling: str):
     i = 0
     while i < len(name_spelling):
         # Check if we have "DOUBLE" and at least one character after it
-        if i + len(DOUBLE) < len(name_spelling) and name_spelling[i : i + len(DOUBLE)] == DOUBLE:
+        if (
+            i + len(DOUBLE) < len(name_spelling)
+            and name_spelling[i : i + len(DOUBLE)] == DOUBLE
+        ):
             # Skip the substring "DOUBLE"
             i += len(DOUBLE)
             # Double the next character, if it exists
@@ -92,7 +95,8 @@ def get_country_code_prefix(conv):
     elif conv.variant.timezone.startswith("Europe/Dublin"):
         country_code = "353"
     elif (
-        conv.variant.timezone.startswith("Canada") or conv.variant.timezone in canada_city_timezones
+        conv.variant.timezone.startswith("Canada")
+        or conv.variant.timezone in canada_city_timezones
     ):
         country_code = "1"
     else:
@@ -137,7 +141,9 @@ def is_na(conv, arg):
     return arg.upper() in ["NA", "N/A", "UNKNOWN"] or arg == "-"
 
 
-@func_description("Don't ever call this function. This is meant for importing function only.")
+@func_description(
+    "Don't ever call this function. This is meant for importing function only."
+)
 def util_functions(conv: Conversation):
     # Add your function definition here.
     # You can optionally return a string that will be fed back to the LLM.
@@ -201,7 +207,8 @@ def extract_name(
 
     guest_hints_block = ""
     has_guest_hints = bool(
-        is_guest_search_enabled(conv) and getattr(conv.state, "guest_search_name_hints", None)
+        is_guest_search_enabled(conv)
+        and getattr(conv.state, "guest_search_name_hints", None)
     )
     if has_guest_hints:
         guest_hints_block = f"""
@@ -281,9 +288,15 @@ def extract_name(
         return False
 
     first_name = (
-        llm_first_name if llm_first_name and llm_first_name != "UNKNOWN" else default_first_name
+        llm_first_name
+        if llm_first_name and llm_first_name != "UNKNOWN"
+        else default_first_name
     )
-    last_name = llm_last_name if llm_last_name and llm_last_name != "UNKNOWN" else default_last_name
+    last_name = (
+        llm_last_name
+        if llm_last_name and llm_last_name != "UNKNOWN"
+        else default_last_name
+    )
     known_first_name = parse_bool_field(llm_out.get("known_first_name"))
     known_last_name = parse_bool_field(llm_out.get("known_last_name"))
 

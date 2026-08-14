@@ -1,9 +1,9 @@
 name: pets
 enabled: true
-actions: ""
-content: "{{attr:pets_info}}"
+actions: ''
+content: '{{attr:pets_info}}'
 example_queries:
-  - Can I bring my dog?
-  - Is it ok to bring a large dog?
-  - Is my dog allowed inside?
-  - Can my sister bring her service dog?
+- Can I bring my dog?
+- Is it ok to bring a large dog?
+- Is my dog allowed inside?
+- Can my sister bring her service dog?

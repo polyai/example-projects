@@ -1,15 +1,15 @@
 keyphrases:
-  - keyphrase: Reservations
-    level: default
-  - keyphrase: Make booking
-    level: default
-  - keyphrase: Cancel reservations
-    level: default
-  - keyphrase: Amend booking
-    level: default
-  - keyphrase: four
-    level: boosted
-  - keyphrase: three
-    level: boosted
-  - keyphrase: one
-    level: boosted
+- keyphrase: Reservations
+  level: default
+- keyphrase: Make booking
+  level: default
+- keyphrase: Cancel reservations
+  level: default
+- keyphrase: Amend booking
+  level: default
+- keyphrase: four
+  level: boosted
+- keyphrase: three
+  level: boosted
+- keyphrase: one
+  level: boosted

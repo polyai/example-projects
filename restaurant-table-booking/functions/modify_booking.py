@@ -1,8 +1,8 @@
+from _gen import *  # <AUTO GENERATED>
 import datetime as dt
 from http import HTTPStatus
 
 import plog
-from _gen import *  # <AUTO GENERATED>
 from functions.opentable_api import get_restaurant_api
 from functions.start_handle_over_max_group_size import start_handle_over_max_group_size
 from functions.try_transfer_call import try_transfer_call
@@ -14,8 +14,12 @@ from functions.write_booking_metric import write_booking_metric
 )
 @func_parameter("booking_id", "The ID of the booking to be cancelled")
 @func_parameter("new_partysize", "Updated number of people the booking is for")
-@func_parameter("new_time", "Updated time of the booking (formatted as HH:MM, e.g. 18:00, 11:00)")
-@func_parameter("new_date", "Updated date of the booking (must be in the YYYY-MM-DD format)")
+@func_parameter(
+    "new_time", "Updated time of the booking (formatted as HH:MM, e.g. 18:00, 11:00)"
+)
+@func_parameter(
+    "new_date", "Updated date of the booking (must be in the YYYY-MM-DD format)"
+)
 @func_parameter("booking_notes", "Updated booking notes")
 @func_latency_control(
     delay_before_responses_start=0,
@@ -36,10 +40,14 @@ def modify_booking(
     booking_notes: str,
 ):
     # Validate the values
-    if new_partysize != "-" and int(new_partysize) >= int(conv.variant.large_party_size):
+    if new_partysize != "-" and int(new_partysize) >= int(
+        conv.variant.large_party_size
+    ):
         return start_handle_over_max_group_size(conv, int(new_partysize))
 
-    current_booking_datetime = dt.datetime.fromisoformat(conv.state.booking.get("date_time"))
+    current_booking_datetime = dt.datetime.fromisoformat(
+        conv.state.booking.get("date_time")
+    )
     # Format to desired formats
     parsed_date = None
     try:
@@ -117,7 +125,9 @@ def modify_booking(
                     plog.warning("Invalid party size.", response=res.text)
                     return "The party size is invalid. Ask about the number of people again."
                 if code == "InvalidRidOrReservationId":
-                    plog.error("Invalid restaurant ID or reservation ID", response=res.text)
+                    plog.error(
+                        "Invalid restaurant ID or reservation ID", response=res.text
+                    )
                     return try_transfer_call(
                         conv,
                         "update_booking_api_fail",
@@ -126,14 +136,16 @@ def modify_booking(
                     )
                 if code == "InvalidDateTime":
                     plog.error("Invalid date or time", response=res.text)
-                    return (
-                        "The date or time provided is invalid. Ask about the date and time again."
-                    )
+                    return "The date or time provided is invalid. Ask about the date and time again."
                 if code == "InvalidStartDateTime":
                     plog.warning("Invalid start date/time", response=res.text)
                     return "You can only book slots which are 15 minutes after the current time at the restaurant. Ask about the date and time again."
                 if code == "CannotModifyReservationInPast":
-                    plog.error("Cannot modify reservation in past", response=res.text, data=data)
+                    plog.error(
+                        "Cannot modify reservation in past",
+                        response=res.text,
+                        data=data,
+                    )
                     return try_transfer_call(
                         conv,
                         "update_booking_in_past",
@@ -142,7 +154,9 @@ def modify_booking(
                     )
 
         if not res.ok:
-            plog.error("Unhandled error during modification", response=res.text, data=data)
+            plog.error(
+                "Unhandled error during modification", response=res.text, data=data
+            )
             return try_transfer_call(
                 conv,
                 "update_booking_api_fail",

@@ -9,7 +9,9 @@ from functions.start_handle_over_max_group_size import start_handle_over_max_gro
 @func_description(
     "Call when user doesn't want to book any experiences, or selects standard booking"
 )
-@func_parameter("date", "Date of the selected booking slot, which must be in the YYYY-MM-DD format")
+@func_parameter(
+    "date", "Date of the selected booking slot, which must be in the YYYY-MM-DD format"
+)
 @func_parameter("time", "Time of the selected booking slot in HH:MM format, e.g. 15:00")
 @func_parameter("party_size", "Party size for the booking")
 def standard_booking_selected(
@@ -23,7 +25,9 @@ def standard_booking_selected(
         elif int(party_size) == 0:
             raise ValueError("Not a valid party size")
     except ValueError:
-        return "You need to specify a party size. Ask the user if you don't know already."
+        return (
+            "You need to specify a party size. Ask the user if you don't know already."
+        )
 
     parsed_date = None
     try:
@@ -63,7 +67,9 @@ def standard_booking_selected(
             conv.write_metric("SUGGESTED_CLOSEST_AVAILABLE_TIME")
         else:
             conv.write_metric("AMEND_SUGGESTED_CLOSEST_AVAILABLE_TIME")
-        alt_times = sort_times_by_proximity(conv, availability.get("times"), datetime_obj)
+        alt_times = sort_times_by_proximity(
+            conv, availability.get("times"), datetime_obj
+        )
         flow.goto_step("Standard booking available near requested time")
         return (
             f"The requested time is not available for standard booking, only for experiences, but here are some alternatives: {alt_times}. "
@@ -77,4 +83,6 @@ def standard_booking_selected(
         )
 
     ## if experiences are not available, continue with booking
-    return check_cancellation_policy(conv, flow, datetime_str, 0, date, time, party_size)
+    return check_cancellation_policy(
+        conv, flow, datetime_str, 0, date, time, party_size
+    )

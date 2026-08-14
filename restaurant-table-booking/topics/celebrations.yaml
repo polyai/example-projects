@@ -1,15 +1,15 @@
 name: celebrations
 enabled: true
-actions: ""
-content: "{{attr:celebrations_info}}"
+actions: ''
+content: '{{attr:celebrations_info}}'
 example_queries:
-  - Can I bring balloons?
-  - I'm coming for my birthday can I bring decorations?
-  - Can I decorate the table?
-  - Can I bring my own cake to the restaurant?
-  - Can I bring cupcakes or pies for a special celebration?
-  - How much do you charge for cakeage per person?
-  - What is your policy on cake from home?
-  - What is the charge for bringing a cake?
-  - What cakes can you do for my friend's birthday
-  - We want to bring a cake.
+- Can I bring balloons?
+- I'm coming for my birthday can I bring decorations?
+- Can I decorate the table?
+- Can I bring my own cake to the restaurant?
+- Can I bring cupcakes or pies for a special celebration?
+- How much do you charge for cakeage per person?
+- What is your policy on cake from home?
+- What is the charge for bringing a cake?
+- What cakes can you do for my friend's birthday
+- We want to bring a cake.

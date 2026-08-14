@@ -1,31 +1,31 @@
 sms_templates:
-  - name: take_out
-    text: ${variant_take_out_sms}
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: prices
-    text: ${variant_prices_sms}
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: menu
-    text: ${variant_menu_sms}
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: email
-    text: ${variant_email_sms}
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: large_party
-    text: ${variant_large_party_sms}
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
+- name: take_out
+  text: ${variant_take_out_sms}
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: prices
+  text: ${variant_prices_sms}
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: menu
+  text: ${variant_menu_sms}
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: email
+  text: ${variant_email_sms}
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: large_party
+  text: ${variant_large_party_sms}
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'

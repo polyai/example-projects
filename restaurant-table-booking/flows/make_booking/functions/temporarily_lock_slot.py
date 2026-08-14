@@ -1,6 +1,7 @@
 import datetime as dt
 
 import plog
+
 from _gen import *  # <AUTO GENERATED>
 from functions.check_availability import (
     filter_availability,
@@ -14,7 +15,9 @@ from functions.make_booking_utils import _temporarily_lock_slot
     "Temporarily lock a booking slot for the user. It's not used to book the table of finalize the booking."
 )
 @func_parameter("date", "Date of the requested booking slot, in YYYY-MM-DD format")
-@func_parameter("time", "Time of the requested booking slot in HH:MM format, e.g. 15:00")
+@func_parameter(
+    "time", "Time of the requested booking slot in HH:MM format, e.g. 15:00"
+)
 @func_parameter("party_size", "Party size for the booking")
 @func_parameter(
     "selected_table_type",
@@ -22,7 +25,12 @@ from functions.make_booking_utils import _temporarily_lock_slot
 )
 @plog.tmp_bind(api_integration="opentable")
 def temporarily_lock_slot(
-    conv: Conversation, flow: Flow, date: str, time: str, party_size: int, selected_table_type: str
+    conv: Conversation,
+    flow: Flow,
+    date: str,
+    time: str,
+    party_size: int,
+    selected_table_type: str,
 ):
     if selected_table_type == "standard":
         selected_table_type = "default"
@@ -81,9 +89,12 @@ def temporarily_lock_slot(
                 for availability in time_entry["availability_types"]:
                     for area in availability["diningArea"]:
                         available_table_types.update(area.get("table_type", []))
-        conv.state.available_table_types = sorted(available_table_types & valid_table_types)
+        conv.state.available_table_types = sorted(
+            available_table_types & valid_table_types
+        )
         available_types = ", ".join(
-            "standard" if t == "default" else t for t in conv.state.available_table_types
+            "standard" if t == "default" else t
+            for t in conv.state.available_table_types
         )
         flow.goto_step("Requested table type not available at requested time")
         return (
@@ -97,4 +108,6 @@ def temporarily_lock_slot(
             "If the user gives a synonym (e.g., 'indoors', 'outside seating'), map it to the closest valid value."
         )
 
-    return _temporarily_lock_slot(conv, flow, date, time, party_size, selected_table_type)
+    return _temporarily_lock_slot(
+        conv, flow, date, time, party_size, selected_table_type
+    )

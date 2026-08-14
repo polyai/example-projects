@@ -18,7 +18,9 @@ from functions.util_functions import (
     "last_name",
     'Default to "N/A" if not specified. The customer\'s last name. The input comes over the ASR channel so sanitise it before saving (e.g. add upper case). If the user refuses to provide it, pass "-".',
 )
-def customer_name_given(conv: Conversation, flow: Flow, first_name: str, last_name: str):
+def customer_name_given(
+    conv: Conversation, flow: Flow, first_name: str, last_name: str
+):
     def in_history(value: str) -> bool:
         if not isinstance(conv.state.get("values_in_history"), set):
             conv.state.values_in_history = set()
@@ -181,8 +183,12 @@ def customer_name_given(conv: Conversation, flow: Flow, first_name: str, last_na
 
     conv.write_metric("CREATE_BOOKING_FIRST_NAME_COLLECTED")
     conv.write_metric("CREATE_BOOKING_LAST_NAME_COLLECTED")
-    conv.write_metric("FIRST_NAME_CONFIDENCE", "HIGH" if conv.state.known_first_name else "LOW")
-    conv.write_metric("LAST_NAME_CONFIDENCE", "HIGH" if conv.state.known_last_name else "LOW")
+    conv.write_metric(
+        "FIRST_NAME_CONFIDENCE", "HIGH" if conv.state.known_first_name else "LOW"
+    )
+    conv.write_metric(
+        "LAST_NAME_CONFIDENCE", "HIGH" if conv.state.known_last_name else "LOW"
+    )
 
     # --- Phone routing ---
 
@@ -198,7 +204,9 @@ def customer_name_given(conv: Conversation, flow: Flow, first_name: str, last_na
     )
 
     extra_prompt_international_number = ""
-    if conv.caller_number and is_valid_potential_mobile_number(conv, conv.caller_number):
+    if conv.caller_number and is_valid_potential_mobile_number(
+        conv, conv.caller_number
+    ):
         conv.state.origin_step = "Should use callers phone number"
         flow.goto_step("Should use callers phone number")
     else:

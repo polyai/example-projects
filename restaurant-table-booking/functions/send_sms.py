@@ -1,6 +1,6 @@
+from _gen import *  # <AUTO GENERATED>
 import re
 
-from _gen import *  # <AUTO GENERATED>
 from functions.util_functions import get_country_code_prefix
 
 

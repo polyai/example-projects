@@ -1,11 +1,11 @@
 name: allergy
 enabled: true
-actions: ""
-content: "{{attr:allergy_info}}"
+actions: ''
+content: '{{attr:allergy_info}}'
 example_queries:
-  - I'm allergic to nuts
-  - I'm allergic to shellfish
-  - I have allergies
-  - Do you cater to allergies?
-  - What happens if I have an allergy
-  - What's your allergy policy?
+- I'm allergic to nuts
+- I'm allergic to shellfish
+- I have allergies
+- Do you cater to allergies?
+- What happens if I have an allergy
+- What's your allergy policy?

@@ -1,7 +1,7 @@
+from _gen import *  # <AUTO GENERATED>
 from http import HTTPStatus
 
 import plog
-from _gen import *  # <AUTO GENERATED>
 from functions.opentable_api import get_restaurant_api
 from functions.try_transfer_call import try_transfer_call
 from functions.write_booking_metric import write_booking_metric
@@ -24,7 +24,11 @@ def cancel_booking(conv: Conversation, booking_id: str):
         res = api.cancel_booking(booking_id)
 
         if res.status_code == HTTPStatus.UNAUTHORIZED:
-            plog.error("Invalid or expired token", status_code=res.status_code, response=res.text)
+            plog.error(
+                "Invalid or expired token",
+                status_code=res.status_code,
+                response=res.text,
+            )
             return try_transfer_call(
                 conv,
                 "cancel_booking_api_fail",
@@ -43,7 +47,11 @@ def cancel_booking(conv: Conversation, booking_id: str):
                         "default",
                     )
 
-            plog.error("Invalid or expired token", status_code=res.status_code, response=res.text)
+            plog.error(
+                "Invalid or expired token",
+                status_code=res.status_code,
+                response=res.text,
+            )
             return try_transfer_call(
                 conv,
                 "cancel_booking_api_fail",
@@ -54,7 +62,9 @@ def cancel_booking(conv: Conversation, booking_id: str):
             error_data = res.json()
             for error in error_data.get("errors", []):
                 if error.get("code", "") == "InvalidRidOrReservationId":
-                    plog.error("Invalid restaurant ID or reservation ID", response=res.text)
+                    plog.error(
+                        "Invalid restaurant ID or reservation ID", response=res.text
+                    )
                     return try_transfer_call(
                         conv,
                         "cancel_booking_api_fail",

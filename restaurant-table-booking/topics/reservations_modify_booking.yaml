@@ -8,11 +8,11 @@ content: |-
 
   Updating the name, email address, phone number and changing to another experience cannot be done by you. You can only change, date, time, party size and booking notes.
 example_queries:
-  - I want to change a reservation I made with you
-  - I can't come tonight anymore so I need to change the date of my booking
-  - Is it possible to update the details of a reservation I made for tomorrow?
-  - I want to amend a booking
-  - modify booking
-  - I want to change my booking
-  - can I add a note to my booking?
-  - Can I add two more people?
+- I want to change a reservation I made with you
+- I can't come tonight anymore so I need to change the date of my booking
+- Is it possible to update the details of a reservation I made for tomorrow?
+- I want to amend a booking
+- modify booking
+- I want to change my booking
+- can I add a note to my booking?
+- Can I add two more people?

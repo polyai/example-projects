@@ -1,0 +1,9 @@
+entities:
+- name: phone_number
+  description: The phone number to use for the reservation. Include country code if provided. Format
+    as digits, e.g. 10 digits for US.
+  entity_type: phone_number
+  config:
+    enabled: true
+    country_codes:
+    - US

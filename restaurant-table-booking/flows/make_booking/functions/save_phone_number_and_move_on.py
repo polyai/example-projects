@@ -53,7 +53,9 @@ def save_phone_number_and_move_on(conv: Conversation, flow: Flow, phone_number: 
                 conv.state.guest_search_name_hints = None
                 conv.state.guest_search_candidates = None
                 conv.state.guest_search_primary = None
-                conv.log.error("Guest search failed after new phone collection", error=e)
+                conv.log.error(
+                    "Guest search failed after new phone collection", error=e
+                )
 
     conv.state.origin_step = "Final details"
     flow.goto_step("Final details")

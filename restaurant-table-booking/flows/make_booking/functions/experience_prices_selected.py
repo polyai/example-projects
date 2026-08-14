@@ -4,7 +4,9 @@ from _gen import *  # <AUTO GENERATED>
 from functions.make_booking_utils import check_cancellation_policy
 
 
-@func_description("User has selected the price options to book for different people in the group")
+@func_description(
+    "User has selected the price options to book for different people in the group"
+)
 @func_parameter(
     "prices_list",
     'list of prices as an escaped JSON string, e.g. "[{\\"id\\": 123, \\"count\\": 1}, {\\"price_id\\": 456\\", \\"count\\": 2}]"',

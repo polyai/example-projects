@@ -1,8 +1,8 @@
+from _gen import *  # <AUTO GENERATED>
 import ast
 import datetime as dt
 
 import plog
-from _gen import *  # <AUTO GENERATED>
 from functions.check_availability import (
     check_availability,
     check_availability_including_experiences,
@@ -42,7 +42,9 @@ def next_month_same_day(datestr):
     "Check if there are any tables available for at or around the requested date and time."
 )
 @func_parameter("party_size", "Party size for the booking")
-@func_parameter("time", "Time of the requested booking slot in HH:MM format, e.g. 15:00")
+@func_parameter(
+    "time", "Time of the requested booking slot in HH:MM format, e.g. 15:00"
+)
 @func_parameter(
     "date", "Date of the requested booking slot, which must be in the YYYY-MM-DD format"
 )
@@ -81,7 +83,9 @@ def start_checking_availability(
         elif int(party_size) == 0:
             raise ValueError("Not a valid party size")
     except ValueError:
-        return "You need to specify a party size. Ask the user if you don't know already."
+        return (
+            "You need to specify a party size. Ask the user if you don't know already."
+        )
 
     if date_in_past(conv, date):
         return f"""

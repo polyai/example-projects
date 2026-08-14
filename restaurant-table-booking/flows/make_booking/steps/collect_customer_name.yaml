@@ -13,16 +13,9 @@ asr_biasing:
   yes_no: true
   address: false
   custom_keywords:
-    - correct
-    - that's right
-    - exactly
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 3
-  max_digits: 0
-  end_key: ""
-  collect_while_agent_speaking: true
-  is_pii: false
+  - correct
+  - that's right
+  - exactly
 prompt: |-
   === ACTIONS ===
 

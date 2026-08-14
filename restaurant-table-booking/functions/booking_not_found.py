@@ -34,7 +34,9 @@ def booking_not_found(conv: Conversation, booking_date: str, booking_time: str):
         ]
     if filtered_bookings:
         formatted_bookings = format_bookings(filtered_bookings)
-        return f"This information seems to match these bookings:\n {formatted_bookings}."
+        return (
+            f"This information seems to match these bookings:\n {formatted_bookings}."
+        )
     return try_transfer_call(
         conv,
         "booking_not_found",

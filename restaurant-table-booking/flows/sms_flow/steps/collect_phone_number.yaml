@@ -13,13 +13,6 @@ asr_biasing:
   yes_no: false
   address: false
   custom_keywords: []
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 3
-  max_digits: 0
-  end_key: ""
-  collect_while_agent_speaking: true
-  is_pii: false
 prompt: |-
   Ask the user to tell you the phone number you can send the SMS to. Make sure you say "tell" rather than "provide", to ensure they will use a speech input.
 

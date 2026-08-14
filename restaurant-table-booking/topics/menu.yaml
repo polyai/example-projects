@@ -4,11 +4,11 @@ actions: |-
   Answer the user's question using the relevant information, then offer an sms with more information.
   If they accept, call {{fn:start_sms_flow}} with
   template_id = 'menu'.
-content: "{{attr:menu_info}}"
+content: '{{attr:menu_info}}'
 example_queries:
-  - What menus do you have?
-  - Can I see a menu?
-  - What dishes do you have on your menu?
-  - What food do you have?
-  - How much does your crème brulée cost?
-  - How much your house white wine cost please?
+- What menus do you have?
+- Can I see a menu?
+- What dishes do you have on your menu?
+- What food do you have?
+- How much does your crème brulée cost?
+- How much your house white wine cost please?

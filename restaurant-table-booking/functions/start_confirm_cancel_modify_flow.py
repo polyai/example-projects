@@ -1,6 +1,6 @@
+from _gen import *  # <AUTO GENERATED>
 import datetime as dt
 
-from _gen import *  # <AUTO GENERATED>
 from functions.get_bookings import get_bookings
 from functions.start_function import set_datetime
 from functions.try_transfer_call import try_transfer_call
@@ -63,11 +63,12 @@ def format_booking(booking):
     parsed_datetime = dt.datetime.fromisoformat(booking.get("date_time", ""))
     formatted_date = parsed_datetime.strftime("%A, %B %d, %Y")
     formatted_time = parsed_datetime.strftime("%H:%M")
+    name = f"{booking.get('first_name', '')} {booking.get('last_name', '')}".strip()
     return (
+        f"Name: {name or 'Unknown'}; "
         f"Date: {formatted_date}; "
         f"Time: {formatted_time}; "
         f"Party Size: {booking.get('party_size', 0)}; "
-        f"Number of People: {booking.get('party_size', 0)}; "
         f"Special Requests: {booking.get('special_request', 'None')}; "
         f"Booking ID: {booking.get('reservation_id', '')}"
     )
@@ -163,10 +164,16 @@ def get_bookings_and_next_transition(conv, user_provided_number: bool):
             conv.state.user_provided_number_already_tried = True
             return {
                 "utterance": "I couldn't find any bookings under your number. Do you have a different number?",
-                "transition": {"goto_step": "Should try another number", "goto_flow": next_flow},
+                "transition": {
+                    "goto_step": "Should try another number",
+                    "goto_flow": next_flow,
+                },
             }
         else:
             return {
                 "utterance": "Could you please provide the phone number you used to make the booking?",
-                "transition": {"goto_step": "Collect phone number", "goto_flow": next_flow},
+                "transition": {
+                    "goto_step": "Collect phone number",
+                    "goto_flow": next_flow,
+                },
             }

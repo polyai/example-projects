@@ -13,13 +13,6 @@ asr_biasing:
   yes_no: false
   address: false
   custom_keywords: []
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 3
-  max_digits: 0
-  end_key: ""
-  collect_while_agent_speaking: true
-  is_pii: false
 prompt: |-
   - Remember to not mention the user's name
   - Ask the user if it's okay to use the number they're calling from to make the booking (their number is $phone_number , but don't mention it to them).

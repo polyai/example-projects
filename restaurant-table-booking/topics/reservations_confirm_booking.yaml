@@ -5,7 +5,7 @@ actions: |-
   {{fn:start_confirm_cancel_modify_flow}} function with 'booking_intent'='confirm'.
 content: The user wants to confirm/check a booking.
 example_queries:
-  - I need to check on a booking I made with you
-  - Can you confirm that I have a booking tonight at 6?
-  - I was just checking which name my booking is under?
-  - Can I check my booking details?
+- I need to check on a booking I made with you
+- Can you confirm that I have a booking tonight at 6?
+- I was just checking which name my booking is under?
+- Can I check my booking details?

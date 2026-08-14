@@ -16,7 +16,9 @@ from functions.util_functions import validate_phone_number
     silence_after_each_response=2,
     delay_responses=[("Let me have a look...", 3), ("One more moment...", 3)],
 )
-def save_phone_number_and_get_bookings(conv: Conversation, flow: Flow, phone_number: str):
+def save_phone_number_and_get_bookings(
+    conv: Conversation, flow: Flow, phone_number: str
+):
     try:
         phone_number_validation = validate_phone_number(conv, phone_number)
     except Exception:

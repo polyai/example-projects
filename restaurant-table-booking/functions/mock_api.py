@@ -1,10 +1,10 @@
 """In-memory mock of the OpenTable API for demo / testing without a live backend."""
 
+from _gen import *  # <AUTO GENERATED>
 import uuid
 from datetime import datetime, timedelta
 
 import plog
-from _gen import *  # <AUTO GENERATED>
 
 
 class MockOpenTableApi:
@@ -40,7 +40,9 @@ class MockOpenTableApi:
         three_days = (now + timedelta(days=3)).date()
 
         def _dt(date, hour, minute=0):
-            return datetime.combine(date, datetime.min.time().replace(hour=hour, minute=minute))
+            return datetime.combine(
+                date, datetime.min.time().replace(hour=hour, minute=minute)
+            )
 
         cls._slots = {
             tomorrow.isoformat(): [
@@ -200,7 +202,9 @@ class MockOpenTableApi:
         """Finalize a locked booking.  Retrieves party_size from the pending lock."""
         lock = self._pending_locks.pop(reservation_token, None)
         party_size = lock["party_size"] if lock else 1
-        date_time = lock["date_time"] if lock else datetime.now().strftime("%Y-%m-%dT%H:%M")
+        date_time = (
+            lock["date_time"] if lock else datetime.now().strftime("%Y-%m-%dT%H:%M")
+        )
 
         booking_id = f"mock-booking-{uuid.uuid4().hex[:8]}"
         booking = {
