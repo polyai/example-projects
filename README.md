@@ -22,20 +22,21 @@ Install the ADK, which provides the `poly` CLI:
 pip install polyai-adk
 ```
 
-Then authenticate against the region these projects live in (`us-1`):
-
-```bash
-poly login --region us-1
-```
+Then sign in to your own Agent Studio account — `poly start` for self-serve, or `poly login --region <your-region>` for an enterprise workspace. You don't need access to the account these folders were pulled from; `poly template load` (below) copies a template into a project you already own.
 
 ## Quick start
 
+These folders are pulled directly from Agent Studio, so cloning this repo alone won't let you run them — you'd need access to the source account. Instead, load a template into your own project:
+
 ```bash
-cd <template-folder>
+poly init                              # or `poly start`, if you don't have a project yet
+poly template load --region us-1       # interactive picker — search by name, e.g. "healthcare"
 poly chat
 ```
 
-`poly chat` starts an interactive session with the agent, running against the mock API bundled in `functions/`. Each template's README lists test data (phone numbers, names, etc.) to try the happy path.
+`poly template load` copies the template's resources into your current project without needing any permissions on the original. Run `poly push` afterwards if you want to save it to your own Agent Studio project.
+
+Each template's README below lists test data (phone numbers, names, etc.) to try the happy path once it's loaded.
 
 ## Project structure
 

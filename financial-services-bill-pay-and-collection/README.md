@@ -15,9 +15,11 @@ A verified-identity agent for bill pay: verify caller, read out balance, take a 
 
 ## Quick start
 
+This project is pulled directly from Agent Studio, so you'd need access to its source account to run it as-is. Instead, load it into your own project — no special permissions needed:
+
 ```bash
-cd agents/poc/template-us/PROJECT-M0YZ1X1V
-ad chat
+poly template load --region us-1   # interactive picker — search for "banking" or "bill pay"
+poly chat
 ```
 
 ### Test data

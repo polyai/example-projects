@@ -14,10 +14,11 @@ A single-site restaurant agent that takes, confirms, modifies, and cancels table
 
 ## Quick start
 
+This project is pulled directly from Agent Studio, so you'd need access to its source account to run it as-is. Instead, load it into your own project — no special permissions needed:
+
 ```bash
-# From the repo root
-cd agents/poc/template-us/PROJECT-9LRZN15N
-ad chat
+poly template load --region us-1   # interactive picker — search for "restaurant"
+poly chat
 ```
 
 ### Test data (happy path)

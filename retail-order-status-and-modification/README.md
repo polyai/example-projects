@@ -15,9 +15,11 @@ A retail customer service agent that verifies callers, looks up orders, provides
 
 ## Quick start
 
+This project is pulled directly from Agent Studio, so you'd need access to its source account to run it as-is. Instead, load it into your own project — no special permissions needed:
+
 ```bash
-cd agents/poc/template-us/PROJECT-3ET2UR6P
-ad chat
+poly template load --region us-1   # interactive picker — search for "retail" or "order"
+poly chat
 ```
 
 ### Test data (happy path)

@@ -15,9 +15,11 @@ A caller schedules, reschedules, or cancels a technician visit. Handles ANI look
 
 ## Quick start
 
+This project is pulled directly from Agent Studio, so you'd need access to its source account to run it as-is. Instead, load it into your own project — no special permissions needed:
+
 ```bash
-cd agents/poc/template-us/PROJECT-WEVYLLDV
-ad chat
+poly template load --region us-1   # interactive picker — search for "field service"
+poly chat
 ```
 
 ### Test data

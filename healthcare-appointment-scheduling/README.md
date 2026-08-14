@@ -13,12 +13,14 @@ A verified-identity voice agent that handles appointment booking, cancellation, 
 
 ## Quick start
 
+This project is pulled directly from Agent Studio, so you'd need access to its source account to run it as-is. Instead, load it into your own project — no special permissions needed:
+
 ```bash
-# From the repo root
-ad chat --base-path agents/poc/template-us/PROJECT-OQYQO7ZP
+poly template load --region us-1   # interactive picker — search for "healthcare" or "clinic"
+poly chat
 
 # Or with metadata to see function calls and state
-ad chat --base-path agents/poc/template-us/PROJECT-OQYQO7ZP --metadata
+poly chat --metadata
 ```
 
 ### Test patient (happy path)
