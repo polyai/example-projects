@@ -1,12 +1,11 @@
 name: visit-prep
 enabled: true
-actions:
-  Immediately call {{fn:handle_faq}} with answer="We'll send you an email before your
+actions: Immediately call {{fn:handle_faq}} with answer="We'll send you an email before your 
   scheduled service with any prep instructions."
-content: ""
+content: ''
 example_queries:
-  - Do I need to prepare my home before the service?
-  - Is there anything I need to do to prepare my home for the service?
-  - Do I need to make any arrangements at home before the service?
-  - Should I prepare my house in any way before the service?
-  - home preparation
+- Do I need to prepare my home before the service?
+- Is there anything I need to do to prepare my home for the service?
+- Do I need to make any arrangements at home before the service?
+- Should I prepare my house in any way before the service?
+- home preparation

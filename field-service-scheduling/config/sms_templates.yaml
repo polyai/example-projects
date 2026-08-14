@@ -1,40 +1,40 @@
 sms_templates:
-  - name: balance-due
-    text: |-
-      Dear Customer, thank you for calling Poly Services today.
-      Please use this to log into your account: https://www.example-services.com/portal.
-      Once you log in, you will see your account details. Your username is your Account Number.
-      Thank you!
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: update-billing-info
-    text: |-
-      Dear Customer, thank you for calling Poly Services today.
-      Please use this link to access your online portal: https://www.example-services.com/portal
-      Once you're logged in, you can update your billing information. Your username is your Account Number.
-      Thank you!
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: pay-online
-    text: |-
-      Dear Customer, thank you for calling Poly Services today.
-      Please use this link to log into your account: https://www.example-services.com/portal
-      Once logged in, you'll see your account details right away and can pay online. Your username is your Account Number.
-      Thank you!
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
-  - name: auto-payment
-    text: |-
-      Dear Customer, thank you for calling Poly Services today.
-      Please find more information on setting up automatic payments at https://www.example-services.com/portal. Your username is your Account Number.
-      Thank you!
-    env_phone_numbers:
-      sandbox: ""
-      pre_release: ""
-      live: "+15550001234"
+- name: balance-due
+  text: |-
+    Dear Customer, thank you for calling Poly Services today.
+    Please use this to log into your account: https://www.example-services.com/portal.
+    Once you log in, you will see your account details. Your username is your Account Number.
+    Thank you!
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: update-billing-info
+  text: |-
+    Dear Customer, thank you for calling Poly Services today.
+    Please use this link to access your online portal: https://www.example-services.com/portal
+    Once you're logged in, you can update your billing information. Your username is your Account Number.
+    Thank you!
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: pay-online
+  text: |-
+    Dear Customer, thank you for calling Poly Services today.
+    Please use this link to log into your account: https://www.example-services.com/portal
+    Once logged in, you'll see your account details right away and can pay online. Your username is your Account Number.
+    Thank you!
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'
+- name: auto-payment
+  text: |-
+    Dear Customer, thank you for calling Poly Services today.
+    Please find more information on setting up automatic payments at https://www.example-services.com/portal. Your username is your Account Number.
+    Thank you!
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550001234'

@@ -10,13 +10,13 @@ actions: |-
   "handoff_utterance" = "Sure, one moment please."
 content: Unfortunately, I can only offer support in English. Do you want to speak to a live agent?
 example_queries:
-  - Hola Spanish
-  - Espanol
-  - Hola
-  - I don't speak English
-  - Do you speak Spanish?
-  - Spanish language
-  - puedes hablar español?
-  - no ingles
-  - Do you offer any support in Spanish?
-  - Hola, como estas?
+- Hola Spanish
+- Espanol
+- Hola
+- I don't speak English
+- Do you speak Spanish?
+- Spanish language
+- puedes hablar español?
+- no ingles
+- Do you offer any support in Spanish?
+- Hola, como estas?

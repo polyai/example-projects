@@ -1,5 +1,7 @@
 from _gen import *  # <AUTO GENERATED>
-from flows.schedule_appointment.functions.find_slot_availability import find_slot_availability
+from flows.schedule_appointment.functions.find_slot_availability import (
+    find_slot_availability,
+)
 from functions.handoff import handoff
 
 

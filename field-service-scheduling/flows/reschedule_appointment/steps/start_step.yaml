@@ -13,13 +13,6 @@ asr_biasing:
   yes_no: true
   address: false
   custom_keywords: []
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 3
-  max_digits: 0
-  end_key: ""
-  collect_while_agent_speaking: true
-  is_pii: false
 prompt: |-
   Refer back to the previous turns of the conversation and see if the user has asked for modifying their appointment. If they have, say "Now, let's reschedule that appointment for you. Just so you know, I can change the time and date of your appointment but not the appointment type, would you like to proceed?"
 

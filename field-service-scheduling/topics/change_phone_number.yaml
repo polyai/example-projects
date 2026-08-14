@@ -5,9 +5,9 @@ actions: |-
   'handoff_destination'='CUSTOMER_CARE' and
   'handoff_reason'='CONTACT_INFO_CHANGE' and
   "handoff_utterance" = "To update your contact info, I'll need to put you through to a team member. One moment please."
-content: ""
+content: ''
 example_queries:
-  - change phone number
-  - my number has changed
-  - update contact info
-  - phone number change
+- change phone number
+- my number has changed
+- update contact info
+- phone number change

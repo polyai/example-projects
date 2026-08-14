@@ -8,9 +8,9 @@ actions: |-
   'handoff_destination'='CUSTOMER_CARE' and
   'handoff_reason'='REFUND_REQUEST' and
   "handoff_utterance" = "To discuss refund options, I'll need to put you through to a team member. One moment please."
-content: ""
+content: ''
 example_queries:
-  - I want a refund
-  - refund
-  - money back
-  - get a refund
+- I want a refund
+- refund
+- money back
+- get a refund

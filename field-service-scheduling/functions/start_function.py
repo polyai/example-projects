@@ -1,8 +1,8 @@
+from _gen import *  # <AUTO GENERATED>
 import re
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from _gen import *  # <AUTO GENERATED>
 from functions.in_hours import in_hours
 
 TESTING_ENV = ["sandbox", "draft"]
@@ -107,7 +107,9 @@ def start_function(conv: Conversation):
             conv.state.phone_number = number[2:]
         else:
             conv.state.phone_number = "5550001000"
-    conv.state.USE_MOCK_API = conv.real_time_config.get("settings", {}).get("use_mock_api", True)
+    conv.state.USE_MOCK_API = conv.real_time_config.get("settings", {}).get(
+        "use_mock_api", True
+    )
 
     # In mock mode with no caller number (webchat/AS chat), default to the
     # mock customer's phone so ANI lookup matches automatically.
@@ -120,7 +122,9 @@ def start_function(conv: Conversation):
 
     # Time-of-day routing: checks business hours and switches behaviour.
     # Toggle via RTC: settings.hours_sensitive (default false — always in-hours)
-    hours_sensitive = conv.real_time_config.get("settings", {}).get("hours_sensitive", False)
+    hours_sensitive = conv.real_time_config.get("settings", {}).get(
+        "hours_sensitive", False
+    )
     conv.state.is_ooh = False
     if hours_sensitive and not in_hours(conv):
         conv.state.is_ooh = True
@@ -160,14 +164,14 @@ def start_function(conv: Conversation):
             "- CANCEL_APPOINTMENT: cancel an appointment\n"
             "- BILLING_QUESTION: billing, invoice, payment, balance, charges\n"
             "- CANCEL_SUBSCRIPTION: cancel service, cancel account, end contract\n"
-            "- INSPECTION_REQUEST: schedule inspection, free inspection, estimate\n"
+            "- INSPECTION_REQUEST: schedule assessment, free estimate, inspection\n"
             "- NEW_SALE: new customer, new account, quote, new service\n"
             "- COMMERCIAL_SERVICE: commercial, business account, business service\n"
             "- CALL_BACK: returning a call, missed call, you called me\n"
             "- WELCOME_CALL: welcome call\n"
             "- SPANISH: Spanish language\n\n"
             "If the caller's intent is unclear, ask ONE clarifying question:\n"
-            '"You can say things like billing, scheduling, inspection, new customer, or representative."\n'
+            '"You can say things like billing, scheduling, estimate, new customer, or representative."\n'
             "If still unclear after that, call {{fn:route_call}} with caller_intent='GENERAL_QUESTION'."
         )
 
@@ -184,7 +188,7 @@ def start_function(conv: Conversation):
             "- When a user shares general information, ask follow-up questions to better understand how you can assist them.\n"
             "- If the user has already once asked to talk to a human agent, and they're asking again, do not say anything and just transfer their call.\n\n"
             "FLOW START:\n"
-            '- If the user mentions wanting someone to come out, says service, requests treatment/service, or otherwise implies they\'d like to schedule a visit (even indirectly or hesitantly), you must immediately call the {{fn:start_make_appointment}} function, even if their phrasing is vague, casual, or includes filler like "uh", "um", "I was wondering if…" etc.\n'
+            '- If the user mentions wanting someone to come out, says service, requests a visit, or otherwise implies they\'d like to schedule an appointment (even indirectly or hesitantly), you must immediately call the {{fn:start_make_appointment}} function, even if their phrasing is vague, casual, or includes filler like "uh", "um", "I was wondering if…" etc.\n'
             "- If the user mentions confirming or checking an appointment, immediately call the {{fn:start_confirm_appointment}} function\n"
             "- If the user mentions modifying or rescheduling an appointment, immediately call the {{fn:start_reschedule_appointment}} function\n"
             "- If the user wants to know what their account number is, immediately call the {{fn:start_get_account_number}} function\n\n"

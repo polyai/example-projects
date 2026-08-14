@@ -1,14 +1,12 @@
 name: specific-tech
 enabled: true
-actions:
-  "##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}}
+actions: "##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}}
   with caller_intent='GENERAL_QUESTION'. Do not answer the question."
-content:
-  While we don’t currently offer that option, you’re in great hands with any of our Field
+content: While we don’t currently offer that option, you’re in great hands with any of our Field 
   Experts. They’re trained daily to ensure top-notch service and consistent results!
 example_queries:
-  - Can I schedule with a specific tech?
-  - Is it possible to book an appointment with a specific technician?
-  - Can I request a certain technician for my appointment?
-  - Is there a way to schedule with a particular technician?
-  - How can I book a specific technician for my service?
+- Can I schedule with a specific tech?
+- Is it possible to book an appointment with a specific technician?
+- Can I request a certain technician for my appointment?
+- Is there a way to schedule with a particular technician?
+- How can I book a specific technician for my service?

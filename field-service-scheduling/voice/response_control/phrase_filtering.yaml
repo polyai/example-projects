@@ -1,37 +1,36 @@
 phrase_filtering:
-  - name: goodbye
-    description: When we say goodbye, trigger hangup
-    regular_expressions:
-      - ([Gg]ood)?[Bb]ye
-      - have (a good|a great|a wonderful|a fantastic|a lovely|an excellent) ?(rest of (the|your))? ?day
-      - feel free to give us a call
-    say_phrase: true
-    function: hangup
-  - name: try_handoff
-    description:
-      The agent was supposed to transfer but didn't, the agent says they will hand the user
-      off; the agent tells the user to call the office (instead of handing off)
-    regular_expressions:
-      - handoff
-      - handoff_reason
-      - \(.*transfer.*\)
-      - (unable to|cannot|can't|not able to) (connect|transfer|put you through)
-      - I'll transfer you
-      - "[Ll]et me transfer you"
-      - "[Pp]lease hold the line"
-      - Transferring you now
-      - "[Ll]et me connect you"
-      - Transferring now...
-      - Transferring...
-      - connect you
-    say_phrase: false
-    function: handoff_no_arg
-  - name: ood_response
-    description: Capturing out of domain agent responses
-    regular_expressions:
-      - I don't have information about that
-      - I'm not sure I understand what you mean by
-      - clarify what you mean by
-      - could you say that again
-    say_phrase: false
-    function: ood_response
+- name: goodbye
+  description: When we say goodbye, trigger hangup
+  regular_expressions:
+  - ([Gg]ood)?[Bb]ye
+  - have (a good|a great|a wonderful|a fantastic|a lovely|an excellent) ?(rest of (the|your))? ?day
+  - feel free to give us a call
+  say_phrase: true
+  function: hangup
+- name: try_handoff
+  description: The agent was supposed to transfer but didn't, the agent says they will hand the user
+    off; the agent tells the user to call the office (instead of handing off)
+  regular_expressions:
+  - handoff
+  - handoff_reason
+  - \(.*transfer.*\)
+  - (unable to|cannot|can't|not able to) (connect|transfer|put you through)
+  - I'll transfer you
+  - '[Ll]et me transfer you'
+  - '[Pp]lease hold the line'
+  - Transferring you now
+  - '[Ll]et me connect you'
+  - Transferring now...
+  - Transferring...
+  - connect you
+  say_phrase: false
+  function: handoff_no_arg
+- name: ood_response
+  description: Capturing out of domain agent responses
+  regular_expressions:
+  - I don't have information about that
+  - I'm not sure I understand what you mean by
+  - clarify what you mean by
+  - could you say that again
+  say_phrase: false
+  function: ood_response

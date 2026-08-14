@@ -13,13 +13,6 @@ asr_biasing:
   yes_no: false
   address: true
   custom_keywords: []
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 3
-  max_digits: 0
-  end_key: ""
-  collect_while_agent_speaking: true
-  is_pii: false
 prompt: |-
   Your task to ask final_question_2 from the user and save their input.
   Every time you're able to extract a user input, call the {{ft:save_final_questions}} function and save the corresponding response as final_question_2

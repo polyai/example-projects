@@ -1,6 +1,6 @@
+from _gen import *  # <AUTO GENERATED>
 import re
 
-from _gen import *  # <AUTO GENERATED>
 from functions.handoff import handoff
 
 

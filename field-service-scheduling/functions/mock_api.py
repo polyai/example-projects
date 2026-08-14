@@ -6,13 +6,12 @@ for local development and testing when no real dispatch system backend
 is available.
 """
 
+from _gen import *  # <AUTO GENERATED>
 import copy
 import re
 import uuid
 from datetime import datetime, timedelta
 from typing import Optional
-
-from _gen import *  # <AUTO GENERATED>
 
 
 def _normalize_phone(phone: str) -> str:
@@ -165,7 +164,9 @@ class MockDispatchApi:
     def get_appointments(customer_id: str) -> list[dict]:
         """Return all appointments for a given customer ID."""
         return [
-            copy.deepcopy(apt) for apt in _APPOINTMENTS.values() if apt["customerID"] == customer_id
+            copy.deepcopy(apt)
+            for apt in _APPOINTMENTS.values()
+            if apt["customerID"] == customer_id
         ]
 
     # -- Available slots ----------------------------------------------------
@@ -238,7 +239,10 @@ class MockDispatchApi:
         {"success": False, "error": "..."} otherwise.
         """
         if appointment_id not in _APPOINTMENTS:
-            return {"success": False, "error": f"Appointment {appointment_id} not found"}
+            return {
+                "success": False,
+                "error": f"Appointment {appointment_id} not found",
+            }
         del _APPOINTMENTS[appointment_id]
         return {"success": True, "reason": reason}
 

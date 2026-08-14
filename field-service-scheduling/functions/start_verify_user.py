@@ -8,7 +8,10 @@ def start_verify_user(conv: Conversation):
         conv.log.info("Number exists")
         return {
             "content": "Before doing anything else, verify if the user is calling from the number associated with their account.",
-            "transition": {"goto_flow": "verify_user", "goto_step": "Should collect phone number"},
+            "transition": {
+                "goto_flow": "verify_user",
+                "goto_step": "Should collect phone number",
+            },
         }
     else:
         conv.log.info("Ask for number")

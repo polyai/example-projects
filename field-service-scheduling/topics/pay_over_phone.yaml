@@ -8,10 +8,10 @@ actions: |-
   'handoff_destination'='CUSTOMER_CARE'  and
   'handoff_reason'='PAY_BILL' and
   "handoff_utterance" = "Absolutely! Let me get you over to our customer care team to help with that. One moment please."
-content: ""
+content: ''
 example_queries:
-  - pay bill
-  - pay my balance
-  - billing payment
-  - make a payment
-  - pay over phone
+- pay bill
+- pay my balance
+- billing payment
+- make a payment
+- pay over phone

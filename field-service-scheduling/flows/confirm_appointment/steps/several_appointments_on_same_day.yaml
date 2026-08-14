@@ -13,19 +13,12 @@ asr_biasing:
   yes_no: false
   address: false
   custom_keywords: []
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 3
-  max_digits: 0
-  end_key: ""
-  collect_while_agent_speaking: true
-  is_pii: false
 prompt: |-
   Once the caller has indicated which appointment they're looking to $call_intent by providing the type or time, you MUST immediately call {{ft:select_appointment_by_id}} with the given appointment ID as the appointment_id argument (referring to the appointments below) with no spoken output.
 
   In the unlikely scenario that you misheard the caller in the previous step and the caller has provided a different date, call {{ft:select_appointment_date}} with the given date as the date argument.
 
-  Otherwise, read back the appointment details and ask the user: "Looks like you've got a few pending appointments on $appointment_date, which are (appointments below). Which of those appointments are you looking to $call_intent?". Make sure to list out the appointment types and times eg "a Quarterly Maintenance appointment where the field expert will arrive in the morning and a Warranty Reservice appointment where another field expert will arrive between 3pm and 5pm". List them out in natural English ie no numbering them 1,2,3 etc.
+  Otherwise, read back the appointment details and ask the user: "Looks like you've got a few pending appointments on $appointment_date, which are (appointments below). Which of those appointments are you looking to $call_intent?". Make sure to list out the appointment types and times eg "a Quarterly Maintenance appointment where the field expert will arrive in the morning and a Follow-Up Service appointment where another field expert will arrive between 3pm and 5pm". List them out in natural English ie no numbering them 1,2,3 etc.
 
   If the user doesn't know or isn't sure or seems to be repeating themselves, just call the {{fn:handoff}}function with "APPOINTMENT_TIME_OR_TYPE_NOT_COLLECTED" as the 'handoff_reason' argument. 
 

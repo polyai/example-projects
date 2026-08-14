@@ -5,12 +5,12 @@ actions: |-
 
   don't say anything, immediately call the function {{fn:start_reschedule_appointment}}
 content: |-
-  It looks like someone is supposed to come by on Thursday for my seasonal visit, but I can't do that day anymore. Is it possible to change it now?
+  It looks like someone is supposed to come by on Thursday for my regular visit, but I can't do that day anymore. Is it possible to change it now?
    can I change what day the technician comes?
-   change the day of the next treatment
+   change the day of the next service visit
    would it be possible to move my appointment to later in the day?
    I have a visit coming up for 10:30 on Monday morning, but I actually have to take my kid to the doctor then. Is there anything available in the afternoon?
-   someone just sent me a text saying that my seasonal treatment is going to happen next week at 9am, but that's way too early for me
+   someone just sent me a text saying that my service visit is going to happen next week at 9am, but that's way too early for me
    make my appointment a different day or time
    can they come sooner rather than later?
    is it possible for them to come as late in the day as possible?
@@ -18,14 +18,14 @@ content: |-
   change the date/time
   Ah yeah, I've supposedly got somebody coming to my house to do some kind of something other. I've got, I've got snow all over the ground. There's no way you can do anything today.
 example_queries:
-  - How do I reschedule a service visit?
-  - Can I reschedule
-  - modify visit date
-  - I just got a text about an appointment tomorrow, but I need to push it back to Wednesday
-  - I'm going to be out of town when the technician arrives
-  - My treatment was scheduled for May 14th at 1pm but that doesn't work for me anymore. Can we either
-    push it later in the day or change the day of the visit?
-  - reschedule appointment to different time
-  - move treatment to later in the day
-  - can you help me reschedule my next treatment
-  - push my seasonal visit back a week
+- How do I reschedule a service visit?
+- Can I reschedule
+- modify visit date
+- I just got a text about an appointment tomorrow, but I need to push it back to Wednesday
+- I'm going to be out of town when the technician arrives
+- My appointment was scheduled for May 14th at 1pm but that doesn't work for me anymore. Can we 
+  either push it later in the day or change the day of the visit?
+- reschedule appointment to different time
+- move my service visit to later in the day
+- can you help me reschedule my next appointment
+- push my upcoming visit back a week

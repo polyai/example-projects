@@ -8,20 +8,20 @@ actions: |-
   'handoff_reason'='BILLING_QUESTION' and
   "handoff_utterance" = "Let me put you through to a colleague who can help with that. One moment please."
 content: |-
-  confirm that I paid for treatment 
+  confirm that I paid for the service
   hi yes i was calling about my account and just trying to figure out some billing um questions 
   hi can i have accounting 
   accounting department 
   i'd like to speak to someone in billing
 example_queries:
-  - I think I was overcharged
-  - My balance is incorrect
-  - I can't seem to set up/turn off autopay
-  - I can't seem to get my online payments to go through.
-  - My credit card keeps declining
-  - I received an invoice in the mail
-  - billing department
-  - I'm having a billing issue
-  - I need to get a copy of my invoice
-  - i pay/paid two hundred dollars for the annual treatment and i'm calling to confirm to get this in
-    writing
+- I think I was overcharged
+- My balance is incorrect
+- I can't seem to set up/turn off autopay
+- I can't seem to get my online payments to go through.
+- My credit card keeps declining
+- I received an invoice in the mail
+- billing department
+- I'm having a billing issue
+- I need to get a copy of my invoice
+- i pay/paid two hundred dollars for the annual service and i'm calling to confirm to get this in 
+  writing

@@ -1,6 +1,6 @@
+from _gen import *  # <AUTO GENERATED>
 from datetime import datetime
 
-from _gen import *  # <AUTO GENERATED>
 from functions.handoff import handoff
 from functions.routes_api_call import get_service_types, search_appointments_by_customer
 from functions.utils import (
@@ -26,7 +26,9 @@ def retrieve_appointments(conv: Conversation, flow: Flow):
             if appointment["statusText"] not in ["Cancelled", "Completed"]
         ]
         completed_appointment_dates = [
-            appt["date"] for appt in all_appointments if appt["statusText"] == "Completed"
+            appt["date"]
+            for appt in all_appointments
+            if appt["statusText"] == "Completed"
         ]
         conv.state.service_type_ids = ",".join(
             [appointment["type"] for appointment in pending_appointments]
@@ -57,7 +59,9 @@ def retrieve_appointments(conv: Conversation, flow: Flow):
         appointment["serviceType"] = next(
             s for s in service_types if s["typeID"] == appointment["type"]
         )
-        appointment["dayOfWeek"] = datetime.strptime(appointment["date"], "%Y-%m-%d").strftime("%A")
+        appointment["dayOfWeek"] = datetime.strptime(
+            appointment["date"], "%Y-%m-%d"
+        ).strftime("%A")
         appointment["endToSay"] = (
             "sunset" if appointment["end"] == "20:00:00" else appointment["end"]
         )
@@ -73,8 +77,10 @@ def retrieve_appointments(conv: Conversation, flow: Flow):
     if len(pending_appointments) == 1:
         appointment = pending_appointments[0]
         conv.state.appointment = appointment
-        appointment_timeframe_readback_prompt = get_prompt_for_appointment_timeframe_readback(
-            appointment, conv.state.call_intent
+        appointment_timeframe_readback_prompt = (
+            get_prompt_for_appointment_timeframe_readback(
+                appointment, conv.state.call_intent
+            )
         )
         flow.goto_step("Confirm appointment")
         return f"""You have found the user's appointment. Say: "So I see a service appointment here for {appointment["date"]} {appointment_timeframe_readback_prompt}"
@@ -109,7 +115,7 @@ def retrieve_appointments(conv: Conversation, flow: Flow):
                 flow.goto_step("Await response to days suggestion")
                 # utterance needs to be hardcoded, otherwise can trigger goodbye stop keyword from verbiage around calling back later
                 return {
-                    "utterance": "I see that your treatment was done quite recently. To get the best results, we'll need to wait 7 to 10 days before doing another treatment for the same issue. Do you mind calling us back after that?",
+                    "utterance": "I see that your last service was done quite recently. To get the best results, we'll need to wait 7 to 10 days before scheduling another visit for the same issue. Do you mind calling us back after that?",
                 }
 
             if is_more_than_months_ago(last_completed, conv.state.current_date_ymd, 5):

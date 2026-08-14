@@ -11,7 +11,7 @@ from functions.handoff import handoff
 )
 @func_parameter(
     "is_specialized_service",
-    "True if the caller is calling about a specialized service appointment (e.g. inspection, specialty work), False in all other cases",
+    "True if the caller is calling about a specialized service appointment (e.g. assessment, specialty work), False in all other cases",
 )
 def select_subscription_type(
     conv: Conversation,

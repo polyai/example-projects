@@ -8,7 +8,7 @@ actions: |-
   'handoff_destination'='COMMERCIAL' and
   'handoff_reason'='BUSINESS_SERVICE' and
   "handoff_utterance" = "I'm going to transfer you to a colleague who specializes in business accounts and can take great care of you. One moment please."
-content: ""
+content: ''
 example_queries:
-  - Do you provide field services for businesses?
-  - commercial service
+- Do you provide field services for businesses?
+- commercial service

@@ -16,13 +16,13 @@ content: |-
   a new policy 
   add a new service to my home
 example_queries:
-  - Yes, I'm interested in services.
-  - interested in getting your service
-  - new customer
-  - set up account
-  - set up services
-  - I need field services.
-  - I’m looking into getting your services.
-  - I might need to set up a service plan.
-  - I'm thinking about switching to your company.
-  - I’m interested in setting something up with you.
+- Yes, I'm interested in services.
+- interested in getting your service
+- new customer
+- set up account
+- set up services
+- I need field services.
+- I’m looking into getting your services.
+- I might need to set up a service plan.
+- I'm thinking about switching to your company.
+- I’m interested in setting something up with you.

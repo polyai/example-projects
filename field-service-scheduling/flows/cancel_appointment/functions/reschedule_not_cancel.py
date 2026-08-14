@@ -1,7 +1,9 @@
 from _gen import *  # <AUTO GENERATED>
 
 
-@func_description("collect and save if the user wants to reschedule rather than canceling")
+@func_description(
+    "collect and save if the user wants to reschedule rather than canceling"
+)
 @func_parameter(
     "reschedule_not_cancel",
     "set to True if the user agrees to reschedule the appointment, instead of cancelling it. set to False if the user wants to proceed with cancelling the appointment",

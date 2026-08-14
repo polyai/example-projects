@@ -1,5 +1,4 @@
 import datetime as dt
-from typing import Union
 from zoneinfo import ZoneInfo
 
 from _gen import *  # <AUTO GENERATED>
@@ -98,8 +97,10 @@ def fuzzy_match(input_string: str, string_to_match: str) -> float:
 
 
 def verify_value(
-    collected_value: str, reference_values: Union[str, list[str]], fuzzy_match_threshold: int
-) -> tuple[bool, Union[str, None]]:
+    collected_value: str,
+    reference_values: str | list[str],
+    fuzzy_match_threshold: int,
+) -> tuple[bool, str | None]:
     """
     Check if collected value matches any reference value using fuzzy matching.
 
@@ -118,7 +119,10 @@ def verify_value(
 
     # Check if the collected value matches any reference value
     for reference_value in reference_values:
-        if fuzzy_match(str(collected_value), str(reference_value)) >= fuzzy_match_threshold:
+        if (
+            fuzzy_match(str(collected_value), str(reference_value))
+            >= fuzzy_match_threshold
+        ):
             return True, reference_value
 
     return False, None
@@ -222,4 +226,3 @@ def step_utils(conv: Conversation):
     Args:
         conv: Conversation object (currently unused but kept for interface consistency)
     """
-    pass

@@ -20,6 +20,13 @@ def start_send_sms(conv: Conversation, sms_id: str):
     if conv.state.already_sent_to_number:
         return try_send_sms(conv)
     elif conv.state.phone_number:
-        return {"transition": {"goto_flow": "sms_flow", "goto_step": "Should Collect SMS Number"}}
+        return {
+            "transition": {
+                "goto_flow": "sms_flow",
+                "goto_step": "Should Collect SMS Number",
+            }
+        }
     else:
-        return {"transition": {"goto_flow": "sms_flow", "goto_step": "Collect SMS Number"}}
+        return {
+            "transition": {"goto_flow": "sms_flow", "goto_step": "Collect SMS Number"}
+        }

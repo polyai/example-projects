@@ -13,13 +13,6 @@ asr_biasing:
   yes_no: true
   address: false
   custom_keywords: []
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 3
-  max_digits: 0
-  end_key: ""
-  collect_while_agent_speaking: true
-  is_pii: false
 prompt: |-
   Await the user response.
 
@@ -44,9 +37,9 @@ prompt: |-
   - "can you come in the afternoon"
   OR if the user uses phrases like "make sure", "can you do", "is there a", "any chance", "I’d prefer", "can it be", or "only available after/before", DO NOT treat it as a confirmation. Instead, this is a request for a different time, so you MUST call either {{ft:go_to_slot_rejected}} or {{ft:find_slot_availability}}, depending on if the user has given a specific time preference or not. If the user is clear on either the date or the time, go ahead and call the function, no need to further clarify with them.
 
-  - If the user provides any additional information about the treatment location, the service details, save the appointment details by calling {{ft:save_appointment_details}}. Again, the list of available service types are: $services_map
+  - If the user provides any additional information about the service location, the service details, save the appointment details by calling {{ft:save_appointment_details}}. Again, the list of available service types are: $services_map
 
-  If none of the time slots you could offer are working for the user, call the {{fn:handoff}}function with 'OFFERED_APPOINTMENT_SLOT_REJECTED' as the 'handoff_reason' argument.
+  If none of the time slots you could offer are working for the user, call the {{fn:handoff}} function with 'OFFERED_APPOINTMENT_SLOT_REJECTED' as the 'handoff_reason' argument.
 
   Once you have received a clear confirmation from the caller that they are happy with the proposed appointment time $potential_slot, you MUST immediately call {{ft:go_to_collect_additional_notes}} with no spoken output.
 

@@ -18,7 +18,10 @@ from functions.utils import opening_hours_utterance
     'This is the destination we\'ll hand off to. If not provided, feel free to use "CUSTOMER_CARE"',
 )
 def handoff(
-    conv: Conversation, handoff_reason: str, handoff_utterance: str, handoff_destination: str
+    conv: Conversation,
+    handoff_reason: str,
+    handoff_utterance: str,
+    handoff_destination: str,
 ):
     conv.state.handoff_reason = handoff_reason.upper()
     conv.state.handoff_destination = handoff_destination.upper()
@@ -45,7 +48,9 @@ def handoff(
     if conv.state.is_ooh:
         conv.write_metric("OUT_OF_HOURS_HANDOFF_REASON", handoff_reason)
         try:
-            hours = opening_hours_utterance(conv.real_time_config.get("opening_hours", {}))
+            hours = opening_hours_utterance(
+                conv.real_time_config.get("opening_hours", {})
+            )
         except Exception:
             hours = None
             conv.log.error("error parsing opening hours", exc_info=True)

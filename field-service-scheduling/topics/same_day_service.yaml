@@ -18,11 +18,11 @@ content: |-
   I need someone to handle this situation ASAP
   I need urgent service
 example_queries:
-  - Do you provide same-day or emergency services?
-  - same day service
-  - emergency service
-  - I need someone out here ASAP
-  - Is it possible to get someone out here today?
-  - Would I be able to get a technician out immediately?
-  - can I get someone out here within the next day or so?
-  - I need service right now
+- Do you provide same-day or emergency services?
+- same day service
+- emergency service
+- I need someone out here ASAP
+- Is it possible to get someone out here today?
+- Would I be able to get a technician out immediately?
+- can I get someone out here within the next day or so?
+- I need service right now

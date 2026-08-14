@@ -14,14 +14,14 @@ content: |-
   This is about a new house.
   i need service for my new house
 example_queries:
-  - Can I change the address on my account if I have moved?
-  - I moved houses
-  - changing my address
-  - we just moved to a new house/apartment/condo
-  - I moved and need to change the address associated with my account.
-  - I'm at a new address now
-  - I need to change my address in the portal
-  - Hi there, we moved recently from 1880 Columbia Road to 90 7th Avenue, so I'll need to update that
-    in your portal
-  - I just wanted to inform you of our new address which is on Nicoll Street
-  - We no longer live at that house so we'll be needing to change our service address
+- Can I change the address on my account if I have moved?
+- I moved houses
+- changing my address
+- we just moved to a new house/apartment/condo
+- I moved and need to change the address associated with my account.
+- I'm at a new address now
+- I need to change my address in the portal
+- Hi there, we moved recently from 1880 Columbia Road to 90 7th Avenue, so I'll need to update that 
+  in your portal
+- I just wanted to inform you of our new address which is on Nicoll Street
+- We no longer live at that house so we'll be needing to change our service address

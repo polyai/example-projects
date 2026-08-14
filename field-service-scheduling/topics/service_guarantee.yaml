@@ -1,13 +1,12 @@
 name: service-guarantee
 enabled: true
-actions:
-  Immediately call {{fn:handle_faq}} with answer="Yes, we do! If you're seeing increased
-  activity after 14 days, just give us a call. We'll schedule a warranty visit at no extra cost to
+actions: Immediately call {{fn:handle_faq}} with answer="Yes, we do! If you're still experiencing 
+  issues after 14 days, just give us a call. We'll schedule a follow-up visit at no extra cost to 
   you."
-content: ""
+content: ''
 example_queries:
-  - Do you offer a warranty or guarantee for your service?
-  - Do you offer some kind of service guarantee?
-  - Is there a warranty that the treatment will be effective?
-  - Service guarantee
-  - warranty
+- Do you offer a warranty or guarantee for your service?
+- Do you offer some kind of service guarantee?
+- Is there a warranty that the service will be effective?
+- Service guarantee
+- warranty

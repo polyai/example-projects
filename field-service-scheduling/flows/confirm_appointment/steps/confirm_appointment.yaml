@@ -13,13 +13,6 @@ asr_biasing:
   yes_no: false
   address: false
   custom_keywords: []
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 3
-  max_digits: 0
-  end_key: ""
-  collect_while_agent_speaking: true
-  is_pii: false
 prompt: |-
   Do one of the following once the user has provided a response: 
 
@@ -29,12 +22,12 @@ prompt: |-
 
   If they want to cancel the appointment, call {{fn:start_cancel_appointment}}.
 
-  If the user wants to modify anything else about their appointment (apart from the time/date of the appointment, eg if they want to treat another type of service or add or change a treatment location), call {{fn:handoff}} with "CUSTOMER_WANTS_CHANGE_TO_CONFIRMED_APPOINTMENT" as the handoff_reason and "Please hold the line while I transfer you to a colleague who can help modify your appointment" as the handoff_utterance. DO NOT say anything about checking or re-checking the appointment details for the customer yourself - as you are now passing the call to a colleague who will handle this for you.
+  If the user wants to modify anything else about their appointment (apart from the time/date of the appointment, eg if they want a different type of service or to add or change a service location), call {{fn:handoff}} with "CUSTOMER_WANTS_CHANGE_TO_CONFIRMED_APPOINTMENT" as the handoff_reason and "Please hold the line while I transfer you to a colleague who can help modify your appointment" as the handoff_utterance. DO NOT say anything about checking or re-checking the appointment details for the customer yourself - as you are now passing the call to a colleague who will handle this for you.
 
   Examples of user inputs where you should then call the handoff function as above:
   - "I actually need an interior service now"
-  - "yeah but I've got ants in my kitchen"
-  - "no I actually need a different treatment though"
+  - "yeah but I've got a leak in my kitchen"
+  - "no I actually need a different service though"
 
   If the user asks you to check if they have any other appointments scheduled, call {{ft:retrieve_appointments}} .
 

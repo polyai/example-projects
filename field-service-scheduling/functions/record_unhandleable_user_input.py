@@ -6,7 +6,9 @@ from _gen import *  # <AUTO GENERATED>
 )
 @func_parameter("user_input", "Unhandleable user input that is out of scope")
 @func_parameter("user_input_type", 'Choose either "out of scope" or "incomprehensible"')
-def record_unhandleable_user_input(conv: Conversation, user_input: str, user_input_type: str):
+def record_unhandleable_user_input(
+    conv: Conversation, user_input: str, user_input_type: str
+):
     # Initialize the counter
     if not conv.state.unhandleable_counter:
         conv.state.unhandleable_counter = {"out of scope": 0, "incomprehensible": 0}

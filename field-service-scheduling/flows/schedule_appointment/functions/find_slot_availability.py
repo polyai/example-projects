@@ -1,6 +1,8 @@
 from _gen import *  # <AUTO GENERATED>
 from functions.handoff import handoff
-from functions.routes_api_call import get_spots_and_routes_and_appointments_in_date_range
+from functions.routes_api_call import (
+    get_spots_and_routes_and_appointments_in_date_range,
+)
 from functions.utils import (
     get_potential_slot,
     get_prompt_for_interior_vs_exterior_readback,
@@ -56,7 +58,9 @@ def find_slot_availability(
         }
         conv.state.potential_slot = slot
         flow.goto_step("Offer appointment slot")
-        timeframe = get_prompt_for_new_appointment_timeframe_readback(slot_start, slot_end)
+        timeframe = get_prompt_for_new_appointment_timeframe_readback(
+            slot_start, slot_end
+        )
         conv.state.new_appointment_timeframe_readback = timeframe
         return (
             f"You have found an available slot on {slot_date}. "
@@ -94,13 +98,17 @@ def find_slot_availability(
     else:
         date_to_search = date
 
-    start_and_end = get_start_and_end_date_for_search(date_to_search, conv.state.current_date_ymd)
+    start_and_end = get_start_and_end_date_for_search(
+        date_to_search, conv.state.current_date_ymd
+    )
     start_date = start_and_end["start_date"]
     end_date = start_and_end["end_date"]
 
     try:
-        spots, routes, appointments = get_spots_and_routes_and_appointments_in_date_range(
-            conv, start_date, end_date
+        spots, routes, appointments = (
+            get_spots_and_routes_and_appointments_in_date_range(
+                conv, start_date, end_date
+            )
         )
     except Exception:
         conv.log.error("API or logic error", exc_info=True)
@@ -137,11 +145,15 @@ def find_slot_availability(
             conv.state.interior_needed == 2
         )
         if start and end:
-            timeframe_readback = get_prompt_for_new_appointment_timeframe_readback(start, end)
+            timeframe_readback = get_prompt_for_new_appointment_timeframe_readback(
+                start, end
+            )
             conv.state.new_appointment_timeframe_readback = timeframe_readback
             return f"""You have found a potential time slot {slot}. You now need to get confirmation from the user whether the date and time works for them. Tell the user: "Looks like we can get someone out there on {date} and arrive at your property {timeframe_readback}." Would you like me to schedule your appointment for that time?"""
         else:
-            timeframe_readback = get_prompt_for_new_appointment_timeframe_readback("08:00", "20:00")
+            timeframe_readback = get_prompt_for_new_appointment_timeframe_readback(
+                "08:00", "20:00"
+            )
             conv.state.new_appointment_timeframe_readback = timeframe_readback
             return f"""You have found a potential date {slot}. You now need to get confirmation from the user whether the date works for them. Tell the user: "Looks like we can get someone out there on {date} {timeframe_readback} {interior_vs_exterior_readback}. Would you like me to schedule your appointment for that day?"""
 

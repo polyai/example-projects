@@ -10,9 +10,8 @@ actions: |-
   "handoff_utterance" = "Let me put you through to a team member. One moment please."
 
   If the user doesn't want to be transferred, ask them: "No problem. How else may I assist you today?"
-content:
-  Our service plans are set up on Bi-Monthly, Monthly, or Quarterly Service options
-  depending on the needs of your home! One of our team members can assist you in choosing the
-  correct option for your state. Should I connect you now?
+content: Our service plans are set up on Bi-Monthly, Monthly, or Quarterly Service options depending
+  on the needs of your home! One of our team members can assist you in choosing the correct option 
+  for your state. Should I connect you now?
 example_queries:
-  - How often should I schedule services?
+- How often should I schedule services?

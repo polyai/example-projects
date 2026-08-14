@@ -24,13 +24,13 @@ content: |-
   when are you guys coming out next
   hi i wanted to see if i have an appointment scheduled
 example_queries:
-  - I just wanted to check when my next appointment is
-  - How do I confirm or change my appointment time?
-  - check on an appointment
-  - I think there's supposed to be someone coming at 10am but I just wanted to double check
-  - appointment confirmation
-  - I need to check when the tech is coming
-  - my upcoming appointment details
-  - check the status of a visit
-  - what time is the appointment
-  - when is my next service visit?
+- I just wanted to check when my next appointment is
+- How do I confirm or change my appointment time?
+- check on an appointment
+- I think there's supposed to be someone coming at 10am but I just wanted to double check
+- appointment confirmation
+- I need to check when the tech is coming
+- my upcoming appointment details
+- check the status of a visit
+- what time is the appointment
+- when is my next service visit?

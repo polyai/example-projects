@@ -31,9 +31,7 @@ def reschedule_appointment(conv: Conversation, flow: Flow):
             slot.get("start"),
             slot.get("end"),
         ):  # returns success status
-            conv.state.appointment = (
-                None  # rescheduled appointment can be retrieved again separately if needed
-            )
+            conv.state.appointment = None  # rescheduled appointment can be retrieved again separately if needed
             pass
         else:
             handoff_reason = "RESCHEDULE_APPOINTMENT_FAIL"

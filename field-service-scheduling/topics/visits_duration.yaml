@@ -4,11 +4,11 @@ actions: |-
   Be mindful to not confuse this faq with when the user is asking about the appointment time
   or the approximate time of visit, in which case you should confirm their appointment details by
   calling {{fn:start_confirm_appointment}}.
-  If the user is asking about how long the service/treatment takes (duration), call {{fn:handle_faq}} with answer="For regular service visits, appointments usually take 20-40 minutes, depending on the scope of work."
-content: ""
+  If the user is asking about how long the service visit takes (duration), call {{fn:handle_faq}} with answer="For regular service visits, appointments usually take 20-40 minutes, depending on the scope of work."
+content: ''
 example_queries:
-  - How long will the appointment take?
-  - How long does a visit take?
-  - How long should I expect the technician to take?
-  - What's the duration of an appointment?
-  - How long does it take to apply the treatment?
+- How long will the appointment take?
+- How long does a visit take?
+- How long should I expect the technician to take?
+- What's the duration of an appointment?
+- How long does it take to complete the service?

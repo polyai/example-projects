@@ -1,14 +1,13 @@
 name: visits-not_home
 enabled: true
-actions:
-  Immediately call {{fn:handle_faq}} with answer="For outdoor work, you generally don't need to be
-  home. For any indoor work, someone 18 or older must be present to let the technician in."
-content: ""
+actions: Immediately call {{fn:handle_faq}} with answer="For outdoor work, you generally don't need 
+  to be home. For any indoor work, someone 18 or older must be present to let the technician in."
+content: ''
 example_queries:
-  - What happens if I am not available at the time of service?
-  - I wonder if I need to reschedule because I won't be home
-  - not home
-  - Do I need to be home?
-  - do you need me at home?
-  - Can the technician come when no one is home?
-  - Do I need to be home when the tech arrives?
+- What happens if I am not available at the time of service?
+- I wonder if I need to reschedule because I won't be home
+- not home
+- Do I need to be home?
+- do you need me at home?
+- Can the technician come when no one is home?
+- Do I need to be home when the tech arrives?

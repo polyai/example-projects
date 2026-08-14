@@ -18,13 +18,13 @@ content: |-
   I'd like to request service.
   want something scheduled
 example_queries:
-  - I need to schedule an appointment
-  - need service
-  - I'd like to get someone out here
-  - How can I schedule a followup visit?
-  - I'd like some help scheduling my next appointment
-  - Can you help me schedule a visit?
-  - can we get someone back for a followup?
-  - I missed my last appointment, can I rebook?
-  - I need a technician to come out
-  - How do I schedule a service visit?
+- I need to schedule an appointment
+- need service
+- I'd like to get someone out here
+- How can I schedule a followup visit?
+- I'd like some help scheduling my next appointment
+- Can you help me schedule a visit?
+- can we get someone back for a followup?
+- I missed my last appointment, can I rebook?
+- I need a technician to come out
+- How do I schedule a service visit?

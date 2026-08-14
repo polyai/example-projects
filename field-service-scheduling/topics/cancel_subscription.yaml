@@ -8,15 +8,15 @@ actions: |-
   'handoff_destination'='ACCOUNT_CARE' and
   'handoff_reason'='CANCEL_SUBSCRIPTION' and
   "handoff_utterance" = "I'm sorry to hear that you want to leave us! One moment, please, while I put you through to a colleague to help with this."
-content: ""
+content: ''
 example_queries:
-  - I would like to speak to someone because I wanted to end my contract.
-  - cancel my account
-  - cancel subscription
-  - I'm not happy
-  - too expensive
-  - canceling you
-  - cancel service(s)
-  - my name is a j clark and i initially signed up for your service but i think i wanna
-    put this off for a bit
-  - i wanna put off the plan
+- I would like to speak to someone because I wanted to end my contract.
+- cancel my account
+- cancel subscription
+- I'm not happy
+- too expensive
+- canceling you
+- cancel service(s)
+- my name is a j clark and i initially signed up for your service but i think i wanna put this off 
+  for a bit
+- i wanna put off the plan

@@ -25,4 +25,3 @@ def recite_account_number(conv: Conversation, flow: Flow):
         f"It's {digits_to_words(', '.join(customer_details['customerID']))}. Is there anything else you'd like help with?"
     )
     conv.exit_flow()
-    return

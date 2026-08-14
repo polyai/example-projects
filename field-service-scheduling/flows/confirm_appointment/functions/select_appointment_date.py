@@ -1,11 +1,13 @@
+from _gen import *  # <AUTO GENERATED>
 from datetime import datetime
 
-from _gen import *  # <AUTO GENERATED>
 from functions.handoff import handoff
 from functions.utils import get_prompt_for_appointment_timeframe_readback
 
 
-@func_description("try to narrow down the appointment based on the date the user has given")
+@func_description(
+    "try to narrow down the appointment based on the date the user has given"
+)
 @func_parameter(
     "appointment_date",
     'Selected appointment date. Should be converted to  year-month-day format (e.g. 2000-12-26). Use context from the appointment dates you are seeing - if the user says "the next one" or something similar, use the date of the soonest appointment, taking into account the current date',
@@ -18,7 +20,9 @@ def select_appointment_date(conv: Conversation, flow: Flow, appointment_date: st
         return """The date you provided was in the wrong format. If you know the date requested by the user, please try calling
       this function again using the following format: YYYY-MM-DD. Otherwise, ask the user what date is the appointment on."""
 
-    matched_appointments = [a for a in conv.state.appointments if a["date"] == appointment_date]
+    matched_appointments = [
+        a for a in conv.state.appointments if a["date"] == appointment_date
+    ]
 
     if len(matched_appointments) == 0:
         if not conv.state.collect_appointment_date_attempted:
@@ -42,8 +46,10 @@ def select_appointment_date(conv: Conversation, flow: Flow, appointment_date: st
 
     appointment = matched_appointments[0]
     conv.state.appointment = appointment
-    appointment_timeframe_readback_prompt = get_prompt_for_appointment_timeframe_readback(
-        appointment, conv.state.call_intent
+    appointment_timeframe_readback_prompt = (
+        get_prompt_for_appointment_timeframe_readback(
+            appointment, conv.state.call_intent
+        )
     )
     flow.goto_step("Confirm appointment")
     return f"""You have found the user's appointment. Say: "So I see a {appointment["serviceType"]} appointment here for {appointment["date"]} {appointment_timeframe_readback_prompt}"

@@ -1,6 +1,6 @@
+from _gen import *  # <AUTO GENERATED>
 import re
 
-from _gen import *  # <AUTO GENERATED>
 from functions.handoff import handoff
 from functions.routes_api_call import DispatchApiError, get_customer_details
 
@@ -52,7 +52,10 @@ def number_string_to_words(number_str: str):
 @func_latency_control(
     delay_before_responses_start=1,
     silence_after_each_response=2,
-    delay_responses=[("One second, I'm just looking that up", 3), ("one more moment please", 3)],
+    delay_responses=[
+        ("One second, I'm just looking that up", 3),
+        ("one more moment please", 3),
+    ],
 )
 def save_associated_phone_number(
     conv: Conversation, flow: Flow, country_code: str, phone_number: str

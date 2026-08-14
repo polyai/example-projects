@@ -1,7 +1,6 @@
+from _gen import *  # <AUTO GENERATED>
 from datetime import datetime, time
 from zoneinfo import ZoneInfo
-
-from _gen import *  # <AUTO GENERATED>
 
 
 @func_description("check if the call is within call center hours")
@@ -31,7 +30,9 @@ def in_hours(conv: Conversation):
     try:
         timezone = ZoneInfo(timezone_str)
     except Exception as e:
-        conv.log.error("Invalid timezone in config", timezone=timezone_str, error=str(e))
+        conv.log.error(
+            "Invalid timezone in config", timezone=timezone_str, error=str(e)
+        )
         timezone = ZoneInfo("US/Central")
 
     call_center_datetime = conv.state.datetime_now.astimezone(timezone)
@@ -67,7 +68,9 @@ def in_hours(conv: Conversation):
     if hours_str is None:
         weekday_key = weekday_map.get(call_center_datetime.weekday())
         hours_str = opening_hours.get(weekday_key, "closed")
-        conv.log.info("Using regular weekday hours", weekday=weekday_key, hours=hours_str)
+        conv.log.info(
+            "Using regular weekday hours", weekday=weekday_key, hours=hours_str
+        )
 
     # Parse hours string
     if hours_str.lower() in ["closed", "close"]:
@@ -103,6 +106,8 @@ def in_hours(conv: Conversation):
         return is_open
 
     except Exception as e:
-        conv.log.error("Failed to parse hours string", hours_str=hours_str, error=str(e))
+        conv.log.error(
+            "Failed to parse hours string", hours_str=hours_str, error=str(e)
+        )
         # Default to out of hours if parsing fails
         return False

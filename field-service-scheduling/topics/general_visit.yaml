@@ -4,8 +4,7 @@ actions: |-
   ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='MAKE_APPOINTMENT'. Do not answer the question.
 
   if the user wants to schedule a visit, call {{fn:start_make_appointment}}
-content:
-  Absolutely! Our technicians are trained to assess the service needs at your home and
-  provide the right treatment. Let’s schedule a visit so we can help!
+content: Absolutely! Our technicians are trained to assess the service needs at your home and 
+  provide the right solution. Let’s schedule a visit so we can help!
 example_queries:
-  - I'm not sure what service I need, can I still schedule an appointment?
+- I'm not sure what service I need, can I still schedule an appointment?

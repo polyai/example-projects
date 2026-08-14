@@ -14,15 +14,15 @@ actions: |-
   service_list:[Plumbing, Electrical, HVAC, Appliance Repair, General Maintenance, Painting, Carpentry, Flooring, Roofing, Landscaping, Cleaning, Window Repair, Door Repair, Fencing, Deck Repair, Pressure Washing, Gutter Cleaning, Drywall Repair, Insulation, Locksmith]
 
   ##You should treat any questions about a specific job type as an instance of that service type.
-content: ""
+content: ''
 example_queries:
-  - plumbing
-  - electrical work
-  - HVAC repair
-  - appliance repair
-  - general maintenance
-  - painting
-  - roofing
-  - landscaping
-  - locksmith
-  - gutter cleaning
+- plumbing
+- electrical work
+- HVAC repair
+- appliance repair
+- general maintenance
+- painting
+- roofing
+- landscaping
+- locksmith
+- gutter cleaning

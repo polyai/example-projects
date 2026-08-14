@@ -14,7 +14,10 @@ from functions.try_send_sms import try_send_sms
     'Default to False. Set to True only if the user says "no", or does not want to send the SMS to the number they are calling from.',
 )
 def should_collect_sms_number(
-    conv: Conversation, flow: Flow, phone_number_provided: bool, should_collect_number: bool
+    conv: Conversation,
+    flow: Flow,
+    phone_number_provided: bool,
+    should_collect_number: bool,
 ):
     if not should_collect_number:
         conv.state.sms_phone_number = conv.state.phone_number

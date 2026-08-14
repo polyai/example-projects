@@ -7,7 +7,7 @@ from _gen import *  # <AUTO GENERATED>
 def save_final_questions(
     conv: Conversation, flow: Flow, final_question_1: str, final_question_2: str
 ):
-    import functions.step_utils as step_utils
+    from functions import step_utils
 
     # TODO: edit the utterances to be used when value validation or verification fails
 

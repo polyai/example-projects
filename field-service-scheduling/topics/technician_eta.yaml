@@ -8,10 +8,10 @@ actions: |-
   'handoff_destination'='CUSTOMER_CARE' and
   'handoff_reason'='TECHNICIAN_IS_LATE' and
   "handoff_utterance" = "Sorry about that. One moment while I put you through to a customer care team member."
-content: ""
+content: ''
 example_queries:
-  - the technician is late
-  - to confirm an appointment because the technician is late.
-  - the tech is not here yet
-  - it's past the time of my appointment and the guy is not here
-  - Ah, nobody showed up for my appointment.
+- the technician is late
+- to confirm an appointment because the technician is late.
+- the tech is not here yet
+- it's past the time of my appointment and the guy is not here
+- Ah, nobody showed up for my appointment.

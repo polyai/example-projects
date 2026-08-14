@@ -13,18 +13,11 @@ asr_biasing:
   yes_no: false
   address: false
   custom_keywords: []
-dtmf_config:
-  is_enabled: false
-  inter_digit_timeout: 3
-  max_digits: 0
-  end_key: ""
-  collect_while_agent_speaking: true
-  is_pii: false
 prompt: |-
   If you have already asked the caller to provide an alternative number, call 
   {{ft:validate_caller_number}}. 
 
-  Only consider the most recent phone number the user has provided. Phone numbers can have a maximum of 10 digits.
+  Only consider the most recent phone number the user has provided. Phone numbers can have a maximum of ten digits.
 
   Interpret multipliers such as "double" and "triple" as a quantity of numbers: "double nine" = "nine nine", "triple eight" = "eight eight eight".
 

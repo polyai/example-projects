@@ -4,17 +4,16 @@ actions: |-
   ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='CANCEL_APPOINTMENT'. Do not answer the question.
 
   call {{fn:start_cancel_appointment}}
-content: ""
+content: ''
 example_queries:
-  - I can't make the date of my seasonal appointment and I'd like to cancel it
-  - cancel appointment
-  - can I cancel the upcoming visit?
-  - I don't want that appointment anymore
-  - make a cancellation
-  - I don't need the tech to come anymore
-  - I requested a visit for next Wednesday, but I don't need it anymore
-  - can we get rid of this appointment on the books?
-  - I was just speaking with you the other day and I asked for an intermittent appointment between my
-    seasonal visits, but I was able to take care of the mice myself, and we can cancel the appointment
-    now
-  - I no longer need the appointment
+- I can't make the date of my upcoming appointment and I'd like to cancel it
+- cancel appointment
+- can I cancel the upcoming visit?
+- I don't want that appointment anymore
+- make a cancellation
+- I don't need the tech to come anymore
+- I requested a visit for next Wednesday, but I don't need it anymore
+- can we get rid of this appointment on the books?
+- I was just speaking with you the other day and I asked for an extra appointment between my regular
+  visits, but the issue resolved itself, and we can cancel the appointment now
+- I no longer need the appointment

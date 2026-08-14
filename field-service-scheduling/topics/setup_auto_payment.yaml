@@ -5,12 +5,12 @@ actions: |-
 
   ##Otherwise, tell the user: "We can send you a text with your online portal link, where you can set up auto payments. Would you like that link?"
   If the user confirms, call {{fn:start_send_sms}} with sms_id="auto-payment"
-content: ""
+content: ''
 example_queries:
-  - How can I set up auto payments?
-  - enable auto payments for my bills
-  - Can you tell me how to set up recurring payments
-  - How do I set up automatic payments?
-  - How can I arrange for recurring payments?
-  - schedule automatic payments
-  - make my payments automatic
+- How can I set up auto payments?
+- enable auto payments for my bills
+- Can you tell me how to set up recurring payments
+- How do I set up automatic payments?
+- How can I arrange for recurring payments?
+- schedule automatic payments
+- make my payments automatic

@@ -8,9 +8,9 @@ actions: |-
   'handoff_destination'='CUSTOMER_CARE' and
   'handoff_reason'='FINANCING_OPTIONS' and
   "handoff_utterance" = "Let me put you through to a team member who can better answer your question. One moment please."
-content: ""
+content: ''
 example_queries:
-  - Do you offer financing options for services?
-  - financing
-  - finance
-  - payment options
+- Do you offer financing options for services?
+- financing
+- finance
+- payment options

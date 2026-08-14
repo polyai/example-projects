@@ -1,15 +1,13 @@
 name: canceling-window
 enabled: true
-actions:
-  "##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}}
+actions: "##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}}
   with caller_intent='GENERAL_QUESTION'. Do not answer the question."
-content:
-  You can cancel or reschedule an appointment up until your Field Expert arrives at your
+content: You can cancel or reschedule an appointment up until your Field Expert arrives at your 
   door!
 example_queries:
-  - How far out do I have to cancel or reschedule an appointment
-  - How much notice do I need to give to cancel an appointment?
-  - How late can I reschedule an appointment?
-  - What's the latest I can cancel my appointment?
-  - Can I cancel my appointment at the last minute?
-  - Is there a deadline to cancel or reschedule before the appointment?
+- How far out do I have to cancel or reschedule an appointment
+- How much notice do I need to give to cancel an appointment?
+- How late can I reschedule an appointment?
+- What's the latest I can cancel my appointment?
+- Can I cancel my appointment at the last minute?
+- Is there a deadline to cancel or reschedule before the appointment?

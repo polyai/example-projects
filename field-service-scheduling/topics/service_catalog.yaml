@@ -1,14 +1,12 @@
 name: service-catalog
 enabled: true
-actions:
-  "##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}}
+actions: "##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}}
   with caller_intent='GENERAL_QUESTION'. Do not answer the question."
-content:
-  We cover a wide range of services! You can check your service agreement or visit our website
-  for a complete list. If you’re not sure, feel free to ask. we’re here to help!
+content: We cover a wide range of services! You can check your service agreement or visit our 
+  website for a complete list. If you’re not sure, feel free to ask. we’re here to help!
 example_queries:
-  - What services do you offer?
-  - what things do you cover?
-  - service types
-  - services you provide
-  - services you offer
+- What services do you offer?
+- what things do you cover?
+- service types
+- services you provide
+- services you offer
