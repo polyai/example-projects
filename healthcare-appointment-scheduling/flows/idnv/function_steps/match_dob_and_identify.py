@@ -56,7 +56,7 @@ def _patient_to_state_dict(p) -> dict:
 @func_latency_control(
     delay_before_responses_start=0,
     silence_after_each_response=3,
-    delay_responses=[("typing_noise", 2), ("One moment.", 3)],
+    delay_responses=[("One moment.", 2), ("Almost done.", 3)],
 )
 def match_dob_and_identify(conv: Conversation, flow: Flow):
     """Match DOB to candidate patients; save identified patient or hand off."""

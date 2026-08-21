@@ -22,7 +22,7 @@ from functions.slot_matching import (
 @func_latency_control(
     delay_before_responses_start=0,
     silence_after_each_response=3,
-    delay_responses=[("typing_noise_short", 2), ("typing_noise_long", 4)],
+    delay_responses=[("One moment.", 2), ("Just looking that up now.", 3)],
 )
 def appointment_type_confirmed(conv: Conversation, flow: Flow, appointment_type: str):
     """Fetch available slots for the chosen appointment type and offer two options."""

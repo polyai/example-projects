@@ -14,7 +14,7 @@ _handle_name_matched = handle_name_matched
 @func_latency_control(
     delay_before_responses_start=0,
     silence_after_each_response=3,
-    delay_responses=[("typing_noise", 2), ("Just looking that up now.", 3)],
+    delay_responses=[("Just looking that up now.", 2), ("One moment.", 3)],
 )
 def match_name_to_account(conv: Conversation, flow: Flow):
     """Use prompt_llm to decide if user's stated name matches the account name."""

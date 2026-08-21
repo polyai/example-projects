@@ -9,7 +9,7 @@ from functions.handoff import handoff
 @func_latency_control(
     delay_before_responses_start=0,
     silence_after_each_response=3,
-    delay_responses=[("typing_noise", 2), ("Just a second.", 3), ("typing_noise", 2)],
+    delay_responses=[("Just a second.", 2), ("Almost done.", 3)],
 )
 def save_collected_phone_and_lookup(conv: Conversation, flow: Flow):
     """Save collected phone to state, look up patients, then DOB or collect number."""
