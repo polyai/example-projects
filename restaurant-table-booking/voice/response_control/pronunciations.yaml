@@ -5,6 +5,3 @@ pronunciations:
 - regex: \b10([ -])digit
   replacement: ten\1digit
   case_sensitive: false
-- regex: \b10([ -])digit
-  replacement: ten\1digit
-  case_sensitive: false
