@@ -17,12 +17,6 @@ pronunciations:
 - regex: \b10([ -])digit
   replacement: ten\1digit
   case_sensitive: false
-- regex: \b10([ -])digit
-  replacement: ten\1digit
-  case_sensitive: false
-- regex: \b12([ -])digit
-  replacement: twelve\1digit
-  case_sensitive: false
 - regex: \b12([ -])digit
   replacement: twelve\1digit
   case_sensitive: false
