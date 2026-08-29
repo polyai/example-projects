@@ -1,0 +1,11 @@
+platform_guardrails:
+- name: jailbreak_defence
+  enabled: true
+- name: hallucination_control
+  enabled: true
+- name: ai_identity
+  enabled: true
+- name: emergency_escalation
+  enabled: true
+- name: tool_call_integrity
+  enabled: true
