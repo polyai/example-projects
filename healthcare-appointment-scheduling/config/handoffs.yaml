@@ -5,53 +5,45 @@ handoffs:
   sip_config:
     method: refer
     phone_number: '+1234567890'
-  sip_headers: []
 - name: SCHEDULING
   description: Transfer to scheduling team
   is_default: false
   sip_config:
     method: refer
     phone_number: '+1234567890'
-  sip_headers: []
 - name: CLINICAL_SUPPORT
   description: Transfer to clinical support / triage nurse
   is_default: false
   sip_config:
     method: refer
     phone_number: '+1234567890'
-  sip_headers: []
 - name: BILLING
   description: Transfer to billing department
   is_default: false
   sip_config:
     method: refer
     phone_number: '+1234567890'
-  sip_headers: []
 - name: RECORDS
   description: Transfer to medical records
   is_default: false
   sip_config:
     method: refer
     phone_number: '+1234567890'
-  sip_headers: []
 - name: EMERGENCY
   description: Emergency transfer
   is_default: false
   sip_config:
     method: refer
     phone_number: '+1234567890'
-  sip_headers: []
 - name: MEDICAL_EMERGENCY
   description: Medical emergency transfer to triage
   is_default: false
   sip_config:
     method: refer
     phone_number: '+1234567890'
-  sip_headers: []
 - name: MENTAL_HEALTH_EMERGENCY
   description: Mental health crisis transfer
   is_default: false
   sip_config:
     method: refer
     phone_number: '+1234567890'
-  sip_headers: []
