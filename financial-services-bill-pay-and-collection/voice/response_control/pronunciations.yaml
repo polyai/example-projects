@@ -11,9 +11,6 @@ pronunciations:
 - regex: $1.50
   replacement: one dollar and fifty cents
   case_sensitive: false
-- regex: ^(?!\[)(?=.*[a-zA-Z])
-  replacement: '[friendly]'
-  case_sensitive: false
 - regex: \b10([ -])digit
   replacement: ten\1digit
   case_sensitive: false
