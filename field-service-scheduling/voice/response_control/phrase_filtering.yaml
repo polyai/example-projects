@@ -34,3 +34,11 @@ phrase_filtering:
   - could you say that again
   say_phrase: false
   function: ood_response
+- name: tool call hallucinations
+  description: Agent narrated a tool call instead of making it; nudge it to call the tool
+  regular_expressions:
+  - <call
+  - '[Ll]et me check'
+  - '[Ll]et me confirm'
+  say_phrase: false
+  function: handle_hallucinated_tool_call
