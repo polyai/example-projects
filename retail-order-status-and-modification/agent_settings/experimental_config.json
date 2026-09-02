@@ -2,14 +2,6 @@
   "asr": {
     "eager_final": true,
     "flow_overrides": {
-      "LOYALTY_IDNV": {
-        "steps": {
-          "Verify loyalty number": {
-            "model": "gpt-4o-transcribe",
-            "provider": "openai"
-          }
-        }
-      },
       "OMS_IDNV": {
         "steps": {
           "Collect billing postcode": {
@@ -55,13 +47,6 @@
   },
   "barge_in": {
     "flow_overrides": {
-      "LOYALTY_IDNV": {
-        "steps": {
-          "Verify loyalty number": {
-            "is_enabled": false
-          }
-        }
-      },
       "OMS_IDNV": {
         "steps": {
           "Collect billing postcode": {
@@ -154,13 +139,6 @@
   },
   "smart_vad": {
     "flow_overrides": {
-      "LOYALTY_IDNV": {
-        "steps": {
-          "Verify loyalty number": {
-            "is_enabled": false
-          }
-        }
-      },
       "OMS_IDNV": {
         "steps": {
           "Collect billing postcode": {
@@ -192,13 +170,6 @@
   },
   "vad": {
     "flow_overrides": {
-      "LOYALTY_IDNV": {
-        "steps": {
-          "Verify loyalty number": {
-            "vad_end": 1800
-          }
-        }
-      },
       "OMS_IDNV": {
         "steps": {
           "Collect billing postcode": {
