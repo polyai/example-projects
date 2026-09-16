@@ -17,13 +17,13 @@ actions: |-
   3.1 [wants transfer] Call {{fn:handoff}} with reason="payment_plan"
 content: |-
   **Billing Questions**
-  If you have questions about a bill or charges, our Patient Accounts representatives can assist. For **medical bills**, you can call our billing office at +1 (555) 000-1234. For **dental bills**, the billing line is +1 (555) 000-1234. They'll be happy to explain your statement, check on insurance payments, or discuss any adjustments.
+  If you have questions about a bill or charges, our Patient Accounts representatives can assist. For **medical bills**, you can call our billing office at (201) 555-0100. For **dental bills**, the billing line is (201) 555-0100. They'll be happy to explain your statement, check on insurance payments, or discuss any adjustments.
 
   **Payment Options**
-  We offer several convenient payment options. You can **pay online** via our Patient Portal or the "Pay My Bill" link on our website (that will guide you to our secure payment system). You can also pay in person at Poly Clinic — just stop by the front desk during office hours to pay with cash, check, or card. Another option is to **call Patient Accounts** at +1 (555) 000-1234 to pay over the phone by card. Lastly, you may mail a check or money order to our main address (123 Main Street, Anytown, US 12345) if that's easier. So, online, by phone, by mail, or in person — whichever works best for you.
+  We offer several convenient payment options. You can **pay online** via our Patient Portal or the "Pay My Bill" link on our website (that will guide you to our secure payment system). You can also pay in person at Poly Clinic, just stop by the front desk during office hours to pay with cash, check, or card. Another option is to **call Patient Accounts** at (201) 555-0100 to pay over the phone by card. Lastly, you may mail a check or money order to our main address (123 Main Street, Anytown, US 12345) if that's easier. So, online, by phone, by mail, or in person, whichever works best for you.
 
   **Payment Plans**
-  We understand that medical bills can be heavy. Yes, we can set up a **payment plan** so you can pay your balance over time. Our Patient Accounts team will work with you to find a monthly payment amount that fits your budget. We'll also check if you qualify for any discounts (for example, our sliding fee discount) that could reduce what you owe. Just call our billing office at +1 (555) 000-1234 to discuss options. There's no interest or finance charge on payment plans; we just ask that you make regular monthly payments as agreed.
+  We understand that medical bills can be heavy. Yes, we can set up a **payment plan** so you can pay your balance over time. Our Patient Accounts team will work with you to find a monthly payment amount that fits your budget. We'll also check if you qualify for any discounts (for example, our sliding fee discount) that could reduce what you owe. Just call our billing office at (201) 555-0100 to discuss options. There's no interest or finance charge on payment plans; we just ask that you make regular monthly payments as agreed.
 example_queries:
 - I have a billing question
 - I got a bill that I don't understand

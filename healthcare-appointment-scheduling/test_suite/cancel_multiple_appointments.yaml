@@ -2,7 +2,7 @@ name: cancel-multiple-appointments
 scenario: |-
   You need to cancel one of your upcoming appointments at Poly Clinic.
   Provide details naturally as the agent asks for them:
-  - Your phone number is 555-000-5678.
+  - Your phone number is 212-555-0178.
   - Your date of birth is July 22, 1990.
   - Your name is John Doe.
   - You have more than one upcoming appointment. When the agent asks which one to cancel
@@ -15,7 +15,7 @@ tags:
 - cancel_flow
 - idnv
 prompt_assertions:
-- The agent collects John Doe's phone number (555-000-5678), date of birth (July 22, 1990), and name
+- The agent collects John Doe's phone number (212-555-0178), date of birth (July 22, 1990), and name
   to verify his identity.
 - The agent identifies that John Doe has more than one upcoming appointment and asks which one he 
   wants to cancel.

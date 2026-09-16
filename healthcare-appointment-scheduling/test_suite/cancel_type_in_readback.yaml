@@ -5,7 +5,7 @@ scenario: |-
   specifying any details.
   Provide details naturally as the agent asks for them:
   - If asked whether you are a patient or a case manager, say you are the patient.
-  - Your phone number is 555-000-1234.
+  - Your phone number is 201-555-0123.
   - Your date of birth is March 15, 1985.
   - Your name is Jane Smith.
   - When the agent tells you which appointment you have coming up, confirm that is the

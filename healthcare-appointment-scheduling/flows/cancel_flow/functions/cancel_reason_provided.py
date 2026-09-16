@@ -53,11 +53,9 @@ def _select_cancel_reason_id(
             )
             return matched_id
     except Exception as e:
-        conv.log.error(
-            "cancel_reason_provided: prompt_llm matching failed", error=str(e)
-        )
-        plog.info(
-            f"{log_prefix} prompt_llm matching failed error='{e}'; using fallback"
+        conv.log.warning(
+            "cancel_reason_provided: prompt_llm matching failed, using fallback reason",
+            error=str(e),
         )
 
     fallback_id = _other_or_first_id()

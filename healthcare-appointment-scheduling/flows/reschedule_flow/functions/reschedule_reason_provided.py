@@ -70,11 +70,9 @@ def _select_reschedule_reason_id(
             )
             return matched_id
     except Exception as e:
-        conv.log.error(
-            "reschedule_reason_provided: prompt_llm matching failed", error=str(e)
-        )
-        plog.info(
-            f"{log_prefix} prompt_llm matching failed error='{e}'; using fallback"
+        conv.log.warning(
+            "reschedule_reason_provided: prompt_llm matching failed, using fallback reason",
+            error=str(e),
         )
 
     fallback_id = _other_or_first_id()
@@ -263,7 +261,9 @@ def reschedule_reason_provided(
             plog.info(f"{log_prefix} no person_id; skipping (polyra) details patch")
     except Exception as e:
         plog.info(f"{log_prefix} (polyra) details patch failed error='{e}'")
-        conv.log.error("reschedule_reason_provided: details patch failed", error=str(e))
+        conv.log.warning(
+            "reschedule_reason_provided: details patch failed", error=str(e)
+        )
 
     _slot_str = str(slot.start_date) if slot.start_date else ""
     conv.write_metric(

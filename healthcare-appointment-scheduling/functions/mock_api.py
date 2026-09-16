@@ -42,8 +42,8 @@ _PERSONS: dict[str, dict] = {
         "lastName": "Smith",
         "dateOfBirth": "1985-03-15",
         "sex": "Female",
-        "homePhone": "5550001234",
-        "cellPhone": "5550001234",
+        "homePhone": "2015550123",
+        "cellPhone": "2015550123",
         "isPatient": True,
         "primaryCareProviderId": "MOCK-R001",
     },
@@ -53,8 +53,8 @@ _PERSONS: dict[str, dict] = {
         "lastName": "Doe",
         "dateOfBirth": "1990-07-22",
         "sex": "Male",
-        "homePhone": "5550005678",
-        "cellPhone": "5550005678",
+        "homePhone": "2125550178",
+        "cellPhone": "2125550178",
         "isPatient": True,
         "primaryCareProviderId": "MOCK-R002",
     },
@@ -62,8 +62,8 @@ _PERSONS: dict[str, dict] = {
 
 # Map phone number -> list of person IDs for lookup
 _PHONE_INDEX: dict[str, list[str]] = {
-    "5550001234": ["MOCK-P001"],
-    "5550005678": ["MOCK-P002"],
+    "2015550123": ["MOCK-P001"],
+    "2125550178": ["MOCK-P002"],
 }
 
 _APPOINTMENTS: dict[str, dict] = {
@@ -236,6 +236,25 @@ _RESCHEDULE_REASONS: list[dict] = [
     {"id": "MOCK-RR-002", "name": "Scheduling Conflict", "type": "as_resched_reason"},
 ]
 
+_MAX_SESSIONS = 500
+# warm Lambdas serve many conversations, so mutations are scoped per conversation id
+_SESSIONS: dict[str, dict] = {}
+
+
+def _session_state(conv) -> dict:
+    key = str(getattr(conv, "id", None) or "default")
+    state = _SESSIONS.get(key)
+    if state is None:
+        if len(_SESSIONS) >= _MAX_SESSIONS:
+            _SESSIONS.pop(next(iter(_SESSIONS)))
+        state = {
+            "persons": copy.deepcopy(_PERSONS),
+            "phone_index": copy.deepcopy(_PHONE_INDEX),
+            "appointments": copy.deepcopy(_APPOINTMENTS),
+        }
+        _SESSIONS[key] = state
+    return state
+
 
 class MockApiHandler:
     """
@@ -246,9 +265,10 @@ class MockApiHandler:
 
     def __init__(self, conv) -> None:
         self.conv = conv
-        # Deep-copy seed data so each handler instance shares the module-level
-        # state (mutations persist across turns within the same process).
-        # If you need per-conversation isolation, deep-copy here instead.
+        state = _session_state(conv)
+        self._persons = state["persons"]
+        self._phone_index = state["phone_index"]
+        self._appointments = state["appointments"]
 
     # ------------------------------------------------------------------
     # Session
@@ -269,10 +289,10 @@ class MockApiHandler:
     ) -> list[Person]:
         # Strip non-digit chars for flexible matching
         digits = "".join(ch for ch in phone_number if ch.isdigit())
-        person_ids = _PHONE_INDEX.get(digits, [])
+        person_ids = self._phone_index.get(digits, [])
         results: list[Person] = []
         for pid in person_ids:
-            person_data = _PERSONS.get(pid)
+            person_data = self._persons.get(pid)
             if person_data is None:
                 continue
             if date_of_birth and person_data.get("dateOfBirth") != date_of_birth:
@@ -281,7 +301,7 @@ class MockApiHandler:
         return results
 
     def get_person(self, person_id: str) -> Person | None:
-        data = _PERSONS.get(person_id)
+        data = self._persons.get(person_id)
         if data is None:
             return None
         return Person.model_validate(data)
@@ -289,7 +309,7 @@ class MockApiHandler:
     def get_appointment(
         self, appointment_id: str, expand=None
     ) -> Appointment | None:
-        data = _APPOINTMENTS.get(appointment_id)
+        data = self._appointments.get(appointment_id)
         if data is None:
             return None
         return Appointment.model_validate(data)
@@ -306,18 +326,18 @@ class MockApiHandler:
             "cellPhone": payload.cell_phone,
             "isPatient": True,
         }
-        _PERSONS[new_id] = person_data
+        self._persons[new_id] = person_data
         # Index by phone numbers
         for phone in [payload.home_phone, payload.cell_phone]:
             if phone:
                 digits = "".join(ch for ch in phone if ch.isdigit())
-                _PHONE_INDEX.setdefault(digits, []).append(new_id)
+                self._phone_index.setdefault(digits, []).append(new_id)
         return Person.model_validate(person_data)
 
     def update_person_cell_phone(
         self, person_id: str, cell_phone: str
     ) -> Person | None:
-        data = _PERSONS.get(person_id)
+        data = self._persons.get(person_id)
         if data is None:
             return None
         old_cell = data.get("cellPhone")
@@ -325,10 +345,13 @@ class MockApiHandler:
         # Update phone index
         if old_cell:
             old_digits = "".join(ch for ch in old_cell if ch.isdigit())
-            if old_digits in _PHONE_INDEX and person_id in _PHONE_INDEX[old_digits]:
-                _PHONE_INDEX[old_digits].remove(person_id)
+            if (
+                old_digits in self._phone_index
+                and person_id in self._phone_index[old_digits]
+            ):
+                self._phone_index[old_digits].remove(person_id)
         new_digits = "".join(ch for ch in cell_phone if ch.isdigit())
-        _PHONE_INDEX.setdefault(new_digits, []).append(person_id)
+        self._phone_index.setdefault(new_digits, []).append(person_id)
         return Person.model_validate(data)
 
     # ------------------------------------------------------------------
@@ -343,7 +366,7 @@ class MockApiHandler:
         **kwargs,
     ) -> list[Appointment]:
         results: list[Appointment] = []
-        for appt in _APPOINTMENTS.values():
+        for appt in self._appointments.values():
             if appt.get("personId") != person_id:
                 continue
             appt_date = appt.get("appointmentDate", "")
@@ -372,13 +395,13 @@ class MockApiHandler:
             "isKept": False,
             "details": payload.details or payload.description or "",
         }
-        _APPOINTMENTS[new_id] = appt_data
+        self._appointments[new_id] = appt_data
         return Appointment.model_validate(appt_data)
 
     def cancel_appointment(
         self, appointment_id: str, cancel_reason_id: str
     ) -> Appointment | None:
-        appt = _APPOINTMENTS.get(appointment_id)
+        appt = self._appointments.get(appointment_id)
         if appt is None:
             return None
         appt["isCancelled"] = True
@@ -387,7 +410,7 @@ class MockApiHandler:
     def reschedule_appointment(
         self, appointment_id: str, payload: AppointmentRescheduleRequest
     ) -> Appointment | None:
-        old_appt = _APPOINTMENTS.get(appointment_id)
+        old_appt = self._appointments.get(appointment_id)
         if old_appt is None:
             return None
         # Mark old appointment as rescheduled
@@ -410,7 +433,7 @@ class MockApiHandler:
             new_appt["locationId"] = payload.location_id
         if payload.details:
             new_appt["details"] = payload.details
-        _APPOINTMENTS[new_id] = new_appt
+        self._appointments[new_id] = new_appt
         return Appointment.model_validate(new_appt)
 
     # ------------------------------------------------------------------

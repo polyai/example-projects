@@ -7,22 +7,50 @@ DEFAULT_HANDOFF_UTTERANCE = (
     "Putting you through now."
 )
 
-# Maps handoff reasons from LLM to handoff target names defined in handoffs.yaml.
-# Reasons not listed here fall through to "DEFAULT".
 REASON_TO_TARGET = {
     "DEFAULT": "DEFAULT",
+    "OUT_OF_SCOPE": "DEFAULT",
+    "USER_INCOMPREHENSIBLE": "DEFAULT",
+    "COMPLAINT": "DEFAULT",
+    "QUALITY_CARE_CLERKS": "DEFAULT",
+    "SMS_FAILURE": "DEFAULT",
     "SCHEDULING": "SCHEDULING",
+    "NEW_PATIENT": "SCHEDULING",
+    "ANNUAL_PHYSICAL": "SCHEDULING",
+    "PREVENTATIVE_VACCINES": "SCHEDULING",
     "CLINICAL_SUPPORT": "CLINICAL_SUPPORT",
     "SYMPTOMS_CHECK": "CLINICAL_SUPPORT",
+    "SAME_DAY_TRIAGE": "CLINICAL_SUPPORT",
     "SPEAK_TO": "CLINICAL_SUPPORT",
     "BILLING": "BILLING",
+    "DENTAL_BILLING": "BILLING",
+    "BILL_PAYMENT": "BILLING",
+    "PAYMENT_PLAN": "BILLING",
+    "SLIDING_FEE_DISCOUNT": "BILLING",
+    "INSURANCE_CHECK": "BILLING",
     "RECORDS": "RECORDS",
+    "LAB_RESULTS": "RECORDS",
+    "HELP_WITH_FORMS": "RECORDS",
     "EMERGENCY": "EMERGENCY",
     "MEDICAL_EMERGENCY": "MEDICAL_EMERGENCY",
     "MENTAL_HEALTH_EMERGENCY": "MENTAL_HEALTH_EMERGENCY",
-    "OUT_OF_SCOPE": "DEFAULT",
-    "USER_INCOMPREHENSIBLE": "DEFAULT",
 }
+
+PREFIX_TO_TARGET = (
+    ("IDNV_", "SCHEDULING"),
+    ("BOOKING_", "SCHEDULING"),
+    ("CANCEL", "SCHEDULING"),
+    ("RESCHEDUL", "SCHEDULING"),
+)
+
+
+def resolve_target(reason: str) -> str:
+    if reason in REASON_TO_TARGET:
+        return REASON_TO_TARGET[reason]
+    for prefix, target in PREFIX_TO_TARGET:
+        if reason.startswith(prefix):
+            return target
+    return "DEFAULT"
 
 
 @func_description("[Agent Behaviour] Transfers the call to a live agent")
@@ -36,14 +64,12 @@ REASON_TO_TARGET = {
 )
 def handoff(conv: Conversation, reason: str, utterance: str):
     utterance = utterance or DEFAULT_HANDOFF_UTTERANCE
-    reason = reason.strip().upper()
+    reason = (reason or "DEFAULT").strip().upper() or "DEFAULT"
 
     conv.log.info(f"{HANDOFF_LOG_PREFIX}received handoff request", reason=reason)
 
-    # Resolve handoff target from reason
-    handoff_to = REASON_TO_TARGET.get(reason, "DEFAULT")
+    handoff_to = resolve_target(reason)
 
-    # Write metrics
     conv.state.handoff_reason = reason
     conv.state.handoff_to = handoff_to
     conv.write_metric("HANDOFF_REASON", reason)
@@ -55,4 +81,7 @@ def handoff(conv: Conversation, reason: str, utterance: str):
         handoff_to=handoff_to,
     )
 
-    return conv.call_handoff(handoff_to, reason, utterance)
+    if conv.env in ("sandbox", "draft"):
+        conv.log.info("Mock handoff", handoff_reason=reason, handoff_to=handoff_to)
+        return {"utterance": utterance, "hangup": True}
+    return conv.call_handoff(destination=handoff_to, reason=reason, utterance=utterance)

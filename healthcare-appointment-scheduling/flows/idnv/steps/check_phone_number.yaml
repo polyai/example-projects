@@ -23,6 +23,10 @@ prompt: |-
 
   If the user **provides a phone number** (regardless of yes/no), call {{ft:phone_number_collected}} with the full ten-digit number in the format XXXXXXXXXX (digits only, no dashes or spaces). If they only give seven digits, ask for the area code first.
 
+  If the caller reads out a number, they may say "oh" for a digit: treat it as zero. Treat "double" and "triple" as repeated digits.
+  If a digit is heard as a similar-sounding word, use the digit: "to" or "too" is two, "for" is four, "won" is one, "ate" is eight.
+  If they start giving a number but you only catch part of it, ask for it in groups, starting with the area code: "Could you give me the ten-digit number, starting with the area code?"
+
   If the user says **no** without providing a number, or says they **don't know**, call {{ft:go_to_collect_phone}}.
 
   Do not say anything else when calling a function.

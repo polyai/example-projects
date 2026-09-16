@@ -5,7 +5,10 @@ from datetime import datetime
 import plog
 
 from _gen import *  # <AUTO GENERATED>
-from functions.appointment_selection import is_follow_up_appointment
+from functions.appointment_selection import (
+    appointment_type_label,
+    is_follow_up_appointment,
+)
 from functions.handoff import handoff
 from functions.nextgen_response_models import Appointment
 
@@ -82,8 +85,9 @@ def disambiguation_selection_made(conv: Conversation, flow: Flow, selection: int
 
     flow.goto_step("Confirm Cancellation")
     when = _readable_date(chosen.appointment_date)
+    label = appointment_type_label(chosen.event_id)
     return {
         "utterance": (
-            f"Got it. We can cancel that visit on {when}. Do you want to go ahead and cancel that?"
+            f"Got it. We can cancel that {label} on {when}. Do you want to go ahead and cancel that?"
         )
     }

@@ -15,7 +15,7 @@ asr_biasing:
   custom_keywords: []
 dtmf_config:
   is_enabled: true
-  inter_digit_timeout: 3000
+  inter_digit_timeout: 3
   max_digits: 10
   end_key: '#'
   collect_while_agent_speaking: false
@@ -37,11 +37,14 @@ prompt: |-
   The phone number should be ten digits in the format XXX-XXX-XXXX (area code + seven digits).
   If the user only gives seven digits, ask for the area code too.
 
-  If you were unable to capture the phone number on the first attempt, offer the option to type it on the keypad: "I'm having trouble catching that. You can also type the number on your keypad if that's easier."
+  If you were unable to capture the phone number on the first attempt, offer the option to type it on the keypad: "I'm having trouble catching that. You can also type the number on your keypad, then press the pound key."
 
   Once the user provides a full ten-digit phone number, call {{ft:phone_number_collected}} with the number in the format XXXXXXXXXX (digits only, no dashes or spaces).
 
   If the user refuses to provide a phone number or says they don't have one, call {{ft:phone_collection_refused}}.
+
+  Never read a phone number back on this step and never write a phone number as numerals. The next step reads it back.
+  If the caller corrects part of a number they gave earlier (for example "the last digit is three"), work out the full corrected ten-digit number and call {{ft:phone_number_collected}} with it straight away, without repeating it.
 
   Do not say anything else when calling a function.
 
@@ -49,4 +52,11 @@ prompt: |-
 
   First attempt: "Could you give me the ten-digit phone number on your account, starting with the area code?"
   No match: "That number didn't match an account on file. Do you have a different number we could try?"
-  Second attempt: "I'm having trouble catching that. You can also type the number on your keypad if that's easier."
+  Second attempt: "I'm having trouble catching that. You can also type the number on your keypad, then press the pound key."
+
+  === NUMBER CAPTURE ===
+
+  Ask for the number in groups, starting with the area code: "Could you give me the ten-digit number, starting with the area code?"
+  If the caller says "oh", treat it as zero. Treat "double" and "triple" as repeated digits.
+  If a digit is heard as a similar-sounding word, use the digit: "to" or "too" is two, "for" is four, "won" is one, "ate" is eight.
+  If you could not catch it, offer: "You can also type it on your keypad, then press the pound key."

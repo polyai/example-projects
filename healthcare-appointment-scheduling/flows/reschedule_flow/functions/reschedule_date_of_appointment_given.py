@@ -230,11 +230,11 @@ def reschedule_date_of_appointment_given(
     )
 
     flow.goto_step("Confirm Reschedule")
-    when = chosen.appointment_date or day_iso
+    when = _readable_date(chosen.appointment_date or day_iso)
     plog.info(f"{log_prefix} goto_step='Confirm Reschedule' when='{when}'", is_pii=True)
     return {
-        "content": (
-            f"I have a follow-up visit on {when} pulled up. "
+        "utterance": (
+            f"I have a {appointment_type_label(chosen.event_id)} on {when} pulled up. "
             "Is this the one you'd like to reschedule?"
         )
     }

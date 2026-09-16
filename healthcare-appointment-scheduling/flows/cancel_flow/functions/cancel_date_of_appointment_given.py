@@ -228,9 +228,9 @@ def cancel_date_of_appointment_given(
     plog.info(
         f"{log_prefix} goto_step='Confirm Cancellation' when='{when}'", is_pii=True
     )
+    label = appointment_type_label(chosen.event_id)
     return {
         "utterance": (
-            f"We can cancel that follow-up visit on {when}. "
-            "Do you want to go ahead and cancel that?"
+            f"We can cancel that {label} on {when}. Do you want to go ahead and cancel that?"
         )
     }

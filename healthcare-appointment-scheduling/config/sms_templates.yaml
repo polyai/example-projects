@@ -7,7 +7,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: clinic_address
   text: |-
     Thanks for calling!
@@ -18,4 +18,4 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'

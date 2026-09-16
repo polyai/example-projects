@@ -1,35 +1,66 @@
-"""Name-match verification for IDNV flow. After match, routes to the pending flow."""
-
 from _gen import *  # <AUTO GENERATED>
+import re
+import unicodedata
+
 import plog
 from functions.handoff import handoff
 
-_POST_IDNV_CANCEL_FLOW = "Cancel Flow"
-_POST_IDNV_RESCHEDULE_FLOW = "Reschedule Flow"
-_POST_IDNV_BOOKING_FLOW = "Booking Flow"
+
+def _ascii_lower(value) -> str:
+    text = unicodedata.normalize("NFKD", str(value or ""))
+    return text.encode("ascii", "ignore").decode().lower()
 
 
-def account_display_name(patient) -> str:
-    """Return a display name from the patient dict/object."""
+def account_name_parts(patient) -> tuple[str, str]:
     if isinstance(patient, dict):
-        first = (patient.get("first_name") or patient.get("firstName") or "").strip()
-        last = (patient.get("last_name") or patient.get("lastName") or "").strip()
+        first = patient.get("first_name") or patient.get("firstName") or ""
+        last = patient.get("last_name") or patient.get("lastName") or ""
     else:
         first = (
             getattr(patient, "first_name", None)
             or getattr(patient, "firstName", None)
             or ""
-        ).strip()
+        )
         last = (
             getattr(patient, "last_name", None)
             or getattr(patient, "lastName", None)
             or ""
-        ).strip()
+        )
+    return str(first).strip(), str(last).strip()
+
+
+def account_display_name(patient) -> str:
+    first, last = account_name_parts(patient)
     return f"{first} {last}".strip() or "Unknown"
 
 
+def deterministic_name_match(
+    stated, first: str, last: str, require_both: bool = False
+) -> bool:
+    words = [t for t in re.split(r"[^a-z]+", _ascii_lower(stated)) if t]
+    tokens = {t for t in words if len(t) > 1}
+    # only runs of single letters count as spelling, so short names cannot match inside ordinary words
+    spelled, run = set(), ""
+    for word in words:
+        if len(word) == 1:
+            run += word
+            continue
+        if run:
+            spelled.add(run)
+        run = ""
+    if run:
+        spelled.add(run)
+    keys = [_ascii_lower(first), _ascii_lower(last)]
+    if all(keys) and {keys[0] + keys[1], keys[1] + keys[0]} & tokens:
+        return True
+    hits = [
+        len(key) >= 2 and (key in tokens or any(key in s for s in spelled))
+        for key in keys
+    ]
+    return all(hits) if require_both else any(hits)
+
+
 def handle_name_matched(conv, log_prefix: str):
-    """Shared post-match logic: set state and route to the pending flow."""
     conv.write_metric("IDNV_FLOW_NAME_COLLECTED", True)
     conv.write_metric("IDNV_FLOW_COMPLETED", True)
     conv.write_metric("IDNV_IDENTIFIED", True)
@@ -63,45 +94,53 @@ def match_spelled_name_to_account(conv: Conversation):
             utterance="Please hold while I transfer you to someone who can help.",
         )
 
-    account_name = account_display_name(patient)
-
+    first, last = account_name_parts(patient)
+    account_name = f"{first} {last}".strip() or "Unknown"
     candidates = getattr(conv.state, "idnv_candidate_patients", None) or []
-    single_dob_match = len(candidates) <= 1
-
-    prompt = (
-        "You are a name matcher for identity verification. The caller's FIRST "
-        "spoken name did not match, so they were asked to spell or repeat their "
-        "name. You must now evaluate ONLY the caller's SECOND attempt.\n\n"
-        "IMPORTANT: Completely IGNORE the first name the caller gave earlier.\n\n"
+    is_match = deterministic_name_match(
+        f"{conv.transcript_alternatives}", first, last, require_both=len(candidates) > 1
     )
+    llm_response = ""
 
-    if single_dob_match:
+    if not is_match:
+        prompt = (
+            "You are a name matcher for identity verification. The caller's FIRST "
+            "spoken name did not match, so they were asked to spell or repeat their "
+            "name. You must now evaluate ONLY the caller's SECOND attempt.\n\n"
+            "IMPORTANT: Completely IGNORE the first name the caller gave earlier.\n\n"
+        )
+        if len(candidates) <= 1:
+            prompt += (
+                "IMPORTANT CONTEXT: The caller's phone number and date of birth "
+                "have ALREADY been verified and uniquely match this account. "
+                "Be very generous -- a match on first name OR last name alone is sufficient.\n\n"
+            )
         prompt += (
-            "IMPORTANT CONTEXT: The caller's phone number and date of birth "
-            "have ALREADY been verified and uniquely match this account. "
-            "Be very generous -- a match on first name OR last name alone is sufficient.\n\n"
+            "The caller may have spelled letters or said the name normally.\n"
+            "Allow ASR errors, homophones, and nicknames.\n\n"
+            f"Account name on file:\n{account_name!r}\n\n"
+            f"Transcript alternatives (from ASR): \n{conv.transcript_alternatives}\n\n"
+            "OUTPUT FORMAT:\nReturn ONLY one word: match or no_match"
         )
 
-    prompt += (
-        "The caller may have spelled letters or said the name normally.\n"
-        "Allow ASR errors, homophones, and nicknames.\n\n"
-        f"Account name on file:\n{account_name!r}\n\n"
-        f"Transcript alternatives (from ASR): \n{conv.transcript_alternatives}\n\n"
-        "OUTPUT FORMAT:\nReturn ONLY one word: match or no_match"
+        result = None
+        try:
+            result = conv.utils.prompt_llm(prompt, show_history=True)
+        except Exception as e:
+            conv.log.warning(
+                "match_spelled_name_to_account: prompt_llm failed, using deterministic fallback",
+                error=str(e),
+            )
+        llm_response = str(result or "").strip()
+        is_match = llm_response.lower() == "match"
+
+    conv.log.info(
+        "IDNV spelled name match result",
+        account_name=account_name,
+        is_match=is_match,
+        llm_response=llm_response[:50],
+        is_pii=True,
     )
-
-    try:
-        result = conv.utils.prompt_llm(prompt, show_history=True)
-    except Exception as e:
-        conv.log.error("match_spelled_name_to_account prompt_llm failed", error=str(e))
-        return handoff(
-            conv,
-            reason="IDNV_NAME_MATCH_ERROR",
-            utterance="Let me put you through to someone who can help you with this.",
-        )
-
-    raw = (result or "").strip().lower()
-    is_match = raw == "match"
 
     if not is_match:
         return handoff(

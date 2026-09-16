@@ -1,6 +1,37 @@
 {
   "asr": {
     "eager_final": true,
+    "flow_overrides": {
+      "IDNV": {
+        "steps": {
+          "Check Phone Number": {
+            "eager_final": false
+          },
+          "Collect Date of Birth": {
+            "eager_final": false
+          },
+          "Collect Phone Number": {
+            "eager_final": false
+          },
+          "Collect Spelled Name": {
+            "eager_final": false
+          },
+          "Confirm Date of Birth": {
+            "eager_final": false
+          },
+          "Confirm Phone Number": {
+            "eager_final": false
+          }
+        }
+      },
+      "SMS flow": {
+        "steps": {
+          "Collect Alternative Phone Number": {
+            "eager_final": false
+          }
+        }
+      }
+    },
     "model": "poly-latency",
     "provider": "default",
     "use_asr_lib": true
@@ -14,6 +45,43 @@
     }
   },
   "barge_in": {
+    "flow_overrides": {
+      "IDNV": {
+        "steps": {
+          "Check Phone Number": {
+            "is_enabled": false
+          },
+          "Collect Date of Birth": {
+            "is_enabled": false
+          },
+          "Collect Name": {
+            "is_enabled": false
+          },
+          "Collect Phone Number": {
+            "is_enabled": false
+          },
+          "Collect Spelled Name": {
+            "is_enabled": false
+          },
+          "Confirm Date of Birth": {
+            "is_enabled": false
+          },
+          "Confirm Phone Number": {
+            "is_enabled": false
+          }
+        }
+      },
+      "SMS flow": {
+        "steps": {
+          "Collect Alternative Phone Number": {
+            "is_enabled": false
+          },
+          "Confirm This Phone Number": {
+            "is_enabled": false
+          }
+        }
+      }
+    },
     "is_enabled": true,
     "trigger": {
       "speech_threshold": 0.6,
@@ -27,7 +95,35 @@
     "flow_overrides": {
       "IDNV": {
         "steps": {
+          "Check Phone Number": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          },
+          "Collect Date of Birth": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          },
           "Collect Phone Number": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          },
+          "Collect Spelled Name": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          },
+          "Confirm Date of Birth": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          },
+          "Confirm Phone Number": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          }
+        }
+      },
+      "SMS flow": {
+        "steps": {
+          "Collect Alternative Phone Number": {
             "threshold": 0.6,
             "timeout_ms": 2000
           }
@@ -47,6 +143,28 @@
     "max_extensions": 5
   },
   "vad": {
+    "flow_overrides": {
+      "IDNV": {
+        "steps": {
+          "Check Phone Number": {
+            "vad_end": 1600
+          },
+          "Collect Date of Birth": {
+            "vad_end": 1600
+          },
+          "Collect Phone Number": {
+            "vad_end": 1600
+          }
+        }
+      },
+      "SMS flow": {
+        "steps": {
+          "Collect Alternative Phone Number": {
+            "vad_end": 1600
+          }
+        }
+      }
+    },
     "provider": "silero-experimental"
   }
 }
