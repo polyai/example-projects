@@ -4,7 +4,7 @@ asr_biasing:
   is_enabled: true
   alphanumeric: false
   name_spelling: false
-  numeric: false
+  numeric: true
   party_size: false
   precise_date: false
   relative_date: false
@@ -15,17 +15,16 @@ asr_biasing:
   custom_keywords: []
 dtmf_config:
   is_enabled: true
-  inter_digit_timeout: 15
+  inter_digit_timeout: 5
   max_digits: 10
-  end_key: ''
-  collect_while_agent_speaking: true
-  is_pii: false
+  end_key: '#'
+  collect_while_agent_speaking: false
+  is_pii: true
 prompt: |-
   If you haven't already, ask the user: "Okay. So, I can't see any accounts under that number. Is it possible it's under a different one?"
 
   If the user says yes:
-  - If you have already tried to collect the phone number once and are still having issues, immediately call the {{fn:handoff}} with 'handoff_destination'='CUSTOMER_CARE' and 'handoff_reason'='PHONE_NUMBER_LOOKUP_FAIL' and 'handoff_utterance'="Let me put you through to a colleague who can assist with that. One moment please" — this takes priority over retrying collection.
-  - Otherwise, immediately call {{ft:go_to_collect_associated_phone_number}} with no spoken output.
+  - Immediately call {{ft:go_to_collect_associated_phone_number}} with no spoken output.
 
   If the user says no or says they don't know, say sorry and call the {{fn:handoff}} function with 'handoff_destination'='CUSTOMER_CARE' 
   and 'handoff_reason'="ACCOUNT_NOT_FOUND_WITH_PHONE_NUMBER_PROVIDED" and 'handoff_utterance'="One moment while I transfer you to a colleague please."

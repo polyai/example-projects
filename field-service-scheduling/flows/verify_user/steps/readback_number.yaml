@@ -21,6 +21,15 @@ prompt: |-
   - If the user says no without saying their phone number, immediately call {{ft:go_to_collect_associated_phone_number}} with no spoken output. 
   - If the user says their phone number, immediately call {{ft:save_associated_phone_number}} with no spoken output. 
 
+  - Never read a new number back yourself; only read back $phone_number_spelled_out.
+
+  === READBACK RULES ===
+  Read the number back as one flowing sentence and finish with "is that right?" with no pause before it.
+  Say every digit as its own word. Always say "zero", never "oh".
+  Group the ten digits three, three, four, joined with "then" and "and finally".
+  Example for 2015550123: "I heard two zero one, then five five five, and finally zero one two three, is that right?"
+  If the caller says "oh" for a digit, treat it as zero.
+
   -----
 
-  Otherwise, if you haven't already, say: "um... Sorry, did you say $phone_number_spelled_out" ?
+  Otherwise, if you haven't already, say: "Sorry, did you say $phone_number_spelled_out, is that right?"

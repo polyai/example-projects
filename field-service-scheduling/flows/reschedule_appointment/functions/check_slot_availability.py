@@ -17,7 +17,7 @@ from functions.utils import (
 )
 @func_parameter(
     "date",
-    'Default to "NA". If the user wants to schedule for a specific date, set to this date. Should be in a YYYY-MM-DD format. Accommodate for generic timeframe like "early" or "late" with a sensible date, for example if the user says "early May" set to the start of the month (2025-05-01), if the user says "late May" set to the end of the month (2025-05-31), and if the user just says "May" set to the middle of the month (2025-05-15). NOTE: If the user only says something like "early" or "earlier" without specific any time range then set this to the date after the current date. If the user provided a preferred date earlier in the conversation and wants to find another slot in the same day, use that same day.',
+    'Default to "NA". If the user wants to schedule for a specific date, set to this date. Should be in a YYYY-MM-DD format. Accommodate for generic timeframe like "early" or "late" with a sensible date, for example if the user says "early May" set to the first day of that month, "late May" the last day, "May" alone the fifteenth; use the current year unless the user gives a year. NOTE: If the user only says something like "early" or "earlier" without specific any time range then set this to the date after the current date. If the user provided a preferred date earlier in the conversation and wants to find another slot in the same day, use that same day.',
 )
 @func_parameter(
     "start_time",

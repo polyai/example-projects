@@ -17,7 +17,7 @@ def save_final_questions(
         conv: Conversation, handoff_reason="FINAL_QUESTIONS_RETRY_LIMIT_EXCEEDED"
     ):
         return conv.call_handoff(
-            destination="DEFAULT",
+            destination="CUSTOMER_CARE",
             reason=handoff_reason,
             utterance="Ok. I'll put you through to someone who can help with this. One moment.",
         )

@@ -2,6 +2,7 @@ from _gen import *  # <AUTO GENERATED>
 import re
 
 from functions.handoff import handoff
+from functions.readback import spell_digits
 
 
 def is_valid_US_number(phone_number: str):
@@ -28,7 +29,7 @@ def is_valid_US_number(phone_number: str):
 )
 @func_parameter(
     "sms_phone_number",
-    'The most recent phone number the user has provided. Remove and ignore all punctuation. Ensure that multipliers such as "double" and "triple" are interpreted as the correct quantity of numbers. Must be 10 digits.',
+    'The most recent phone number the user has provided. Remove and ignore all punctuation. Ensure that multipliers such as "double" and "triple" are interpreted as the correct quantity of numbers. Use only the digits the user actually said. A US number has 10 digits; if the user gave fewer, pass exactly what they said and never add, guess or repeat digits to make up the length. If a digit is heard as a similar-sounding word, use the digit: "to" or "too" is two, "for" is four, "won" is one, "ate" is eight.',
 )
 @func_parameter(
     "declined_or_number_unknown",
@@ -60,16 +61,16 @@ def validate_caller_number(
     conv.state.sms_country_code = sms_country_code
     conv.log.info("Got phone number", sms_phone_number=sms_phone_number)
     is_valid_number = is_valid_US_number("+" + sms_country_code + sms_phone_number)
-    print(is_valid_number)
 
     if not is_valid_number:
-        if conv.state.save_sms_number_retries < 1:
-            conv.state.save_sms_number_retries += 1
-            return """Say: "Could you try that number again for me please?"
+        retries = conv.state.save_sms_number_retries or 0
+        if retries < 1:
+            conv.state.save_sms_number_retries = retries + 1
+            return """Say: "Sorry, I only caught part of that. Could you say the full ten-digit number, starting with the area code? You can also type it on your keypad, then press the pound key."
       """
-        if conv.state.save_sms_number_retries < 2:
-            conv.state.save_sms_number_retries += 1
-            return """Say: "I'm so sorry, could you try that one more time?"
+        if retries < 2:
+            conv.state.save_sms_number_retries = retries + 1
+            return """Say: "I'm so sorry, I still didn't get the full number. Could you type it on your keypad, then press the pound key?"
       """
         return handoff(
             conv,
@@ -78,6 +79,7 @@ def validate_caller_number(
             "CUSTOMER_CARE",
         )
 
+    conv.state.sms_phone_number_spelled_out = spell_digits(conv.state.sms_phone_number)
     flow.goto_step("Readback SMS Number")
-    return """To confirm that you have received the correct number, you must say: "Just to confirm, that's $sms_phone_number, correct?"
+    return f"""To confirm that you have received the correct number, you must say: "Just to confirm, that's {conv.state.sms_phone_number_spelled_out}, is that right?"
   """

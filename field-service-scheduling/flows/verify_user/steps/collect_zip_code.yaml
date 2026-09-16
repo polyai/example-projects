@@ -15,11 +15,11 @@ asr_biasing:
   custom_keywords: []
 dtmf_config:
   is_enabled: true
-  inter_digit_timeout: 11
+  inter_digit_timeout: 5
   max_digits: 5
   end_key: ''
   collect_while_agent_speaking: true
-  is_pii: false
+  is_pii: true
 prompt: |-
   If you haven't already, tell the user that you need to get their zip code to verify their account by saying: "Great. And what's your zipcode?". 
 

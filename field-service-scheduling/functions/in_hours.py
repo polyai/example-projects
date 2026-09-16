@@ -23,14 +23,16 @@ def in_hours(conv: Conversation):
         return False
 
     if not opening_hours:
-        conv.log.error("opening_hours configuration is missing", full_config=config)
+        conv.log.warning(
+            "opening_hours missing from real_time_config, treating as out of hours"
+        )
         # Default to out of hours if config is missing
         return False
 
     try:
         timezone = ZoneInfo(timezone_str)
     except Exception as e:
-        conv.log.error(
+        conv.log.warning(
             "Invalid timezone in config", timezone=timezone_str, error=str(e)
         )
         timezone = ZoneInfo("US/Central")
@@ -106,7 +108,7 @@ def in_hours(conv: Conversation):
         return is_open
 
     except Exception as e:
-        conv.log.error(
+        conv.log.warning(
             "Failed to parse hours string", hours_str=hours_str, error=str(e)
         )
         # Default to out of hours if parsing fails

@@ -2,6 +2,7 @@ from _gen import *  # <AUTO GENERATED>
 import re
 
 from functions.handoff import handoff
+from functions.readback import spell_digits
 from functions.routes_api_call import DispatchApiError, get_customer_details
 
 
@@ -20,24 +21,6 @@ def is_valid_US_number(phone_number: str):
     return False
 
 
-digit_to_word = {
-    "0": "zero",
-    "1": "one",
-    "2": "two",
-    "3": "three",
-    "4": "four",
-    "5": "five",
-    "6": "six",
-    "7": "seven",
-    "8": "eight",
-    "9": "nine",
-}
-
-
-def number_string_to_words(number_str: str):
-    return ", ".join(digit_to_word[d] for d in number_str)
-
-
 @func_description(
     "Once you have asked, you must always attempt save the phone number the user provides you with. Handoff if the user declines to provide their phone number, or says that they don't know it."
 )
@@ -47,7 +30,7 @@ def number_string_to_words(number_str: str):
 )
 @func_parameter(
     "phone_number",
-    'The most recent phone number the user has provided. Remove and ignore all punctuation. Ensure that multipliers such as "double" and "triple" are interpreted as the correct quantity of numbers. Must be 10 digits.',
+    'The most recent phone number the user has provided. Remove and ignore all punctuation. Ensure that multipliers such as "double" and "triple" are interpreted as the correct quantity of numbers. Use only the digits the user actually said. A US number has 10 digits; if the user gave fewer, pass exactly what they said and never add, guess or repeat digits to make up the length. If a digit is heard as a similar-sounding word, use the digit: "to" or "too" is two, "for" is four, "won" is one, "ate" is eight.',
 )
 @func_latency_control(
     delay_before_responses_start=1,
@@ -60,8 +43,7 @@ def number_string_to_words(number_str: str):
 def save_associated_phone_number(
     conv: Conversation, flow: Flow, country_code: str, phone_number: str
 ):
-    if not conv.state.save_phone_number_retries:
-        conv.state.save_phone_number_retries = 0
+    conv.state.save_phone_number_retries = conv.state.save_phone_number_retries or 0
 
     if not country_code:
         country_code = "1"
@@ -78,11 +60,11 @@ def save_associated_phone_number(
     if not is_valid_number:
         if conv.state.save_phone_number_retries < 1:
             conv.state.save_phone_number_retries += 1
-            return """Say: "Could you try that number again for me please?"
+            return """Say: "Sorry, I only caught part of that. Could you say the full ten-digit number, starting with the area code? You can also type it on your keypad, then press the pound key."
       """
         if conv.state.save_phone_number_retries < 2:
             conv.state.save_phone_number_retries += 1
-            return """Say: "I'm so sorry, could you try that one more time?"
+            return """Say: "I'm so sorry, I still didn't get the full number. Could you type it on your keypad, then press the pound key?"
       """
         return handoff(
             conv,
@@ -105,8 +87,8 @@ def save_associated_phone_number(
     if not customer_details:
         if conv.state.save_phone_number_retries < 1:
             conv.state.save_phone_number_retries += 1
+            conv.state.phone_number_spelled_out = spell_digits(phone_number)
             flow.goto_step("Readback number")
-            conv.state.phone_number_spelled_out = number_string_to_words(phone_number)
             return """The user has provided a number that doesn't match any accounts - you should now read the number back to them just to check that you heard them right.
       """
         if conv.state.save_phone_number_retries < 2:

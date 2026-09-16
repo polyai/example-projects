@@ -1,6 +1,23 @@
 from _gen import *  # <AUTO GENERATED>
 from functions.utils import opening_hours_utterance
 
+DEFAULT_DESTINATION = "CUSTOMER_CARE"
+
+DEFAULT_HANDOFF_UTTERANCE = (
+    "Please hold the line while I transfer you to a colleague who can help."
+)
+
+SKILL_IDS = {
+    "INSIDE_SALES": "10000001",
+    "CUSTOMER_CARE": "10000002",
+    "ACCOUNT_CARE": "10000003",
+    "NS_SCHEDULING_INBOUND": "10000004",
+    "SPANISH": "10000005",
+    "WELCOME_CALL": "10000006",
+    "COMMERCIAL": "10000007",
+    "BILLING": "10000008",
+}
+
 
 @func_description(
     "Call this function whenever you tell the user you are transferring them to actually complete the transfer"
@@ -23,62 +40,61 @@ def handoff(
     handoff_utterance: str,
     handoff_destination: str,
 ):
-    conv.state.handoff_reason = handoff_reason.upper()
-    conv.state.handoff_destination = handoff_destination.upper()
-    route_mapping = {
-        "INSIDE_SALES": "10000001",
-        "CUSTOMER_CARE": "10000002",
-        "ACCOUNT_CARE": "10000003",
-        "NS_SCHEDULING_INBOUND": "10000004",
-        "SPANISH": "10000005",
-        "WELCOME_CALL": "10000006",
-        "COMMERCIAL": "10000007",
-        "BILLING": "10000008",
-    }
-    regional_mapping = {}
+    reason = (handoff_reason or "").strip().upper() or "UNSPECIFIED"
+    destination = (handoff_destination or "").strip().upper() or DEFAULT_DESTINATION
+    if destination not in SKILL_IDS:
+        conv.log.warning(
+            "Unknown handoff destination, using default",
+            handoff_destination=destination,
+            handoff_to=DEFAULT_DESTINATION,
+        )
+        destination = DEFAULT_DESTINATION
+    utterance = handoff_utterance or DEFAULT_HANDOFF_UTTERANCE
+    skill_id = SKILL_IDS[destination]
 
-    skill_id = route_mapping.get(conv.state.handoff_destination, "10000002")
-    if skill_id == "10000003" and conv.real_time_config.get("regional_routing"):
-        skill_id = regional_mapping.get(conv.state.dnis, {}).get("act", "10000003")
-    elif skill_id == "10000002" and conv.real_time_config.get("regional_routing"):
-        skill_id = regional_mapping.get(conv.state.dnis, {}).get("care", "10000002")
-
+    conv.state.handoff_reason = reason
+    conv.state.handoff_destination = destination
     conv.state.skill_id = skill_id
+    conv.write_metric("HANDOFF_REASON", reason)
+    conv.write_metric("HANDOFF_TO", destination)
 
     if conv.state.is_ooh:
-        conv.write_metric("OUT_OF_HOURS_HANDOFF_REASON", handoff_reason)
+        conv.write_metric("OUT_OF_HOURS_HANDOFF_REASON", reason)
         try:
             hours = opening_hours_utterance(
                 conv.real_time_config.get("opening_hours", {})
             )
-        except Exception:
+        except Exception as e:
             hours = None
-            conv.log.error("error parsing opening hours", exc_info=True)
+            conv.log.warning("Could not build opening hours utterance", error=str(e))
         hours_part = f" {hours}" if hours else ""
         return {
             "utterance": f"Looks like we'll need a little extra help from our team here. Our office is currently closed.{hours_part} We appreciate your understanding and look forward to assisting you during regular business hours. Have a great rest of your day! Goodbye.",
             "hangup": True,
         }
 
-    # Build signal parameters: p1=handoff_destination, p2=skill_id, p3=handoff_reason
-    # Maximum of 9 parameters (p1 to p9) can be passed according to CXone API
-    signal_params = {
-        "p1": handoff_destination.upper(),
-        "p2": skill_id,
-        "p3": handoff_reason.upper(),
-    }
+    if conv.env in ("sandbox", "draft"):
+        conv.log.info("Mock handoff", handoff_reason=reason, handoff_to=destination)
+        return {"utterance": utterance, "hangup": True}
 
-    return {
-        "utterance": handoff_utterance,
-        "handoff": {
-            "type": handoff_destination.upper(),
-            "reason": handoff_reason.upper(),
-            "cxone": {
-                "region": "na1",
-                "domain": "niceincontact",
-                "version": "v24.0",
-                "contactId": conv.state.incontact_id,
-                "signal": {"params": signal_params},
+    if conv.state.incontact_id:
+        # CXone accepts at most nine signal params (p1-p9)
+        return {
+            "utterance": utterance,
+            "handoff": {
+                "type": destination,
+                "reason": reason,
+                "cxone": {
+                    "region": "na1",
+                    "domain": "niceincontact",
+                    "version": "v24.0",
+                    "contactId": conv.state.incontact_id,
+                    "signal": {
+                        "params": {"p1": destination, "p2": skill_id, "p3": reason}
+                    },
+                },
             },
-        },
-    }
+        }
+    return conv.call_handoff(
+        destination=destination, reason=reason, utterance=utterance
+    )

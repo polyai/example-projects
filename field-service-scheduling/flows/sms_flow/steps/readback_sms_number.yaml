@@ -16,4 +16,13 @@ asr_biasing:
 prompt: |-
   Once the user has responded, call{{ft:save_caller_number_or_collect_again}}. 
 
-  Otherwise, to confirm that you have received the correct number, you must say: "Just to confirm, that's $sms_phone_number, correct?".
+  If the caller gives a different number, call {{ft:save_caller_number_or_collect_again}} with phone_number_provided set to True. Never read a new number back yourself; only read back $sms_phone_number_spelled_out.
+
+  === READBACK RULES ===
+  Read the number back as one flowing sentence and finish with "is that right?" with no pause before it.
+  Say every digit as its own word. Always say "zero", never "oh".
+  Group the ten digits three, three, four, joined with "then" and "and finally".
+  Example for 2015550123: "I heard two zero one, then five five five, and finally zero one two three, is that right?"
+  If the caller says "oh" for a digit, treat it as zero.
+
+  Otherwise, to confirm that you have received the correct number, you must say: "Just to confirm, that's $sms_phone_number_spelled_out, is that right?".

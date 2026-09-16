@@ -8,7 +8,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: update-billing-info
   text: |-
     Dear Customer, thank you for calling Poly Services today.
@@ -18,7 +18,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: pay-online
   text: |-
     Dear Customer, thank you for calling Poly Services today.
@@ -28,7 +28,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: auto-payment
   text: |-
     Dear Customer, thank you for calling Poly Services today.
@@ -37,4 +37,4 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'

@@ -36,9 +36,9 @@ def set_variant_and_write_dnis_location(conv: Conversation):
     conv.state.variant_id = variant_id
 
     DNIS_TO_LOCATION_MAPPING = {
-        "5550001001": "Main Office",
-        "5550001002": "North Branch",
-        "5550001003": "South Branch",
+        "2015550101": "Main Office",
+        "2015550102": "North Branch",
+        "2015550103": "South Branch",
     }
     dnis_location = DNIS_TO_LOCATION_MAPPING.get(number)
     conv.state.dnis_location = dnis_location
@@ -56,7 +56,7 @@ def set_time(conv: Conversation):
     try:
         timezone = ZoneInfo(timezone_str)
     except Exception as e:
-        conv.log.error(
+        conv.log.warning(
             "Invalid timezone in config, falling back to US/Central",
             timezone=timezone_str,
             error=str(e),
@@ -101,12 +101,12 @@ def start_function(conv: Conversation):
     set_time(conv=conv)
 
     number = conv.callee_number
-    mock_account_phone_numbers = ["+15550009001", "+15550009002"]
+    mock_account_phone_numbers = ["+12015550191", "+12015550192"]
     if number in mock_account_phone_numbers:
         if conv.real_time_config.get("settings", {}).get("use_dev_api"):
             conv.state.phone_number = number[2:]
         else:
-            conv.state.phone_number = "5550001000"
+            conv.state.phone_number = "2015550123"
     conv.state.USE_MOCK_API = conv.real_time_config.get("settings", {}).get(
         "use_mock_api", True
     )
@@ -114,7 +114,7 @@ def start_function(conv: Conversation):
     # In mock mode with no caller number (webchat/AS chat), default to the
     # mock customer's phone so ANI lookup matches automatically.
     if conv.state.USE_MOCK_API and not conv.caller_number:
-        conv.state.phone_number = "5550001234"
+        conv.state.phone_number = "2015550123"
     elif not conv.caller_number:
         conv.state.phone_number = conv.real_time_config.get("settings", {}).get(
             "chat_caller_id_prod"
@@ -212,4 +212,4 @@ def start_function(conv: Conversation):
     conv.state.incontact_id = conv.sip_headers.get("X-InContact-ContactId")
 
     conv.goto_flow("initial_ani_lookup")
-    return {"utterance": "", "listen": {"asr": {"timeout": 0.1}}}
+    return {"utterance": ""}

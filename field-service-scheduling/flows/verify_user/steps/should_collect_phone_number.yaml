@@ -4,7 +4,7 @@ asr_biasing:
   is_enabled: true
   alphanumeric: false
   name_spelling: false
-  numeric: false
+  numeric: true
   party_size: false
   precise_date: false
   relative_date: false
@@ -15,17 +15,17 @@ asr_biasing:
   custom_keywords: []
 dtmf_config:
   is_enabled: true
-  inter_digit_timeout: 15
+  inter_digit_timeout: 5
   max_digits: 10
-  end_key: ''
-  collect_while_agent_speaking: true
-  is_pii: false
+  end_key: '#'
+  collect_while_agent_speaking: false
+  is_pii: true
 prompt: |-
   If you have already asked, do one of the following:
 
   If the user says yes or agrees (to you having asked if the number they're calling from is associated with their account), immediately call {{ft:go_to_collect_zip_code}} with no spoken output.
 
-  If the user says no and also provides a phone number (e.g. "No, it's 555-1234"), immediately call {{ft:save_associated_phone_number}} with no spoken output — prioritize saving the number over the disagree branch.
+  If the user says no and also provides a phone number (e.g. "No, it's 201-555-0123"), immediately call {{ft:save_associated_phone_number}} with no spoken output, prioritize saving the number over the disagree branch.
   If the user says no or disagrees without providing a number, immediately call {{ft:go_to_collect_associated_phone_number}} with no spoken output.
   If the user provides the phone number on its own, immediately call {{ft:save_associated_phone_number}} with no spoken output.
 

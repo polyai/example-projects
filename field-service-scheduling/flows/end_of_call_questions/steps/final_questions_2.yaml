@@ -20,10 +20,3 @@ prompt: |-
 
   final_question_2:
   “Is there anything you can think of that either myself or someone in our team could do to improve the service I provided?”
-
-  # README
-
-  This step imports the {{fn:step_utils}} function inside the flow function.
-
-  TODO: Add the following *metrics* to your project:
-  FINAL_QUESTIONS_EXTRACTED

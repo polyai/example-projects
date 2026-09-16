@@ -1,0 +1,49 @@
+handoffs:
+- name: CUSTOMER_CARE
+  description: Customer care queue, default destination for general transfers
+  is_default: true
+  sip_config:
+    method: refer
+    phone_number: '+1234567890'
+- name: INSIDE_SALES
+  description: New customers, quotes and new service setup
+  is_default: false
+  sip_config:
+    method: refer
+    phone_number: '+1234567890'
+- name: ACCOUNT_CARE
+  description: Subscription cancellations and account retention
+  is_default: false
+  sip_config:
+    method: refer
+    phone_number: '+1234567890'
+- name: NS_SCHEDULING_INBOUND
+  description: Inspection and assessment scheduling
+  is_default: false
+  sip_config:
+    method: refer
+    phone_number: '+1234567890'
+- name: SPANISH
+  description: Spanish-speaking agents
+  is_default: false
+  sip_config:
+    method: refer
+    phone_number: '+1234567890'
+- name: WELCOME_CALL
+  description: Welcome call queue for new accounts
+  is_default: false
+  sip_config:
+    method: refer
+    phone_number: '+1234567890'
+- name: COMMERCIAL
+  description: Business and commercial accounts
+  is_default: false
+  sip_config:
+    method: refer
+    phone_number: '+1234567890'
+- name: BILLING
+  description: Billing, invoices and payments
+  is_default: false
+  sip_config:
+    method: refer
+    phone_number: '+1234567890'
