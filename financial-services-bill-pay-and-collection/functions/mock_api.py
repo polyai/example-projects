@@ -9,7 +9,7 @@ no real backend (DynamoDB, billing API) is available.
 from _gen import *  # <AUTO GENERATED>
 import re
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
 
 
@@ -22,68 +22,77 @@ def _normalize_phone(phone: str) -> str:
     return cleaned
 
 
+def _iso(days: int) -> str:
+    return (datetime.now() + timedelta(days=days)).strftime("%Y-%m-%d")
+
+
 # ---------------------------------------------------------------------------
 # Test accounts
 # ---------------------------------------------------------------------------
 
-_ACCOUNTS: dict[str, dict] = {
-    "1234567890": {
-        "account_number": "1234567890",
-        "name": "John Smith",
-        "first_name": "John",
-        "last_name": "Smith",
-        "dob": "1985-03-15",
-        "balance": 150.00,
-        "phone": "5551234567",
-        "pending_payments": [
-            {
-                "id": "PAY-001",
-                "amount": 50.00,
-                "recipient": "Electric Company",
-                "scheduled_date": "2026-07-01",
-                "status": "pending",
-            }
-        ],
-        "payment_history": [
-            {
-                "id": "PAY-H001",
-                "amount": 120.00,
-                "recipient": "Water Utility",
-                "date": "2026-06-15",
-                "status": "completed",
-                "confirmation_number": "CONF-100001",
-            },
-            {
-                "id": "PAY-H002",
-                "amount": 75.50,
-                "recipient": "Internet Provider",
-                "date": "2026-06-10",
-                "status": "completed",
-                "confirmation_number": "CONF-100002",
-            },
-        ],
-    },
-    "0987654321": {
-        "account_number": "0987654321",
-        "name": "Jane Doe",
-        "first_name": "Jane",
-        "last_name": "Doe",
-        "dob": "1990-07-22",
-        "balance": 275.50,
-        "phone": "5559876543",
-        "pending_payments": [],
-        "payment_history": [
-            {
-                "id": "PAY-H003",
-                "amount": 200.00,
-                "recipient": "Rent Payment",
-                "date": "2026-06-01",
-                "status": "completed",
-                "confirmation_number": "CONF-100003",
-            },
-        ],
-    },
-}
+
+def _seed_accounts() -> dict[str, dict]:
+    return {
+        "1234567890": {
+            "account_number": "1234567890",
+            "name": "John Smith",
+            "first_name": "John",
+            "last_name": "Smith",
+            "dob": "1985-03-15",
+            "balance": 150.00,
+            "phone": "2015550123",
+            "pending_payments": [
+                {
+                    "id": "PAY-001",
+                    "amount": 50.00,
+                    "recipient": "Electric Company",
+                    "scheduled_date": _iso(14),
+                    "status": "pending",
+                }
+            ],
+            "payment_history": [
+                {
+                    "id": "PAY-H001",
+                    "amount": 120.00,
+                    "recipient": "Water Utility",
+                    "date": _iso(-15),
+                    "status": "completed",
+                    "confirmation_number": "CONF-100001",
+                },
+                {
+                    "id": "PAY-H002",
+                    "amount": 75.50,
+                    "recipient": "Internet Provider",
+                    "date": _iso(-20),
+                    "status": "completed",
+                    "confirmation_number": "CONF-100002",
+                },
+            ],
+        },
+        "0987654321": {
+            "account_number": "0987654321",
+            "name": "Jane Doe",
+            "first_name": "Jane",
+            "last_name": "Doe",
+            "dob": "1990-07-22",
+            "balance": 275.50,
+            "phone": "2125550178",
+            "pending_payments": [],
+            "payment_history": [
+                {
+                    "id": "PAY-H003",
+                    "amount": 200.00,
+                    "recipient": "Rent Payment",
+                    "date": _iso(-30),
+                    "status": "completed",
+                    "confirmation_number": "CONF-100003",
+                },
+            ],
+        },
+    }
+
+
+_ACCOUNTS: dict[str, dict] = _seed_accounts()
 
 # Phone → account number index
 _PHONE_INDEX: dict[str, str] = {
@@ -99,7 +108,7 @@ _next_confirmation = 200000
 # ---------------------------------------------------------------------------
 
 # Phone numbers flagged as vulnerable
-_VULNERABLE_PHONES: set[str] = {"5559991111"}
+_VULNERABLE_PHONES: set[str] = {"2015550150"}
 
 
 class MockVulnerableCustomerCheck:
@@ -206,46 +215,8 @@ def reset_mock_data() -> None:
     """Restore all mock accounts to their original state."""
     global _next_confirmation
     _next_confirmation = 200000
-    _ACCOUNTS["1234567890"]["balance"] = 150.00
-    _ACCOUNTS["1234567890"]["pending_payments"] = [
-        {
-            "id": "PAY-001",
-            "amount": 50.00,
-            "recipient": "Electric Company",
-            "scheduled_date": "2026-07-01",
-            "status": "pending",
-        }
-    ]
-    _ACCOUNTS["1234567890"]["payment_history"] = [
-        {
-            "id": "PAY-H001",
-            "amount": 120.00,
-            "recipient": "Water Utility",
-            "date": "2026-06-15",
-            "status": "completed",
-            "confirmation_number": "CONF-100001",
-        },
-        {
-            "id": "PAY-H002",
-            "amount": 75.50,
-            "recipient": "Internet Provider",
-            "date": "2026-06-10",
-            "status": "completed",
-            "confirmation_number": "CONF-100002",
-        },
-    ]
-    _ACCOUNTS["0987654321"]["balance"] = 275.50
-    _ACCOUNTS["0987654321"]["pending_payments"] = []
-    _ACCOUNTS["0987654321"]["payment_history"] = [
-        {
-            "id": "PAY-H003",
-            "amount": 200.00,
-            "recipient": "Rent Payment",
-            "date": "2026-06-01",
-            "status": "completed",
-            "confirmation_number": "CONF-100003",
-        },
-    ]
+    _ACCOUNTS.clear()
+    _ACCOUNTS.update(_seed_accounts())
 
 
 @func_description("[UTIL] Mock financial services API for testing")

@@ -23,9 +23,6 @@ def start_function(conv: Conversation):
     if conv.state.is_vulnerable_customer:
         conv.write_metric("VULNERABLE_CUSTOMER", write_once=True)
 
-    # if conv.caller_number == 'nicole.soh@poly-ai.com':
-    #     conv.state.is_vulnerable_customer = True
-    #     conv.write_metric("VULNERABLE_CUSTOMER", write_once=True)
     # read VC keywords into state
     conv.functions.vc_keywords()
 
@@ -37,7 +34,7 @@ def start_function(conv: Conversation):
     disclaimer = upfront_messaging.get("disclaimer", "")
     disclaimer_active = upfront_messaging.get("disclaimer_active", False)
     emergency_message = upfront_messaging.get("emergency_message", "")
-    emergency_active = upfront_messaging.get("disclaimer_active", False)
+    emergency_active = upfront_messaging.get("emergency_active", False)
 
     upfront_message = ""
 

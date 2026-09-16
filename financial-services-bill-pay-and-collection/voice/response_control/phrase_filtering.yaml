@@ -16,5 +16,8 @@ phrase_filtering:
   - <call
   - '[Ll]et me check'
   - '[Ll]et me confirm'
+  - '[Ll]et me look up your'
+  - '[Ll]ooking up your (account|balance)'
+  - '[Cc]hecking your (account|balance)'
   say_phrase: false
   function: handle_hallucinated_tool_call

@@ -5,7 +5,7 @@ actions: |-
   Say this exactly: "Sure I can help you with online banking. Just to check first, are you having trouble logging in or are you having issues with the website?"
 
   ### If trouble logging in (or refers to any sort of technical issues)
-  Call {{fn:handoff}} with handoff_reason="reset_failure_counter"
+  Call {{fn:handoff}} with handoff_reason="ONLINE_BANKING_LOGIN"
 
   ### If issues with the website
   Say: "Not to worry, if you're having problems with online banking or with the app, you'll just want to go to www.example-bank.com/troubleshooting. We've got a comprehensive login guide there that should be able to help you out. Just so I can get you the right help, is this for a business or personal account?"

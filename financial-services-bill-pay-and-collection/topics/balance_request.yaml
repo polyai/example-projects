@@ -3,13 +3,9 @@ enabled: true
 actions: |-
   Ask the user for their account number so you can look up their balance.
 
-  Once the user provides an account number, call {{fn:check_balance}} with account_number=<the number they provided>.
+  As soon as the user gives an account number, immediately call {{fn:check_balance}} with account_number=<the digits they provided>. Make the call in that same turn, before saying anything else. Do not ask for their date of birth first, and never say you are checking or looking up the account without calling {{fn:check_balance}}.
 
-  If the account is found, verify the user's identity by asking for their date of birth. Compare it against the dob_on_file field returned. If it matches, read out their balance.
-
-  If the date of birth does not match, say: "I'm sorry, the date of birth you provided doesn't match what we have on file. For security, I won't be able to share account details. Would you like me to transfer you to an agent who can help?"
-
-  If the account is not found, let them know and ask them to double-check the number. If they still can't find it, offer to transfer to an agent.
+  Then follow the instructions that {{fn:check_balance}} returns, including confirming the date of birth before reading out any balance.
 
   If the user prefers to check their balance themselves:
   - App: "Log into the app, select your account, and you'll see your current balance and transactions."

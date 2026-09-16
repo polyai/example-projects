@@ -51,7 +51,7 @@ def generate_handoff_reason_summary(conv: Conversation):
             "Handoff summary generated", summary=conv.state.handoff_reason_summary
         )
     except Exception as e:
-        conv.log.error("Failed to generate handoff summary", error=str(e))
+        conv.log.warning("Failed to generate handoff summary", error=str(e))
 
 
 def end_function(conv: Conversation):

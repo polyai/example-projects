@@ -9,6 +9,16 @@
             "initial_timeout": 0.1
           }
         }
+      },
+      "SMS flow": {
+        "steps": {
+          "Collect Alternative Phone Number": {
+            "eager_final": false
+          },
+          "Confirm This Phone Number": {
+            "eager_final": false
+          }
+        }
       }
     },
     "initial_timeout": 6,
@@ -28,10 +38,41 @@
     }
   },
   "barge_in": {
+    "flow_overrides": {
+      "SMS flow": {
+        "steps": {
+          "Collect Alternative Phone Number": {
+            "is_enabled": false
+          },
+          "Confirm This Phone Number": {
+            "is_enabled": false
+          }
+        }
+      }
+    },
     "is_enabled": false
   },
   "conversation_control": {
     "max_silence_count": 30
+  },
+  "eot": {
+    "flow_overrides": {
+      "SMS flow": {
+        "steps": {
+          "Collect Alternative Phone Number": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          },
+          "Confirm This Phone Number": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          }
+        }
+      }
+    },
+    "provider": "smart_turn",
+    "threshold": 0.5,
+    "timeout_ms": 500
   },
   "filler_utterances": {
     "interval_sec": 3,
@@ -76,7 +117,7 @@
       "SMS flow": {
         "steps": {
           "Collect Alternative Phone Number": {
-            "vad_end": 1000
+            "vad_end": 1600
           }
         }
       }

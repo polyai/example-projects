@@ -68,19 +68,13 @@ def save_payment_amount(
             if account_type == "PERSONAL":
                 if payment_amount > 10000:
                     return conv.functions.handoff(
-                        reason="INTERNATIONAL_PAYMENT_PERSONAL_HIGH_VALUE",
-                        requested_by_user=False,
-                        handoff_required_by_faq=True,
-                        account_type="PERSONAL",
+                        handoff_reason="INTERNATIONAL_PAYMENT_PERSONAL_HIGH_VALUE"
                     )
                 return INTERNATIONAL_PAYMENT_WITHIN_LIMIT
             elif account_type == "BUSINESS":
                 if payment_amount > 21000:
                     return conv.functions.handoff(
-                        reason="INTERNATIONAL_PAYMENT_BUSINESS_HIGH_VALUE",
-                        requested_by_user=False,
-                        handoff_required_by_faq=True,
-                        account_type="BUSINESS",
+                        handoff_reason="INTERNATIONAL_PAYMENT_BUSINESS_HIGH_VALUE"
                     )
                 return INTERNATIONAL_PAYMENT_WITHIN_LIMIT
             else:
@@ -88,12 +82,7 @@ def save_payment_amount(
         # Fallback for backwards compatibility: if account_type not provided, use old logic
         if payment_amount <= 10000:
             return INTERNATIONAL_PAYMENT_WITHIN_LIMIT
-        return conv.functions.handoff(
-            reason="INTERNATIONAL_PAYMENTS",
-            requested_by_user=False,
-            handoff_required_by_faq=True,
-            account_type="PERSONAL",
-        )
+        return conv.functions.handoff(handoff_reason="INTERNATIONAL_PAYMENTS")
 
     if payment_type in (
         "DOMESTIC_INTERNAL",
@@ -108,10 +97,7 @@ def save_payment_amount(
         # Personal domestic — process the payment
         if payment_amount > 10000:
             return conv.functions.handoff(
-                reason="DOMESTIC_PAYMENT_HIGH_VALUE_PERSONAL",
-                requested_by_user=False,
-                handoff_required_by_faq=True,
-                account_type="PERSONAL",
+                handoff_reason="DOMESTIC_PAYMENT_HIGH_VALUE_PERSONAL"
             )
 
         conv.state.pending_payment_amount = payment_amount

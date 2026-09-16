@@ -61,7 +61,7 @@ def send_sms(conv: Conversation, phone_number, repeat_sms=False):
     """Send the SMS and handle errors"""
 
     try:
-        e2e_testing_numbers = ["+1 (555) 000-1234", "+15135404072"]
+        e2e_testing_numbers = ["+12015550123", "+12125550178"]
         conv.log.info("Caller number", caller_number=conv.caller_number)
         if str(conv.caller_number) not in e2e_testing_numbers:
             conv.send_sms_template(phone_number, conv.state.sms_id)
@@ -77,8 +77,8 @@ def send_sms(conv: Conversation, phone_number, repeat_sms=False):
             }
         else:
             return "Let the user know you've just sent the text message, and that it might take a minute to arrive. Then, ask if there's anything else you can help them with."
-    except Exception:
-        conv.log.error("Unable to send SMS")
+    except Exception as e:
+        conv.log.warning("Unable to send SMS", error=str(e))
         conv.exit_flow()
         if conv.language and conv.language.startswith("en-"):
             return {

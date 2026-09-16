@@ -1,181 +1,37 @@
 handoffs:
-- name: Account_Closure
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Cards
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Digital_Skill
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: EoD_Skill
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Payments_Skill
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Vulnerable_Customer
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Vulnerable_Customer_Skill
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Overdrafts
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: BBLS Skill
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Business CSC Skill
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Business Cards Skill
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Business Payments Skill
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: ISA Skill
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: IVR
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Mortgages Application In Process
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Mortgages Broker
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Mortgages Existing General
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Mortgages Financial Difficulty
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Mortgages New Application
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: SP1
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: T1 Lite Skill
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: T1 Skill
-  description: ''
+- name: DEFAULT
+  description: General customer service queue
   is_default: true
   sip_config:
     method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: T2 Skill
-  description: ''
+    phone_number: '+1234567890'
+- name: PAYMENTS
+  description: Payments, transfers, payees, standing orders and direct debits
   is_default: false
   sip_config:
     method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: TMS Disputes
-  description: ''
+    phone_number: '+1234567890'
+- name: CARDS
+  description: Card activation, blocks, replacements, PINs and card queries
   is_default: false
   sip_config:
     method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: TMS Fraud
-  description: ''
+    phone_number: '+1234567890'
+- name: FRAUD
+  description: Card, payment and online banking fraud or phishing reports
   is_default: false
   sip_config:
     method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: W&G TBM
-  description: ''
+    phone_number: '+1234567890'
+- name: COMPLAINTS
+  description: Formal complaints and escalations
   is_default: false
   sip_config:
     method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Specialist_1
-  description: ''
+    phone_number: '+1234567890'
+- name: VULNERABLE_CUSTOMER
+  description: Vulnerable customer and threat to life support
   is_default: false
   sip_config:
     method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Tier_2
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Business Expert
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
-- name: Vulnerable_Customer_Keyword_Triggered
-  description: ''
-  is_default: false
-  sip_config:
-    method: refer
-    phone_number: <sip:+1234567890@54.154.39.202>
+    phone_number: '+1234567890'

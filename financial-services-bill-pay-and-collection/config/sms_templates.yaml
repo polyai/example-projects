@@ -15,7 +15,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: reset_password_unlock
   text: |-
     To unlock your account, you can reset your password.
@@ -28,7 +28,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: reset_security_number_unlock
   text: |-
     To unlock your account, you can reset your security number.
@@ -41,7 +41,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: forgot_customer_number_app
   text: |-
     To get your customer number:
@@ -52,7 +52,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: forgot_customer_number_website
   text: |-
     To get your customer number on the Poly Bank website:
@@ -63,7 +63,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: mobile_app_registration
   text: |-
     To register for our app:
@@ -76,14 +76,14 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: internet_banking_registration
   text: To register for online banking, please visit our website. Click "Log In" in the top right 
     corner, then "Register for Online Banking".
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: change_personal_address_app
   text: |-
     To change your address:
@@ -96,7 +96,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: change_personal_address_online
   text: |-
     To change your address:
@@ -109,7 +109,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: freeze_lost_stolen_card_app
   text: |-
     If your card has been lost or stolen, you'll need to log into Online Banking:
@@ -124,7 +124,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: freeze_lost_stolen_card_online
   text: |-
     If your card has been lost or stolen:
@@ -137,14 +137,14 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: unblock_card
   text: To unblock your card, just log into our app and tap 'Manage Card' under the relevant 
     account. From there, you'll have the option to unblock your card.
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: overdraft_general
   text: For information on overdrafts, please visit www.example-bank.com, click "help" in the top 
     right hand corner, and then type in "overdraft". From there, you'll find plenty of information 
@@ -153,7 +153,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: password_reset
   text: |-
     Reset your password via our app:
@@ -166,7 +166,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: forgot_security_number
   text: |-
     To reset your security number:
@@ -179,7 +179,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: reset_security_number
   text: |-
     To reset your security number:
@@ -192,7 +192,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: reset_password
   text: |-
     To reset your password:
@@ -205,7 +205,7 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'
 - name: branch_locator
   text: To get the details of your local Poly Bank branch, we have an online branch finder. On our 
     home page, click on "Find a branch" in the top right corner and type in your zip code to see 
@@ -213,4 +213,4 @@ sms_templates:
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+15550001234'
+    live: '+12015550100'

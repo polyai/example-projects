@@ -1,10 +1,3 @@
-"""
-VC (Vulnerable Customer) keyword list for immediate transfer to
-AD Vulnerable Customer Keyword Triggered (+1 (555) 000-1234).
-
-Known VC (ANI in DB) + keyword → still routes to main VC line (+1 (555) 000-1234).
-"""
-
 from _gen import *  # <AUTO GENERATED>
 
 # list of keywords
