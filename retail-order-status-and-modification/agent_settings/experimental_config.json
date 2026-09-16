@@ -5,32 +5,32 @@
       "OMS_IDNV": {
         "steps": {
           "Collect billing postcode": {
-            "model": "gpt-4o-transcribe",
-            "provider": "openai"
+            "eager_final": false
           },
           "Collect billing zipcode": {
-            "model": "gpt-4o-transcribe",
-            "provider": "openai"
+            "eager_final": false
           },
           "Collect full order number": {
-            "model": "gpt-4o-transcribe",
-            "provider": "openai"
+            "eager_final": false
           },
           "Collect last 4": {
-            "model": "gpt-4o-transcribe",
-            "provider": "openai"
+            "eager_final": false
           },
           "Collect phone number": {
-            "model": "gpt-4o-transcribe",
-            "provider": "openai"
+            "eager_final": false
           }
         }
       },
       "SMS flow": {
         "steps": {
+          "Ask this number": {
+            "eager_final": false
+          },
           "Phone number collected": {
-            "model": "gpt-4o-transcribe",
-            "provider": "openai"
+            "eager_final": false
+          },
+          "Read Back Number": {
+            "eager_final": false
           }
         }
       }
@@ -68,7 +68,13 @@
       },
       "SMS flow": {
         "steps": {
+          "Ask this number": {
+            "is_enabled": false
+          },
           "Phone number collected": {
+            "is_enabled": false
+          },
+          "Read Back Number": {
             "is_enabled": false
           }
         }
@@ -83,26 +89,48 @@
     "flow_overrides": {
       "OMS_IDNV": {
         "steps": {
+          "Collect billing postcode": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          },
+          "Collect billing zipcode": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          },
           "Collect full order number": {
-            "threshold": 0.8,
-            "timeout_ms": 1500
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          },
+          "Collect last 4": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
           },
           "Collect phone number": {
-            "threshold": 0.7,
-            "timeout_ms": 1200
+            "threshold": 0.6,
+            "timeout_ms": 2000
           }
         }
       },
       "SMS flow": {
         "steps": {
+          "Ask this number": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          },
           "Phone number collected": {
-            "threshold": 0.7,
-            "timeout_ms": 1200
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          },
+          "Read Back Number": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
           }
         }
       }
     },
-    "provider": "smart_turn"
+    "provider": "smart_turn",
+    "threshold": 0.5,
+    "timeout_ms": 500
   },
   "filler_utterances": {
     "interval_sec": 3,

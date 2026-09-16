@@ -70,7 +70,7 @@ def _get_matched_topic_from_qa(conv: Conversation) -> Optional[str]:
         )
         return None
     except Exception as e:
-        conv.log.error(
+        conv.log.warning(
             "Error extracting QA values for topic matching",
             error=str(e),
             call_id=conv.id,
@@ -104,11 +104,13 @@ def end_function(conv: Conversation):
             matched_topic = matched_topic_from_qa or "DEFAULT"
         except json.JSONDecodeError as e:
             llm_failed = True
-            conv.log.error("Failed to parse LLM summary JSON", error=str(e))
+            conv.log.warning("Failed to parse LLM summary JSON", error=str(e))
             matched_topic = matched_topic_from_qa or "DEFAULT"
         except Exception as e:
             llm_failed = True
-            conv.log.error("LLM call failed", error=str(e), error_type=type(e).__name__)
+            conv.log.warning(
+                "LLM call failed", error=str(e), error_type=type(e).__name__
+            )
             matched_topic = matched_topic_from_qa or "DEFAULT"
 
         if not matched_topic:

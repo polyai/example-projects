@@ -100,7 +100,7 @@ def save_phone_number(conv: Conversation, flow: Flow):
         )
         conv.state.using_phone_number = True
     except Exception as e:
-        conv.log.error("Get orders by phone number API error", e=str(e))
+        conv.log.error("Get orders by phone number API error", error=str(e))
         conv.state.call_summary_additional_context = (
             "The agent attempted to transfer call due to an OMS API error."
         )

@@ -235,7 +235,7 @@ def _save_and_match(conv, flow, is_ca: bool):
             None,
         )
     else:
-        conv.log.error("zipcode_provided called without candidate order(s)")
+        conv.log.warning("zipcode_provided called without candidate order(s)")
 
     # International check on matched/candidate orders
     if (

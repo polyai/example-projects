@@ -5,9 +5,7 @@ import re
 from .zendesk_client import search_user, search_user_phone
 
 # Map the caller number to another number associated with an order for testing
-SANDBOX_PHONE_NUMBER_MAPPING = {
-    # "442045927510": "4163585075"
-}
+SANDBOX_PHONE_NUMBER_MAPPING = {}
 
 _LANGUAGE_MAP = {"French": "fr-CA", "English": "en-US"}
 
@@ -73,7 +71,7 @@ def find_zendesk_user_by_email(conv: Conversation) -> bool:
     try:
         res = search_user(conv, preferred_email)
     except Exception as e:
-        conv.log.error(
+        conv.log.warning(
             "Zendesk search_user (by email) failed",
             email_len=len(preferred_email),
             error=str(e),
@@ -144,7 +142,7 @@ def find_zendesk_user_by_phone(conv: Conversation) -> bool:
         try:
             res = search_user_phone(conv, number)
         except Exception as e:
-            conv.log.error(
+            conv.log.warning(
                 "Zendesk search_user failed", attempt=label, number=number, error=str(e)
             )
             continue
@@ -157,9 +155,6 @@ def find_zendesk_user_by_phone(conv: Conversation) -> bool:
         if count > 0 and res.get("results"):
             user = res["results"][0]
             conv.state.zendesk_user_id = user["id"]
-
-            zendesk_phone = user.get("phone")
-            print(zendesk_phone)
 
             zendesk_name = user.get("name") or ""
             first, last = split_full_name(zendesk_name)
@@ -261,9 +256,6 @@ def start_function(conv: Conversation):
 
     if not conv.state.phone_number:
         conv.state.phone_number = conv.caller_number
-    # if not conv.state.phone_number and conv.env == "pre-release": # remove after testing
-    #   conv.state.phone_number = "7085895583"
-    # conv.state.phone_number = "6505555555"
 
     #  for checking users number is ok to send an SMS to:
     if conv.state.phone_number:
@@ -293,25 +285,5 @@ def start_function(conv: Conversation):
     conv.state.language = detected_lang
     conv.write_metric("LANGUAGE", detected_lang)
 
-    # VOICE SET UP
-    if detected_lang == "fr-CA":
-        conv.set_voice(
-            ElevenLabsVoice(
-                provider_voice_id="IPgYtHTNLjC7Bq7IPHrm",
-                similarity_boost=0.75,
-                stability=1.0,
-                model_id="eleven_turbo_v2_5",
-            )
-        )
-    else:
-        conv.set_voice(
-            ElevenLabsVoice(
-                provider_voice_id="vBKc2FfBKJfcZNyEt1n6",
-                similarity_boost=0.75,
-                stability=1.0,
-                model_id="eleven_turbo_v2_5",
-            )
-        )
-
     conv.goto_flow("initial_ani_lookup")
-    return {"utterance": "", "listen": {"asr": {"timeout": 0.1}}}
+    return {"utterance": ""}

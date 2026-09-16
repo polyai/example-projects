@@ -141,7 +141,7 @@ def save_full_order_number(conv: Conversation, flow: Flow):
         if e.response is not None and e.response.status_code == 404:
             order_found = None
         else:
-            conv.log.error("Get orders by order number API error: %s", str(e))
+            conv.log.error("Get orders by order number API error", error=str(e))
             conv.write_metric("API_ERROR", "GET_ORDERS_BY_ORDER_NUM")
             return transfer_call(
                 conv,
@@ -150,7 +150,7 @@ def save_full_order_number(conv: Conversation, flow: Flow):
                 utterance(conv, "idnv_transfer_default"),
             )
     except Exception as e:
-        conv.log.error("Get orders by order number API error", e=str(e))
+        conv.log.error("Get orders by order number API error", error=str(e))
         conv.state.call_summary_additional_context = (
             "The agent attempted to transfer call due to an OMS API error."
         )

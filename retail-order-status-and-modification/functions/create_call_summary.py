@@ -146,5 +146,7 @@ def create_call_summary(conv: Conversation, call_summary: str, matched_topic: st
     conv.state.summary_added = True
 
     return_value = conv.state.action_after_call_summary
-    if isinstance(return_value, dict) and ("handoff" in return_value.keys()):
+    if isinstance(return_value, dict) and (
+        "handoff" in return_value or "hangup" in return_value
+    ):
         return return_value

@@ -40,9 +40,9 @@ dtmf_config:
   is_enabled: true
   inter_digit_timeout: 3
   max_digits: 10
-  end_key: ''
-  collect_while_agent_speaking: true
-  is_pii: false
+  end_key: '#'
+  collect_while_agent_speaking: false
+  is_pii: true
 prompt: |-
   Call 
   {{ft:phone_number_provided}} 
@@ -61,3 +61,8 @@ prompt: |-
   If the user provides an order number - a nineteen or twenty digit number which may start with a "P", "0" or "1" - call the function:  {{ft:order_number_collected}}.
 
   If the user asks to wait, let them know to take their time and provide the number when they're ready.
+
+  Ask for the number in groups, starting with the area code: "Could you give me the ten-digit number, starting with the area code?"
+  If the caller says "oh", treat it as zero. Treat "double" and "triple" as repeated digits.
+  If a digit is heard as a similar-sounding word, use the digit: "to" or "too" is two, "for" is four, "won" is one, "ate" is eight.
+  If you could not catch it, offer: "You can also type it on your keypad, then press the pound key."

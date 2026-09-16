@@ -60,6 +60,15 @@ def transfer_call(conv: Conversation, destination: str, reason: str, utterance: 
             },
         }
     else:
+        if conv.env in ("sandbox", "draft"):
+            conv.log.info(
+                "Mock handoff", destination=destination.upper(), reason=reason.upper()
+            )
+            conv.state.action_after_call_summary = {
+                "utterance": utterance,
+                "hangup": True,
+            }
+            return {"content": get_call_summary_prompt(conv)}
         conv.state.action_after_call_summary = {
             "utterance": utterance,
             "handoff": {

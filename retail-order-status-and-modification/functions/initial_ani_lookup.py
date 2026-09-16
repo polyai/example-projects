@@ -41,7 +41,7 @@ def initial_ani_lookup(conv: Conversation):
                 cached_payload=conv.state.customer_core_response is not None,
             )
     except Exception as e:
-        conv.log.error("CUSTOMER_CORE call failed", error=str(e))
+        conv.log.warning("CUSTOMER_CORE call failed", error=str(e))
         conv.state.customer_email = None
         conv.state.customer_core_response = None
 
@@ -51,7 +51,7 @@ def initial_ani_lookup(conv: Conversation):
         conv.log.info("OMS: phone search", phone=oms_phone_number)
         orders_found = get_orders_by_phone_number(conv, oms_phone_number, timeout=8)
     except Exception as e:
-        conv.log.error("Get orders by phone failed", error=str(e))
+        conv.log.warning("Get orders by phone failed", error=str(e))
         orders_found = None
 
     if orders_found:
@@ -122,7 +122,9 @@ def initial_ani_lookup(conv: Conversation):
         ):
             emergency_message = f" {emergency_greeting.get('message')}"
     except Exception as e:
-        conv.log.error("Failed to get emergency greeting from RTC config", error=str(e))
+        conv.log.warning(
+            "Failed to get emergency greeting from RTC config", error=str(e)
+        )
 
     conv.exit_flow()
     return {

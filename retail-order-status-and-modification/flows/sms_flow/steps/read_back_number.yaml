@@ -14,11 +14,16 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  Read back the phone number digit by digit in groups of 3-3-4 with pauses between groups.
-  Say each digit individually — never as a large number.
+  The number to read back is $sms_phone_number_readback.
+
+  === READBACK RULES ===
+  Read the number back as one flowing sentence and finish with "is that right?" with no pause before it.
+  Say every digit as its own word, never as a larger number. Always say "zero", never "oh". In French always say "zéro".
+  Group the ten digits three, three, four, joined with "then" and "and finally".
+  If the caller says "oh" for a digit, treat it as zero.
   Match the caller's language:
-  - English: "I heard that as five five five... eight six seven... five three zero nine — is that right?"
-  - French: "J'ai noté cinq cinq cinq... huit six sept... cinq trois zéro neuf — est-ce que c'est correct?"
+  - English: "I heard that as two zero one, then five five five, and finally zero one two three, is that right?"
+  - French: "J'ai noté deux zéro un, puis cinq cinq cinq, et enfin zéro un deux trois, est-ce que c'est correct?"
 
   If the user says the number is correct, immediately call the function: {{ft:save_phone_number}}
 

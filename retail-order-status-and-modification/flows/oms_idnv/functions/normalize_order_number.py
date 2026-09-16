@@ -1,9 +1,6 @@
 from _gen import *  # <AUTO GENERATED>
 import json
-import logging
 
-
-logger = logging.getLogger(__name__)
 
 ORDER_NUMBER_NORMALIZATION_PROMPT = """
 You are an extraction system for order numbers.
@@ -59,8 +56,11 @@ def try_normalize_order_number(conv: Conversation, raw_order_number: str) -> str
         if candidate and isinstance(candidate, str) and candidate != "null":
             normalized = "".join(ch for ch in candidate.upper() if ch.isalnum())
             return normalized
-    except Exception as exc:
-        logger.exception(f"Order number LLM normalization failed: {exc}")
+    except Exception as e:
+        conv.log.warning(
+            "Order number LLM normalization failed, falling back to raw input",
+            error=str(e),
+        )
 
     return None
 

@@ -15,7 +15,7 @@ _YESTERDAY = (_NOW - timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 # -- Test Customer 1: John Smith --
 _CUSTOMER_1 = {
-    "phone": "5550001234",
+    "phone": "2015550123",
     "email": "john@example.com",
     "first_name": "John",
     "last_name": "Smith",
@@ -130,7 +130,7 @@ _ORDER_002 = Order(
 
 # -- Test Customer 2: Jane Doe --
 _CUSTOMER_2 = {
-    "phone": "5550005678",
+    "phone": "2125550178",
     "email": "jane@example.com",
     "first_name": "Jane",
     "last_name": "Doe",
@@ -181,8 +181,8 @@ _ORDER_003 = Order(
 
 # -- Lookup indexes --
 _ORDERS_BY_PHONE: dict[str, list[Order]] = {
-    "5550001234": [_ORDER_001, _ORDER_002],
-    "5550005678": [_ORDER_003],
+    "2015550123": [_ORDER_001, _ORDER_002],
+    "2125550178": [_ORDER_003],
 }
 
 _ORDERS_BY_NUMBER: dict[str, Order] = {
@@ -192,8 +192,8 @@ _ORDERS_BY_NUMBER: dict[str, Order] = {
 }
 
 _CUSTOMERS_BY_PHONE: dict[str, dict] = {
-    "5550001234": _CUSTOMER_1,
-    "5550005678": _CUSTOMER_2,
+    "2015550123": _CUSTOMER_1,
+    "2125550178": _CUSTOMER_2,
 }
 
 
