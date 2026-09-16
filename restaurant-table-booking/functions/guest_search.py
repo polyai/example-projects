@@ -57,4 +57,4 @@ def run_guest_search(conv, phone_number=None):
         )
 
     except Exception as e:
-        conv.log.error("Guest search exception", error=e)
+        conv.log.warning("Guest search exception", error=str(e))

@@ -4,7 +4,7 @@ asr_biasing:
   is_enabled: true
   alphanumeric: false
   name_spelling: false
-  numeric: false
+  numeric: true
   party_size: false
   precise_date: false
   relative_date: false
@@ -18,5 +18,6 @@ prompt: |-
   - Ask the user if it's okay to use the number they're calling from to make the booking (their number is $phone_number , but don't mention it to them).
   If yes or if they gave you an alternative number to use, call {{ft:save_phone_number_and_move_on}}
 
-  - If you have already asked the user to repeat themselves once, and you are still having issues with the phone number collection, call {{fn:try_transfer_call}} with 
+  - If you still cannot get a full ten-digit number after asking once more, offer the keypad: "You can also type it on your keypad, then press the pound key."
+  - Only if the keypad attempt also fails, call {{fn:try_transfer_call}} with
   handoff_reason: "phone_number_collection_failed" handoff_utterance: "I am having some trouble with that phone number, let me put you through to someone who can help."

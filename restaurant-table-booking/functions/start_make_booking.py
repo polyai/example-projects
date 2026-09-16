@@ -59,7 +59,9 @@ def start_make_booking(
             try:
                 run_guest_search(conv, phone_number=phone)
             except Exception as e:
-                conv.log.error("Guest search failed in start_make_booking", error=e)
+                conv.log.warning(
+                    "Guest search failed in start_make_booking", error=str(e)
+                )
 
     if party_size >= int(conv.variant.large_party_size):
         return start_handle_over_max_group_size(conv, int(party_size))

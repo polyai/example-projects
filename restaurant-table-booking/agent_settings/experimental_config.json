@@ -7,8 +7,12 @@
       "confirm_cancel_modify_booking": {
         "steps": {
           "Collect phone number": {
+            "eager_final": false,
             "model": "parakeet-tdt-0.6b-v3-multi",
             "provider": "riva"
+          },
+          "Should try another number": {
+            "eager_final": false
           }
         }
       },
@@ -19,18 +23,24 @@
             "provider": "riva"
           },
           "Collect phone number": {
+            "eager_final": false,
             "model": "parakeet-tdt-0.6b-v3-multi",
             "provider": "riva"
+          },
+          "Should use callers phone number": {
+            "eager_final": false
           }
         }
       },
       "sms_flow": {
         "steps": {
           "Ask this number": {
+            "eager_final": false,
             "model": "parakeet-tdt-0.6b-v3-multi",
             "provider": "riva"
           },
           "Collect phone number": {
+            "eager_final": false,
             "model": "parakeet-tdt-0.6b-v3-multi",
             "provider": "riva"
           },
@@ -56,11 +66,69 @@
       },
       "make_booking": {
         "is_enabled": false
+      },
+      "sms_flow": {
+        "steps": {
+          "Ask this number": {
+            "is_enabled": false
+          },
+          "Collect phone number": {
+            "is_enabled": false
+          }
+        }
       }
+    },
+    "is_enabled": true,
+    "trigger": {
+      "speech_threshold": 0.6,
+      "speech_window_ms": 100
     }
   },
   "conversation_control": {
     "max_silence_count": 10
+  },
+  "eot": {
+    "flow_overrides": {
+      "confirm_cancel_modify_booking": {
+        "steps": {
+          "Collect phone number": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          },
+          "Should try another number": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          }
+        }
+      },
+      "make_booking": {
+        "steps": {
+          "Collect phone number": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          },
+          "Should use callers phone number": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          }
+        }
+      },
+      "sms_flow": {
+        "steps": {
+          "Ask this number": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          },
+          "Collect phone number": {
+            "threshold": 0.6,
+            "timeout_ms": 2000
+          }
+        }
+      }
+    },
+    "provider": "smart_turn",
+    "threshold": 0.5,
+    "timeout_ms": 500
   },
   "llm": {
     "include_kb_functions_in_flows": true
@@ -79,6 +147,31 @@
         "cancel_booking",
         "finalize_booking"
       ]
+    }
+  },
+  "vad": {
+    "flow_overrides": {
+      "confirm_cancel_modify_booking": {
+        "steps": {
+          "Collect phone number": {
+            "vad_end": 1600
+          }
+        }
+      },
+      "make_booking": {
+        "steps": {
+          "Collect phone number": {
+            "vad_end": 1600
+          }
+        }
+      },
+      "sms_flow": {
+        "steps": {
+          "Collect phone number": {
+            "vad_end": 1600
+          }
+        }
+      }
     }
   }
 }

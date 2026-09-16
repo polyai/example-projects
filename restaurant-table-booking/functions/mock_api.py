@@ -76,7 +76,7 @@ class MockOpenTableApi:
             "last_name": "Smith",
             "party_size": 4,
             "date_time": booking_1_dt,
-            "phone": {"number": "5550001234", "country_code": 1},
+            "phone": {"number": "2015550123", "country_code": 1},
             "special_request": "",
         }
 
@@ -88,20 +88,20 @@ class MockOpenTableApi:
             "last_name": "Doe",
             "party_size": 2,
             "date_time": booking_2_dt,
-            "phone": {"number": "5550005678", "country_code": 1},
+            "phone": {"number": "2125550178", "country_code": 1},
             "special_request": "",
         }
 
         cls._guests = {
-            "5550001234": {
+            "2015550123": {
                 "firstName": "John",
                 "lastName": "Smith",
-                "phone": "5550001234",
+                "phone": "2015550123",
             },
-            "5550005678": {
+            "2125550178": {
                 "firstName": "Jane",
                 "lastName": "Doe",
-                "phone": "5550005678",
+                "phone": "2125550178",
             },
         }
 

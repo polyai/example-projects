@@ -58,9 +58,9 @@ attributes:
       Sunday: 12:00-22:00
 - name: phone_number
   values:
-    Poly Bistro Downtown: '+15550001234'
-    Poly Bistro Uptown: '+15550001235'
-    Poly Bistro Waterfront: '+15550001236'
+    Poly Bistro Downtown: '+12015550100'
+    Poly Bistro Uptown: '+12015550101'
+    Poly Bistro Waterfront: '+12015550102'
 - name: email
   values:
     Poly Bistro Downtown: downtown@example-restaurant.com
@@ -199,9 +199,9 @@ attributes:
     Poly Bistro Waterfront: 'For groups of 7+, fill out our group booking form: www.example-restaurant.com/group-booking'
 - name: transfer_number_STANDARD
   values:
-    Poly Bistro Downtown: '+15550001234'
-    Poly Bistro Uptown: '+15550001235'
-    Poly Bistro Waterfront: '+15550001236'
+    Poly Bistro Downtown: '+1234567890'
+    Poly Bistro Uptown: '+1234567890'
+    Poly Bistro Waterfront: '+1234567890'
 - name: large_party_size
   values:
     Poly Bistro Downtown: '9'

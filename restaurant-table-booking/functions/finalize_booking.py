@@ -98,15 +98,15 @@ def finalize_booking(
             for error in error_data.get("errors", []):
                 code = error.get("code", "")
                 if code == "FirstNameIsMissing":
-                    plog.error("First name is missing", response=res.text, data=data)
+                    plog.warning("First name is missing", response=res.text, data=data)
                     return "The user's first name is required. Ask for the first name again."
                 if code == "LastNameIsMissing":
-                    plog.error("Last name is missing", response=res.text, data=data)
+                    plog.warning("Last name is missing", response=res.text, data=data)
                     return (
                         "The user's last name is required. Ask for the last name again."
                     )
                 if code == "IllegalPhoneNumber":
-                    plog.error("Invalid phone number", response=res.text, data=data)
+                    plog.warning("Invalid phone number", response=res.text, data=data)
                     if conv.state.invalid_phone_number:
                         return try_transfer_call(
                             conv,
@@ -147,7 +147,7 @@ def finalize_booking(
             error_data = res.json()
             for error in error_data.get("errors", []):
                 if error.get("code", "") == "NoAvailability":
-                    plog.error("No availability found", response=res.text, data=data)
+                    plog.warning("No availability found", response=res.text, data=data)
                     return "No availability found for the requested time. Ask the user for another time or date."
 
         if not res.ok:

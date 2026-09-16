@@ -221,22 +221,22 @@ def handle_check_availability_error(conv, res, params):
         for error in error_data.get("errors", []):
             code = error.get("code", "")
             if code == "InvalidPartySize":
-                plog.error("Invalid party size", response=res.text, data=params)
+                plog.warning("Invalid party size", response=res.text, data=params)
                 return (
                     "The party size is invalid. Ask about the number of people again."
                 )
             if code == "MissingPartySize":
-                plog.error(
+                plog.warning(
                     "Missing party size in request", response=res.text, data=params
                 )
                 return (
                     "The party size is required. Ask about the number of people again."
                 )
             if code in ("InvalidDateTime", "MissingDateTime"):
-                plog.error(f"{code}", response=res.text, data=params)
+                plog.warning(f"{code}", response=res.text, data=params)
                 return "The date or time provided is invalid. Ask about the date and time again."
             if code == "InvalidStartDateTime":
-                plog.error("Invalid start date/time", response=res.text, data=params)
+                plog.warning("Invalid start date/time", response=res.text, data=params)
                 return "You can only search for slots 15 minutes after the current time. Ask about the date and time again."
             if code in ("InvalidForwardMinutes", "InvalidBackwardMinutes"):
                 plog.error(f"{code}", response=res.text, data=params)

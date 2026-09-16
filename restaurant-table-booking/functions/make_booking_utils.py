@@ -146,13 +146,15 @@ def _temporarily_lock_slot(
                         selected_table_type=selected_table_type,
                     )
                 if code == "MissingPartySize":
-                    plog.error("Party size is missing", response=res.text, data=data)
+                    plog.warning("Party size is missing", response=res.text, data=data)
                     return "The party size is required. Ask about the number of people again."
                 if code == "InvalidPartySize":
-                    plog.error("Invalid party size", response=res.text, data=data)
+                    plog.warning("Invalid party size", response=res.text, data=data)
                     return "The party size is invalid. Ask about the number of people again."
                 if code == "InvalidStartDateTime":
-                    plog.error("Invalid start date/time", response=res.text, data=data)
+                    plog.warning(
+                        "Invalid start date/time", response=res.text, data=data
+                    )
                     return "You can only reserve slots that are at least 15 minutes after the current time. Ask about the date and time again."
 
         if not res.ok:

@@ -4,7 +4,7 @@ asr_biasing:
   is_enabled: true
   alphanumeric: false
   name_spelling: false
-  numeric: false
+  numeric: true
   party_size: false
   precise_date: false
   relative_date: false
@@ -13,10 +13,33 @@ asr_biasing:
   yes_no: false
   address: false
   custom_keywords: []
+dtmf_config:
+  is_enabled: true
+  inter_digit_timeout: 3
+  max_digits: 10
+  end_key: '#'
+  collect_while_agent_speaking: false
+  is_pii: true
 prompt: |-
   - Ask the user for a mobile phone number to use for the booking
   - NEVER ask user for the country code
-  - Then call {{ft:save_phone_number_and_move_on}}
+  - Read the number back using the READBACK RULES below
+  - Once the user confirms the number is right, call {{ft:save_phone_number_and_move_on}}
+  - If the user corrects the number, read the corrected number back the same way before calling the function
 
-  - If you have already asked the user to repeat themselves once, and you are still having issues with the phone number collection, call {{fn:try_transfer_call}} with 
+  - If you still cannot get a full ten-digit number after asking once more, offer the keypad: "You can also type it on your keypad, then press the pound key."
+  - Only if the keypad attempt also fails, call {{fn:try_transfer_call}} with
   handoff_reason: "phone_number_collection_failed" handoff_utterance: "I am having some trouble with that phone number, let me put you through to someone who can help."
+
+  === COLLECTING THE NUMBER ===
+  Ask for the number in groups, starting with the area code: "Could you give me the ten-digit number, starting with the area code?"
+  If the caller says "oh", treat it as zero. Treat "double" and "triple" as repeated digits.
+  If a digit is heard as a similar-sounding word, use the digit: "to" or "too" is two, "for" is four, "won" is one, "ate" is eight.
+  If you could not catch it, offer: "You can also type it on your keypad, then press the pound key."
+
+  === READBACK RULES ===
+  Read the number back as one flowing sentence and finish with "is that right?" with no pause before it.
+  Say every digit as its own word. Always say "zero", never "oh".
+  Group the ten digits three, three, four, joined with "then" and "and finally".
+  Example for 2015550123: "I heard two zero one, then five five five, and finally zero one two three, is that right?"
+  If the caller says "oh" for a digit, treat it as zero.

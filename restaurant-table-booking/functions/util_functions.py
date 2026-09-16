@@ -58,6 +58,10 @@ def validate_phone_number(conv, phone_number: str):
         # UK: national number should be 10 digits for mobile (7xxxxxxxxx); reject wrong length (e.g. 12 from extra 0)
         if country_code == 44 and len(phone_number_without_code) != 10:
             return "It seems like the phone number had too many or too few digits. There may have been an issue with the transcription. Check the number against what the user said, or ask them to repeat it slowly."
+        if country_code == 1 and len(phone_number_without_code) == 11:
+            phone_number_without_code = phone_number_without_code.removeprefix("1")
+        if country_code == 1 and len(phone_number_without_code) != 10:
+            return "It seems like the phone number had too many or too few digits. Ask the user to say the ten-digit number again, starting with the area code."
         return country_code, phone_number_without_code
 
     return "It seems like the phone number might be invalid. Ask the user for their number again."
@@ -111,8 +115,9 @@ def get_country_code(conv):
         country_code = "AU"
     elif conv.variant.timezone.startswith("Europe/Dublin"):
         country_code = "IE"
-    elif conv.variant.timezone.startswith(
-        "Canada" or conv.variant.timezone in canada_city_timezones
+    elif (
+        conv.variant.timezone.startswith("Canada")
+        or conv.variant.timezone in canada_city_timezones
     ):
         country_code = "CA"
     else:

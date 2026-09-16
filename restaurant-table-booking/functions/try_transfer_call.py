@@ -3,6 +3,9 @@ from datetime import datetime, time, timedelta
 from zoneinfo import ZoneInfo
 
 
+DEFAULT_OOH_MESSAGE = "Okay, we're currently closed but you can leave a voicemail and a member of the team will get back to you as soon as possible. One moment while I transfer you."
+
+
 def build_transfer_configs(conv):
     weekdays_map = {
         "01_monday": "Monday",
@@ -53,10 +56,7 @@ def build_transfer_configs(conv):
 
         transfer_configs[transfer_type] = {
             "use_site_opening_hours": transfer.get("03_use_site_opening_hours", True),
-            "ooh_message": transfer.get(
-                "02_ooh_message",
-                "Okay, we're currently closed but you can leave a voicemail and a member of the team will get back to you as soon as possible. One moment while I transfer you.",
-            ),
+            "ooh_message": transfer.get("02_ooh_message", DEFAULT_OOH_MESSAGE),
             "transfer_ooh": transfer.get("01_transfer_ooh", True),
             "opening_hours": opening_hours,
             "timezone": raw_oh.get("04_opening_hours", {}).get("00_timezone")
@@ -64,6 +64,16 @@ def build_transfer_configs(conv):
         }
 
     return transfer_configs
+
+
+def default_transfer_config(conv):
+    return {
+        "use_site_opening_hours": True,
+        "ooh_message": DEFAULT_OOH_MESSAGE,
+        "transfer_ooh": True,
+        "opening_hours": {},
+        "timezone": conv.variant.timezone,
+    }
 
 
 def is_restaurant_ooh(conv, current_dt, use_only_opening_hours=False):
@@ -214,23 +224,30 @@ def try_transfer_call(
         handoff_to = default_transfer_destination
         transfer_number = conv.variant.get(f"transfer_number_{handoff_to}")
 
+    transfer_config = transfer_configs.get(handoff_to) or default_transfer_config(conv)
     is_ooh = True
-    if transfer_configs[handoff_to]["use_site_opening_hours"]:
+    if transfer_config["use_site_opening_hours"]:
         is_ooh = is_restaurant_ooh(conv, now)
     else:
         is_ooh = is_destination_ooh(conv, handoff_to, transfer_configs)
-        # return f"Else {is_ooh}"
 
     if is_ooh and not skip_ooh:
         # This function might get called from a flow, so make sure to exit the flow only
         # if the agent is inside one, otherwise `conv.exit_flow()` will crash the agent
         # if conv.current_flow is not None:
         #   conv.exit_flow()
-        handoff_utterance = transfer_configs[handoff_to]["ooh_message"]
-        if not transfer_configs[handoff_to]["transfer_ooh"]:
+        handoff_utterance = transfer_config["ooh_message"]
+        if not transfer_config["transfer_ooh"]:
             if conv.current_flow:
                 conv.exit_flow()
             return f"Say: '{handoff_utterance}' and ask user if there is anything else you can help them with."
+    if conv.env in ("sandbox", "draft"):
+        conv.log.info(
+            "Mock handoff", handoff_reason=handoff_reason, handoff_to=handoff_to
+        )
+        conv.write_metric("HANDOFF_REASON", handoff_reason)
+        conv.write_metric("HANDOFF_TO", handoff_to)
+        return {"utterance": handoff_utterance, "hangup": True}
     return {
         "utterance": handoff_utterance,
         "handoff": {

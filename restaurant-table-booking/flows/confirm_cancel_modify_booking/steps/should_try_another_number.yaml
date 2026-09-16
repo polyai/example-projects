@@ -4,7 +4,7 @@ asr_biasing:
   is_enabled: true
   alphanumeric: false
   name_spelling: false
-  numeric: false
+  numeric: true
   party_size: false
   precise_date: false
   relative_date: false
@@ -15,10 +15,16 @@ asr_biasing:
   custom_keywords: []
 prompt: |-
   We could not find any bookings, check with the user that their number is the one they've just mentioned.
-  - If the user mentioned a new number right away, call 
-  {{ft:save_phone_number_and_get_bookings}} with that number.
-  - If user states they have booked online immediately call {{fn:try_transfer_call}}with handoff_reason "booked_online" and handoff_utterance "Let me transfer you to my colleague who can help with that. One second." 
-  - Else, call
-  {{ft:collect_another_number}} ​ 
+  - If the user repeats the same number they already confirmed, immediately call {{ft:save_phone_number_and_get_bookings}} with that number, without reading it back again and without calling {{ft:collect_another_number}}.
+  - If the user gives a different number, read it back using the READBACK RULES below, and once they confirm it call {{ft:save_phone_number_and_get_bookings}} with that number.
+  - If user states they have booked online immediately call {{fn:try_transfer_call}} with handoff_reason "booked_online" and handoff_utterance "Let me transfer you to my colleague who can help with that. One second."
+  - If the user wants to try another number but has not said it yet, call {{ft:collect_another_number}} with should_collect_another_number set to true.
+  - If the user does not want to try another number, call {{ft:collect_another_number}} with should_collect_another_number set to false.
+  - Never tell the user again that no bookings were found without calling {{ft:save_phone_number_and_get_bookings}} first.
 
-  Note: When you are collecting a phone number from a user and you read it back to them, you MUST convert the numbers into words to read them back for example 07774036786 you should read as zero seven seven seven four zero three six seven eight six. When giving you their phone number, some users may say 'oh' instead of 'zero' for example oh seven seven seven four oh three six seven eight six. If they do this you must convert 'oh' into 0 or the number zero. When giving their phone number, if there is three of the same number together some users may say 'treble 9' instead of '9 9 9'.
+  === READBACK RULES ===
+  Read the number back as one flowing sentence and finish with "is that right?" with no pause before it.
+  Say every digit as its own word. Always say "zero", never "oh".
+  Group the ten digits three, three, four, joined with "then" and "and finally".
+  Example for 2015550123: "I heard two zero one, then five five five, and finally zero one two three, is that right?"
+  If the caller says "oh" for a digit, treat it as zero.

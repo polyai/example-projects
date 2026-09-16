@@ -135,13 +135,13 @@ def modify_booking(
                         "default",
                     )
                 if code == "InvalidDateTime":
-                    plog.error("Invalid date or time", response=res.text)
+                    plog.warning("Invalid date or time", response=res.text)
                     return "The date or time provided is invalid. Ask about the date and time again."
                 if code == "InvalidStartDateTime":
                     plog.warning("Invalid start date/time", response=res.text)
                     return "You can only book slots which are 15 minutes after the current time at the restaurant. Ask about the date and time again."
                 if code == "CannotModifyReservationInPast":
-                    plog.error(
+                    plog.warning(
                         "Cannot modify reservation in past",
                         response=res.text,
                         data=data,
