@@ -1,7 +1,7 @@
 import plog
-from functions.readback import digits_only, spell_digits
 
 from _gen import *  # <AUTO GENERATED>
+from functions.readback import digits_only, spell_digits
 from functions.start_sms_flow import offer_handoff_after_sms_failed
 
 MIN_DIGITS = MAX_DIGITS = 10
