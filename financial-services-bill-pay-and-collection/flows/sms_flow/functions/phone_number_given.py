@@ -1,8 +1,7 @@
 import re
 
-from functions.readback import spell_digits
-
 from _gen import *  # <AUTO GENERATED>
+from functions.readback import spell_digits
 
 KEY_NAME = "pound"
 MIN_DIGITS = 10
