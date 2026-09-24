@@ -3,8 +3,6 @@ from _gen import *  # <AUTO GENERATED>
 
 @func_description("Start the call with the user")
 def initiate_call(conv: Conversation, flow: Flow):
-    conv.functions.set_voice("main")
-
     if conv.state.is_ooh:
         flow.goto_step("Ask Urgent")
         out_of_hours_message = conv.real_time_config.get(

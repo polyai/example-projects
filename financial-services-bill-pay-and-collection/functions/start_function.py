@@ -28,8 +28,6 @@ def start_function(conv: Conversation):
 
     # disclaimer and emergency message
 
-    conv.functions.set_voice("disclaimer")
-
     upfront_messaging = conv.real_time_config.get("upfront_messaging", {})
     disclaimer = upfront_messaging.get("disclaimer", "")
     disclaimer_active = upfront_messaging.get("disclaimer_active", False)
@@ -65,10 +63,9 @@ def start_function(conv: Conversation):
         # caller to speak first, whether or not a disclaimer was spoken upfront.
         return {"utterance": upfront_message or "", "listen": {"asr": {"timeout": 0.1}}}
 
-    # In-hours: greet proactively on the opening turn (in the main voice) so the
-    # caller hears a real greeting straight away, instead of the old "Ringtone."
-    # placeholder followed by silence until they spoke first.
-    conv.functions.set_voice("main")
+    # In-hours: greet proactively on the opening turn so the caller hears a real
+    # greeting straight away, instead of the old "Ringtone." placeholder
+    # followed by silence until they spoke first.
     greeting = "Hi, thanks for calling Poly Bank — you're speaking with our virtual assistant. How can I help you today?"
     if upfront_message:
         greeting = f"{upfront_message} {greeting}"
