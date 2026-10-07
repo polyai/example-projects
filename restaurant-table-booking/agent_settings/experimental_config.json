@@ -6,11 +6,6 @@
     "flow_overrides": {
       "confirm_cancel_modify_booking": {
         "steps": {
-          "Collect phone number": {
-            "eager_final": false,
-            "model": "parakeet-tdt-0.6b-v3-multi",
-            "provider": "riva"
-          },
           "Should try another number": {
             "eager_final": false
           }
@@ -18,35 +13,8 @@
       },
       "make_booking": {
         "steps": {
-          "Collect Customer Name": {
-            "model": "parakeet-tdt-0.6b-v3-multi",
-            "provider": "riva"
-          },
-          "Collect phone number": {
-            "eager_final": false,
-            "model": "parakeet-tdt-0.6b-v3-multi",
-            "provider": "riva"
-          },
           "Should use callers phone number": {
             "eager_final": false
-          }
-        }
-      },
-      "sms_flow": {
-        "steps": {
-          "Ask this number": {
-            "eager_final": false,
-            "model": "parakeet-tdt-0.6b-v3-multi",
-            "provider": "riva"
-          },
-          "Collect phone number": {
-            "eager_final": false,
-            "model": "parakeet-tdt-0.6b-v3-multi",
-            "provider": "riva"
-          },
-          "SMS sending failed": {
-            "model": "parakeet-tdt-0.6b-v3-multi",
-            "provider": "riva"
           }
         }
       }
