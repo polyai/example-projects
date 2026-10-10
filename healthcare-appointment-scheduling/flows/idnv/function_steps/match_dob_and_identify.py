@@ -1,7 +1,8 @@
-from _gen import *  # <AUTO GENERATED>
 from datetime import date
 
 import plog
+
+from _gen import *  # <AUTO GENERATED>
 from functions.handoff import handoff
 
 _MINOR_AGE_THRESHOLD = 18

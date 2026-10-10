@@ -1,8 +1,7 @@
+from _gen import *  # <AUTO GENERATED>
 from datetime import datetime
 
 import plog
-
-from _gen import *  # <AUTO GENERATED>
 from functions.appointment_selection import (
     appointment_type_label,
     is_follow_up_appointment,
