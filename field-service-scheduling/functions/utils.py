@@ -1,9 +1,8 @@
-from _gen import *  # <AUTO GENERATED>
 import calendar
 from datetime import datetime, timedelta
 from itertools import groupby
-from typing import Optional
 
+from _gen import *  # <AUTO GENERATED>
 
 DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
@@ -166,7 +165,7 @@ def is_within_days(date1_str: str, date2_str: str, days: int) -> bool:
     return abs((d2 - d1).days) < days
 
 
-def get_most_recent_date(date_list: list[str]) -> Optional[str]:
+def get_most_recent_date(date_list: list[str]) -> str | None:
     if not date_list:
         return None
     return max(date_list, key=lambda d: datetime.strptime(d, "%Y-%m-%d"))
@@ -191,7 +190,7 @@ def is_more_than_months_ago(date_str: str, current_date_str: str, months: int) -
     return d < threshold
 
 
-def get_potential_slot(conv, **kwargs) -> Optional[dict]:
+def get_potential_slot(conv, **kwargs) -> dict | None:
     """Slot-matching logic — only used in real API mode.
 
     In mock mode the callers (find_slot_availability, check_slot_availability) bypass

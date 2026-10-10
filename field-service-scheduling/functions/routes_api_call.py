@@ -4,7 +4,6 @@ from _gen import *  # <AUTO GENERATED>
 class DispatchApiError(Exception):
     """Custom exception for dispatch API errors."""
 
-    pass
 
 
 def create_appointment(conv: Conversation, spot_id: str, start: str, end: str) -> bool:

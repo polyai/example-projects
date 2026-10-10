@@ -1,6 +1,6 @@
-from _gen import *  # <AUTO GENERATED>
 from datetime import datetime
 
+from _gen import *  # <AUTO GENERATED>
 from functions.handoff import handoff
 from functions.utils import get_prompt_for_appointment_timeframe_readback
 
