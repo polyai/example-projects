@@ -1,6 +1,6 @@
-from _gen import *  # <AUTO GENERATED>
 from datetime import datetime
 
+from _gen import *  # <AUTO GENERATED>
 
 from .mock_api import MockAccountLookup
 

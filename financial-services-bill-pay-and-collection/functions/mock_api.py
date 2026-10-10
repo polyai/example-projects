@@ -6,11 +6,11 @@ billing/payment operations for local development and testing when
 no real backend (DynamoDB, billing API) is available.
 """
 
-from _gen import *  # <AUTO GENERATED>
 import re
 import uuid
 from datetime import datetime, timedelta
-from typing import Optional
+
+from _gen import *  # <AUTO GENERATED>
 
 
 def _normalize_phone(phone: str) -> str:
@@ -129,7 +129,7 @@ class MockAccountLookup:
     """In-memory account and payment operations for testing."""
 
     @staticmethod
-    def get_account(account_number: str) -> Optional[dict]:
+    def get_account(account_number: str) -> dict | None:
         """Look up an account by number. Returns dict or None."""
         acct = _ACCOUNTS.get(account_number)
         if acct is None:
@@ -147,7 +147,7 @@ class MockAccountLookup:
         }
 
     @staticmethod
-    def get_account_by_phone(phone: str) -> Optional[dict]:
+    def get_account_by_phone(phone: str) -> dict | None:
         """Look up an account by phone number. Returns dict or None."""
         cleaned = _normalize_phone(phone)
         acct_num = _PHONE_INDEX.get(cleaned)
@@ -156,7 +156,7 @@ class MockAccountLookup:
         return MockAccountLookup.get_account(acct_num)
 
     @staticmethod
-    def make_payment(account_number: str, amount: float) -> Optional[dict]:
+    def make_payment(account_number: str, amount: float) -> dict | None:
         """
         Process a mock payment against *account_number*.
 
@@ -196,7 +196,7 @@ class MockAccountLookup:
         }
 
     @staticmethod
-    def get_payment_history(account_number: str) -> Optional[list[dict]]:
+    def get_payment_history(account_number: str) -> list[dict] | None:
         """
         Return payment history for *account_number*, or None if unknown.
         """
