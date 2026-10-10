@@ -1,7 +1,7 @@
-from _gen import *  # <AUTO GENERATED>
 from datetime import datetime, timedelta
-from typing import Any, Optional
+from typing import Any
 
+from _gen import *  # <AUTO GENERATED>
 
 from .oms_connector import Consignment, Order, OrderLine
 
@@ -217,7 +217,7 @@ class MockOmsConnector:
         conv.log.info("MockOmsConnector:get_orders_by_phone_number", phone=digits)
         return list(_ORDERS_BY_PHONE.get(digits, []))
 
-    def get_order_details(self, conv, order_number: str, timeout=10) -> Optional[Order]:
+    def get_order_details(self, conv, order_number: str, timeout=10) -> Order | None:
         conv.log.info("MockOmsConnector:get_order_details", order_number=order_number)
         return _ORDERS_BY_NUMBER.get(order_number)
 
@@ -250,7 +250,7 @@ class MockNarvarClient:
         self,
         conv,
         order_number: str,
-        item: tuple[Optional[str], Optional[str]],
+        item: tuple[str | None, str | None],
     ):
         """Return a NarvarShipmentDetail-like object for the given Narvar order number."""
         from .narvar_client import NarvarShipmentDetail
@@ -333,11 +333,9 @@ class MockZendeskClient:
 
     def update_ticket(self, conv, *args, **kwargs):
         conv.log.info("MockZendeskClient:update_ticket")
-        return None
 
     def update_custom_fields_on_ticket(self, conv, *args, **kwargs):
         conv.log.info("MockZendeskClient:update_custom_fields_on_ticket")
-        return None
 
 
 # ---------------------------------------------------------------------------
@@ -362,7 +360,7 @@ class MockCustomerCoreApi:
             return {"results": [{"email": customer["email"]}]}
         return {"results": []}
 
-    def get_email_by_phone(self, conv, phone_number: str, timeout=10) -> Optional[str]:
+    def get_email_by_phone(self, conv, phone_number: str, timeout=10) -> str | None:
         digits = (
             phone_number.lstrip("+").lstrip("1")
             if len(phone_number) > 10
