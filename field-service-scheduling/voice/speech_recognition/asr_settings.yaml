@@ -1,2 +1,3 @@
-barge_in: true
-interaction_style: balanced
+barge_in:
+  enabled: true
+  allow_on_first_turn: false
