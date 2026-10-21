@@ -9,3 +9,7 @@ disclaimer_messages:
   message: ''
   enabled: false
   language_code: en-US
+background_ambience:
+  enabled: true
+  preset: restaurant-ambiance
+  loudness: -50
