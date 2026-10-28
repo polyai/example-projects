@@ -6,6 +6,7 @@ final metrics for analytics.
 
 from _gen import *  # <AUTO GENERATED>
 
+
 HANDOFF_SUMMARY_PROMPT_TEMPLATE = """Handoff note for an agent picking up this call.
 
 Conversation:
