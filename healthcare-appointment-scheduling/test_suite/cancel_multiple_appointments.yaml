@@ -15,8 +15,6 @@ tags:
 - cancel_flow
 - idnv
 prompt_assertions:
-- The agent collects John Doe's phone number (212-555-0178), date of birth (July 22, 1990), and name
-  to verify his identity.
-- The agent identifies that John Doe has more than one upcoming appointment and asks which one he 
-  wants to cancel.
+- The agent collects John Doe's phone number (212-555-0178), date of birth (July 22, 1990), and name to verify his identity.
+- The agent identifies that John Doe has more than one upcoming appointment and asks which one he wants to cancel.
 - The agent confirms the appointment has been cancelled.

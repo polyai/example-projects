@@ -19,7 +19,7 @@ prompt: |-
 
   If the user agrees to you using their phone number, call {{ft:use_phone_number}}.
 
-  Otherwise, if they would rather use a different number, call {{ft:phone_number_rejected}}. 
+  Otherwise, if they would rather use a different number, call {{ft:phone_number_rejected}}.
 
   === CONTEXT ===
 

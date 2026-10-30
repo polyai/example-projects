@@ -1,9 +1,9 @@
 keyphrases:
 - keyphrase: recheck
   level: boosted
-- keyphrase: yes
+- keyphrase: 'yes'
   level: maximum
-- keyphrase: no
+- keyphrase: 'no'
   level: maximum
 - keyphrase: prescription
   level: boosted

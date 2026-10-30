@@ -1,4 +1,3 @@
 name: IDNV
-description: Identify and verify the caller by phone number and date of birth; save the matched 
-  patient account to conversation state.
+description: Identify and verify the caller by phone number and date of birth; save the matched patient account to conversation state.
 start_step: idnv_entry

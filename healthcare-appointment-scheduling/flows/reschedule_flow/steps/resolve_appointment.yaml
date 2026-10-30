@@ -64,7 +64,7 @@ prompt: |-
        {{ft:suggest_next_reschedule_appointment}} to try the next one instead.
 
   --- USER CHANGES THEIR MIND OR PROVIDES A NEW APPOINTMENT DATE ---
-  If the user changes their mind and corrects themselves about the appointment they want to reschedule, call {{ft:reschedule_date_of_appointment_given}} with the new date the user provided. 
+  If the user changes their mind and corrects themselves about the appointment they want to reschedule, call {{ft:reschedule_date_of_appointment_given}} with the new date the user provided.
 
   --- VALUES UNAVAILABLE ---
 

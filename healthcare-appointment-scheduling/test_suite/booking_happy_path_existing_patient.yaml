@@ -15,8 +15,7 @@ tags:
 - booking_flow
 - idnv
 prompt_assertions:
-- The agent collects Jane Smith's phone number (201-555-0123), date of birth (March 15, 1985), and 
-  name in order to verify her identity.
+- The agent collects Jane Smith's phone number (201-555-0123), date of birth (March 15, 1985), and name in order to verify her identity.
 - The agent confirms Jane Smith's identity is verified and proceeds into the booking process.
 - The agent offers at least one available appointment slot (with a provider name and time).
 - The agent confirms the appointment has been booked for Jane Smith.

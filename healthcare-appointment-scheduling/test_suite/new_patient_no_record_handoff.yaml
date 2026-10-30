@@ -14,7 +14,5 @@ tags:
 - booking_flow
 - idnv
 prompt_assertions:
-- The agent attempts to look up the caller's account using phone number 201-555-0199 and is unable 
-  to find a matching record.
-- The agent informs the caller that no account was found and either asks for an alternative number 
-  or offers to transfer to the scheduling team.
+- The agent attempts to look up the caller's account using phone number 201-555-0199 and is unable to find a matching record.
+- The agent informs the caller that no account was found and either asks for an alternative number or offers to transfer to the scheduling team.

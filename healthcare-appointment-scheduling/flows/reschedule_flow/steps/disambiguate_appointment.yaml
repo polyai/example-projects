@@ -18,7 +18,7 @@ prompt: |-
   they chose. The appointments are in the same order they were presented.
 
   --- USER CHANGES THEIR MIND OR PROVIDES A NEW APPOINTMENT DATE ---
-  If the user changes their mind and corrects themselves about the appointment they want to reschedule, call {{ft:reschedule_date_of_appointment_given}} with the new date the user provided. 
+  If the user changes their mind and corrects themselves about the appointment they want to reschedule, call {{ft:reschedule_date_of_appointment_given}} with the new date the user provided.
 
   If the caller is unable to choose or is confused, call {{fn:handoff}} with
   reason="RESCHEDULE_AMBIGUOUS_DATE",

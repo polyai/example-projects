@@ -9,5 +9,4 @@ tags:
 - FAQ
 prompt_assertions:
 - The agent answers the insurance question without asking for identity verification.
-- The agent confirms that Poly Clinic accepts Blue Cross (or most commercial/private insurance 
-  plans, of which Blue Cross is an example).
+- The agent confirms that Poly Clinic accepts Blue Cross (or most commercial/private insurance plans, of which Blue Cross is an example).

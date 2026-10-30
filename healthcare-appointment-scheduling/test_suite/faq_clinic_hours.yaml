@@ -9,5 +9,4 @@ tags:
 - FAQ
 prompt_assertions:
 - The agent answers the question about clinic hours without asking for identity verification.
-- The agent provides general clinic hours that include weekday hours (Monday through Friday) and 
-  states the clinic is closed on weekends.
+- The agent provides general clinic hours that include weekday hours (Monday through Friday) and states the clinic is closed on weekends.

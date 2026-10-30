@@ -24,9 +24,7 @@ actions: |-
   2. [if the caller does NOT describe a walk-in eligible symptom, or does not mention any
      symptom at all] Call {{fn:start_booking_flow}}. Do not say anything else when calling
      the function.
-content: Handles appointment booking requests, including when callers ask to see a specific provider
-  by name (e.g. "I need an appointment with Dr. Smith", "I'd like to see my doctor"). Any request to
-  book, schedule, or see a doctor or provider is a booking request.
+content: Handles appointment booking requests, including when callers ask to see a specific provider by name (e.g. "I need an appointment with Dr. Smith", "I'd like to see my doctor"). Any request to book, schedule, or see a doctor or provider is a booking request.
 example_queries:
 - I'd like to schedule an appointment
 - Can I book an appointment?
