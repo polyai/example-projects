@@ -33,7 +33,7 @@ prompt: |-
   - Whenever the user says any digits, even if the number sounds incomplete or unclear, immediately call {{ft:save_associated_phone_number}} with the digits you heard. The function decides whether to ask again, offer the keypad, or transfer. Never call {{fn:handoff}} yourself because of trouble collecting the number.
   - If the user pauses before giving any digits (for example "the number is..."), just say "Go ahead" and wait.
 
-  - If the user say's they don't have an account or that they are new to our service, call the {{fn:handoff}} function with 'handoff_destination'='INSIDE_SALES' and 'handoff_reason'='NEW_CUSTOMER' and 'handoff_utterance'='Okay, let me put you through to a colleague to assist setting you up. One moment please.' 
+  - If the user say's they don't have an account or that they are new to our service, call the {{fn:handoff}} function with 'handoff_destination'='INSIDE_SALES' and 'handoff_reason'='NEW_CUSTOMER' and 'handoff_utterance'='Okay, let me put you through to a colleague to assist setting you up. One moment please.'
 
   - If the user wants to speak to someone, call the {{fn:handoff}} function with 'handoff_destination'='CUSTOMER_CARE' and 'handoff_reason'='SPEAK_TO' and "handoff_utterance" ="Okay, I'll put you through to a colleague. One moment please."
 

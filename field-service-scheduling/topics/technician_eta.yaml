@@ -4,7 +4,7 @@ actions: |-
   ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='GENERAL_QUESTION'. Do not answer the question.
 
   call {{fn:handoff}}
-   function with 
+   function with
   'handoff_destination'='CUSTOMER_CARE' and
   'handoff_reason'='TECHNICIAN_IS_LATE' and
   "handoff_utterance" = "Sorry about that. One moment while I put you through to a customer care team member."

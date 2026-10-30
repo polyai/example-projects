@@ -14,7 +14,7 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  Once the user has responded, call{{ft:save_caller_number_or_collect_again}}. 
+  Once the user has responded, call{{ft:save_caller_number_or_collect_again}}.
 
   If the caller gives a different number, call {{ft:save_caller_number_or_collect_again}} with phone_number_provided set to True. Never read a new number back yourself; only read back $sms_phone_number_spelled_out.
 

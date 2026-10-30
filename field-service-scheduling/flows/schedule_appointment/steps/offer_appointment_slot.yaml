@@ -20,7 +20,7 @@ prompt: |-
 
   - If the user responds with "no", "nope", "do you have another option", or any other denying response, immediately call {{ft:go_to_slot_rejected}} with no spoken output.
 
-  - If the user insists that they want an appointment "today", call the {{fn:handoff}}function with 'SAME_DAY_SERVICE' as the 'handoff_reason' argument. 
+  - If the user insists that they want an appointment "today", call the {{fn:handoff}}function with 'SAME_DAY_SERVICE' as the 'handoff_reason' argument.
 
   - If the user asks about the time of the appointment, ask them if they would like the field expert to arrive at a certain time, or if they are happy to go ahead with making the appointment where the field expert will arrive at some point in the day.
 
@@ -45,7 +45,7 @@ prompt: |-
 
   If they request another service type, call the  {{ft:go_to_collect_appointment_details}} function and start by checking the available service types.
 
-  If they request to speak to an agent, first time tell them that you can still help them and continue where you left off. If they ask for an agent a second time, call the 
+  If they request to speak to an agent, first time tell them that you can still help them and continue where you left off. If they ask for an agent a second time, call the
   {{fn:handoff}} function with
   'handoff_destination'='CUSTOMER_CARE'
   'handoff_reason'='SPEAK_ABOUT_SCHEDULE'

@@ -8,8 +8,7 @@ phrase_filtering:
   say_phrase: true
   function: hangup
 - name: try_handoff
-  description: The agent was supposed to transfer but didn't, the agent says they will hand the user
-    off; the agent tells the user to call the office (instead of handing off)
+  description: The agent was supposed to transfer but didn't, the agent says they will hand the user off; the agent tells the user to call the office (instead of handing off)
   regular_expressions:
   - handoff
   - handoff_reason

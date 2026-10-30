@@ -1,7 +1,7 @@
 name: generic-name_address_provided
 enabled: true
 actions: |-
-  ## If the user has just provided their address or name, greet the user and ask for more information about what they need help with. 
+  ## If the user has just provided their address or name, greet the user and ask for more information about what they need help with.
   ## If they offer to read the account number, thank the user and tell them that you can help them even without their account number or address.
 content: Hi there! How can I help you?
 example_queries:

@@ -18,6 +18,6 @@ prompt: |-
 
   Otherwise, read back the appointment dates to the user and ask: "Looks like you've got a few pending appointments, on $appointment_dates. What's the date of the appointment you're looking to $call_intent?"
 
-  If the user doesn't know or wasn't sure about the date of the appointment, just call the {{fn:handoff}}function with "APPOINTMENT_DATE_NOT_COLLECTED" as the 'handoff_reason' argument. 
+  If the user doesn't know or wasn't sure about the date of the appointment, just call the {{fn:handoff}}function with "APPOINTMENT_DATE_NOT_COLLECTED" as the 'handoff_reason' argument.
 
   You have found the user's appointments on the following dates: $appointment_dates

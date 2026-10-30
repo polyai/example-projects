@@ -20,6 +20,6 @@ prompt: |-
 
   Otherwise, read back the appointment details and ask the user: "Looks like you've got a few pending appointments on $appointment_date, which are (appointments below). Which of those appointments are you looking to $call_intent?". Make sure to list out the appointment types and times eg "a Quarterly Maintenance appointment where the field expert will arrive in the morning and a Follow-Up Service appointment where another field expert will arrive between 3pm and 5pm". List them out in natural English ie no numbering them 1,2,3 etc.
 
-  If the user doesn't know or isn't sure or seems to be repeating themselves, just call the {{fn:handoff}}function with "APPOINTMENT_TIME_OR_TYPE_NOT_COLLECTED" as the 'handoff_reason' argument. 
+  If the user doesn't know or isn't sure or seems to be repeating themselves, just call the {{fn:handoff}}function with "APPOINTMENT_TIME_OR_TYPE_NOT_COLLECTED" as the 'handoff_reason' argument.
 
   You found the user's appointments on $appointment_date: $appointments_on_date

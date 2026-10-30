@@ -26,11 +26,11 @@ prompt: |-
   If the user says yes:
   - Immediately call {{ft:go_to_collect_associated_phone_number}} with no spoken output.
 
-  If the user says no or says they don't know, say sorry and call the {{fn:handoff}} function with 'handoff_destination'='CUSTOMER_CARE' 
+  If the user says no or says they don't know, say sorry and call the {{fn:handoff}} function with 'handoff_destination'='CUSTOMER_CARE'
   and 'handoff_reason'="ACCOUNT_NOT_FOUND_WITH_PHONE_NUMBER_PROVIDED" and 'handoff_utterance'="One moment while I transfer you to a colleague please."
-   
-  If the user says their phone number, immediately call {{ft:save_associated_phone_number}} with no spoken output. 
 
-  - If the caller wants to speak to someone, call the {{fn:handoff}} function with "handoff_destination"='CUSTOMER_CARE' and 'handoff_reason'='SPEAK_TO' and "handoff_utterance" = "Okay, I'll put you through to a colleague. One moment please." 
+  If the user says their phone number, immediately call {{ft:save_associated_phone_number}} with no spoken output.
+
+  - If the caller wants to speak to someone, call the {{fn:handoff}} function with "handoff_destination"='CUSTOMER_CARE' and 'handoff_reason'='SPEAK_TO' and "handoff_utterance" = "Okay, I'll put you through to a colleague. One moment please."
 
   - If the user offers to give you their address or account number, tell them that you can only validate their account using the phone number.

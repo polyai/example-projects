@@ -21,9 +21,9 @@ dtmf_config:
   collect_while_agent_speaking: true
   is_pii: true
 prompt: |-
-  If you haven't already, tell the user that you need to get their zip code to verify their account by saying: "Great. And what's your zipcode?". 
+  If you haven't already, tell the user that you need to get their zip code to verify their account by saying: "Great. And what's your zipcode?".
 
-  Otherwise, once the caller has responded, call   {{ft:should_save_zip_code}} . 
+  Otherwise, once the caller has responded, call   {{ft:should_save_zip_code}} .
 
   The zip codes can also come in spelled out, eg "seven six two oh seven". This should be interpreted as 76207.
 

@@ -21,8 +21,8 @@ dtmf_config:
   collect_while_agent_speaking: false
   is_pii: true
 prompt: |-
-  If you have already asked the caller to provide an alternative number, call 
-  {{ft:validate_caller_number}}. 
+  If you have already asked the caller to provide an alternative number, call
+  {{ft:validate_caller_number}}.
 
   Only consider the most recent phone number the user has provided. Phone numbers can have a maximum of ten digits.
 

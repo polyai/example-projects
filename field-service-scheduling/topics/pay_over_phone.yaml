@@ -3,7 +3,7 @@ enabled: true
 actions: |-
   ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='BILLING_QUESTION'. Do not answer the question.
 
-  call 
+  call
   {{fn:handoff}} with
   'handoff_destination'='CUSTOMER_CARE'  and
   'handoff_reason'='PAY_BILL' and

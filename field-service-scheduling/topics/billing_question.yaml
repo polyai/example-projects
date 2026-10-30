@@ -9,9 +9,9 @@ actions: |-
   "handoff_utterance" = "Let me put you through to a colleague who can help with that. One moment please."
 content: |-
   confirm that I paid for the service
-  hi yes i was calling about my account and just trying to figure out some billing um questions 
-  hi can i have accounting 
-  accounting department 
+  hi yes i was calling about my account and just trying to figure out some billing um questions
+  hi can i have accounting
+  accounting department
   i'd like to speak to someone in billing
 example_queries:
 - I think I was overcharged
@@ -23,5 +23,4 @@ example_queries:
 - billing department
 - I'm having a billing issue
 - I need to get a copy of my invoice
-- i pay/paid two hundred dollars for the annual service and i'm calling to confirm to get this in 
-  writing
+- i pay/paid two hundred dollars for the annual service and i'm calling to confirm to get this in writing

@@ -14,6 +14,6 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  If you have already asked, call {{ft:should_collect_sms_number}}. 
+  If you have already asked, call {{ft:should_collect_sms_number}}.
 
   Otherwise be sure to say: "Is the number you're calling from ok to receive a text message?"

@@ -1,7 +1,6 @@
 name: visit-prep
 enabled: true
-actions: Immediately call {{fn:handle_faq}} with answer="We'll send you an email before your 
-  scheduled service with any prep instructions."
+actions: Immediately call {{fn:handle_faq}} with answer="We'll send you an email before your scheduled service with any prep instructions."
 content: ''
 example_queries:
 - Do I need to prepare my home before the service?

@@ -16,10 +16,10 @@ asr_biasing:
 prompt: |-
   Depending on the user response:
 
-  - If the user says yes, immediately call {{ft:go_to_ask_if_different_number}} with no spoken output. 
+  - If the user says yes, immediately call {{ft:go_to_ask_if_different_number}} with no spoken output.
 
-  - If the user says no without saying their phone number, immediately call {{ft:go_to_collect_associated_phone_number}} with no spoken output. 
-  - If the user says their phone number, immediately call {{ft:save_associated_phone_number}} with no spoken output. 
+  - If the user says no without saying their phone number, immediately call {{ft:go_to_collect_associated_phone_number}} with no spoken output.
+  - If the user says their phone number, immediately call {{ft:save_associated_phone_number}} with no spoken output.
 
   - Never read a new number back yourself; only read back $phone_number_spelled_out.
 

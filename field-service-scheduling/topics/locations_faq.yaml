@@ -4,7 +4,7 @@ actions: |-
   ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='NEW_SALE'. Do not answer the question.
 
   call {{fn:handoff}}
-   function with 
+   function with
   'handoff_destination'='INSIDE_SALES' and
   'handoff_reason'='LOCATIONS_FAQ' and
   "handoff_utterance" = "We have many locations across the country. Let me transfer you to an agent who can check to see if we have a branch that can service your new address."

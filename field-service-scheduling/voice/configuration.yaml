@@ -4,7 +4,6 @@ greeting:
 style_prompt:
   prompt: ''
 disclaimer_messages:
-  message: This call will be recorded in order to respond to your request, and for training and 
-    quality control purposes.
+  message: This call will be recorded in order to respond to your request, and for training and quality control purposes.
   enabled: false
   language_code: en-US

@@ -14,7 +14,7 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  Do one of the following once the user has provided a response: 
+  Do one of the following once the user has provided a response:
 
   If the user says that everything is ok with the appointment, call {{ft:exit_confirm_appointment_flow}}.
 

@@ -1,7 +1,7 @@
 step_type: advanced_step
 name: Await response to days suggestion
 prompt: |-
-  Await the user response. 
+  Await the user response.
 
   If the user agrees to call back later or otherwise acknowledges what you've said about waiting, you MUST immediately call {{ft:customer_ok_to_wait_to_make_next_appointment}} with no spoken output.
 
