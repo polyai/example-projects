@@ -3,7 +3,7 @@ enabled: true
 actions: |-
   Ask if the user has checked their spam, junk, or promotions folder.
 
-  If they haven't already checked,  tell them you can wait while they check. If the user says they can see the email, ask if there's anything else you can help with. 
+  If they haven't already checked,  tell them you can wait while they check. If the user says they can see the email, ask if there's anything else you can help with.
 
   If the user still can't see the email, call {{fn:pre_handoff}}  with handoff_reason ="Orders-email_not_received", and utterance = "Let me put you through to someone who can help figure this out. One sec."
 content: Sometimes our emails can end up in the spam or junk folder.

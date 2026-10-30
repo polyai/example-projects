@@ -57,7 +57,7 @@ prompt: |-
 
   If the user asks to use their ORDER NUMBER, call {{ft:try_order_number}}
 
-  Call the function 
+  Call the function
   {{ft:zipcode_unknown}} if the user:
   - unable to provide the zipcode (e.g. "I don't know", "I forgot", "I'm not sure" , "I don't remember which address I used"), OR
   - not willing to provide their zipcode (e.g. "No."), OR

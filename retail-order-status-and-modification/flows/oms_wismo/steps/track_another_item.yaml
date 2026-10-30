@@ -14,7 +14,7 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  IMMEDIATELY call the function:  {{ft:validate_order_line}} if the user has said they want to track another item, and mentioned that item by name. The "order_line_number" should be the one that best matches the OrderLine of $next_item.  If the user said "yes" to your offer to track a specific item, then the order line is that specific item. 
+  IMMEDIATELY call the function:  {{ft:validate_order_line}} if the user has said they want to track another item, and mentioned that item by name. The "order_line_number" should be the one that best matches the OrderLine of $next_item.  If the user said "yes" to your offer to track a specific item, then the order line is that specific item.
 
   The full order contains the following items:
 
@@ -24,5 +24,5 @@ prompt: |-
 
   You MUST call one of the functions above if the user has suggested they want to track another item. DO NOT ASSUME ANYTHING ABOUT THE ORDER STATUS.
 
-  If the user mentions something else unrelated to order management, call the function:  
+  If the user mentions something else unrelated to order management, call the function:
   {{ft:exit_order_management_flow}}

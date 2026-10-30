@@ -19,6 +19,6 @@ prompt: |-
 
   DO NOT repeat the order status you just gave, unless you have been EXPLICITLY asked to by the user.
 
-  If the user has already explicitly said they don't need any more help, call {{fn:end_call}} 
+  If the user has already explicitly said they don't need any more help, call {{fn:end_call}}
 
   If the user mentions something else, call the function: {{ft:exit_order_management_1}}

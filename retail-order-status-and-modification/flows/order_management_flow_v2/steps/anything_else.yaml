@@ -16,7 +16,7 @@ asr_biasing:
 prompt: |-
   If the user has already said they don't need any more help, call {{fn:end_call}}
 
-  If the user says anything that suggests they might want to track *another* item in their order, call the function: 
+  If the user says anything that suggests they might want to track *another* item in their order, call the function:
   {{ft:track_next_order_1}}
 
   If the mention something else, unrelated to order management,{{ft:exit_order_management_1}}

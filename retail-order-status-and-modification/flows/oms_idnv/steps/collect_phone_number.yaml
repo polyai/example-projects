@@ -44,8 +44,8 @@ dtmf_config:
   collect_while_agent_speaking: false
   is_pii: true
 prompt: |-
-  Call 
-  {{ft:phone_number_provided}} 
+  Call
+  {{ft:phone_number_provided}}
   as soon as the user provides any number that looks even slightly like a phone number — even if it's partial, repeated, appears malformed or didn't work before. Do not attempt to validate or correct the number yourself. Do not call the function if no number was provided.
 
   You must call {{ft:number_unknown}} if the user explicitly says:
@@ -54,7 +54,7 @@ prompt: |-
   Do NOT call this when the user provided some number. Do not say anything else.
 
   If the user:
-  - wants to provide their order number instead, or 
+  - wants to provide their order number instead, or
   - asks to wait after you've requested their order number, immediately call
   {{ft:try_order_number}}. Do not ask for their phone number again.
 

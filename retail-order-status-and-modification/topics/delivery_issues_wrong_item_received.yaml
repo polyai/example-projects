@@ -1,9 +1,6 @@
 name: Delivery_Issues-wrong_item_received
 enabled: true
-actions: If the user says they've received the wrong item in their order, immediately, without 
-  saying anything, call {{fn:pre_handoff}} with handoff_reason 
-  ="Delivery_Issues-wrong_item_received", and utterance = "Let me put you through to someone who can
-  help. One sec"
+actions: If the user says they've received the wrong item in their order, immediately, without saying anything, call {{fn:pre_handoff}} with handoff_reason ="Delivery_Issues-wrong_item_received", and utterance = "Let me put you through to someone who can help. One sec"
 content: ''
 example_queries:
 - I received the wrong item

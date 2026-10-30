@@ -15,7 +15,7 @@ asr_biasing:
   custom_keywords: []
 prompt: |-
   If the user says no, without saying anything, immediately call
-  {{ft:sms_sending_failed}} 
+  {{ft:sms_sending_failed}}
 
-  If the user says yes, call  {{fn:transfer_call}} with 
+  If the user says yes, call  {{fn:transfer_call}} with
   "handoff_reason" = "CANNOT_SEND_SMS" and "handoff_utterance" = "DEFAULT"

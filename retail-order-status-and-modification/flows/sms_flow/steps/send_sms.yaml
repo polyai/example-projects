@@ -14,11 +14,11 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  To send the SMS, call 
-  {{ft:send_sms}} function with ​sms_phone_number = 
-  $sms_phone_number 
+  To send the SMS, call
+  {{ft:send_sms}} function with ​sms_phone_number =
+  $sms_phone_number
 
-  If SMS sending was successful, immediately without saying anything call 
+  If SMS sending was successful, immediately without saying anything call
   {{ft:sms_sent_successfully}}
 
   If SMS sending failed, call the function:   {{ft:SMS_failed}}

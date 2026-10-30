@@ -1,8 +1,7 @@
 name: Instore-order_pickup_when_ready
 enabled: true
 actions: ''
-content: Your order will typically be ready for pick up within 2 hours of placing the order - but 
-  wait for the confirmation email saying it's ready before coming to pick up.
+content: Your order will typically be ready for pick up within 2 hours of placing the order - but wait for the confirmation email saying it's ready before coming to pick up.
 example_queries:
 - When will my order be ready for pickup?
 - quand est-ce que ma commande va être prête pour la cueillette?

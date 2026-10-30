@@ -14,8 +14,8 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  If the user mentioned that they'd like to track another item, and has mentioned the item by name, immediately call the function:  {{ft:validate_order_line_1}} 
-  with the "Order Line" best matching $next_item. If the user said "yes" to your offer to track a specific item, then the order line is that specific item. 
+  If the user mentioned that they'd like to track another item, and has mentioned the item by name, immediately call the function:  {{ft:validate_order_line_1}}
+  with the "Order Line" best matching $next_item. If the user said "yes" to your offer to track a specific item, then the order line is that specific item.
 
   If the user has mentioned that they'd like to track another item, or the rest of their order, but hasn't mention any specific item by name, then immediately call the function:  {{ft:track_next_item_1}}
 
@@ -23,5 +23,5 @@ prompt: |-
 
   $order_items_listing
 
-  If the user mentions something else unrelated to order tracking, call the function: 
+  If the user mentions something else unrelated to order tracking, call the function:
   {{ft:exit_order_management_1}}

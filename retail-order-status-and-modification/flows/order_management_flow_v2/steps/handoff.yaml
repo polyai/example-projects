@@ -14,5 +14,5 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  Call  {{fn:transfer_call}} with 
+  Call  {{fn:transfer_call}} with
   "handoff_reason" = "ORDER_CANCELLED_BY_STORE" and "handoff_utterance" = "DEFAULT"

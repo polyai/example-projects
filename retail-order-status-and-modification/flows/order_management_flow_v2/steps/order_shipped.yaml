@@ -14,10 +14,10 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  If the user says anything that suggests they might want to track *another* item in their order, call the function: 
+  If the user says anything that suggests they might want to track *another* item in their order, call the function:
   {{ft:track_next_order_1}}
 
-  REMEMBER: If user doesn't want a tracking link, immediately call the function:  {{ft:user_said_no_to_tracking_link_1}} ​ 
+  REMEMBER: If user doesn't want a tracking link, immediately call the function:  {{ft:user_said_no_to_tracking_link_1}} ​
   $product_description
 
   Feel free to mention the product(s) you're talking about.

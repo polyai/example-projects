@@ -17,5 +17,5 @@ prompt: |-
   The caller ordered multiple quantities of $item_description , each with a different status:
   $item_entries_description
 
-  Ask the caller which item status they want to know more about, then call 
+  Ask the caller which item status they want to know more about, then call
   {{ft:read_out_item_status_1}} .

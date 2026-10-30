@@ -4,8 +4,7 @@ actions: |-
   Provide the user with the information written in content.
 
   If the user requests a transfer or indicates it's been longer than 4 days, call the {{fn:pre_handoff}} function with handoff_reason="Delivery_Issues-package_investigation" and utterance="Okay - let me put you through to someone who can help. One sec."
-content: Please allow up to 4 business days to receive an update via email regarding your claim. Is 
-  there anything else I can help you with?
+content: Please allow up to 4 business days to receive an update via email regarding your claim. Is there anything else I can help you with?
 example_queries:
 - Status update on a package investigation
 - I need an update on an open invesigation

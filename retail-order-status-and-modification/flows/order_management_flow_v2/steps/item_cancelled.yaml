@@ -14,12 +14,12 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  If the user says anything that suggests they might want to track *another* item in their order, call the function: 
+  If the user says anything that suggests they might want to track *another* item in their order, call the function:
   {{ft:track_next_order_1}}
 
   If the user asks about anything else, call the function:  {{ft:help_with_next_issue}}
 
-  If the user says anything suggesting they're done and don't need any more help, call the function:  {{fn:end_call}} 
+  If the user says anything suggesting they're done and don't need any more help, call the function:  {{fn:end_call}}
 
   $product_description
 
@@ -32,7 +32,7 @@ prompt: |-
   User: Yeah, track the rest of my order
   Agent action: <call track_next_order function>
 
-  User: What about the Nike Air Max I ordered 
+  User: What about the Nike Air Max I ordered
   Agent action: <call track_next_order function>
 
   User: no

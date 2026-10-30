@@ -14,13 +14,13 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  If the user says anything that suggests they might want to track *another* item in their order, call the function: 
+  If the user says anything that suggests they might want to track *another* item in their order, call the function:
   {{ft:track_next_order_1}}
 
-  If the user mentions something else unrelated to order tracking, call the function: 
-  {{ft:exit_order_management_1}} 
+  If the user mentions something else unrelated to order tracking, call the function:
+  {{ft:exit_order_management_1}}
 
-  If the user says anything suggesting they're done and don't need any more help, call the function:  {{fn:end_call}} 
+  If the user says anything suggesting they're done and don't need any more help, call the function:  {{fn:end_call}}
 
   $product_description
 
@@ -28,9 +28,9 @@ prompt: |-
 
   Tell the user you can see an order that's currently being processed.
 
-  If the item(s) will be *shipped*, tell the user that we will send an email with a tracking link as soon as it's shipped. 
+  If the item(s) will be *shipped*, tell the user that we will send an email with a tracking link as soon as it's shipped.
 
-  If the item(s) will be *picked up*, tell the user that we will send an email as soon as it's ready to pick up in store. 
+  If the item(s) will be *picked up*, tell the user that we will send an email as soon as it's ready to pick up in store.
 
   *EXAMPLE*
   Agent:  "I can see an order here for some Timberland Euro Hiker shoes in a size 9 that's currently being processed. (We'll send an email with a tracking link as soon as it's shipped! / We'll send an email letting you know as soon as it's ready to pick up in store!). Is there anything else I can help with?"
@@ -39,15 +39,15 @@ prompt: |-
   User: Yeah, track the rest of my order
   Agent action: <call track_next_order function>
 
-  User: What about the Nike Air Max I ordered 
+  User: What about the Nike Air Max I ordered
   Agent action: <call track_next_order function>
 
   User: No, that's all
-  Agent action: <call end_call function> 
+  Agent action: <call end_call function>
 
   *EXAMPLE*
   Agent:  "I can see an order here for some Timberland Euro Hiker shoes in a size 9 that's currently being processed. (We'll send an email with a tracking link as soon as it's shipped! / We'll send an email letting you know as soon as it's ready to pick up in store!). Can I help you track the Nike Air Max now?"
   User: yes
-  Agent Action: <call track_next_order function> 
+  Agent Action: <call track_next_order function>
 
   If the user says anything suggesting they're done and don't need any more help, call the function:  {{fn:end_call}}

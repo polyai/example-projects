@@ -1,8 +1,7 @@
 name: Instore-order_pickup_how_long_hold
 enabled: true
 actions: ''
-content: We'll hold your order for up to 10 days. We'll send you a reminder after two days, and 
-  another if you haven't picked up after six days.
+content: We'll hold your order for up to 10 days. We'll send you a reminder after two days, and another if you haven't picked up after six days.
 example_queries:
 - How long will you hold my order for instore?
 - combien de temps vous gardez ma commande en magasin?
