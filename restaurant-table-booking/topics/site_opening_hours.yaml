@@ -1,7 +1,7 @@
 name: site_opening_hours
 enabled: true
 actions: |-
-  To get opening hours for specific day, call 
+  To get opening hours for specific day, call
   {{fn:get_opening_hours}}
   with the relevant date or day of the week as an argument to get the opening hours for a specific day (if date or weekday hasn't been provided, use "-" as an argument).
 

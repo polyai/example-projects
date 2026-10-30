@@ -28,7 +28,7 @@ prompt: |-
 
   If the user does not give a phone number, ask them to say the phone number one more time.
 
-  If and only if the user fails to provide a phone number after you have attempted to collect it two times, call {{fn:try_transfer_call}} with 
+  If and only if the user fails to provide a phone number after you have attempted to collect it two times, call {{fn:try_transfer_call}} with
   "handoff_reason" = "CANNOT_COLLECT_PHONE_NUMBER" and
   "handoff_utterance" = "Ok, let me transfer you to someone that can help. One second"
 

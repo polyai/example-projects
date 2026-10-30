@@ -5,6 +5,6 @@ prompt: |-
 
   If the user accepts, call {{ft:standard_booking_selected}} with the new time.
 
-  If the user gives you an alternative date, time or party size to check, call {{ft:start_checking_availability}} with the new details. 
+  If the user gives you an alternative date, time or party size to check, call {{ft:start_checking_availability}} with the new details.
 
   If they don't want to select an alternative time, call {{ft:exit_make_booking_flow}}

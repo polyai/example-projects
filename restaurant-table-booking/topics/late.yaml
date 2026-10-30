@@ -6,8 +6,7 @@ actions: |-
   "handoff_utterance" = "In that case I'll put you through to the restaurant. One moment"
 
   If they are NOT going to be more than 15 minutes late say "Is there anything else I can help you with?"
-content: We can hold your reservation for up to 15 minutes, but after that we may have to give the 
-  table to another party. Do you think you'll be more than 15 minutes late?
+content: We can hold your reservation for up to 15 minutes, but after that we may have to give the table to another party. Do you think you'll be more than 15 minutes late?
 example_queries:
 - If we show up 10 minutes late, what happens?
 - If we are 10 minutes late, what happens?

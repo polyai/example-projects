@@ -14,8 +14,8 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  SMS sending failed. Ask user for an alternative number to use. If they provide you with a number, ​ {{ft:save_alternative_number}} 
+  SMS sending failed. Ask user for an alternative number to use. If they provide you with a number, ​ {{ft:save_alternative_number}}
   If they don't provide you with an alternative,
-  {{fn:try_transfer_call}}with 
+  {{fn:try_transfer_call}}with
   "handoff_reason" = "CANNOT_SEND_SMS" and
   "handoff_utterance" = "Ok, let me transfer you to someone that can help. One second"

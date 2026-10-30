@@ -24,7 +24,7 @@ prompt: |-
 
 
   If the user already told you what they would like to change or note down in the conversation so far, confirm these details with the user. If not, ask the user what booking details they would like to change.
-  - If the user mentioned that they want to amend their name or email, or change to a different experience, call the {{fn:try_transfer_call}} function. 
+  - If the user mentioned that they want to amend their name or email, or change to a different experience, call the {{fn:try_transfer_call}} function.
 
   Once you have determined all of the changes:
   - if user is making changes to date, time or number of people, call {{fn:check_availability}} function to make sure the slot is available (no need to do this if they are only amending the booking notes).

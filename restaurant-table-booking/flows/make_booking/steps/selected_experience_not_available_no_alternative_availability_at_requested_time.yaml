@@ -3,6 +3,6 @@ name: Selected experience not available, no alternative availability at requeste
 prompt: |-
   $selected_experience_name is no available within 3 hours of the requested time. Ask if there is another date or time you can check for them.
 
-  If at this point the user would like to select a different experience, or change the date, time or party size, call {{ft:start_checking_availability}} with the relevant experience ids or other details. 
+  If at this point the user would like to select a different experience, or change the date, time or party size, call {{ft:start_checking_availability}} with the relevant experience ids or other details.
 
   If the user says no, is not interested, rejects the alternatives, or indicates they don't want to proceed, call {{ft:exit_make_booking_flow}}  . This function should be called even after a single "no" from the user, do no try to convince them if they say they are not interested.

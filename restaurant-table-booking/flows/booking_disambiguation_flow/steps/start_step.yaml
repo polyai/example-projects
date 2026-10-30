@@ -15,5 +15,5 @@ asr_biasing:
   custom_keywords: []
 prompt: |-
   - If the user says they would like to make a new booking call the {{fn:start_make_booking}} function immediately.
-  - If the user says they would like to look up, check, amend, change or cancel an existing booking call the {{fn:start_confirm_cancel_modify_flow}} function immediately. 
+  - If the user says they would like to look up, check, amend, change or cancel an existing booking call the {{fn:start_confirm_cancel_modify_flow}} function immediately.
   - Otherwise, ask "Would you like to make a new booking or amend an existing one?"

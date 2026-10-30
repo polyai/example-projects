@@ -16,20 +16,14 @@ attributes:
     Poly Bistro Waterfront: We are located at 789 Harbor Drive, by the waterfront.
 - name: accessibility_info
   values:
-    Poly Bistro Downtown: We strive to make our restaurant welcoming. If you have any particular 
-      accessibility needs, please let us know.
-    Poly Bistro Uptown: We strive to make our restaurant welcoming. If you have any particular 
-      accessibility needs, please let us know.
-    Poly Bistro Waterfront: We strive to make our restaurant welcoming. If you have any particular 
-      accessibility needs, please let us know.
+    Poly Bistro Downtown: We strive to make our restaurant welcoming. If you have any particular accessibility needs, please let us know.
+    Poly Bistro Uptown: We strive to make our restaurant welcoming. If you have any particular accessibility needs, please let us know.
+    Poly Bistro Waterfront: We strive to make our restaurant welcoming. If you have any particular accessibility needs, please let us know.
 - name: parking_info
   values:
-    Poly Bistro Downtown: There is street parking available nearby, and a public parking garage 
-      within a short walk.
-    Poly Bistro Uptown: We have a small parking lot behind the building, and street parking is also 
-      available.
-    Poly Bistro Waterfront: Parking is available in the marina lot, a 2-minute walk from the 
-      restaurant.
+    Poly Bistro Downtown: There is street parking available nearby, and a public parking garage within a short walk.
+    Poly Bistro Uptown: We have a small parking lot behind the building, and street parking is also available.
+    Poly Bistro Waterfront: Parking is available in the marina lot, a 2-minute walk from the restaurant.
 - name: opening_hours
   values:
     Poly Bistro Downtown: |-
@@ -93,20 +87,14 @@ attributes:
     Poly Bistro Waterfront: '3'
 - name: allergy_info
   values:
-    Poly Bistro Downtown: We take allergies seriously. Please let your server know about any 
-      allergies when you arrive.
-    Poly Bistro Uptown: We take allergies seriously. Please let your server know about any allergies
-      when you arrive.
-    Poly Bistro Waterfront: We take allergies seriously. Please let your server know about any 
-      allergies when you arrive.
+    Poly Bistro Downtown: We take allergies seriously. Please let your server know about any allergies when you arrive.
+    Poly Bistro Uptown: We take allergies seriously. Please let your server know about any allergies when you arrive.
+    Poly Bistro Waterfront: We take allergies seriously. Please let your server know about any allergies when you arrive.
 - name: celebrations_info
   values:
-    Poly Bistro Downtown: We'd love to help you celebrate! Let us know when booking if it's a 
-      special occasion.
-    Poly Bistro Uptown: We'd love to help you celebrate! Let us know when booking if it's a special 
-      occasion.
-    Poly Bistro Waterfront: We'd love to help you celebrate! We have a private deck area perfect for
-      events.
+    Poly Bistro Downtown: We'd love to help you celebrate! Let us know when booking if it's a special occasion.
+    Poly Bistro Uptown: We'd love to help you celebrate! Let us know when booking if it's a special occasion.
+    Poly Bistro Waterfront: We'd love to help you celebrate! We have a private deck area perfect for events.
 - name: children_info
   values:
     Poly Bistro Downtown: Children are welcome! We have a kids' menu and high chairs available.
@@ -114,20 +102,14 @@ attributes:
     Poly Bistro Waterfront: Children are welcome! We have a kids' menu and high chairs available.
 - name: complaint_info
   values:
-    Poly Bistro Downtown: We're sorry to hear that. Please email us at 
-      downtown@example-restaurant.com with the details.
-    Poly Bistro Uptown: We're sorry to hear that. Please email us at uptown@example-restaurant.com 
-      with the details.
-    Poly Bistro Waterfront: We're sorry to hear that. Please email us at 
-      waterfront@example-restaurant.com with the details.
+    Poly Bistro Downtown: We're sorry to hear that. Please email us at downtown@example-restaurant.com with the details.
+    Poly Bistro Uptown: We're sorry to hear that. Please email us at uptown@example-restaurant.com with the details.
+    Poly Bistro Waterfront: We're sorry to hear that. Please email us at waterfront@example-restaurant.com with the details.
 - name: dietary_requirements_info
   values:
-    Poly Bistro Downtown: We cater to a range of dietary requirements including vegetarian, vegan, 
-      and gluten-free options.
-    Poly Bistro Uptown: We cater to a range of dietary requirements including vegetarian, vegan, and
-      gluten-free options.
-    Poly Bistro Waterfront: We specialize in seafood but also offer vegetarian, vegan, and 
-      gluten-free options.
+    Poly Bistro Downtown: We cater to a range of dietary requirements including vegetarian, vegan, and gluten-free options.
+    Poly Bistro Uptown: We cater to a range of dietary requirements including vegetarian, vegan, and gluten-free options.
+    Poly Bistro Waterfront: We specialize in seafood but also offer vegetarian, vegan, and gluten-free options.
 - name: dress_code_info
   values:
     Poly Bistro Downtown: We have a smart casual dress code.
@@ -140,12 +122,9 @@ attributes:
     Poly Bistro Waterfront: 'You can view our full menu on our website: www.example-restaurant.com/waterfront/menu'
 - name: pets_info
   values:
-    Poly Bistro Downtown: Unfortunately we are unable to accommodate pets, with the exception of 
-      service animals.
-    Poly Bistro Uptown: Unfortunately we are unable to accommodate pets, with the exception of 
-      service animals.
-    Poly Bistro Waterfront: Dogs are welcome on our outdoor patio. Service animals are welcome 
-      everywhere.
+    Poly Bistro Downtown: Unfortunately we are unable to accommodate pets, with the exception of service animals.
+    Poly Bistro Uptown: Unfortunately we are unable to accommodate pets, with the exception of service animals.
+    Poly Bistro Waterfront: Dogs are welcome on our outdoor patio. Service animals are welcome everywhere.
 - name: prices_info
   values:
     Poly Bistro Downtown: 'Our prices vary by dish. View the full menu with prices: www.example-restaurant.com/downtown/menu'
@@ -153,12 +132,9 @@ attributes:
     Poly Bistro Waterfront: 'Our prices vary by dish. View the full menu with prices: www.example-restaurant.com/waterfront/menu'
 - name: private_dining_info
   values:
-    Poly Bistro Downtown: We can accommodate private dining for groups. Please email 
-      downtown@example-restaurant.com.
-    Poly Bistro Uptown: We have a private dining room seating up to 20. Email 
-      uptown@example-restaurant.com.
-    Poly Bistro Waterfront: We have a private deck area for events. Email 
-      waterfront@example-restaurant.com.
+    Poly Bistro Downtown: We can accommodate private dining for groups. Please email downtown@example-restaurant.com.
+    Poly Bistro Uptown: We have a private dining room seating up to 20. Email uptown@example-restaurant.com.
+    Poly Bistro Waterfront: We have a private deck area for events. Email waterfront@example-restaurant.com.
 - name: take_out_info
   values:
     Poly Bistro Downtown: 'You can order takeout through our website: www.example-restaurant.com/downtown/takeout'
@@ -166,12 +142,9 @@ attributes:
     Poly Bistro Waterfront: 'You can order takeout through our website: www.example-restaurant.com/waterfront/takeout'
 - name: walk_in_info
   values:
-    Poly Bistro Downtown: Walk-ins are welcome subject to availability. For guaranteed seating, we 
-      recommend making a reservation.
-    Poly Bistro Uptown: Walk-ins are welcome subject to availability. For guaranteed seating, we 
-      recommend making a reservation.
-    Poly Bistro Waterfront: Walk-ins are welcome subject to availability. For guaranteed seating, we
-      recommend making a reservation.
+    Poly Bistro Downtown: Walk-ins are welcome subject to availability. For guaranteed seating, we recommend making a reservation.
+    Poly Bistro Uptown: Walk-ins are welcome subject to availability. For guaranteed seating, we recommend making a reservation.
+    Poly Bistro Waterfront: Walk-ins are welcome subject to availability. For guaranteed seating, we recommend making a reservation.
 - name: take_out_sms
   values:
     Poly Bistro Downtown: 'Thanks for calling Poly Bistro Downtown! Order takeout: www.example-restaurant.com/downtown/takeout'

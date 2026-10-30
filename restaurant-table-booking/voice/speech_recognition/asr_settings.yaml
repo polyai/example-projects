@@ -1,1 +1,5 @@
-{}
+speech_end_delay_ms: 800
+barge_in:
+  enabled: true
+  allow_on_first_turn: false
+  max_per_call: 5

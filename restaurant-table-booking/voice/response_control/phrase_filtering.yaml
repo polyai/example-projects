@@ -1,11 +1,9 @@
 phrase_filtering:
 - name: transfer_call
   regular_expressions:
-  - ([Ll]et me|I'll|I will|while I|need to|I can) (put you through|transfer you|connect you|hand you
-    over)
+  - ([Ll]et me|I'll|I will|while I|need to|I can) (put you through|transfer you|connect you|hand you over)
   - '[Pp]lease hold\.'
-  - (I can't|I cannot|unable to|not able to|capacity to|ability to) (transfer|connect|put you 
-    through)
+  - (I can't|I cannot|unable to|not able to|capacity to|ability to) (transfer|connect|put you through)
   say_phrase: false
   function: transfer_call_no_arg
 - name: tool call hallucinations

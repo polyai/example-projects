@@ -1,7 +1,7 @@
 step_type: advanced_step
 name: Selected experience available at requested time
 prompt: |-
-  Inform user that there is a table available for the requested time for $selected_experience_name, and ask if they would like to go ahead with booking it. 
+  Inform user that there is a table available for the requested time for $selected_experience_name, and ask if they would like to go ahead with booking it.
 
   If they said yes, call  {{ft:booking_slot_selected}}.
 

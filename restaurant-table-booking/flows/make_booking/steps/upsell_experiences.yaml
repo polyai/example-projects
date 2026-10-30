@@ -5,10 +5,10 @@ prompt: |-
 
   Give user an overview of available experiences using the information bellow.
 
-  $available_experiences_formatted 
+  $available_experiences_formatted
 
   If the user wants to proceed with the booking with one of the available experiences, call {{ft:booking_slot_selected}}, making sure you include the relevant experience_id
 
-  $unavailable_experiences_formatted 
+  $unavailable_experiences_formatted
 
   If the user requests or mentions an experience which is not available at the requested time, or asks to change the date, time or party size, immediately call  {{ft:experience_not_available_check}}. Do not try to convince them to book the available experience, just check about the experience they requested first.

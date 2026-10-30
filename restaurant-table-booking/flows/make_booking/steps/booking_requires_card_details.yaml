@@ -7,5 +7,5 @@ prompt: |-
 
   Otherwise, immediately call {{fn:try_transfer_call}}
    with
-  "handoff_reason" = "card_details_rejected", 
+  "handoff_reason" = "card_details_rejected",
   "handoff_utterance" = "Let me put you through to the restaurant who may be able to help you with that. One moment please", and "handoff_to" = "default"

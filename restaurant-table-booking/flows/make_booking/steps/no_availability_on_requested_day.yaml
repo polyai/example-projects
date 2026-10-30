@@ -3,6 +3,6 @@ name: No availability on requested day
 prompt: |-
   Inform user that the restaurant doesn't have any availability on the requested date.
 
-  If the user gives you an alternative date or party size to check, call {{ft:start_checking_availability}} with the new details. 
+  If the user gives you an alternative date or party size to check, call {{ft:start_checking_availability}} with the new details.
 
   If they don't want to select an alternative time, call {{ft:exit_make_booking_flow}} . This function should be called even after a single "no" from the user, do no try to convince them if they say they are not interested.

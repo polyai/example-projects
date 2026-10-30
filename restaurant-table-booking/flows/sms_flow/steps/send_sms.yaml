@@ -14,7 +14,7 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  If SMS sending was successful, immediately call 
+  If SMS sending was successful, immediately call
   {{ft:sms_sent_successfully}}
 
   If SMS sending failed, immediately call  {{ft:sms_sending_failed}}

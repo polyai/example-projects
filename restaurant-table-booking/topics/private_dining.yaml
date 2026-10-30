@@ -1,8 +1,8 @@
 name: private_dining
 enabled: true
 actions: |-
-  Answer question using the relevant information, then offer user sms with the restaurant's email address. 
-  If they accept, call 
+  Answer question using the relevant information, then offer user sms with the restaurant's email address.
+  If they accept, call
   {{fn:start_sms_flow}} with
   template_id = 'email'.
 content: '{{attr:private_dining_info}}'

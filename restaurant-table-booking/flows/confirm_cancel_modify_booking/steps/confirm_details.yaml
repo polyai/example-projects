@@ -25,9 +25,9 @@ prompt: |-
 
   Read out the booking details to user ONLY if you haven't read them already in the previous turn.
 
-  When reading out booking details, tell them as if you were on the phone, e.g. "I found a booking here on the 27th November for 2 people", not giving them in a structured way. 
+  When reading out booking details, tell them as if you were on the phone, e.g. "I found a booking here on the 27th November for 2 people", not giving them in a structured way.
 
   If user wants to cancel, go to
   {{ft:go_to_confirm_cancellation}}
-  If user wants to change any details, go to {{ft:go_to_determine_modifications}} 
+  If user wants to change any details, go to {{ft:go_to_determine_modifications}}
   If they didn't have any of those intentions, ask user if there is anything else you can do for them.

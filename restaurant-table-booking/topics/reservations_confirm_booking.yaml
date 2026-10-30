@@ -1,7 +1,7 @@
 name: reservations-confirm_booking
 enabled: true
 actions: |-
-  Immediately, without saying anything, call the 
+  Immediately, without saying anything, call the
   {{fn:start_confirm_cancel_modify_flow}} function with 'booking_intent'='confirm'.
 content: The user wants to confirm/check a booking.
 example_queries:
