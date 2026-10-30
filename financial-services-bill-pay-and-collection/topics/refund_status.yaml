@@ -15,8 +15,6 @@ example_queries:
 - refund status
 - I'm waiting for a refund
 - has my refund been processed
-- I'm expecting a refund from a retailer but it hasn't appeared in my account yet and I want to 
-  check the status
+- I'm expecting a refund from a retailer but it hasn't appeared in my account yet and I want to check the status
 - Can you help me track a refund that was supposed to be processed to my account several days ago
-- I need to find out when a refund will show up in my account as the merchant said they processed it
-  last week
+- I need to find out when a refund will show up in my account as the merchant said they processed it last week

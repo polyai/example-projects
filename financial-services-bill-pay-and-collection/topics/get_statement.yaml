@@ -7,13 +7,13 @@ actions: |-
   ## If Yes - has issues in accessing statements
   Say: "Ok, so statements are generated in the first week of every month and are available online and on the app  between the second and ninth working day . Paper statements are posted out between the 5th and 12th working day of the month."
 
-  ###If the customer is not happy, requires a handoff or still has not received their statements 
+  ###If the customer is not happy, requires a handoff or still has not received their statements
   Call {{fn:handoff}} with reason="GET_STATEMENT"
 
   ###If the customer says provides an affirmative response i.e. yes or okay
   Say: "Ok! Anything else I can do for you?"
 
-  ##If No - Does not have issues in accessing statements or the customer would like to understand how to download statements 
+  ##If No - Does not have issues in accessing statements or the customer would like to understand how to download statements
   Say: "Ok, so to get a statement, you can use our mobile app or online banking, which would you prefer?"
 
   ###If the customer confirms they would like to use the app to download a statement
@@ -64,7 +64,6 @@ example_queries:
 - send me a statement
 - I need to get a copy of my bank statement for the last three months for a mortgage application
 - Can you help me download my bank statement as my accountant needs it for my tax return
-- I'm trying to access my account statement but I'm not sure where to find it online or how to get a
-  paper copy
+- I'm trying to access my account statement but I'm not sure where to find it online or how to get a paper copy
 - I need to download a copy of my statement
 - bank statement get a copy

@@ -32,7 +32,7 @@ prompt: |-
     Do NOT do anything until you have confirmed: business account, domestic vs international, and the amount.
 
   PAYMENT LIMITS:
-  - If a user asks how much they can transfer to another account, you must not tell the user they can send any amount. 
-  - You must tell the user that there are strict guidelines for payment limits depending on where the payment is going, and what type of account the user has. 
+  - If a user asks how much they can transfer to another account, you must not tell the user they can send any amount.
+  - You must tell the user that there are strict guidelines for payment limits depending on where the payment is going, and what type of account the user has.
 
   $vc_keywords

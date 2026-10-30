@@ -9,9 +9,9 @@ keyphrases:
   level: default
 - keyphrase: account number
   level: default
-- keyphrase: yes
+- keyphrase: 'yes'
   level: default
-- keyphrase: no
+- keyphrase: 'no'
   level: default
 - keyphrase: savings
   level: default

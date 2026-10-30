@@ -78,8 +78,7 @@ sms_templates:
     pre_release: ''
     live: '+12015550100'
 - name: internet_banking_registration
-  text: To register for online banking, please visit our website. Click "Log In" in the top right 
-    corner, then "Register for Online Banking".
+  text: To register for online banking, please visit our website. Click "Log In" in the top right corner, then "Register for Online Banking".
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
@@ -139,17 +138,13 @@ sms_templates:
     pre_release: ''
     live: '+12015550100'
 - name: unblock_card
-  text: To unblock your card, just log into our app and tap 'Manage Card' under the relevant 
-    account. From there, you'll have the option to unblock your card.
+  text: To unblock your card, just log into our app and tap 'Manage Card' under the relevant account. From there, you'll have the option to unblock your card.
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
     live: '+12015550100'
 - name: overdraft_general
-  text: For information on overdrafts, please visit www.example-bank.com, click "help" in the top 
-    right hand corner, and then type in "overdraft". From there, you'll find plenty of information 
-    to help you. We've also got an eligibility checker, and using it won't affect your credit 
-    rating.
+  text: For information on overdrafts, please visit www.example-bank.com, click "help" in the top right hand corner, and then type in "overdraft". From there, you'll find plenty of information to help you. We've also got an eligibility checker, and using it won't affect your credit rating.
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
@@ -207,9 +202,7 @@ sms_templates:
     pre_release: ''
     live: '+12015550100'
 - name: branch_locator
-  text: To get the details of your local Poly Bank branch, we have an online branch finder. On our 
-    home page, click on "Find a branch" in the top right corner and type in your zip code to see 
-    your closest branches.
+  text: To get the details of your local Poly Bank branch, we have an online branch finder. On our home page, click on "Find a branch" in the top right corner and type in your zip code to see your closest branches.
   env_phone_numbers:
     sandbox: ''
     pre_release: ''

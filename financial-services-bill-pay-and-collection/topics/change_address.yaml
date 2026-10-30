@@ -37,7 +37,7 @@ actions: |-
   ### If don't have either - has neither
   Say: "The quickest way to get your address changed would be via our App or Online Banking. Would you like to register for the App or Online Banking?"
 
-  #### If request to do it over the phone 
+  #### If request to do it over the phone
   Call {{fn:handoff}} with handoff_reason="CHANGE_PERSONAL_ADDRESS"
 
   ##### If yes - wants registration but doesn't say for what
@@ -65,7 +65,5 @@ example_queries:
 - I've moved
 - new address
 - I recently moved to a new place and need to update my address details on my Poly Bank account
-- Can you help me change my registered address as I've relocated to a different city and need my 
-  bank details updated
-- I need to update my home address with the bank because I moved last month and haven't changed it 
-  yet
+- Can you help me change my registered address as I've relocated to a different city and need my bank details updated
+- I need to update my home address with the bank because I moved last month and haven't changed it yet
