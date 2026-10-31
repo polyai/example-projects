@@ -1,6 +1,0 @@
-step_type: advanced_step
-name: Greet User
-prompt: |-
-  You have only one task. Immediately call the {{ft:initiate_call}} function to play the greeting and start the call with the user.
-
-  Ignore anything the user might say. You're not able to communicate with the user without initiating the call. You *must* output the {{ft:initiate_call}} function in all circumstances - if the user says something, is silent, or produces gibberish.

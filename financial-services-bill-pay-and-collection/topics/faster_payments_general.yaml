@@ -11,13 +11,13 @@ actions: |-
   Say: "Great! Anything else I can do for you?"
 
   ### If no - doesn't want to use app/online banking
-  Call {{fn:handoff}} with reason="FASTER_PAYMENTS_GENERAL" (requires IDNV)
+  Call {{fn:handoff}} with handoff_reason="FASTER_PAYMENTS_GENERAL" (requires IDNV)
 
   ## If no/don't know/not there - doesn't have app or online banking
   Say: "Ok, in which case, I'll need to put you through to our team to run through some security with you. You'll need your registered phone number or internet banking details for this too. Is that ok?"
 
   ### If yes - ok with security questions
-  Call {{fn:handoff}} with reason="FASTER_PAYMENTS_GENERAL"
+  Call {{fn:handoff}} with handoff_reason="FASTER_PAYMENTS_GENERAL"
 
   ### If no - not ok with security questions
   Say: "Ah, ok. Is there anything else I can help you with?"

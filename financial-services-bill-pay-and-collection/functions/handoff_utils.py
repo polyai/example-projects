@@ -4,13 +4,14 @@ Provides keyword-based and ANI-based checks for identifying potentially
 vulnerable callers who should be routed to a specialist team.
 """
 
-import re
-
 from _gen import *  # <AUTO GENERATED>
+import re
+from typing import Optional
+
 from functions.vc_keywords import VC_KEYWORDS
 
 
-def get_vc_keyword_match(text: str) -> str | None:
+def get_vc_keyword_match(text: str) -> Optional[str]:
     """Return the first VC keyword found in *text* (word-boundary match), or None."""
     if not text or not text.strip():
         return None
@@ -20,27 +21,20 @@ def get_vc_keyword_match(text: str) -> str | None:
 
 
 def is_vulnerable_customer(conv: Conversation) -> bool:
-    """Check whether the caller is flagged as a vulnerable customer.
+    """Whether the caller ID is flagged as a vulnerable customer.
 
-    In production, this would query an external database (e.g. DynamoDB) by ANI.
-    The template uses the mock API fallback so no real infrastructure is needed.
+    Only checked when real-time config flags.vc_handoff_enabled is true. The lookup
+    goes through functions/api_client.py (mocked outside live).
     """
-    caller_number = conv.caller_number
-    flags = conv.real_time_config.get("flags", {})
-    if not flags:
+    flags = (conv.real_time_config or {}).get("flags", {}) or {}
+    if not flags.get("vc_handoff_enabled") or not conv.caller_number:
         return False
-
-    vc_handoff_enabled = flags.get("vc_handoff_enabled", False)
-    if not vc_handoff_enabled or not caller_number:
-        return False
-
-    # Mock implementation -- replace with a real lookup in production
     try:
-        from functions.mock_api import MockVulnerableCustomerCheck
+        import functions.api_client as api_client
 
-        return MockVulnerableCustomerCheck.is_vulnerable(caller_number)
-    except (ImportError, AttributeError):
-        conv.log.warning("Mock VC check unavailable")
+        return api_client.is_vulnerable_caller(conv, str(conv.caller_number))
+    except Exception as e:
+        conv.log.warning("Vulnerable customer check failed", error=str(e))
         return False
 
 

@@ -31,31 +31,11 @@ dtmf_config:
   collect_while_agent_speaking: true
   is_pii: false
 prompt: |-
-  # User declines to give feedback
-  If the user declines to give feedback, call {{fn:goodbye_and_hangup}} to automatically play the goodbye message.
+  # Feedback survey
+  You've just asked if they'd share some feedback. Only offered when csat_enabled is on in real-time config.
 
-  # User agrees to give feedback
-  Say: "Perfect, thank you! First, how would you rate the level of service you received today on a scale of 1 to 5? 1 would be 'Highly Dissatisfied' and 5 would be 'Extremely Satisfied'."
-
-  Capture a rating from 1–5, tolerant to ASR mistranscriptions.
-
-  If caller asks for clarification about the scale, or shows some confusion about the rating scale:
-  Say: "1 would be 'Highly Dissatisfied' and 5 would be 'Extremely Satisfied'."
-  ------
-  NORMALIZATION RULES (PRIORITY ORDER)
-  1. If user says a word that maps to a number, capture the mapped rating :
-     - "one", "won" → 1
-     - "two", "to", "too" → 2
-     - "three", "tree", "free" → 3
-     - "four", "for", "fore" → 4
-     - "five", "fife" → 5
-  2. If user response contains a phrase with a single clear number concept
-     (e.g. "I'd say four", "probably a for", "give it a five", "For".) → extract and use it.
-  -----
-
-  ## User gives feedback from 1 to 5
-  You MUST then ask the verbatim question. Say exactly: "Ok, and lastly how would you describe your experience delivered by our voice assistant today?"
-  Do NOT call {{ft:save_feedback}} yet — wait for the user to respond with their verbatim feedback first.
-
-  ## User provides free form feedback (after the verbatim question)
-  Now call {{ft:save_feedback}} with both the score AND the user's verbatim feedback.
+  1. If they'd rather not, call {{fn:goodbye_and_hangup}}.
+  2. If they agree, ask: "On a scale of 1 to 5, where 1 is highly dissatisfied and 5 is extremely satisfied, how would you rate the service today?" Explain the scale again if they're unsure.
+  3. Take the rating as a number from 1 to 5, allowing for speech-to-text slips ("to" = 2, "for" = 4, "free" = 3).
+  4. Then ask: "And lastly, how would you describe your experience with our voice assistant today?"
+  5. Once they answer, call {{ft:save_feedback}} with the rating and their words, verbatim.

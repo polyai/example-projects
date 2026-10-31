@@ -47,6 +47,29 @@ def resolve_destination(reason) -> str:
     return DEFAULT_DESTINATION
 
 
+def transfer(conv: Conversation, reason: str, utterance: str = ""):
+    """Transfer from inside a tool, with the tool's own line (or the reason's default)."""
+    code = normalize_reason(reason) or "OUT_OF_SCOPE"
+    destination = resolve_destination(code)
+    line = (
+        utterance
+        or HANDOFF_UTTERANCES.get(code)
+        or HANDOFF_UTTERANCES.get(destination)
+        or HANDOFF_UTTERANCES["DEFAULT"]
+    )
+
+    conv.state.handoff_reason = code
+    conv.state.handoff_to = destination
+    conv.write_metric("HANDOFF_REASON", code)
+    conv.write_metric("HANDOFF_TO", destination)
+
+    if conv.env in ("sandbox", "draft"):
+        conv.log.info("Mock handoff", handoff_reason=code, handoff_to=destination)
+        return {"utterance": line, "hangup": True}
+
+    return conv.call_handoff(destination=destination, reason=code, utterance=line)
+
+
 @func_description(
     "Transfer the call to a live agent. Call this when the user needs help beyond what the virtual assistant can provide."
 )
@@ -55,23 +78,4 @@ def resolve_destination(reason) -> str:
     "The reason for the transfer, e.g. CARD_PAYMENT, SPEAK_TO, COMPLAINT, FRAUD, or a short description.",
 )
 def handoff(conv: Conversation, handoff_reason: str):
-    reason = normalize_reason(handoff_reason) or "OUT_OF_SCOPE"
-    destination = resolve_destination(reason)
-    utterance = (
-        HANDOFF_UTTERANCES.get(reason)
-        or HANDOFF_UTTERANCES.get(destination)
-        or HANDOFF_UTTERANCES["DEFAULT"]
-    )
-
-    conv.state.handoff_reason = reason
-    conv.state.handoff_to = destination
-    conv.write_metric("HANDOFF_REASON", reason)
-    conv.write_metric("HANDOFF_TO", destination)
-
-    if conv.env in ("sandbox", "draft"):
-        conv.log.info("Mock handoff", handoff_reason=reason, handoff_to=destination)
-        return {"utterance": utterance, "hangup": True}
-
-    return conv.call_handoff(
-        destination=destination, reason=reason, utterance=utterance
-    )
+    return transfer(conv, handoff_reason)

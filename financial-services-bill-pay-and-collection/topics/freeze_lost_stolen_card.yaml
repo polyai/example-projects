@@ -5,7 +5,7 @@ actions: |-
   Say: "Ok, lets get this sorted for you. Do you see any card transactions that you don't recognize?"
 
   ## If yes - sees or suspects fraudulent transactions
-  Call {{fn:handoff}} with reason="FREEZE_LOST_STOLEN_CARD"
+  Call {{fn:handoff}} with handoff_reason="FREEZE_LOST_STOLEN_CARD"
 
   ## If no - no fraudulent transactions (e.g. "no", "not yet", "I don't think so")
   Say: "Great, and are you set up on our app or online banking?"
@@ -20,7 +20,7 @@ actions: |-
   "Great, in that case can I send you a text with some steps to help with this?"
 
   ##### If yes - wants SMS for app
-  Call {{fn:start_sms_flow}} with sms_id = "freeze_lost_stolen_card_app"
+  Call {{fn:start_send_sms}} with sms_id = "freeze_lost_stolen_card_app"
 
   ##### If no - doesn't want SMS
   Say: "Ok! Anything else I can do for you?"
@@ -32,7 +32,7 @@ actions: |-
   "Great, in that case can I send you a text with some steps to help?"
 
   ##### If yes - wants SMS for online banking
-  Call {{fn:start_sms_flow}} with sms_id = "freeze_lost_stolen_card_online"
+  Call {{fn:start_send_sms}} with sms_id = "freeze_lost_stolen_card_online"
 
   ##### If no - doesn't want SMS
   Say: "Ok! Anything else I can do for you?"
@@ -44,7 +44,7 @@ actions: |-
   Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
 
   ### If refuses to register or requests further support
-  Call {{fn:handoff}} with reason="FREEZE_LOST_STOLEN_CARD_SPEAK_TO"
+  Call {{fn:handoff}} with handoff_reason="FREEZE_LOST_STOLEN_CARD_SPEAK_TO"
 content: ''
 example_queries:
 - my card is lost

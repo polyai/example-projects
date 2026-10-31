@@ -1,0 +1,9 @@
+name: our_address
+enabled: true
+actions: 'Answer from this: {{attr:address_info}} The full address is {{attr:address}}. For payments by mail, use the mailing address from this: {{attr:payment_methods_info}}'
+content: Where we are.
+example_queries:
+- where are you located
+- what is your address
+- where is your office
+- what is your street address

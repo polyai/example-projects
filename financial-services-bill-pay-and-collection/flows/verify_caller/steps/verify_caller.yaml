@@ -1,0 +1,31 @@
+step_type: advanced_step
+name: Verify Caller
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: true
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: true
+  inter_digit_timeout: 4
+  max_digits: 10
+  end_key: '#'
+  collect_while_agent_speaking: false
+  is_pii: true
+prompt: |-
+  # Confirm who the caller is
+  You need the phone number on their account, their date of birth and their account number before you can help with their account.
+
+  1. Whenever the caller gives any of these, call {{ft:verify_caller}} in that turn, before you say anything. Pass what they've said in the call so far; once the tool says the details don't match, pass only what they say after that. Pass digits as spoken, even if incomplete or repeated; never guess or pad them.
+  2. Say only what the latest tool response tells you: ask for what it names, one thing at a time, call again when it says to, and never read a number back unless it tells you to. The tool owns every check, retry and transfer: never offer a transfer yourself, and never say whether an account exists, whose it is, or which detail didn't match.
+  3. After you read a phone number back, wait for the caller's answer before calling {{ft:verify_caller}} again. A clear "yes" or the same number → phone_confirmed='true'; a corrected number → pass it. Anything else ("okay", "mm-hm", unclear, silence) → call {{ft:verify_caller}} with phone_number empty and phone_confirmed='false'; never re-ask in your own words.
+  4. If they start a number and stop, say "Go ahead" and wait. If they can't or won't give the details, call {{ft:verify_caller}} with caller_cannot_verify='true'.
+  5. If they ask a question, answer it briefly from the topics, then ask for what's still missing.

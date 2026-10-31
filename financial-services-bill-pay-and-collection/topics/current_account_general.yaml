@@ -14,7 +14,7 @@ actions: |-
   Say: "No problem. Anything else I can do for you?"
 
   ## If no - hasn't checked online
-  Say: "Ok, amazing, so if you go to www.example-bank.com you'll see a 'help' button in the top right of the screen. If you click on that and type in your question you should find some help for this."
+  Say: "Ok, amazing, so if you go to {{attr:website_url}} you'll see a 'help' button in the top right of the screen. If you click on that and type in your question you should find some help for this."
 
   ### If accepts - satisfied with answer
   Say: "You're welcome!"

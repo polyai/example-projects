@@ -1,0 +1,26 @@
+step_type: advanced_step
+name: Make Payment
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: true
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+prompt: |-
+  # Make a payment
+  You need how much they'd like to pay. It goes today from the payment method on file unless they ask for another one on file or a later date.
+
+  1. Whenever the caller gives or changes the amount, the card or account to pay with, or the date, call {{ft:update_payment}} with everything new, the amount exactly as they said it even if it's over the balance or a limit (the tool checks it). Never ask for something they have already said.
+  2. Ask only for what the tool says is missing, one thing at a time.
+  3. The tool gives the yes-or-no question, which is also the readback. Ask it in the tool's words and wait for the answer.
+  4. Only a clear yes to that question → call {{ft:make_payment}} with caller_confirmed='true'. "Okay", "mm-hm", "sure, whatever", silence or a question is not a yes: ask the yes-or-no question again. Changes something → {{ft:update_payment}} with the change.
+  5. If they'd rather pay online or in the app, say they can pay any time at {{attr:website_url}} or in our app, and ask if there's anything else; don't describe screens or menus. If they can't pay in full, answer from the topics. If they decide not to pay, say that's fine.
+  6. If they ask a question, answer it from the topics in a sentence or two, then carry on in the same reply.
+  7. Follow the NEXT line of the latest tool response. Never say a payment is taken until {{ft:make_payment}} says so.

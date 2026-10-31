@@ -1,3 +1,0 @@
-name: payments general
-description: User wants to make a payment
-start_step: collect payment details

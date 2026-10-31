@@ -4,7 +4,7 @@ actions: |-
   # Savings Account Flow
 
   ## Start
-  Ask: "Ok, do you already have an account with Poly Bank?"
+  Ask: "Ok, do you already have an account with {{attr:site_name}}?"
 
   ## Disambiguation
 
@@ -46,7 +46,7 @@ actions: |-
   - If no: ""Ok! Anything else I can do for you?"
 
   **[ONLINE_DIRECTION]** (new customers, non-ISA)
-  "Great! So please go to www.example-bank.com/savings. There you can see all our savings accounts and apply online."
+  "Great! So please go to {{attr:website_url}}/savings. There you can see all our savings accounts and apply online."
 
   **[STORE_FALLBACK]**
   "Ok, if you can't do this [through the app / online] you can open an account at a branch. We have an online branch locator to help you find your nearest one, would you like the details for this?"
@@ -60,7 +60,7 @@ actions: |-
 
   **[SAVINGS_ACCOUNT_INFO]**
   # If the user needs general information
-  Say: "You can find all the information about our savings accounts, including rates and features, on our website at www.example-bank.com/savings. Would you like me to repeat that for you?"
+  Say: "You can find all the information about our savings accounts, including rates and features, on our website at {{attr:website_url}}/savings. Would you like me to repeat that for you?"
 
   ## If yes - user wants repeat
   Say: "Of course, that's 'w w w dot example dash bank dot com forward slash savings'. Is there anything else I can help you with today?"
@@ -87,8 +87,8 @@ example_queries:
 - I want to open a savings account
 - open savings
 - new savings account
-- I'd like to open a savings account with Poly Bank and want to know what products are available
+- I'd like to open a savings account with you and want to know what products are available
 - Can you help me set up a new savings account so I can start putting money aside each month
-- I'm interested in opening a Poly Bank savings account and need information about interest rates and access
+- I'm interested in opening a savings account and need information about interest rates and access
 - renew ISA
 - Open an ISA

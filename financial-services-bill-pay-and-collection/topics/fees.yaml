@@ -1,0 +1,14 @@
+name: fees
+enabled: true
+actions: |-
+  Answer from this: {{attr:fees_info}}
+
+  If they want a fee reviewed or refunded, call {{fn:handoff}} with handoff_reason="FEE_QUERY".
+content: Late payment, returned payment and card fees.
+example_queries:
+- is there a late fee
+- what happens if I pay late
+- how much is the late fee
+- why was I charged a fee
+- returned payment fee
+- what fees do you charge

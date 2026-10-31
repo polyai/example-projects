@@ -8,7 +8,7 @@ actions: |-
   Say: "Ok, so statements are generated in the first week of every month and are available online and on the app  between the second and ninth working day . Paper statements are posted out between the 5th and 12th working day of the month."
 
   ###If the customer is not happy, requires a handoff or still has not received their statements
-  Call {{fn:handoff}} with reason="GET_STATEMENT"
+  Call {{fn:handoff}} with handoff_reason="GET_STATEMENT"
 
   ###If the customer says provides an affirmative response i.e. yes or okay
   Say: "Ok! Anything else I can do for you?"
@@ -20,13 +20,13 @@ actions: |-
   Say: "Ok! So after you've logged into the mobile app, select the relevant account, then click on the menu icon in the top right hand corner and tap 'Statements'. You should see all your account statements here. Please also ensure you’re using the latest version of the app."
 
   ####If the customer is having issues with the steps for mobile app
-  Call {{fn:handoff}} with reason="GET_STATEMENT"
+  Call {{fn:handoff}} with handoff_reason="GET_STATEMENT"
 
   ###If the customer confirms they would like to use the Online Banking to download a statement
   Say: "Ok! So after you've logged into online banking, select the account you want to download the statement for and then choose 'Documents' at the top. From there, select 'Account Statements' to view and download your monthly statements."
 
   ####If the customer is having issues with the steps for online banking
-  Call {{fn:handoff}} with reason="GET_STATEMENT"
+  Call {{fn:handoff}} with handoff_reason="GET_STATEMENT"
 
   Say: "Ok! So after you've logged into online banking, select the account you want to download the statement for and then choose 'Documents' at the top. From there, select 'Account Statements' to view and download your monthly statements."
 
@@ -52,7 +52,7 @@ actions: |-
   Say: "No worries. Shall I transfer you to our team to get you a statement?"
 
   #####If yes
-  Call {{fn:handoff}} with reason="GET_STATEMENT"
+  Call {{fn:handoff}} with handoff_reason="GET_STATEMENT"
 
   #####If no
   Say: "Ok! Anything else I can do for you?"

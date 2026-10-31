@@ -1,0 +1,14 @@
+name: payment_processing
+enabled: true
+actions: |-
+  Answer from this: {{attr:payment_processing_info}}
+
+  If a payment they made still hasn't shown up after that, call {{fn:handoff}} with handoff_reason="PAYMENT_NOT_POSTED".
+content: When payments post to the account and cut-off times.
+example_queries:
+- when will my payment post
+- how long does a payment take to go through
+- I paid but it is not showing
+- what is the cut off time for payments
+- will my payment arrive on time
+- how long does a mailed check take

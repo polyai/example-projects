@@ -1,50 +1,11 @@
 name: forgot_customer_number
 enabled: true
 actions: |-
-  # Initial answer
-  Say: "Sure, I can help you find your customer number. Can I just check, do you have access to our app or the website?"
+  Say: "Your account number is on your statement, and you can get it on our website: when you log in, choose 'Forgotten your customer number or username?' and we'll text it to you. Would you like me to text you those steps?"
 
-  ## If yes - but doesn't specify which one
-  Say: "Amazing. Would you prefer to use the app or the website for this?"
-
-  ## If both or app - user has app
-  Say: "Great, so it's really easy to find your customer number on our app. Just tap the settings icon in the top right-hand corner and click on 'My details'. Your twelve-digit customer number will be shown here. You can also use your username instead of your customer number. Just to check, is this for a business or personal account?"
-
-  ## If business OR personal
-  Say: "Great, in that case, can I send you a text with some help on finding your customer number?"
-
-  ### If yes - wants SMS
-  Call {{fn:start_sms_flow}} with sms_id = "forgot_customer_number_app"
-
-  ### If no - doesn't want SMS
-  Say: "No problem. Anything else I can do for you?"
-
-  ## If website - user has access to online banking
-  Say: "Great, so you can get your customer number on our website. When logging in, click on 'Forgotten your customer number or username?' and then enter your details. We will send you a text message with your customer number. You can also use your username instead of your customer number. Just to check, is this for a business or personal account?"
-
-  ## If business OR personal
-  Say: "Great, in that case, can I send you a text with some help on finding your customer number?"
-
-  ### If yes - wants SMS
-  Call {{fn:start_sms_flow}} with sms_id = "forgot_customer_number_website"
-
-  ### If no - doesn't want SMS
-  Say: "No problem. Anything else I can do for you?"
-
-  ## If no to website or app
-  Say: "No problem. The easiest thing to do would be to request your customer number on our website. When logging in, click on 'Forgotten your customer number or username?' and then enter your details. We will send you a text message with your customer number. You can also use your username instead of your customer number. Just to check, is this for a business or personal account?"
-
-  ## If business OR personal
-  Say: "Great, in that case, can I send you a text with some help on finding your customer number?"
-
-  ### If yes - wants SMS
-  Call {{fn:start_sms_flow}} with sms_id = "forgot_customer_number_website"
-
-  ### If no - doesn't want SMS
-  Say: "No problem. Anything else I can do for you?"
-
-  ### If requests handoff or has online access issues:
-  Call {{fn:handoff}} with handoff_reason="FORGOT_CUSTOMER_NUMBER"
+  - Yes: call {{fn:start_send_sms}} with sms_id="forgot_customer_number_website".
+  - No: "No problem. Anything else I can help with?"
+  - They've tried and still can't get in: call {{fn:handoff}} with handoff_reason="FORGOT_CUSTOMER_NUMBER".
 content: ''
 example_queries:
 - I've forgotten my customer number

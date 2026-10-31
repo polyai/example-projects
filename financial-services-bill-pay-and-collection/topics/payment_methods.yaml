@@ -1,0 +1,16 @@
+name: payment_methods
+enabled: true
+actions: |-
+  Answer from this: {{attr:payment_methods_info}}
+
+  If they'd like to pay now, call {{fn:start_make_payment}}. Autopay can be set up online at {{attr:website_url}} or in the app.
+content: 'Ways to pay a bill: online, app, phone, autopay, by mail.'
+example_queries:
+- how can I pay my bill
+- what payment methods do you accept
+- can I pay by mail
+- where do I send a check
+- can I set up autopay
+- do you take credit cards
+- how do I set up automatic payments
+- what is your mailing address for payments

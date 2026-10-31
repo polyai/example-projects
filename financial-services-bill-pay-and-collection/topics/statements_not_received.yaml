@@ -20,7 +20,7 @@ actions: |-
   Call {{fn:handoff}} with handoff_reason="GET_STATEMENT"
 
   ## If speak to someone - caller requests handoff
-  Call {{fn:handoff}}with reason="STATEMENTS_NOT_RECEIVED"
+  Call {{fn:handoff}}with handoff_reason="STATEMENTS_NOT_RECEIVED"
 content: ''
 example_queries:
 - I haven't received my statements

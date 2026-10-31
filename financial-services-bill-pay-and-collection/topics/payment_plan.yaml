@@ -1,0 +1,15 @@
+name: payment_plan
+enabled: true
+actions: |-
+  Answer from this: {{attr:payment_plan_info}}
+
+  If they'd like to set one up or talk it through, call {{fn:handoff}} with handoff_reason="PAYMENT_PLAN". If they can pay part of the balance now, they can do that too: call {{fn:start_make_payment}}.
+content: Payment arrangements and help for customers struggling to pay.
+example_queries:
+- I can't afford to pay my bill
+- can I set up a payment plan
+- can I pay in installments
+- I need more time to pay
+- payment arrangement
+- can I split my payment
+- I am struggling to pay

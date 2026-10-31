@@ -1,0 +1,3 @@
+name: make_payment
+description: Take a payment toward the caller's balance with a payment method on file, today or on a later date. The entry step checks strict ID&V; one Make Payment step takes the amount (and any change of card or date), reads the payment back once and takes it on a yes. Balance, phone limit, method and date rules are checked in the tools.
+start_step: payment_entry

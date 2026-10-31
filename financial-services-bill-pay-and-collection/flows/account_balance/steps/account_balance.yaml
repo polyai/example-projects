@@ -1,0 +1,22 @@
+step_type: advanced_step
+name: Account Balance
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+prompt: |-
+  # Balance
+  1. Tell the caller their balance and due date (and any scheduled payments) as the latest tool response says, in plain words.
+  2. If they want to make a payment, call {{fn:start_make_payment}}. If they ask about payment plans or fees, answer from the topics.
+  3. If they ask a question, answer it from the topics in a sentence or two.
+  4. Never make up transactions or amounts the tool hasn't given you.
+  5. When they have nothing else, call {{fn:goodbye_and_hangup}}.

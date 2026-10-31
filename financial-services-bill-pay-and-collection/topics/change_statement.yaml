@@ -17,7 +17,7 @@ actions: |-
   Say: "No worries, is there anything else I can help you with?"
 
   #### If user wants to speak to someone
-  Call {{fn:handoff}} with reason="CHANGE_STATEMENT"
+  Call {{fn:handoff}} with handoff_reason="CHANGE_STATEMENT"
 content: ''
 example_queries:
 - change statement preferences

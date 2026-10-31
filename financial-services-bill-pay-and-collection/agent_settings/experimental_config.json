@@ -2,20 +2,16 @@
   "asr": {
     "eager_final": true,
     "flow_overrides": {
-      "Greet User": {
+      "sms_flow": {
         "steps": {
-          "Greet User": {
-            "hard_timeout": 0.1,
-            "initial_timeout": 0.1
+          "Send Text": {
+            "eager_final": false
           }
         }
       },
-      "SMS flow": {
+      "verify_caller": {
         "steps": {
-          "Collect Alternative Phone Number": {
-            "eager_final": false
-          },
-          "Confirm This Phone Number": {
+          "Verify Caller": {
             "eager_final": false
           }
         }
@@ -39,31 +35,39 @@
   },
   "barge_in": {
     "flow_overrides": {
-      "SMS flow": {
+      "sms_flow": {
         "steps": {
-          "Collect Alternative Phone Number": {
+          "Send Text": {
             "is_enabled": false
-          },
-          "Confirm This Phone Number": {
+          }
+        }
+      },
+      "verify_caller": {
+        "steps": {
+          "Verify Caller": {
             "is_enabled": false
           }
         }
       }
     },
-    "is_enabled": false
+    "is_enabled": true
   },
   "conversation_control": {
     "max_silence_count": 30
   },
   "eot": {
     "flow_overrides": {
-      "SMS flow": {
+      "sms_flow": {
         "steps": {
-          "Collect Alternative Phone Number": {
+          "Send Text": {
             "threshold": 0.6,
             "timeout_ms": 2000
-          },
-          "Confirm This Phone Number": {
+          }
+        }
+      },
+      "verify_caller": {
+        "steps": {
+          "Verify Caller": {
             "threshold": 0.6,
             "timeout_ms": 2000
           }
@@ -114,9 +118,16 @@
   },
   "vad": {
     "flow_overrides": {
-      "SMS flow": {
+      "sms_flow": {
         "steps": {
-          "Collect Alternative Phone Number": {
+          "Send Text": {
+            "vad_end": 1600
+          }
+        }
+      },
+      "verify_caller": {
+        "steps": {
+          "Verify Caller": {
             "vad_end": 1600
           }
         }

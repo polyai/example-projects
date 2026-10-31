@@ -17,7 +17,7 @@ actions: |-
   Say: "Okay in that case, would you like me to send you a text to help change your address?"
 
   #### If yes - wants SMS
-  Call {{fn:start_sms_flow}} with sms_id = "change_personal_address_app"
+  Call {{fn:start_send_sms}} with sms_id = "change_personal_address_app"
 
   #### If no - doesn't want SMS
   Say: "No problem. Anything else I can do for you?"
@@ -29,7 +29,7 @@ actions: |-
   Say: "Okay in that case, would you like me to send you a text to help change your address?"
 
   #### If yes - wants SMS
-  Call {{fn:start_sms_flow}} with sms_id = "change_personal_address_online"
+  Call {{fn:start_send_sms}} with sms_id = "change_personal_address_online"
 
   #### If no - doesn't want SMS
   Say: "No problem. Anything else I can do for you?"
@@ -64,6 +64,6 @@ example_queries:
 - update my address
 - I've moved
 - new address
-- I recently moved to a new place and need to update my address details on my Poly Bank account
+- I recently moved to a new place and need to update my address details on my account
 - Can you help me change my registered address as I've relocated to a different city and need my bank details updated
 - I need to update my home address with the bank because I moved last month and haven't changed it yet

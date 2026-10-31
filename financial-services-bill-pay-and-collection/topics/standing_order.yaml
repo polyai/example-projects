@@ -2,7 +2,7 @@ name: standing_order
 enabled: true
 actions: |-
   # Refer to the conversation history, If the user has already mentioned that they are not set up on the app or with online banking, do not say anything. Instead:
-  Call {{fn:handoff}} with handoff reason="STANDING_ORDER"
+  Call {{fn:handoff}} with handoff handoff_reason="STANDING_ORDER"
 
   ## Initial question
   Say: "Ok, so, for standing orders, are you set up on the mobile app or Online Banking?"
@@ -23,7 +23,7 @@ actions: |-
   Say: "Perfect, so to create a standing order, log into online banking and click 'send money' for the relevant account. Then, in the details section, select 'standing order' to get one set up. Anything else I can do for you?"
 
   ##### If edit/change - wants to edit
-  Call {{fn:handoff}} with reason="CHANGE_STANDING_ORDER"
+  Call {{fn:handoff}} with handoff_reason="CHANGE_STANDING_ORDER"
 
   #### If both/either - can use either
   Say: "Great, so log in to the App, and tap 'Regular Payments'. Here you can see all your Direct Debits, standing orders and future payments from the menu at the top of page. You can tap a payment to cancel or change it, or tap the plus symbol to set up a new one. Anything else I can do for you?"

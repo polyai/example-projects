@@ -3,7 +3,7 @@ sms_templates:
   text: |-
     To troubleshoot login issues:
 
-    1. Go to the Poly Bank website and click 'Help' in the top right-hand corner
+    1. Go to our website ({{vrbl:website_url}}) and click 'Help' in the top right-hand corner
 
     2. Search and click on the page titled 'Troubleshooting'
 
@@ -55,7 +55,7 @@ sms_templates:
     live: '+12015550100'
 - name: forgot_customer_number_website
   text: |-
-    To get your customer number on the Poly Bank website:
+    To get your customer number on our website ({{vrbl:website_url}}):
 
      1. When logging in, click on 'Forgotten your customer number or username?'
 
@@ -70,7 +70,7 @@ sms_templates:
 
     1. Download it from the Apple App Store or Google Play Store.
 
-    2. Find it by searching 'Poly Bank'.
+    2. Find it by searching '{{vrbl:site_name}}'.
 
     3. Register with your customer number, your registered mobile number, and the security number and password you use for Online Banking.
   env_phone_numbers:
@@ -144,7 +144,7 @@ sms_templates:
     pre_release: ''
     live: '+12015550100'
 - name: overdraft_general
-  text: For information on overdrafts, please visit www.example-bank.com, click "help" in the top right hand corner, and then type in "overdraft". From there, you'll find plenty of information to help you. We've also got an eligibility checker, and using it won't affect your credit rating.
+  text: For information on overdrafts, please visit {{vrbl:website_url}}, click "help" in the top right hand corner, and then type in "overdraft". From there, you'll find plenty of information to help you. We've also got an eligibility checker, and using it won't affect your credit rating.
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
@@ -202,7 +202,13 @@ sms_templates:
     pre_release: ''
     live: '+12015550100'
 - name: branch_locator
-  text: To get the details of your local Poly Bank branch, we have an online branch finder. On our home page, click on "Find a branch" in the top right corner and type in your zip code to see your closest branches.
+  text: To get the details of your local {{vrbl:site_name}} branch, we have an online branch finder. On our home page, click on "Find a branch" in the top right corner and type in your zip code to see your closest branches.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+12015550100'
+- name: payment_confirmation
+  text: '{{vrbl:site_name}}: thanks for your {{vrbl:last_transaction_summary}}. Your confirmation number is {{vrbl:last_confirmation_number}}.'
   env_phone_numbers:
     sandbox: ''
     pre_release: ''

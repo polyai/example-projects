@@ -23,7 +23,7 @@ actions: |-
   Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
 
   #### If refuses to set up the app
-  Call {{fn:handoff}} with reason="NEW_BENEFICIARY_DOMESTIC"
+  Call {{fn:handoff}} with handoff_reason="NEW_BENEFICIARY_DOMESTIC"
 
   ## If international - user wants to set up a new beneficiary for an international payment
   Say: "So the easiest way to add a new beneficiary is through our app. Are you set up on the mobile app?"
@@ -38,12 +38,7 @@ actions: |-
   Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
 
   #### If has online banking and refuses to set up the app (regardless of whether has online banking or not)
-  Call {{fn:handoff}} with reason="NEW_BENEFICIARY_INTERNATIONAL"
-
-  EXAMPLE CONVERSATION:
-  AGENT: Hi, thanks for calling Poly Bank, you're speaking to the virtual assistant! How can I help?
-  USER:  Hi, I'd like to add a new international payee. Could you help me with that?
-  AGENT: "So the easiest way to add a new beneficiary is through our app. Are you set up on the mobile app?"
+  Call {{fn:handoff}} with handoff_reason="NEW_BENEFICIARY_INTERNATIONAL"
 content: ''
 example_queries:
 - add a new payee

@@ -1,8 +1,9 @@
 name: contact_centre_hours
 enabled: true
 actions: |-
-  # Initial answer
-  Say: "Our contact center is open 9am to 6pm Monday to Friday, except on bank holidays. Anything else I can do for you?"
+  Say: "{{vrbl:opening_hours_line}}" Don't add, change or guess any day or time.
+
+  Our phone number is {{attr:phone_number}}. Then ask if there's anything else.
 content: ''
 example_queries:
 - what are your opening hours

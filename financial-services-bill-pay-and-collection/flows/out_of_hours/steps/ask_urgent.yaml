@@ -1,0 +1,9 @@
+step_type: advanced_step
+name: Ask Urgent
+prompt: |-
+  # Out of hours
+  You've just told the caller we're closed and asked if their call is urgent or they need extra support.
+
+  1. Urgent (fraud, a scam, a payment that can't wait) or they need extra support → call {{ft:urgent_or_requires_extra_support}} first, then help them.
+  2. Not urgent → call {{fn:goodbye_and_hangup}}.
+  3. If they ask a question, answer it from the topics in a sentence or two, then ask again if it's urgent.

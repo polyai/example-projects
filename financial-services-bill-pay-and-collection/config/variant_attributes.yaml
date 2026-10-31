@@ -1,0 +1,53 @@
+variants:
+- name: Poly_Bank
+  is_default: true
+attributes:
+- name: site_name
+  values:
+    Poly_Bank: Poly Bank
+- name: address
+  values:
+    Poly_Bank: 100 Main Street, Newark, NJ 07102
+- name: address_info
+  values:
+    Poly_Bank: Our office is at 100 Main Street in Newark, New Jersey.
+- name: phone_number
+  values:
+    Poly_Bank: (555) 010-0200
+- name: opening_hours
+  values:
+    Poly_Bank: |-
+      Monday: 09:00-18:00
+      Tuesday: 09:00-18:00
+      Wednesday: 09:00-18:00
+      Thursday: 09:00-18:00
+      Friday: 09:00-18:00
+      Saturday: closed
+      Sunday: closed
+- name: timezone
+  values:
+    Poly_Bank: America/New_York
+- name: website_url
+  values:
+    Poly_Bank: www.polybank.com
+- name: payment_methods_info
+  values:
+    Poly_Bank: You can pay online, in the app, by phone with a card or bank account on file, or with autopay. Checks can be mailed to PO Box 1234, Newark, NJ 07101.
+- name: payment_processing_info
+  values:
+    Poly_Bank: Payments made before 8pm Eastern post the same day. Payments by mail can take up to seven days to arrive. Pending card transactions clear, or drop off, within seven days.
+- name: fees_info
+  values:
+    Poly_Bank: There's a $25 late fee if a payment arrives after the due date, and a $30 fee for a returned payment. Card purchases in a foreign currency cost 2.99%, and cash withdrawals abroad 2.99% plus $1.50.
+- name: payment_plan_info
+  values:
+    Poly_Bank: If you're struggling to pay, we can set up a payment arrangement. You can apply online or speak to our support team.
+- name: fraud_phone_number
+  values:
+    Poly_Bank: 1-800-555-0123
+- name: branch_info
+  values:
+    Poly_Bank: Find branches at www.polybank.com/branches. Most are open Monday to Friday 9:30am to 5pm, and some on Saturdays 9:30am to 4pm. All branches are closed on Sundays and public holidays.
+- name: card_limits_info
+  values:
+    Poly_Bank: You can take out up to $300 a day at cash machines and up to $1,000 a day in a branch. Contactless payments go up to $100.

@@ -14,7 +14,7 @@ actions: |-
   Say: "Great, so you can delete a payee using either of these. Would you rather do this on our App or using Online Banking?"
 
   ## If no/handoff/unhappy - doesn't want to use app/online banking
-  Call {{fn:handoff}} with reason="DELETE_PAYEE"
+  Call {{fn:handoff}} with handoff_reason="DELETE_PAYEE"
 
   ## If user says it's not working
 

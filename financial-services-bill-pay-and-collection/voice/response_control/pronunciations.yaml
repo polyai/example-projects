@@ -2,9 +2,6 @@ pronunciations:
 - regex: /
   replacement: slash
   case_sensitive: false
-- regex: www.example-bank.com
-  replacement: w w w dot example bank dot com
-  case_sensitive: false
 - regex: 2.99%
   replacement: two point ninety-nine percent
   case_sensitive: false

@@ -1,16 +1,12 @@
 name: payments_general
 enabled: true
 actions: |-
-  Determine what the user needs:
+  If they want to pay their bill or make a payment on their account ("make a payment", "pay my bill", "pay what I owe"), call {{fn:start_make_payment}}.
 
-  If they want to PAY A BILL or make a payment on their account (e.g. "make a payment", "pay my bill", "pay what I owe"):
-  Call the {{fn:start_payments_flow}} function.
+  If they want to send money to another person or bank account, say: "You can send money to someone in our app or online banking, under Pay and Transfer. Can you use either of those?" If they can't, call {{fn:handoff}} with handoff_reason="MONEY_TRANSFER".
 
-  If they want to TRANSFER or SEND money to someone else or another account (e.g. "transfer money", "send money to someone", "wire transfer"):
-  Call the {{fn:start_transfer_flow}} function.
-
-  If unclear, ask: "Are you looking to make a payment on your account, or transfer money to someone else?"
-content: The user wants to make a payment or transfer money.
+  If it's unclear, ask: "Are you looking to pay your bill, or send money to someone?"
+content: The caller wants to make a payment or send money.
 example_queries:
 - I want to make a payment
 - pay my bill

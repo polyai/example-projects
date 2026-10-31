@@ -1,16 +1,32 @@
 from _gen import *  # <AUTO GENERATED>
+from functions import hours
 
 
 @func_description(
     "[Agent Behaviour] Say goodbye and end the conversation if and only if you've explicitly confirmed with the user that they don't need help with anything else"
 )
 def goodbye_and_hangup(conv: Conversation):
-    if conv.current_step == "Ask Urgent":
-        return {
-            "utterance": "Ok, please call back during our opening hours from 9am to 6pm Monday to Friday when we can help you, except on bank holidays where this will vary. Thanks for calling Poly Bank, goodbye!",
-            "hangup": True,
-        }
-    flags = conv.real_time_config.get("flags", {})
+    company = (
+        (getattr(conv.variant, "site_name", "") or "").strip() if conv.variant else ""
+    )
+    thanks = (
+        f"Thanks for calling {company}, goodbye!"
+        if company
+        else "Thanks for calling, goodbye!"
+    )
+    if conv.current_flow == "out_of_hours":
+        if hours.has_hours(conv):
+            call_back = (
+                f"Okay, please call back during our opening hours, {hours.say_hours(conv)}, "
+                "and we'll help you then."
+            )
+        else:
+            call_back = (
+                "Okay, please call back when we're open and we'll help you then. "
+                + hours.not_to_hand(conv)
+            )
+        return {"utterance": f"{call_back} {thanks}", "hangup": True}
+    flags = (conv.real_time_config or {}).get("flags", {}) or {}
     if flags.get("csat_enabled") and not conv.state.csat_offered:
         conv.write_metric("CSAT_OFFERED")
         conv.state.csat_offered = True
@@ -20,11 +36,8 @@ def goodbye_and_hangup(conv: Conversation):
         }
     if conv.current_flow == "CSAT":
         conv.write_metric("CSAT_REFUSED")
-        return {
-            "utterance": "No problem. I hope you have a great rest of your day. Goodbye!",
-            "hangup": True,
-        }
+        return {"utterance": f"No problem. {thanks}", "hangup": True}
     return {
-        "utterance": "Okay. I hope you have a great rest of your day. Goodbye!",
+        "utterance": f"Okay. I hope you have a great rest of your day. {thanks}",
         "hangup": True,
     }
