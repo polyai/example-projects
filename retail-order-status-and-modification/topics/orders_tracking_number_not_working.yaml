@@ -1,9 +1,8 @@
 name: Orders-tracking_number_not_working
 enabled: true
-actions: Without saying anything, immediately call the function {{fn:track_order}}
-content: ''
+actions: Call {{fn:start_track_order}} to check the order.
+content: New tracking numbers can take up to a day to show updates on the carrier's site.
 example_queries:
 - My tracking number doesn't work
 - I can't track my order
-- mon numéro de suivi ne fonctionne pas
-- je ne peux pas suivre ma commande
+- tracking hasn't updated

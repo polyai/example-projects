@@ -1,12 +1,14 @@
 name: Instore-opening_hours
 enabled: true
-actions: If the user says yes to receiving a text message, call {{fn:send_sms_message}} with sms_id=“Instore-opening_hours”
-content: To find your nearest {{attr:brand_name}} store and check opening hours, head to {{attr:stores_url}}. Do you want me to text you the link?
+actions: 'For this store''s hours, call {{fn:get_opening_hours}} and follow what it returns. For other stores, offer to text the store locator: If they say yes to a text, call {{fn:start_send_sms}} with sms_id=''store_locator''.'
+content: |-
+  This store's opening hours come from the get_opening_hours tool. Never guess them.
+
+  {{attr:address_info}}
+  Other stores and their hours are on the store locator: {{attr:store_locator_url}}
 example_queries:
 - What time is the store open until today?
 - Do you close at 8pm on weekends?
-- le magasin ferme à quelle heure?
-- quelles sont vos heures d'ouverture?
-- est-ce que le magasin est ouvert aujourd'hui?
+- are you open on Sunday
+- what are your hours
 - text me the store locator link
-- envoyez-moi le lien pour trouver un magasin par texto

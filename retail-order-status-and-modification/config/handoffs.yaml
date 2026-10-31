@@ -1,0 +1,7 @@
+handoffs:
+- name: CUSTOMER_SERVICE
+  description: Customer service team, the destination for every transfer
+  is_default: true
+  sip_config:
+    method: refer
+    phone_number: '+1234567890'

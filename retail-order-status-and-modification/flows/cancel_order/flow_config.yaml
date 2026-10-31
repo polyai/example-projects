@@ -1,0 +1,3 @@
+name: cancel_order
+description: Cancel an order that hasn't shipped. The entry step checks the caller is verified and picks the order; one Cancel Order step reads it back and cancels it on a yes. What can be cancelled is decided in process_cancel_order.
+start_step: cancel_entry

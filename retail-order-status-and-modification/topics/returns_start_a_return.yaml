@@ -1,26 +1,12 @@
 name: Returns-start_a_return
 enabled: true
-actions: |-
-  First, ask the user whether they purchased the item online or in store — the return process is different for each.
-
-  If the user purchased the item ONLINE: provide the returns portal information from the content. If they say yes to receiving a text message, call {{fn:send_sms_message}} with sms_id="Returns-start_a_return".
-
-  If the user purchased the item IN STORE: tell the user: {{attr:instore_return_policy}}.
+actions: 'If it isn''t clear, ask whether they bought online or in store. For online purchases, offer to text the returns portal link: If they say yes to a text, call {{fn:start_send_sms}} with sms_id=''returns_portal''.'
 content: |-
-  # If purchased online:
-  You can return your items either in store, or online, using our returns portal at {{attr:returns_url}}. Do you want me to text you the link?
-
-  # If purchased in store:
-  {{attr:instore_return_policy}}
-
-  IMPORTANT: If the user is returning a defective item, you MUST tell them that defective returns must be made within 45 days of purchase, in addition to the standard return options.
+  {{attr:return_policy_info}}
+  Start a return or exchange on the returns portal: {{attr:returns_url}}
 example_queries:
-- How do I return/exchange my parcel?
+- How do I return or exchange my order?
 - I need a returns label
 - I want to make a return
-- I ordered my shoes too big can i get another size
-- my shoes don't fit can I return them
-- can i return a defective item
-- shoes are falling apart can i return?
-- return TEST
-- can you text me the return link?
+- my shoes don't fit, can I return them
+- can I return a defective item

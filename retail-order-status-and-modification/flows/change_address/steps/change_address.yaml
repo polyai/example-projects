@@ -1,0 +1,23 @@
+step_type: advanced_step
+name: Change Address
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: true
+  custom_keywords: []
+prompt: |-
+  # Change an order's delivery address
+  1. Whenever the caller says which order or gives or corrects the new address, call {{ft:save_new_address}} with everything new. Never ask for something they've already said.
+  2. Ask only for what the tool says is missing, one thing at a time.
+  3. The tool tells you what to read back. Only when the caller's latest reply is a clear yes to the yes-or-no question it asked, call {{ft:save_new_address}} with caller_confirmed='true'. 'Okay', 'mm-hm', 'sure, whatever', silence or a question is not a yes: ask the yes-or-no question again.
+  4. If they decide not to change it, say that's fine and ask if there's anything else.
+  5. If they ask a question, answer it from the topics in a sentence or two, then carry on.
+  6. Follow the NEXT line of the latest tool response.

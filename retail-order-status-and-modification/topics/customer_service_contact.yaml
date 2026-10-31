@@ -1,0 +1,11 @@
+name: Customer_service-contact
+enabled: true
+actions: Give the email or phone number they ask for, in words.
+content: |-
+  Customer service email: {{attr:email}}
+  Phone: {{attr:phone_number}}
+example_queries:
+- what's your email address
+- can I email you
+- how do I contact customer service
+- what's your phone number

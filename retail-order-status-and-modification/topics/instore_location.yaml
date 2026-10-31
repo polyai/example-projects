@@ -1,0 +1,14 @@
+name: Instore-location
+enabled: true
+actions: 'Give the address naturally. For another store, offer to text the store locator: If they say yes to a text, call {{fn:start_send_sms}} with sms_id=''store_locator''.'
+content: |-
+  {{attr:address_info}}
+  Full address: {{attr:address}}
+  Phone: {{attr:phone_number}}
+  Other stores are on the store locator: {{attr:store_locator_url}}
+example_queries:
+- where is the store
+- what's your address
+- where are you located
+- is there a store near me
+- how do I get to the store

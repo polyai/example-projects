@@ -1,6 +1,0 @@
-step_type: advanced_step
-name: Offer tracking link
-prompt: |-
-  If the user would like a text with the tracking link, immediately call the function {{ft:start_sending_sms}}
-
-  If they do not want a tracking link, ​call the function:  {{ft:ask_what_user_needs_next}}

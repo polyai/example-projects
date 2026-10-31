@@ -1,0 +1,11 @@
+name: Loyalty-program
+enabled: true
+actions: Answer from the content. If they say yes to a text, call {{fn:start_send_sms}} with sms_id='website'.
+content: |-
+  {{attr:loyalty_program_info}}
+  Website: {{attr:website_url}}
+example_queries:
+- do you have a loyalty program
+- how do I join your rewards program
+- what perks do members get
+- is the loyalty program free

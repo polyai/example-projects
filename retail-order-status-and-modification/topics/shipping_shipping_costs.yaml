@@ -1,20 +1,11 @@
 name: Shipping-shipping_costs
 enabled: true
-actions: |-
-  You must always TAILOR your answer to the user's question. DO NOT just give them all the information that you can; TAILOR your response.
-
-  {{attr:shipping_question_flow}}
-
-  WHENEVER giving a range of times (e.g., “3-5”) pronounce this as a range - e.g., “three to five”, NOT “3-5”.
-
-  Ask the user if they want an SMS to webpage with all the details on shipping costs. If the user says yes to receiving a text message, call {{fn:send_sms_message}} with sms_id=”Shipping-shipping_costs”. If they say no, ask if there's anything else you can help with.
+actions: Give only the rate they ask about. If they don't say where it's going or which speed, ask (one question at a time); a US state counts as an answer. Then give the single matching rate, not the whole list.
 content: |-
-  {{attr:shipping_costs}}
-
-  {{attr:shipping_additional_info}}
-
-  Would you like me to text you a link to our shipping costs information?
+  {{attr:shipping_costs_info}}
+  Shipping times: {{attr:shipping_times_info}}
 example_queries:
 - How much will shipping cost?
 - how much is overnight shipping?
+- do you ship to Hawaii
 - text me the shipping info

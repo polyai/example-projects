@@ -1,0 +1,3 @@
+name: change_address
+description: Change the delivery address on an order that hasn't shipped. The entry step checks the caller is verified and picks the order; one Change Address step takes the new address, reads it back and saves it on a yes. What can be changed is decided in save_new_address.
+start_step: change_address_entry

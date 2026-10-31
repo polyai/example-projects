@@ -1,16 +1,11 @@
 name: Delivery_Issues-missing_package
 enabled: true
-actions: 'Without saying anything, immediately call the function: {{fn:track_order}}.'
-content: ''
+actions: Call {{fn:start_track_order}} to look up the order. If it shows as delivered but the caller doesn't have it, suggest checking with neighbours and around the property; if it's still missing, call {{fn:handoff}} with handoff_reason=MISSING_PACKAGE and handoff_utterance="Let me put you through to someone who can help. One moment please.".
+content: We can check where the package is.
 example_queries:
 - package is missing
 - lost package
-- I just received my order and some of the packages are missing
 - package was stolen?
 - where's my package
-- my parcel is stolen?
 - my parcel is not here
-- mon colis est manquant
-- je n'ai pas reçu mon colis
-- mon paquet a été volé
-- où est mon colis?
+- it says delivered but I don't have it

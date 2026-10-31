@@ -1,6 +1,0 @@
-step_type: advanced_step
-name: Offer NARVAR tracking link
-prompt: |-
-  If the user would like the tracking link(s), call {{ft:start_sending_narvar_link}}. Do NOT call send_sms_message directly — always use start_sending_narvar_link to send tracking links.
-
-  If they do not want the link(s), ​and or/ask for ANYTHING else, e.g., ask to speak to someone, customer service, or mention missing items, you MUST call the function:  {{ft:ask_what_user_needs_next}}

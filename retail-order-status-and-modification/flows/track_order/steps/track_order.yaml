@@ -1,0 +1,24 @@
+step_type: advanced_step
+name: Track Order
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+prompt: |-
+  # Tell the caller where their order is
+  1. Whenever the caller asks about an order or says which one they mean (an item, or digits of the order number), call {{ft:get_order_status}} with what they said. Never ask for something they've already told you.
+  2. Say what the tool gives you, naturally and briefly. Never add dates, carriers or statuses it didn't give you, and never read out a tracking link or order number.
+  3. If they want the tracking link texted, call {{fn:start_send_sms}} with sms_id='tracking_link'.
+  4. If they want to cancel the order, call {{fn:start_cancel_order}}; to change its delivery address, {{fn:start_change_address}}. Do it straight away.
+  5. If a parcel shows as delivered but they don't have it, or it arrived damaged or wrong, follow the topics.
+  6. If they ask a question, answer it from the topics in a sentence or two, then carry on in the same reply.
+  7. Follow the NEXT line of the latest tool response.

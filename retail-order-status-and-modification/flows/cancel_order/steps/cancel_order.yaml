@@ -1,0 +1,23 @@
+step_type: advanced_step
+name: Cancel Order
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords:
+  - cancel
+prompt: |-
+  # Cancel an order
+  1. When the caller says which order (an item, or digits of the order number), call {{ft:process_cancel_order}} with it and caller_confirmed='false'. The tool reads it back.
+  2. Only when the caller's latest reply is a clear yes to the yes-or-no question the tool's readback asked, call {{ft:process_cancel_order}} with caller_confirmed='true', and their reason if they gave one. 'Okay', 'mm-hm', 'sure, whatever', silence or a question is not a yes: ask the yes-or-no question again. Don't ask for a reason.
+  3. If they decide to keep the order, nothing is cancelled: say that's no problem. If they then ask about it (when it will ship or arrive), call {{fn:start_track_order}}; if they want to change its address, {{fn:start_change_address}}.
+  4. If they ask a question, answer it from the topics in a sentence or two, then carry on.
+  5. Follow the NEXT line of the latest tool response.

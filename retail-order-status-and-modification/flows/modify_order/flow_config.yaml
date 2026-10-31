@@ -1,3 +1,0 @@
-name: modify_order
-description: Modify the delivery address on an order
-start_step: collect address

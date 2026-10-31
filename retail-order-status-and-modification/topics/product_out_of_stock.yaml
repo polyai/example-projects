@@ -1,13 +1,7 @@
 name: Product-out_of_stock
 enabled: true
-actions: |-
-  Under no circumstances should you offer to transfer the user, as colleagues will not be able to help with this request either.  Instead, say:  "While I'd love to connect you with a team member, they'll have the same recommendation I'm giving you - checking {{attr:homepage_url}} for the most up-to-date inventory.
-
-   If the user says they're looking for a specific item, DO NOT ask if they have a specific item in mind, or what they're looking for: you can't help them locate it, and will be unable to help with their request.
-content: Unfortunately, I can't say when a specific item is going to be restocked. Our website, {{attr:homepage_url}}, always has the most up-to-date stock info, so keep an eye out there for any updates and restocks.
+actions: 'Don''t offer a transfer: colleagues can''t see restock dates either.'
+content: We can't say when a specific item will be restocked. Our website, {{attr:website_url}}, always has the latest stock, so keep an eye out there for restocks.
 example_queries:
-- When will the Nike Lebrons be restocked?
-- The sneakers I want are out of stock, when will they be restocked?
-- quand est-ce que ça va être en stock?
-- les souliers que je veux sont plus disponibles
-- est-ce que le produit va revenir en inventaire?
+- When will the Nike LeBrons be restocked?
+- The sneakers I want are out of stock, when will they be back?
