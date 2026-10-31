@@ -1,0 +1,3 @@
+name: reschedule_appointment
+description: Move an existing appointment to a new day or time. The entry step checks the caller is verified and picks the appointment; one Reschedule Appointment step offers one new slot at a time and moves it once the caller says yes.
+start_step: reschedule_entry

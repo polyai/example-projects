@@ -1,0 +1,3 @@
+name: book_appointment
+description: Book an appointment for a verified patient. The entry step checks the caller is verified; one Book Appointment step takes the appointment type, the reason and any preferred day or time in any order, offers one slot at a time and books it. Slot rules, readbacks and the booking check live in the two tools.
+start_step: booking_entry

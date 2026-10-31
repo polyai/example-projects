@@ -1,85 +1,83 @@
+# Healthcare template
+
+Books, checks, moves and cancels clinic appointments, answers clinic FAQs, and texts the clinic address.
+
+- **Shape (flat):** one flow per task, each with one advanced step and a short numbered prompt. Task flows (`book_appointment`, `confirm_appointment`, `reschedule_appointment`, `cancel_appointment`) start with an entry function step that checks ID&V and picks the appointment. Rules live in tool code (`functions/appointments.py`, `functions/idnv.py`); tools say what to read back and what to ask next, and end with a CALL STATE block. A retry return names the attempt ("attempt 1 of 2") and says to call the same tool again; writes ask one short yes-or-no question naming the action and the item (no separate readback, 25 words or fewer) and need a clear yes to it in the caller's latest reply; a yes in the same turn as the question (history length unchanged, a marker only) writes nothing. No keypad (`dtmf_config` is ignored on Dialog-RSN-1 voice). `rules.txt` stays under 1k tokens and holds the pass-every-parameter rule.
+- **ID&V (strict):** phone number on the record + date of birth + member ID (`flows/verify_caller`). Never reveal whether a record exists or which detail failed. Retry limits and the transfer on failure are in `functions/idnv.py` (shared; don't edit here).
+- **Company copy:** one default variant; every clinic fact is a variant attribute (`site_name`, the four location attributes, `timezone`, contacts, `providers`, and `_info` policy text), wired into topics, rules, SMS and code. `opening_hours` + `timezone` drive out-of-hours and the slots offered; when `opening_hours` is blank those rules use a weekday 8am-5pm default that is never spoken (the agent says it doesn't have the exact hours to hand). See README. Out of hours `handoff` refuses transfers in code (closed line instead) except emergencies, `CLINICAL_SUPPORT` and tool-made transfers (`transfers_when_closed`).
+- **Data:** `functions/api_client.py`. Mocked on branch, draft and sandbox; mocked on pre-release and live until `settings.use_mock_api` is false. Mock bookings live in `conv.state`.
+- **Switches (real-time config):** `settings.cancel_appointment_flow_enabled` (default true; false transfers cancellations), `settings.use_mock_api`.
+- **Fixtures:** Jane Smith 201-555-0123, DOB 1985-03-15, member ID HC48213 (one follow-up); John Doe 212-555-0178, DOB 1990-07-22, HC77306 (two appointments); 201-555-0199 (no record).
+
+## Test scenarios
+
 ```json
 {
   "scenarios": [
     {
       "id": "book-appointment",
-      "title": "Booking happy path - existing patient",
+      "title": "Book an appointment",
       "prompt": "I'd like to schedule an appointment.",
-      "attributes": {
-        "variant": "Poly Clinic",
-        "clinic_name": "Poly Clinic"
-      },
       "context": {
         "Phone": "2015550123",
-        "Name": "Jane Smith",
         "DOB": "March 15, 1985",
-        "Patient type": "existing"
+        "Member ID": "HC48213"
       },
-      "goal": "Agent asks whether the number the caller is calling from is on the account. From 2015550123 the caller says yes; from any other number the caller says no and gives 2015550123, and the agent reads it back as \"two zero one, then five five five, and finally zero one two three, is that right?\". Agent collects DOB (March 15, 1985) and name (Jane Smith), enters Booking Flow, asks if existing patient (yes), collects appointment type, offers an available slot with Dr. Smith three or four days out, and confirms the booking."
+      "goal": "The agent asks for the phone number, date of birth and member ID one at a time (or takes them all at once), verifies Jane Smith and, in the same reply, asks what kind of appointment she needs. Given 'a new health issue' it offers one slot (the earliest, e.g. tomorrow at 9am with Dr. Smith) and books it on a yes."
     },
     {
       "id": "cancel-appointment",
-      "title": "Cancel - patient with multiple appointments",
+      "title": "Cancel - patient with two appointments",
       "prompt": "I need to cancel an appointment.",
-      "attributes": {
-        "variant": "Poly Clinic",
-        "clinic_name": "Poly Clinic"
-      },
       "context": {
         "Phone": "2125550178",
-        "Name": "John Doe",
-        "DOB": "July 22, 1990"
+        "DOB": "July 22, 1990",
+        "Member ID": "HC77306"
       },
-      "goal": "Agent completes IDNV for John Doe (phone 2125550178 read back digit by digit with \"zero\", DOB July 22, 1990, name John Doe). Enters Cancel Flow, finds 2 upcoming appointments (a recheck and a sick visit), asks which to cancel, reads back the chosen appointment with its type and date, collects a reason, and confirms the cancellation."
+      "goal": "After verification the agent lists John Doe's follow-up and sick visit, asks which one, reads the chosen one back with its type, date, time and provider, and cancels it on a yes without asking for a reason."
     },
     {
       "id": "reschedule-appointment",
       "title": "Reschedule an appointment",
       "prompt": "Can I move my appointment to a different day?",
-      "attributes": {
-        "variant": "Poly Clinic",
-        "clinic_name": "Poly Clinic"
-      },
       "context": {
         "Phone": "2015550123",
-        "Name": "Jane Smith",
-        "DOB": "March 15, 1985"
+        "DOB": "March 15, 1985",
+        "Member ID": "HC48213"
       },
-      "goal": "Agent completes IDNV for Jane Smith (phone 2015550123, DOB March 15, 1985, name Jane Smith). Enters Reschedule Flow, reads back the appointment with its type and a readable date (e.g. \"a recheck on <date>\"), offers available slots, and confirms the rescheduled appointment."
+      "goal": "After verification the agent mentions Jane's follow-up (date, time, Dr. Smith), asks when would suit instead, offers one new slot and moves it on a yes."
     },
     {
-      "id": "new-patient-booking",
-      "title": "New patient tries to book - handoff",
-      "prompt": "Hi, I'm a new patient and I'd like to make an appointment.",
-      "attributes": {
-        "variant": "Poly Clinic",
-        "clinic_name": "Poly Clinic"
-      },
+      "id": "wrong-dob",
+      "title": "Wrong date of birth twice",
+      "prompt": "I need to reschedule my appointment.",
       "context": {
-        "Phone": "2015550199",
-        "Name": "Unknown"
+        "Phone": "2015550123",
+        "DOB given": "January 1, 1990",
+        "Member ID": "HC48213"
       },
-      "goal": "Agent starts IDNV but finds no patient record for 2015550199. Monday to Friday, 8am to 5pm New York time, it says it is transferring to the scheduling team and the call ends (mock handoff in sandbox and draft). Out of hours it says Poly Clinic is closed and gives the opening hours instead of transferring."
+      "goal": "The agent says the details don't match without saying which, asks for them again (one at a time, starting with the date of birth), then transfers to the scheduling team. No appointment, provider or name is mentioned."
+    },
+    {
+      "id": "unknown-number",
+      "title": "No patient record",
+      "prompt": "I'd like to book an appointment.",
+      "context": {
+        "Phone": "2015550199"
+      },
+      "goal": "The agent collects all three details, reads the number back, and never says no record exists. A confirmed number counts as a failed check; a caller with no other number is transferred."
     },
     {
       "id": "faq-hours",
       "title": "FAQ - clinic hours",
       "prompt": "What are your hours?",
-      "attributes": {
-        "variant": "Poly Clinic",
-        "clinic_name": "Poly Clinic"
-      },
       "context": {},
-      "goal": "Agent answers with clinic hours from the knowledge base, no IDNV needed."
+      "goal": "Agent gives the opening hours from the opening_hours attribute (Monday to Friday, 8am to 5pm; closed weekends) without asking for verification."
     },
     {
       "id": "faq-insurance",
       "title": "FAQ - accepted insurance",
       "prompt": "Do you accept Blue Cross?",
-      "attributes": {
-        "variant": "Poly Clinic",
-        "clinic_name": "Poly Clinic"
-      },
       "context": {},
       "goal": "Agent answers the insurance question from the knowledge base, no IDNV needed."
     },
@@ -87,28 +85,20 @@
       "id": "phone-readback-correction",
       "title": "Correct the phone number at readback",
       "prompt": "I'd like to schedule an appointment.",
-      "attributes": {
-        "variant": "Poly Clinic",
-        "clinic_name": "Poly Clinic"
-      },
       "context": {
         "First number given": "2015550128",
         "Correct phone": "2015550123",
-        "Name": "Jane Smith",
-        "DOB": "March 15, 1985"
+        "DOB": "March 15, 1985",
+        "Member ID": "HC48213"
       },
-      "goal": "Caller says the calling number is not on the account and gives 2015550128. Agent reads it back digit by digit using \"zero\", never \"oh\". Caller says the last digit is three; agent takes the correction, reads back \"two zero one, then five five five, and finally zero one two three, is that right?\", and only moves on to DOB after the caller confirms. Identity is verified without a transfer."
+      "goal": "Caller gives 2015550128 with the right DOB and member ID. The agent reads the number back digit by digit using \"zero\", without saying whether a record exists. The caller says the last digit is three; the agent verifies with the corrected number without asking for the DOB or member ID again."
     },
     {
       "id": "speak-to-doctor",
       "title": "Ask to speak to a doctor",
       "prompt": "I need to speak with my doctor.",
-      "attributes": {
-        "variant": "Poly Clinic",
-        "clinic_name": "Poly Clinic"
-      },
       "context": {},
-      "goal": "Agent does not start booking or IDNV and does not ask for phone, DOB, or name. Monday to Friday, 8am to 5pm New York time, it says it is transferring the caller and the call ends (mock handoff in sandbox and draft). Out of hours it says Poly Clinic is closed and gives the opening hours without offering a transfer."
+      "goal": "Agent does not start booking or IDNV and does not ask for phone, DOB, or name. Monday to Friday, 8am to 5pm New York time, it says it is transferring the caller and the call ends (mock handoff in sandbox and draft). Out of hours it says the clinic is closed and gives the opening hours without offering a transfer."
     }
   ]
 }

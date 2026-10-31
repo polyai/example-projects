@@ -1,0 +1,21 @@
+step_type: advanced_step
+name: Confirm Appointment
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+prompt: |-
+  # Tell the caller about their upcoming appointment
+  1. If they have several appointments, ask which one they mean and call {{fn:choose_appointment}} with its date or type.
+  2. If they're happy with it, ask if there's anything else you can help with.
+  3. If they want to move it, call {{fn:start_rescheduling_flow}}; to cancel it, {{fn:start_cancellation_flow}}; to book another appointment, {{fn:start_booking_flow}}. Do it straight away, without asking for details first.
+  4. If they ask a question, answer it from the topics in a sentence or two.

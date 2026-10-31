@@ -1,33 +1,15 @@
-from typing import Any
-
-import plog
-
 from _gen import *  # <AUTO GENERATED>
+from functions import idnv
 
 
 @func_description(
-    "[Flow] Start booking an appointment. Verifies identity first if needed, then enters the Booking Flow."
+    "The caller wants to book a new appointment (to see a doctor, a sick visit, a follow-up, a checkup). Call it as soon as that's clear, even if they're also giving details."
 )
-def start_booking_flow(conv: Conversation) -> dict[str, Any]:
-    log_prefix = "[start_booking_flow]: "
-    conv.write_metric("BOOKING_FLOW_INITIATED", True)
-
-    if not getattr(conv.state, "identified_patient", None):
-        plog.info(f"{log_prefix} no identified_patient, routing to IDNV first")
-        conv.state.post_idnv_flow_name = "Booking Flow"
-        conv.goto_flow("IDNV")
-        return {
-            "content": (
-                "Before we can book an appointment, we need to verify the caller's identity. "
-                "Ask if the number they're calling from is the one on their account."
-            )
-        }
-
-    plog.info(f"{log_prefix} goto_flow='Booking Flow'")
-    conv.goto_flow("Booking Flow")
-    return {
-        "content": (
-            "You are now entering the Booking Flow. "
-            "Do NOT speak yet — the flow will provide the next utterance."
-        )
-    }
+def start_booking_flow(conv: Conversation):
+    conv.write_metric("PRIMARY_INTENT", "BOOK_APPOINTMENT")
+    conv.state.booking_request = None
+    conv.state.booked_appointment_id = ""
+    gate = idnv.require(conv, "book_appointment", strength=idnv.STRICT)
+    if gate:
+        return gate
+    conv.goto_flow("book_appointment")

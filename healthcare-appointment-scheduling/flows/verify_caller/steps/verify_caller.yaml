@@ -1,0 +1,34 @@
+step_type: advanced_step
+name: Verify Caller
+asr_biasing:
+  is_enabled: true
+  alphanumeric: true
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: true
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: true
+  inter_digit_timeout: 4
+  max_digits: 10
+  end_key: '#'
+  collect_while_agent_speaking: false
+  is_pii: true
+prompt: |-
+  # Confirm who the caller is
+  You need the phone number on their patient record, their date of birth and their member ID before you can help with appointments.
+
+  1. Call {{ft:verify_caller}} as soon as the caller gives any of these, including anything they said earlier in the call. Pass everything you have.
+  2. Pass the phone number as the caller said it ("two zero one, five five five..."). Whenever they say any digits, call {{ft:verify_caller}} with them, even if the number sounds incomplete or is one they gave before: the tool decides what happens next. Never guess or pad digits.
+  3. Ask only for what the tool says is missing, one thing at a time. If they start ("the number is...") and stop before any digits, say "Go ahead" and wait.
+  4. After you read a number back, wait for the caller's answer before calling {{ft:verify_caller}} again. Then: a clear "yes" or the same number again → call {{ft:verify_caller}} again with phone_confirmed='true'; a corrected number → call it with the new number. Anything else ("okay", "mm-hm", unclear, silence) → call {{ft:verify_caller}} with the phone number empty and phone_confirmed='false', and say what its response tells you; never re-ask in your own words.
+  5. If they don't have or won't give the details, or say there's no other number, call {{ft:verify_caller}} with caller_cannot_verify='true'.
+  6. Follow the latest tool response, and whenever it says to call {{ft:verify_caller}} again, do, even if the caller repeats what they said before. The tool owns every check, retry and transfer: only say details don't match when the latest tool response says so, and never offer a transfer yourself, however many times you've misheard the number or details. While a response says "attempt N of M", the tool has attempts left: ask again and call it again.
+  7. If they ask a question, answer it briefly from the topics, then ask for what's still missing.
+  8. Never say whether a record exists, whose it is, or which detail didn't match. After a miss, say only that the details don't match our records, never that you can't find their record.

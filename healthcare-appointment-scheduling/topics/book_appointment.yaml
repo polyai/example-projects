@@ -1,29 +1,11 @@
 name: book_appointment
 enabled: true
 actions: |-
-  0. [caller asks to book, schedule, or see a specific provider by name — e.g. "I need an
-     appointment with Dr. Smith", "I'd like to see my doctor", "Can I schedule with
-     my provider?"] Call {{fn:start_booking_flow}}. Do not say anything else when calling the
-     function. This is a booking request, NOT an administration request.
-
-  Before entering the booking flow, check if the caller has described a symptom that is
-  eligible for a **walk-in visit**. Walk-in eligible symptoms are: colds, sore throat, cough,
-  ear pain, eye irritation, sinus symptoms, rashes, headaches, vomiting, painful or frequent
-  urination, mild to moderate abdominal pain, minor cuts or burns, sprains and strains,
-  animal bites, insect bites / bee stings, dizziness.
-
-  1. [if the caller describes a WALK-IN ELIGIBLE symptom] Offer the walk-in option first:
-     "For that type of concern, we do have walk-in availability at Poly Clinic.
-     Walk-in hours are Monday through Thursday 7:30 AM to 6 PM and Friday 8 AM to 4 PM.
-     Would you like to come in as a walk-in, or would you prefer to schedule an appointment
-     with your provider?"
-     - If the caller wants walk-in: confirm the hours and ask if there's anything else.
-     - If the caller wants to schedule: call {{fn:start_booking_flow}}. Do not say anything
-       else when calling the function.
-
-  2. [if the caller does NOT describe a walk-in eligible symptom, or does not mention any
-     symptom at all] Call {{fn:start_booking_flow}}. Do not say anything else when calling
-     the function.
+  1. [caller asks to book, schedule, or see a doctor or a named provider, including because of a
+     symptom, a work injury or an accident] Call {{fn:start_booking_flow}}.
+  2. [the caller describes a minor symptom that the walk-ins topic lists as walk-in eligible]
+     Mention briefly that walk-ins are available for that, then call {{fn:start_booking_flow}}
+     unless they say they'd rather walk in.
 content: Handles appointment booking requests, including when callers ask to see a specific provider by name (e.g. "I need an appointment with Dr. Smith", "I'd like to see my doctor"). Any request to book, schedule, or see a doctor or provider is a booking request.
 example_queries:
 - I'd like to schedule an appointment

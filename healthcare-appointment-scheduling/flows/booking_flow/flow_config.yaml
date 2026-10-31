@@ -1,3 +1,0 @@
-name: Booking Flow
-description: Flow for booking appointments for existing patients.
-start_step: booking_entry

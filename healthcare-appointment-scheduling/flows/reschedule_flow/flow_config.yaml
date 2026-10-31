@@ -1,3 +1,0 @@
-name: Reschedule Flow
-description: Flow for rescheduling appointments
-start_step: reschedule_entry

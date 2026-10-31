@@ -1,0 +1,29 @@
+step_type: advanced_step
+name: Send Text
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: true
+  inter_digit_timeout: 4
+  max_digits: 10
+  end_key: '#'
+  collect_while_agent_speaking: false
+  is_pii: true
+prompt: |-
+  # Text the caller
+  1. If they clearly say yes to texting the number they're calling from, call {{ft:send_text}} with use_calling_number='true'.
+  2. If they give a number, call {{ft:send_text}} with it, as they said it (words or digits). Never guess or pad digits. The tool tells you how to read it back.
+  3. After the readback, wait for the answer. Only a clear yes to the yes-or-no question → {{ft:send_text}} with number_confirmed='true' ("okay", "mm-hm", "sure, whatever" or a question is not a yes: ask it again); a corrected number → {{ft:send_text}} with the new number.
+  4. If they no longer want the text, say that's fine and ask if there's anything else.
+  5. Follow the NEXT line of the latest tool response; the tool owns retries and transfers.

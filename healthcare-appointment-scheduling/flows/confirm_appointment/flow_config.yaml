@@ -1,0 +1,3 @@
+name: confirm_appointment
+description: Tell a verified caller about an upcoming appointment. The entry step checks the caller is verified and reads the appointment back; the Confirm Appointment step handles which one (if several) and any follow-on task.
+start_step: confirm_entry

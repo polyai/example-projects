@@ -1,4 +1,6 @@
 from _gen import *  # <AUTO GENERATED>
+from functions import appointments
+from functions.start_function import _is_ooh, local_now
 
 HANDOFF_LOG_PREFIX = "[handoff]: "
 
@@ -44,6 +46,45 @@ PREFIX_TO_TARGET = (
 )
 
 
+# Out of hours, every transfer is refused (the caller hears that we're closed and the
+# call carries on) except these, which go through exactly as in hours:
+# - emergencies and the clinical line (nurse, symptoms, same-day triage), which a caller
+#   may need urgently whatever the time;
+# - transfers the task tools make when they can't finish (ID&V failed, API error, no
+#   slots, text failed, cancellations switched off): the tool has already said the
+#   caller is being put through.
+ALWAYS_TRANSFER_TARGETS = frozenset(
+    {"EMERGENCY", "MEDICAL_EMERGENCY", "MENTAL_HEALTH_EMERGENCY", "CLINICAL_SUPPORT"}
+)
+TOOL_REASON_PREFIXES = ("IDNV_", "BOOKING_", "CANCEL", "RESCHEDUL", "SMS_")
+
+
+def transfers_when_closed(reason: str) -> bool:
+    return resolve_target(reason) in ALWAYS_TRANSFER_TARGETS or reason.startswith(
+        TOOL_REASON_PREFIXES
+    )
+
+
+def closed_utterance(conv: Conversation) -> str:
+    """We're closed, the hours (or the "not to hand" line when opening_hours is blank),
+    and the after_hours_info attribute."""
+    spoken = appointments.say_opening_hours(conv)
+    hours = (
+        f"Our opening hours are {spoken}."
+        if appointments.hours_known(conv)
+        else f"{spoken}."
+    )
+    variant = conv.variant
+    after = (
+        (getattr(variant, "after_hours_info", "") or "") if variant else ""
+    ).strip()
+    return (
+        f"We're closed right now, so no one is available to take your call. {hours} "
+        f"{after or 'Please call back when we are open.'} "
+        "Is there anything else I can help with in the meantime?"
+    )
+
+
 def resolve_target(reason: str) -> str:
     if reason in REASON_TO_TARGET:
         return REASON_TO_TARGET[reason]
@@ -67,6 +108,12 @@ def handoff(conv: Conversation, reason: str, utterance: str):
     reason = (reason or "DEFAULT").strip().upper() or "DEFAULT"
 
     conv.log.info(f"{HANDOFF_LOG_PREFIX}received handoff request", reason=reason)
+
+    if not transfers_when_closed(reason) and _is_ooh(conv, local_now(conv)[1]):
+        conv.log.info(
+            f"{HANDOFF_LOG_PREFIX}closed, not transferring", handoff_reason=reason
+        )
+        return {"utterance": closed_utterance(conv)}
 
     handoff_to = resolve_target(reason)
 

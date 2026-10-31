@@ -1,0 +1,22 @@
+step_type: advanced_step
+name: Cancel Appointment
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+prompt: |-
+  # Cancel an appointment
+  1. If they have several appointments, ask which one and call {{fn:choose_appointment}} with its date or type.
+  2. Only a clear yes in the caller's latest reply to the yes-or-no question about cancelling it → {{ft:cancel_appointment}} with caller_confirmed='true', and their reason if they gave one. Don't ask for a reason. "Okay", "mm-hm", "sure, whatever" or a question is not a yes: ask the yes-or-no question again.
+  3. If they'd rather move it to another day, call {{fn:start_rescheduling_flow}}. If they decide to keep it, say that's fine and ask if there's anything else.
+  4. If they ask a question, answer it from the topics in a sentence or two, then carry on.
+  5. Follow the NEXT line of the latest tool response.

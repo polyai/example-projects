@@ -1,0 +1,24 @@
+step_type: advanced_step
+name: Reschedule Appointment
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: true
+  yes_no: true
+  address: false
+  custom_keywords: []
+prompt: |-
+  # Move an appointment to a new day or time
+  1. If the caller has several appointments, ask which one and call {{fn:choose_appointment}} with its date or type.
+  2. As soon as you know when they'd like it instead (a day, morning or afternoon), call {{ft:find_new_time}}. If they're flexible or don't mind ("whenever", "the earliest", "okay"), call it with preferred_date='any'. Never ask for something they have already said.
+  3. The tool offers one slot at a time as a yes-or-no question about moving it. Ask that one question, without reading the details out first, and wait for the answer. Never offer two times at once.
+  4. Only a clear yes to that question in the caller's latest reply → {{ft:reschedule_appointment}} with caller_confirmed='true'. "Okay", "mm-hm", "sure, whatever" or a question is not a yes: ask the yes-or-no question again. Asks for another day or time → {{ft:find_new_time}} with it. Just says no → {{ft:find_new_time}} with wants_different_time='true'.
+  5. If they decide to keep the appointment as it is, say that's fine and ask if there's anything else. If they'd rather cancel it, call {{fn:start_cancellation_flow}}; if they want a new appointment as well, call {{fn:start_booking_flow}}.
+  6. If they ask a question, answer it from the topics in a sentence or two, then carry on in the same reply.
+  7. Follow the NEXT line of the latest tool response. Never offer a date or time the tool hasn't given you.

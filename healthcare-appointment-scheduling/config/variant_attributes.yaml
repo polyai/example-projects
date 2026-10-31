@@ -2,6 +2,85 @@ variants:
 - name: Poly Clinic
   is_default: true
 attributes:
-- name: clinic_name
+- name: site_name
   values:
     Poly Clinic: Poly Clinic
+- name: address
+  values:
+    Poly Clinic: 123 Main Street, Anytown, US 12345
+- name: address_info
+  values:
+    Poly Clinic: We're at 123 Main Street in Anytown, zip code 12345.
+- name: phone_number
+  values:
+    Poly Clinic: (555) 010-0100
+- name: opening_hours
+  values:
+    Poly Clinic: |-
+      Monday: 08:00-17:00
+      Tuesday: 08:00-17:00
+      Wednesday: 08:00-17:00
+      Thursday: 08:00-17:00
+      Friday: 08:00-17:00
+      Saturday: closed
+      Sunday: closed
+- name: timezone
+  values:
+    Poly Clinic: America/New_York
+- name: fax_number
+  values:
+    Poly Clinic: (555) 010-0101
+- name: email
+  values:
+    Poly Clinic: frontdesk@example-clinic.com
+- name: website_url
+  values:
+    Poly Clinic: www.example-clinic.com
+- name: patient_portal_url
+  values:
+    Poly Clinic: portal.example-clinic.com
+- name: directions_info
+  values:
+    Poly Clinic: We're in the Main Street plaza. There's free parking out front and a step-free entrance.
+- name: services_offered
+  values:
+    Poly Clinic: Family medicine, internal medicine, pediatrics, women's health and behavioral health. There's an on-site lab open Monday to Friday, 8am to 5pm.
+- name: providers
+  values:
+    Poly Clinic: Dr. Smith, Dr. Johnson
+- name: insurance_info
+  values:
+    Poly Clinic: We accept Medicare, Medicaid and most commercial insurance plans. For a specific plan, the billing team can check your coverage.
+- name: self_pay_info
+  values:
+    Poly Clinic: We see patients without insurance. A sliding-fee discount based on income and household size can lower the cost, and the billing team can help you apply.
+- name: new_patients_info
+  values:
+    Poly Clinic: We're accepting new patients of all ages, and no referral is needed.
+- name: walk_in_info
+  values:
+    Poly Clinic: Walk-ins are welcome Monday to Friday, 8am to 4pm, for minor illnesses and injuries like colds, sore throats, ear pain, rashes and minor cuts or sprains.
+- name: first_visit_info
+  values:
+    Poly Clinic: Please bring a photo ID and your insurance card, and arrive 15 minutes early to check in. Patients under 18 need a parent or guardian with them.
+- name: cancellation_policy_info
+  values:
+    Poly Clinic: Please give at least 24 hours' notice if you need to cancel or reschedule.
+- name: billing_info
+  values:
+    Poly Clinic: You can pay online in the patient portal, at the front desk by cash, check or card, or by phone with the billing team. Payment plans are available with no interest.
+- name: medical_records_info
+  values:
+    Poly Clinic: To request records, fill in a release form from our website or the front desk. Requests take 3 to 5 business days, and records can be picked up or mailed.
+- name: prescription_refill_info
+  values:
+    Poly Clinic: Ask your pharmacy to send us a refill request, or request it in the patient portal. Please allow 2 business days.
+- name: telehealth_info
+  values:
+    Poly Clinic: Video visits are available for many appointments, including most follow-ups. You'll get a link by text or email to join at your appointment time.
+- name: after_hours_info
+  values:
+    Poly Clinic: When we're closed, please call back during opening hours. For a medical emergency, hang up and dial 911.
+- name: languages_spoken
+  values:
+    Poly Clinic: English and Spanish

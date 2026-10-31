@@ -1,7 +1,7 @@
 name: confirm_appointment
 enabled: true
-actions: 1. [caller wants to confirm an appointment] Call {{fn:handoff}} with reason="SCHEDULING" and utterance="Let me transfer you to our scheduling team so they can confirm your appointment. Putting you through now."
-content: To confirm an appointment, we'll need to connect you with the scheduling team so they can look up your appointment details.
+actions: 1. [caller wants to check or confirm an upcoming appointment] Call {{fn:start_confirmation_flow}}.
+content: Patients can check the date, time and provider of an upcoming appointment once they've confirmed who they are.
 example_queries:
 - I want to confirm an appointment
 - I'm calling to confirm my appointment

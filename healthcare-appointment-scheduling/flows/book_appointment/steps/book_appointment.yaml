@@ -1,0 +1,29 @@
+step_type: advanced_step
+name: Book Appointment
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: true
+  yes_no: true
+  address: false
+  custom_keywords:
+  - sick visit
+  - follow-up
+  - wellness check
+  - physical
+prompt: |-
+  # Book an appointment
+  You need what kind of appointment it is (sick visit, follow-up or wellness check). The reason and a preferred day or time are optional: with no preference the tool offers the earliest slot.
+
+  1. Whenever the caller gives or changes any of these, in any order and however many at once, call {{ft:update_booking_request}} with everything new. Work out the type yourself from what they said: any new problem ("a new health issue", symptoms, pain) is a sick visit. Never ask for something they have already said.
+  2. The tool offers one slot at a time as a yes-or-no question about booking it. Ask that one question, without reading the details out first, and wait for the answer. Never offer two times at once.
+  3. Only a clear yes to that question in the caller's latest reply → {{ft:book_appointment}} with caller_confirmed='true'. "Okay", "mm-hm", "sure, whatever" or a question is not a yes: ask the yes-or-no question again. Asks for another day or time → {{ft:update_booking_request}} with the new preference. Just says no → {{ft:update_booking_request}} with wants_different_time='true'.
+  4. If they ask a question, answer it from the topics in a sentence or two, then carry on where you left off in the same reply.
+  5. If they'd rather check, move or cancel an appointment they already have, call {{fn:start_confirmation_flow}}, {{fn:start_rescheduling_flow}} or {{fn:start_cancellation_flow}} straight away.
+  6. Follow the NEXT line of the latest tool response. Never offer a date or time the tool hasn't given you.

@@ -1,0 +1,3 @@
+name: verify_caller
+description: Strict caller verification (functions/idnv.py) - the phone number on the patient record, date of birth and member ID, entered from any task flow whose caller is not yet verified, and back to that task once they are. Retry limits and the fail path are in code.
+start_step: Verify Caller
