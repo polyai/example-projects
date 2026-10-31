@@ -1,0 +1,22 @@
+step_type: advanced_step
+name: Cancel Visit
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+prompt: |-
+  # Cancel a visit
+  1. If they have several visits, ask which one and call {{fn:choose_visit}} with its date.
+  2. Read the visit back and ask the yes-or-no question the tool gives, and wait for the answer. Only on a clear yes, call {{ft:cancel_visit}} with caller_confirmed='true', and their reason if they gave one. 'Okay', 'mm-hm', 'sure, whatever', silence or a question is not a yes: ask the yes-or-no question again. Don't ask for a reason.
+  3. If they'd rather move it to another day, call {{fn:start_reschedule_appointment}}. If they decide to keep it, say that's fine and ask if there's anything else.
+  4. If they ask a question, answer it from the topics in a sentence or two, then carry on.
+  5. Follow the NEXT line of the latest tool response.

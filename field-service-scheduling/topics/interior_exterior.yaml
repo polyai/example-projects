@@ -1,6 +1,6 @@
 name: interior-exterior
 enabled: true
-actions: '##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent=''GENERAL_QUESTION''. Do not answer the question.'
+actions: ''
 content: Our regular service does cover both the interior and the exterior of your home.
 example_queries:
 - Do your plans cover both the interior and exterior of the home?

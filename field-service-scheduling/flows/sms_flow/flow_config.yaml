@@ -1,3 +1,3 @@
 name: sms_flow
-description: sends sms for different 'sms-id's
-start_step: Should Collect SMS Number
+description: Text the caller a link from config/sms_templates.yaml. One Send Link step settles the number (the calling number, or one the caller gives and confirms after a readback) and sends it.
+start_step: Send Link

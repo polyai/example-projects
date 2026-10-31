@@ -1,3 +1,3 @@
 name: confirm_appointment
-description: confirm the details of an existing appointment
-start_step: Retrieve appointments
+description: Tell the caller when their next visit is. The entry step checks the caller is verified, looks up their upcoming visits and reads the visit back; one Confirm Visit step handles what they want next.
+start_step: retrieve_appointments

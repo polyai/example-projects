@@ -1,7 +1,7 @@
 name: service-guarantee
 enabled: true
-actions: Immediately call {{fn:handle_faq}} with answer="Yes, we do! If you're still experiencing issues after 14 days, just give us a call. We'll schedule a follow-up visit at no extra cost to you."
-content: ''
+actions: ''
+content: '{{attr:service_guarantee_info}}'
 example_queries:
 - Do you offer a warranty or guarantee for your service?
 - Do you offer some kind of service guarantee?

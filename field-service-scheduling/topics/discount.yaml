@@ -1,7 +1,7 @@
 name: discount
 enabled: true
-actions: '##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent=''GENERAL_QUESTION''. Do not answer the question.'
-content: While we don’t currently have discounts available, we’re always looking for ways to better serve our community. Feel free to ask us anytime for updates!
+actions: Answer only the discounts part of the content. If it says nothing about discounts, say we don't have any to share right now.
+content: '{{attr:pricing_info}}'
 example_queries:
 - Do you offer veteran discounts?
 - Do you have any kinds of discounts?

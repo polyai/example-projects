@@ -1,10 +1,10 @@
 from _gen import *  # <AUTO GENERATED>
-from functions.utils import opening_hours_utterance
+from functions.utils import HOURS_NOT_TO_HAND, site_hours_utterance, variant_attr
 
 DEFAULT_DESTINATION = "CUSTOMER_CARE"
 
 DEFAULT_HANDOFF_UTTERANCE = (
-    "Please hold the line while I transfer you to a colleague who can help."
+    "Please hold the line while I put you through to a colleague who can help."
 )
 
 SKILL_IDS = {
@@ -19,20 +19,30 @@ SKILL_IDS = {
 }
 
 
+def _ooh_utterance(conv: Conversation) -> str:
+    hours = site_hours_utterance(conv) or HOURS_NOT_TO_HAND
+    phone = variant_attr(conv, "phone_number")
+    call_back = f" You can call us back on {phone}." if phone else ""
+    return (
+        "I'm sorry, I'll need a colleague to help with that, and our office is closed right now."
+        f" {hours}{call_back} Thanks for calling, goodbye."
+    )
+
+
 @func_description(
-    "Call this function whenever you tell the user you are transferring them to actually complete the transfer"
+    "Transfer the caller to a colleague. Call it whenever you tell the caller you're putting them through."
 )
 @func_parameter(
     "handoff_reason",
-    "The handoff code which represents the reason the user was handed off. It's provided in the transfer instructions. Copy it faithfully from the prompt.",
+    "The reason code from your instructions, e.g. SPEAK_TO. Copy it exactly.",
 )
 @func_parameter(
     "handoff_utterance",
-    'This is to be said before handing off. If not provided, use "Please hold the line while I transfer you to a colleague who can help"',
+    'What to say before transferring. If not given, use "Please hold the line while I put you through to a colleague who can help."',
 )
 @func_parameter(
     "handoff_destination",
-    'This is the destination we\'ll hand off to. If not provided, feel free to use "CUSTOMER_CARE"',
+    "The queue from your instructions, e.g. CUSTOMER_CARE. Use CUSTOMER_CARE if none is given.",
 )
 def handoff(
     conv: Conversation,
@@ -60,18 +70,7 @@ def handoff(
 
     if conv.state.is_ooh:
         conv.write_metric("OUT_OF_HOURS_HANDOFF_REASON", reason)
-        try:
-            hours = opening_hours_utterance(
-                conv.real_time_config.get("opening_hours", {})
-            )
-        except Exception as e:
-            hours = None
-            conv.log.warning("Could not build opening hours utterance", error=str(e))
-        hours_part = f" {hours}" if hours else ""
-        return {
-            "utterance": f"Looks like we'll need a little extra help from our team here. Our office is currently closed.{hours_part} We appreciate your understanding and look forward to assisting you during regular business hours. Have a great rest of your day! Goodbye.",
-            "hangup": True,
-        }
+        return {"utterance": _ooh_utterance(conv), "hangup": True}
 
     if conv.env in ("sandbox", "draft"):
         conv.log.info("Mock handoff", handoff_reason=reason, handoff_to=destination)

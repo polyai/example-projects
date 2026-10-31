@@ -1,0 +1,22 @@
+step_type: advanced_step
+name: Confirm Visit
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+prompt: |-
+  # Tell the caller about their upcoming visit
+  1. If they have several visits, ask which one they mean and call {{fn:choose_visit}} with its date.
+  2. If they're happy with it, ask if there's anything else you can help with.
+  3. If they want to move it, call {{fn:start_reschedule_appointment}}; to cancel it, {{fn:start_cancel_appointment}}; to book another visit, {{fn:start_make_appointment}}. Do it straight away, without asking for details first.
+  4. If they want a different service or location for the visit, call {{fn:handoff}} with handoff_reason=CUSTOMER_WANTS_CHANGE_TO_CONFIRMED_APPOINTMENT.
+  5. If they ask a question, answer it from the topics in a sentence or two.

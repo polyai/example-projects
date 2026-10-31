@@ -1,9 +1,6 @@
 name: schedule-appointment
 enabled: true
-actions: |-
-  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='MAKE_APPOINTMENT'. Do not answer the question.
-
-  Don't say anything, immediately call {{fn:start_make_appointment}}.
+actions: Don't say anything, immediately call {{fn:start_make_appointment}}.
 content: |-
   I'd like some help scheduling my next appointment
   How can I schedule a followup visit?

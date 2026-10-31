@@ -1,115 +1,65 @@
 from _gen import *  # <AUTO GENERATED>
+import re
 from datetime import datetime, time
-from zoneinfo import ZoneInfo
+
+from functions.utils import DAYS, site_opening_hours, site_timezone
+
+_READABLE = re.compile(r"^(closed?|\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2})$", re.IGNORECASE)
 
 
-@func_description("check if the call is within call center hours")
+@func_description("check if the call is within business hours")
 def in_hours(conv: Conversation):
-    # Get configuration
-    config = conv.real_time_config
-    opening_hours = config.get("opening_hours", {})
-    timezone_str = config.get("timezone", "US/Central")
+    """Whether the site is open now, from the `opening_hours` and `timezone` variant
+    attributes. The force_ooh_enabled switch stays in real-time config.
 
-    conv.log.info(
-        "Configuration loaded",
-        config_keys=list(config.keys()) if config else [],
-        opening_hours_keys=list(opening_hours.keys()) if opening_hours else [],
-        timezone=timezone_str,
-    )
-
-    # Check if out-of-hours is force enabled
-    if config.get("settings", {}).get("force_ooh_enabled", False):
+    Blank or unreadable hours count as open: onboarding leaves `opening_hours` blank when
+    it can't check them, and many field service lines take calls around the clock, so a
+    caller is never shut out on hours nobody has set."""
+    settings = (conv.real_time_config or {}).get("settings", {})
+    if settings.get("force_ooh_enabled", False):
         conv.log.info("Force OOH enabled")
         return False
 
-    if not opening_hours:
+    opening_hours = site_opening_hours(conv)
+    if not any(_READABLE.match(v.strip()) for v in opening_hours.values()):
         conv.log.warning(
-            "opening_hours missing from real_time_config, treating as out of hours"
+            "opening_hours variant attribute is blank or unreadable, treating as open"
         )
-        # Default to out of hours if config is missing
+        return True
+
+    timezone_name, timezone = site_timezone(conv)
+    now = conv.state.datetime_now.astimezone(timezone)
+    today = now.date().isoformat()
+    hours_str = opening_hours.get(today) or opening_hours.get(
+        DAYS[now.weekday()], "closed"
+    )
+    conv.log.info(
+        "Hours for today", date=today, hours=hours_str, timezone=timezone_name
+    )
+
+    if hours_str.strip().lower() in ("closed", "close"):
         return False
 
     try:
-        timezone = ZoneInfo(timezone_str)
-    except Exception as e:
-        conv.log.warning(
-            "Invalid timezone in config", timezone=timezone_str, error=str(e)
+        start_str, end_str = hours_str.split("-")
+        start_hour, start_minute = map(int, start_str.strip().split(":"))
+        end_hour, end_minute = map(int, end_str.strip().split(":"))
+        start = datetime.combine(
+            now.date(), time(start_hour, start_minute), tzinfo=timezone
         )
-        timezone = ZoneInfo("US/Central")
-
-    call_center_datetime = conv.state.datetime_now.astimezone(timezone)
-
-    # Map weekday to config key
-    weekday_map = {
-        0: "monday",
-        1: "tuesday",
-        2: "wednesday",
-        3: "thursday",
-        4: "friday",
-        5: "saturday",
-        6: "sunday",
-    }
-
-    # Check for special dates first (holidays, etc.)
-    special_dates = opening_hours.get("special_dates", [])
-    current_date = call_center_datetime.date().isoformat()
-
-    hours_str = None
-    for special_date in special_dates:
-        if special_date.get("date") == current_date:
-            hours_str = special_date.get("hours")
-            conv.log.info(
-                "Using special date hours",
-                date=current_date,
-                special_date_name=special_date.get("special_date_name"),
-                hours=hours_str,
+        if (end_hour, end_minute) in ((0, 0), (24, 0)):
+            end = datetime.combine(now.date(), time(23, 59, 59), tzinfo=timezone)
+        else:
+            end = datetime.combine(
+                now.date(), time(end_hour, end_minute), tzinfo=timezone
             )
-            break
-
-    # If no special date, use weekday schedule
-    if hours_str is None:
-        weekday_key = weekday_map.get(call_center_datetime.weekday())
-        hours_str = opening_hours.get(weekday_key, "closed")
-        conv.log.info(
-            "Using regular weekday hours", weekday=weekday_key, hours=hours_str
-        )
-
-    # Parse hours string
-    if hours_str.lower() in ["closed", "close"]:
-        conv.log.info("Call center is closed for whole day")
-        return False
-
-    # Parse HH:MM-HH:MM format
-    try:
-        start_time_str, end_time_str = hours_str.split("-")
-        start_hour, start_minute = map(int, start_time_str.split(":"))
-        end_hour, end_minute = map(int, end_time_str.split(":"))
-
-        start_time = datetime.combine(
-            call_center_datetime.date(), time(hour=start_hour, minute=start_minute)
-        ).replace(tzinfo=timezone)
-
-        end_time = datetime.combine(
-            call_center_datetime.date(), time(hour=end_hour, minute=end_minute)
-        ).replace(tzinfo=timezone)
-
-        current_time = conv.state.datetime_now.astimezone(timezone)
-
-        is_open = start_time <= current_time < end_time
-
-        conv.log.info(
-            "Hours check result",
-            current_time=current_time.isoformat(),
-            start_time=start_time.isoformat(),
-            end_time=end_time.isoformat(),
-            is_open=is_open,
-        )
-
+        is_open = start <= now < end
+        conv.log.info("Hours check result", now=now.isoformat(), is_open=is_open)
         return is_open
-
     except Exception as e:
         conv.log.warning(
-            "Failed to parse hours string", hours_str=hours_str, error=str(e)
+            "Failed to parse hours string, treating as open",
+            hours_str=hours_str,
+            error=str(e),
         )
-        # Default to out of hours if parsing fails
-        return False
+        return True

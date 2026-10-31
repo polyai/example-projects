@@ -1,9 +1,6 @@
 name: confirm-appointment
 enabled: true
-actions: |-
-  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='CONFIRM_APPOINTMENT'. Do not answer the question.
-
-  Don't say anything, immediately call {{fn:start_confirm_appointment}}
+actions: Don't say anything, immediately call {{fn:start_confirm_appointment}}
 content: |-
   I just wanted to confirm when my next service visit is
   I just wanted to confirm the time of my appointment tomorrow

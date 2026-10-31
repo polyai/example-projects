@@ -1,8 +1,6 @@
 name: technician-eta
 enabled: true
 actions: |-
-  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='GENERAL_QUESTION'. Do not answer the question.
-
   call {{fn:handoff}}
    function with
   'handoff_destination'='CUSTOMER_CARE' and

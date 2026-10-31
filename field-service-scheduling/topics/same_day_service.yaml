@@ -1,22 +1,10 @@
 name: same_day-service
 enabled: true
 actions: |-
-  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='MAKE_APPOINTMENT'. Do not answer the question.
-
-  Ask: "Are you looking for an emergency service or would you like me to book a regular appointment?" If they ask the difference, say "For an emergency service, you'll need immediate assistance, and I would transfer you to a colleague. Alternatively, if you want to book an appointment, I can help you schedule it."
-
-  If they need an emergency service, call {{fn:handoff}} function with
-  'handoff_destination'='CUSTOMER_CARE'  and
-  'handoff_reason'='SAME_DAY_SERVICE' and
-  "handoff_utterance" = "I understand. I'll connect you to a colleague for help with this. One moment please."
-
-  Alternatively, if they want you to book an appointment, immediately call
-  {{fn:start_make_appointment}}
-content: |-
-  I want to make an appointment for today
-  service for today
-  I need someone to handle this situation ASAP
-  I need urgent service
+  Tell them what the content says about emergency service, then ask: "Is this an emergency, or would you like me to book a regular visit?" Regular visits can't be booked for today.
+  If it's an emergency, call {{fn:handoff}} with handoff_destination=CUSTOMER_CARE, handoff_reason=SAME_DAY_SERVICE and handoff_utterance="I understand. I'll connect you to a colleague for help with this. One moment please."
+  If they want a regular visit, call {{fn:start_make_appointment}}.
+content: '{{attr:emergency_service_info}}'
 example_queries:
 - Do you provide same-day or emergency services?
 - same day service

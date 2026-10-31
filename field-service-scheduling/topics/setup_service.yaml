@@ -1,8 +1,6 @@
 name: setup-service
 enabled: true
 actions: |-
-  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='NEW_SALE'. Do not answer the question.
-
   if not clear, make sure to clarify whether they are -interested in setting up a service plan with us - they already are our customer and want to add a new service to their plan, or -they are already a customer and want to schedule a visit (ask it in a very nice way).
 
   ### If they confirm that they are a new customer or that they want to set up a new service for their home, then call {{fn:handoff}} with

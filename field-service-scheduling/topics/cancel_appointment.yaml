@@ -1,9 +1,6 @@
 name: cancel-appointment
 enabled: true
-actions: |-
-  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='CANCEL_APPOINTMENT'. Do not answer the question.
-
-  call {{fn:start_cancel_appointment}}
+actions: call {{fn:start_cancel_appointment}}
 content: ''
 example_queries:
 - I can't make the date of my upcoming appointment and I'd like to cancel it

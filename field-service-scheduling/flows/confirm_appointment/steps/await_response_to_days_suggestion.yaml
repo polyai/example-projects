@@ -1,9 +1,0 @@
-step_type: advanced_step
-name: Await response to days suggestion
-prompt: |-
-  Await the user response.
-
-  If the user agrees to call back later or otherwise acknowledges what you've said about waiting, you MUST immediately call {{ft:customer_ok_to_wait_to_make_next_appointment}} with no spoken output.
-
-  If the user disagrees or wants to schedule an appointment, call the {{fn:handoff}} function with 'handoff_destination'='CUSTOMER_CARE'
-   and "CUSTOMER_WANTS_APPOINTMENT_DAYS_AFTER_PREVIOUS" as the handoff_reason and with "Let me put you through to a colleague who can help" as the handoff_utterance.

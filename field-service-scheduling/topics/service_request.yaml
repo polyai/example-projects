@@ -1,20 +1,10 @@
 name: service-request
 enabled: true
 actions: |-
-  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='MAKE_APPOINTMENT'. Do not answer the question.
-
-  ##If the user mentions a specific service type that is in the service_list below, tell them we handle that and you'd be happy to set up an appointment.
-     - If they want an appointment, call {{fn:start_make_appointment}}
-
-  ##If the service type is not in the service_list, call the {{fn:handoff}} function with
-  'handoff_destination'='CUSTOMER_CARE'
-  'handoff_reason'='SERVICE_NOT_AVAILABLE'
-  "handoff_utterance" = "Unfortunately, we don't handle that service type. I can put you in touch with a colleague for more information."
-
-  service_list:[Plumbing, Electrical, HVAC, Appliance Repair, General Maintenance, Painting, Carpentry, Flooring, Roofing, Landscaping, Cleaning, Window Repair, Door Repair, Fencing, Deck Repair, Pressure Washing, Gutter Cleaning, Drywall Repair, Insulation, Locksmith]
-
-  ##You should treat any questions about a specific job type as an instance of that service type.
-content: ''
+  If the job the caller describes is one of the services we offer (see the content), say we handle that and offer to book a visit. If they want one, call {{fn:start_make_appointment}}.
+  If it isn't one we offer, call {{fn:handoff}} with handoff_destination=CUSTOMER_CARE, handoff_reason=SERVICE_NOT_AVAILABLE and handoff_utterance="Unfortunately, we don't handle that type of job. I can put you in touch with a colleague for more information."
+  Treat a question about a specific job as a question about that type of service.
+content: 'Services we offer: {{attr:services_offered}}'
 example_queries:
 - plumbing
 - electrical work

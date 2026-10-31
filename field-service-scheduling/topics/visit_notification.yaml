@@ -1,7 +1,7 @@
 name: visit-notification
 enabled: true
-actions: '##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent=''GENERAL_QUESTION''. Do not answer the question.'
-content: Of course! We’ll send you a text and an email before your service to make sure it’s fresh on your mind.
+actions: Answer only the part of the content about reminders and updates before the visit.
+content: '{{attr:appointment_window_info}}'
 example_queries:
 - Can you send me a reminder before my appointment?
 - Will I be notified before service is performed?

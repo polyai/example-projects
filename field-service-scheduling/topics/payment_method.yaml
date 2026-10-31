@@ -1,6 +1,6 @@
 name: payment-method
 enabled: true
-actions: '##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent=''GENERAL_QUESTION''. Do not answer the question.'
-content: We accept credit cards and ACH payments.
+actions: Answer only the payment methods part of the content.
+content: '{{attr:payment_info}}'
 example_queries:
 - What payment methods do you accept?

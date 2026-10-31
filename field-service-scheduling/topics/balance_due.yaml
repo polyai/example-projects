@@ -1,9 +1,6 @@
 name: balance-due
 enabled: true
 actions: |-
-  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='BILLING_QUESTION'. Do not answer the question.
-
-
   answer the question and if the user confirms that they want the text with the link, call
   {{fn:start_send_sms}} with sms_id="balance-due"
 content: You can always find real-time payment information in your account. Let me send you a text with your online portal link, where you can check any open invoices. Your username will be your Account Number. Let us know if you need help with it!

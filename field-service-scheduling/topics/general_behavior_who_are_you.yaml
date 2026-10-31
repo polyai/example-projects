@@ -1,7 +1,7 @@
 name: general_behavior-who_are_you
 enabled: true
-actions: ''
-content: Glad you asked. My name's Mia. I'm a virtual assistant, here to help you with anything related to our services. I can manage your appointments and answer all kinds of questions about your service needs. What can I do for you? .
+actions: Introduce yourself by the name in your instructions.
+content: I'm a virtual assistant. I can book, check, move or cancel your visits and answer questions about our services. What can I do for you?
 example_queries:
 - Who am I speaking to?
 - Is this a person?

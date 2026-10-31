@@ -7,4 +7,62 @@ attributes:
     Poly_Services: Poly Services
 - name: phone_number
   values:
-    Poly_Services: ''
+    Poly_Services: (555) 010-0100
+- name: address
+  values:
+    Poly_Services: 100 Congress Avenue, Austin, TX 78701
+- name: address_info
+  values:
+    Poly_Services: Our office is at 100 Congress Avenue in downtown Austin.
+- name: opening_hours
+  values:
+    Poly_Services: |-
+      Monday: 07:00-19:00
+      Tuesday: 07:00-19:00
+      Wednesday: 07:00-19:00
+      Thursday: 07:00-19:00
+      Friday: 07:00-19:00
+      Saturday: 08:00-16:00
+      Sunday: closed
+- name: timezone
+  values:
+    Poly_Services: America/Chicago
+- name: services_offered
+  values:
+    Poly_Services: Plumbing, water heaters, drain cleaning, electrical repairs, HVAC repair and installs, appliance repair and general handyman work. We don't do roofing.
+- name: service_area_info
+  values:
+    Poly_Services: We serve Austin, Round Rock, Cedar Park and Georgetown.
+- name: pricing_info
+  values:
+    Poly_Services: There's an $89 diagnostic fee, waived if you go ahead with the repair. Estimates on installs are free. Seniors and veterans get 10% off.
+- name: emergency_service_info
+  values:
+    Poly_Services: We offer 24/7 emergency service for leaks, no heat and no AC. The after-hours call-out fee is $150.
+- name: payment_info
+  values:
+    Poly_Services: We take credit cards, ACH and checks. Payment is due when the job is done. Financing is available on installs over $1,000.
+- name: customer_portal_url
+  values:
+    Poly_Services: https://www.example-services.com/portal
+- name: service_guarantee_info
+  values:
+    Poly_Services: Our work comes with a 1-year labour warranty, and if the problem comes back within 30 days, the return visit is free.
+- name: service_plans_info
+  values:
+    Poly_Services: Our Comfort Club plan includes two tune-ups a year, priority booking and 15% off repairs.
+- name: appointment_window_info
+  values:
+    Poly_Services: Arrival windows are 9 to 12 or 1 to 4. We text you when the technician is on the way. Most repairs take one to two hours.
+- name: visit_prep_info
+  values:
+    Poly_Services: Someone 18 or over needs to be home to let the technician in, unless the work is all outdoors. Please clear access to the work area and keep pets out of the way.
+- name: cancellation_policy_info
+  values:
+    Poly_Services: You can reschedule or cancel for free up to 24 hours before your visit. Later cancellations are charged a $50 trip fee.
+- name: licensing_info
+  values:
+    Poly_Services: We're licensed and insured. Our Texas license number is TACLA12345C.
+- name: agent_name
+  values:
+    Poly_Services: Mia

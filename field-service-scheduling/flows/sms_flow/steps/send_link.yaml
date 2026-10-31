@@ -1,0 +1,29 @@
+step_type: advanced_step
+name: Send Link
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: true
+  party_size: false
+  precise_date: false
+  relative_date: false
+  single_number: false
+  time: false
+  yes_no: true
+  address: false
+  custom_keywords: []
+dtmf_config:
+  is_enabled: true
+  inter_digit_timeout: 4
+  max_digits: 10
+  end_key: '#'
+  collect_while_agent_speaking: false
+  is_pii: true
+prompt: |-
+  # Text the caller a link
+  1. If they clearly say yes to the number they're calling from, or ask for it, call {{ft:send_link}} with use_calling_number='true'.
+  2. Whenever they say any digits, call {{ft:send_link}} with them, as they said them (words or digits), before you reply, even if the number sounds incomplete: the tool decides whether to read it back or ask again. Never read a number back yourself, and never guess or pad digits.
+  3. After the readback, ask the yes-or-no question the tool gives and wait for the answer. A clear yes → {{ft:send_link}} with number_confirmed='true'; a corrected number → {{ft:send_link}} with the new number. 'Okay', 'mm-hm', 'sure, whatever', silence or a question is not a yes: ask the yes-or-no question again.
+  4. If they no longer want the text, say that's fine and ask if there's anything else.
+  5. Follow the NEXT line of the latest tool response; the tool owns retries and transfers.

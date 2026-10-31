@@ -5,32 +5,14 @@
     "flow_overrides": {
       "sms_flow": {
         "steps": {
-          "Collect SMS Number": {
-            "eager_final": false
-          },
-          "Readback SMS Number": {
-            "eager_final": false
-          },
-          "Should Collect SMS Number": {
+          "Send Link": {
             "eager_final": false
           }
         }
       },
-      "verify_user": {
+      "verify_caller": {
         "steps": {
-          "Ask if account under different number": {
-            "eager_final": false
-          },
-          "Collect associated phone number": {
-            "eager_final": false
-          },
-          "Collect zip code": {
-            "eager_final": false
-          },
-          "Readback number": {
-            "eager_final": false
-          },
-          "Should collect phone number": {
+          "Verify Caller": {
             "eager_final": false
           }
         }
@@ -52,38 +34,20 @@
     "flow_overrides": {
       "sms_flow": {
         "steps": {
-          "Collect SMS Number": {
-            "is_enabled": false
-          },
-          "Readback SMS Number": {
-            "is_enabled": false
-          },
-          "Should Collect SMS Number": {
+          "Send Link": {
             "is_enabled": false
           }
         }
       },
-      "verify_user": {
+      "verify_caller": {
         "steps": {
-          "Ask if account under different number": {
-            "is_enabled": false
-          },
-          "Collect associated phone number": {
-            "is_enabled": false
-          },
-          "Collect zip code": {
-            "is_enabled": false
-          },
-          "Readback number": {
-            "is_enabled": false
-          },
-          "Should collect phone number": {
+          "Verify Caller": {
             "is_enabled": false
           }
         }
       }
     },
-    "is_enabled": false,
+    "is_enabled": true,
     "trigger": {
       "speech_threshold": 0.6,
       "speech_window_ms": 100
@@ -96,39 +60,15 @@
     "flow_overrides": {
       "sms_flow": {
         "steps": {
-          "Collect SMS Number": {
-            "threshold": 0.6,
-            "timeout_ms": 2000
-          },
-          "Readback SMS Number": {
-            "threshold": 0.6,
-            "timeout_ms": 2000
-          },
-          "Should Collect SMS Number": {
+          "Send Link": {
             "threshold": 0.6,
             "timeout_ms": 2000
           }
         }
       },
-      "verify_user": {
+      "verify_caller": {
         "steps": {
-          "Ask if account under different number": {
-            "threshold": 0.6,
-            "timeout_ms": 2000
-          },
-          "Collect associated phone number": {
-            "threshold": 0.6,
-            "timeout_ms": 2000
-          },
-          "Collect zip code": {
-            "threshold": 0.6,
-            "timeout_ms": 2000
-          },
-          "Readback number": {
-            "threshold": 0.6,
-            "timeout_ms": 2000
-          },
-          "Should collect phone number": {
+          "Verify Caller": {
             "threshold": 0.6,
             "timeout_ms": 2000
           }
@@ -150,7 +90,7 @@
   },
   "prompts": {
     "silence": "The user is silent.",
-    "step_footer": "Make sure to address any question the user asks before proceeding.\nAlways collect all required pieces of information from the user before proceeding.\nIf you already said you are waiting for the user to find the requested information and the user remains silent or asks for more time to find required information, continue calling the wait function. Do not continue the conversation or re-prompt them unless they give you new input. Be patient and do not repeat your question while waiting.\n\nRemember to be conversational and brief."
+    "step_footer": "Answer any question the caller asks before carrying on.\nUse what the caller has already told you; never ask for it again.\nIf the caller needs time to find something, call the wait function and stay quiet until they speak.\n\nBe conversational and brief."
   },
   "smart_vad": {
     "is_enabled": true,
@@ -161,26 +101,14 @@
     "flow_overrides": {
       "sms_flow": {
         "steps": {
-          "Collect SMS Number": {
-            "vad_end": 1600
-          },
-          "Should Collect SMS Number": {
+          "Send Link": {
             "vad_end": 1600
           }
         }
       },
-      "verify_user": {
+      "verify_caller": {
         "steps": {
-          "Ask if account under different number": {
-            "vad_end": 1600
-          },
-          "Collect associated phone number": {
-            "vad_end": 1600
-          },
-          "Collect zip code": {
-            "vad_end": 1600
-          },
-          "Should collect phone number": {
+          "Verify Caller": {
             "vad_end": 1600
           }
         }

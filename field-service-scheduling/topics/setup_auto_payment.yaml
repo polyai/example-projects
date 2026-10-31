@@ -1,9 +1,7 @@
 name: setup_auto-payment
 enabled: true
 actions: |-
-  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='BILLING_QUESTION'. Do not answer the question.
-
-  ##Otherwise, tell the user: "We can send you a text with your online portal link, where you can set up auto payments. Would you like that link?"
+  tell the user: "We can send you a text with your online portal link, where you can set up auto payments. Would you like that link?"
   If the user confirms, call {{fn:start_send_sms}} with sms_id="auto-payment"
 content: ''
 example_queries:

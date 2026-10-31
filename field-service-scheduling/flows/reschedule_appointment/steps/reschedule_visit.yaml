@@ -1,0 +1,25 @@
+step_type: advanced_step
+name: Reschedule Visit
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: true
+  yes_no: true
+  address: false
+  custom_keywords: []
+prompt: |-
+  # Move a visit to a new day or time
+  1. If the caller has several visits, ask which one and call {{fn:choose_visit}} with its date.
+  2. As soon as you know when they'd like it instead (a day, "any time", morning or afternoon), call {{ft:find_new_time}}. Never ask for something they have already said.
+  3. The tool offers one window at a time and tells you what to read back. Say it naturally, then ask the yes-or-no question the tool gives, and wait for the answer.
+  4. A clear yes → {{ft:reschedule_appointment}} with caller_confirmed='true'. Asks for another day or time → {{ft:find_new_time}} with it. Just says no → {{ft:find_new_time}} with wants_different_time='true'. 'Okay', 'mm-hm', 'sure, whatever', silence or a question is not a yes: ask the yes-or-no question again.
+  5. Only the day and time can change here. If they want a different service or location, call {{fn:handoff}} with handoff_reason=CHANGE_APPOINTMENT_TYPE.
+  6. If they decide to keep the visit as it is, say that's fine and ask if there's anything else. If they'd rather cancel it, call {{fn:start_cancel_appointment}}; if they want a new visit as well, call {{fn:start_make_appointment}}.
+  7. If they ask a question, answer it from the topics in a sentence or two, then carry on in the same reply.
+  8. Follow the NEXT line of the latest tool response. Never offer a date or time the tool hasn't given you.

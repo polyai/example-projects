@@ -1,7 +1,7 @@
 name: payment-time
 enabled: true
-actions: '##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent=''GENERAL_QUESTION''. Do not answer the question.'
-content: Payment occurs after your service is completed
+actions: Answer only the part of the content about when payment is due.
+content: '{{attr:payment_info}}'
 example_queries:
 - When does payment occur?
 - when I'll pay for my services.

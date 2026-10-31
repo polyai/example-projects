@@ -1,11 +1,7 @@
 name: visits-duration
 enabled: true
-actions: |-
-  Be mindful to not confuse this faq with when the user is asking about the appointment time
-  or the approximate time of visit, in which case you should confirm their appointment details by
-  calling {{fn:start_confirm_appointment}}.
-  If the user is asking about how long the service visit takes (duration), call {{fn:handle_faq}} with answer="For regular service visits, appointments usually take 20-40 minutes, depending on the scope of work."
-content: ''
+actions: Answer only the part of the content about how long a visit takes. If the caller is really asking when their visit is (not how long it takes), call {{fn:start_confirm_appointment}} instead.
+content: '{{attr:appointment_window_info}}'
 example_queries:
 - How long will the appointment take?
 - How long does a visit take?

@@ -1,6 +1,0 @@
-step_type: advanced_step
-name: Ask if ready for account number
-prompt: |-
-  Ask the user, "Do you want me to give you the number now, or should I wait while you grab a pen?"
-
-  Once the user is ready, call {{ft:recite_account_number}}

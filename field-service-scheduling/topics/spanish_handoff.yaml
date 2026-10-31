@@ -1,8 +1,6 @@
 name: spanish-handoff
 enabled: true
 actions: |-
-  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='SPANISH'. Do not answer the question.
-
   if the user wants to talk to a live agent, call {{fn:handoff}}
    function with
   'handoff_destination'='SPANISH' and

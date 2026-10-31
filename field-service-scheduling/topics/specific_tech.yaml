@@ -1,6 +1,6 @@
 name: specific-tech
 enabled: true
-actions: '##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent=''GENERAL_QUESTION''. Do not answer the question.'
+actions: ''
 content: While we don’t currently offer that option, you’re in great hands with any of our Field Experts. They’re trained daily to ensure top-notch service and consistent results!
 example_queries:
 - Can I schedule with a specific tech?

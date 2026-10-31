@@ -1,9 +1,6 @@
 name: reschedule-appointment
 enabled: true
-actions: |-
-  ##If routing is enabled (routing_enabled is {{vrbl:routing_enabled}}), immediately call {{fn:route_call}} with caller_intent='MODIFY_APPOINTMENT'. Do not answer the question.
-
-  don't say anything, immediately call the function {{fn:start_reschedule_appointment}}
+actions: don't say anything, immediately call the function {{fn:start_reschedule_appointment}}
 content: |-
   It looks like someone is supposed to come by on Thursday for my regular visit, but I can't do that day anymore. Is it possible to change it now?
    can I change what day the technician comes?

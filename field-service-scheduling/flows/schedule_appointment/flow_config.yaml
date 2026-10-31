@@ -1,3 +1,3 @@
 name: schedule_appointment
-description: create an appointment for an existing user
-start_step: Collect appointment details
+description: Book a technician visit. The entry step checks the caller is verified; one Schedule Visit step takes the problem, where it is and when suits in any order, offers one arrival window at a time and books it. Slot rules, readbacks and the booking check live in the two tools.
+start_step: schedule_entry

@@ -2,10 +2,10 @@ from _gen import *  # <AUTO GENERATED>
 
 
 @func_description(
-    "you misunderstood the user's original intent and now need to apologise and back out of the collection flow that you are in"
+    "You misunderstood what the caller wants, or they no longer want the task you're on: leave it and ask what they need."
 )
 def backout(conv: Conversation):
     conv.exit_flow()
     conv.write_metric("ESCAPED_PRIMARY_INTENT", None)
-    return """Say: "Sorry! What can I do for you today?"
-  """
+    conv.state.task = ""
+    return 'Say: "Sorry about that! What can I do for you?"'

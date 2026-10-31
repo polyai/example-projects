@@ -1,9 +1,0 @@
-step_type: advanced_step
-name: Ask subscription type
-prompt: |-
-  These are the subscription types: $subscriptions
-
-  If the user says it's for their regular service subscription, that is the same as for their quarterly/monthly/bimonthly maintenance subscription.
-
-  Once the user has given their subscription type, call
-  {{ft:select_subscription_type}}

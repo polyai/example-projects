@@ -1,20 +1,30 @@
 from _gen import *  # <AUTO GENERATED>
-from functions.start_verify_user import start_verify_user
+from functions import idnv
 
 
-@func_description("start get account number")
+def account_number_instruction(conv) -> str:
+    customer = idnv.customer(conv) or {}
+    number = str(customer.get("account_number") or "")
+    if not number:
+        return "There's no account number on file to give. Say so and ask if there's anything else."
+    conv.write_metric("ACCOUNT_NUMBER_GIVEN")
+    words = " ".join(
+        ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"][int(d)]
+        for d in number
+        if d.isdigit()
+    )
+    return (
+        f'Tell the caller their account number is "{words}", one digit at a time, and offer to '
+        "repeat it while they write it down."
+    )
+
+
+@func_description("The caller wants to know their account number.")
 def start_get_account_number(conv: Conversation):
-    # In-hours guard: route to queue instead of handling request
-    if conv.state.routing_enabled:
-        return conv.functions.route_call("GENERAL_QUESTION")
-    conv.state.call_intent = "get_account_number"
     conv.write_metric("PRIMARY_INTENT", "GET_ACCOUNT_NUMBER")
-    if not conv.state.user_verified:
-        return start_verify_user(conv)
-    else:
-        return {
-            "transition": {
-                "goto_flow": "verify_user",
-                "goto_step": "Ask if ready for account number",
-            }
-        }
+    gate = idnv.require(conv, "account_number")
+    if gate:
+        return gate
+    if conv.current_flow:  # leave the task the caller switched away from
+        conv.exit_flow()
+    return account_number_instruction(conv)
