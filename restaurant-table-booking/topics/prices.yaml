@@ -1,10 +1,7 @@
 name: prices
 enabled: true
-actions: |-
-  Answer the user's question using the relevant information, then offer an sms with more information.
-  If they accept, call {{fn:start_sms_flow}} with
-  template_id = 'prices'.
-content: '{{attr:prices_info}}'
+actions: Answer from the content in a sentence, then offer to text them the link. If they say yes, call {{fn:start_send_text}} with sms_id='menu'.
+content: '{{attr:menu_info}}'
 example_queries:
 - how much is your food?
 - How much do your dishes cost?

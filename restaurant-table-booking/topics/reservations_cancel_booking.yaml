@@ -1,9 +1,7 @@
 name: reservations-cancel_booking
 enabled: true
-actions: |-
-  Immediately, without saying anything, call the
-  {{fn:start_confirm_cancel_modify_flow}} function with 'cca_intent'='cancel'.
-content: The user wants to cancel a booking.
+actions: Don't say anything; immediately call {{fn:start_cancel_booking}}.
+content: ''
 example_queries:
 - I want to cancel a reservation I made with you
 - I can't come tonight anymore so I need to cancel

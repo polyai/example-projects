@@ -1,0 +1,3 @@
+name: cancel_reservation
+description: Cancel an upcoming booking. The entry step checks ID&V, picks the booking and reads it back; the Cancel Booking step cancels it on a yes. settings.cancel_booking_flow_enabled set to false in real-time config sends cancellations to the team instead.
+start_step: cancel_entry

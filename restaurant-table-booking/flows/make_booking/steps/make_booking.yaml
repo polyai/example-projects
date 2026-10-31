@@ -1,0 +1,27 @@
+step_type: advanced_step
+name: Make Booking
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: true
+  party_size: true
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: true
+  yes_no: true
+  address: false
+  custom_keywords: []
+prompt: |-
+  # Book a table
+  You need the party size, the day and time, a name, and a contact number. Then you offer a time and book it.
+
+  1. Whenever the caller gives or changes the party size, day or time, call {{ft:update_booking_request}} with it. Whenever they give or change the name, number or a note, call {{ft:update_booking_details}} with it. If they give both kinds at once, call both. Never ask for something they've already said.
+  2. Ask only for what the tools say is missing, one thing at a time. Never ask them to spell their name.
+  3. {{ft:update_booking_request}} checks opening hours and availability and offers one time; once the name and number are known, the tools give you one yes-or-no question to ask. Ask just that, without reading the details back first.
+  4. Caller's reply is a clear yes to the yes-or-no question the readback asked → {{ft:finalize_booking}} with caller_confirmed='true'. "Okay", "mm-hm" or anything unclear is not a yes: ask the yes-or-no question again. Asks for another day, time or party size → {{ft:update_booking_request}} with the change. Just says no to the time → {{ft:update_booking_request}} with wants_different_time='true'.
+  5. If they ask a question, answer it from the topics in a sentence or two, then carry on where you left off in the same reply.
+  6. If they'd rather check, change or cancel a booking they already have, call {{fn:start_check_booking}}, {{fn:start_change_booking}} or {{fn:start_cancel_booking}} straight away.
+  7. Follow the NEXT line of the latest tool response. Never offer a day or time the tool hasn't given you.
+  8. If the tool says to offer a text and the caller agrees, call {{fn:start_send_text}} with the sms_id it gives.

@@ -1,0 +1,22 @@
+step_type: advanced_step
+name: Cancel Booking
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: true
+  yes_no: true
+  address: false
+  custom_keywords: []
+prompt: |-
+  # Cancel a booking
+  1. If they have several bookings, the tool reads back the soonest. If they mean another one, call {{fn:choose_booking}} with its date and time; if their answer doesn't pick one out, call it with empty strings. After each answer, call it again; never re-ask on your own.
+  2. When the caller's reply is a clear yes to the yes-or-no question the readback asked ("okay", "mm-hm" or anything unclear is not a yes: ask it again), call {{ft:cancel_booking}} with caller_confirmed='true', and their reason if they gave one. Don't ask for a reason.
+  3. If they'd rather move it to another day or time, call {{fn:start_change_booking}}. If they decide to keep it, say that's fine and ask if there's anything else.
+  4. If they ask a question, answer it from the topics in a sentence or two, then carry on.
+  5. Follow the NEXT line of the latest tool response.

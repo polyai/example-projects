@@ -1,12 +1,7 @@
 name: late
 enabled: true
-actions: |-
-  If user says they will be MORE THAN 15 minutes late, immediately, without saying anything, call  {{fn:try_transfer_call}}with
-  "handoff_reason" = "late" and
-  "handoff_utterance" = "In that case I'll put you through to the restaurant. One moment"
-
-  If they are NOT going to be more than 15 minutes late say "Is there anything else I can help you with?"
-content: We can hold your reservation for up to 15 minutes, but after that we may have to give the table to another party. Do you think you'll be more than 15 minutes late?
+actions: Tell the caller how long we hold a table, from the content. If they'll be later than that, offer to move their booking to a later time (call {{fn:start_change_booking}}) or to put them through to the team (call {{fn:handoff}} with handoff_reason=RUNNING_LATE).
+content: '{{attr:late_arrival_info}}'
 example_queries:
 - If we show up 10 minutes late, what happens?
 - If we are 10 minutes late, what happens?

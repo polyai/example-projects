@@ -1,0 +1,3 @@
+name: change_booking
+description: Change the day, time, party size or note on an upcoming booking. The entry step checks ID&V and picks the booking; one Change Booking step takes the change, which the tools re-check against opening hours and availability, read back (only what changed) and save.
+start_step: change_entry

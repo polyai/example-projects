@@ -1,31 +1,25 @@
 sms_templates:
 - name: take_out
-  text: ${variant_take_out_sms}
+  text: Thanks for calling {{vrbl:site_name}}! {{vrbl:sms_info}}
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+12015550100'
-- name: prices
-  text: ${variant_prices_sms}
-  env_phone_numbers:
-    sandbox: ''
-    pre_release: ''
-    live: '+12015550100'
+    live: '+15550100100'
 - name: menu
-  text: ${variant_menu_sms}
+  text: Thanks for calling {{vrbl:site_name}}! {{vrbl:sms_info}}
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+12015550100'
-- name: email
-  text: ${variant_email_sms}
-  env_phone_numbers:
-    sandbox: ''
-    pre_release: ''
-    live: '+12015550100'
+    live: '+15550100100'
 - name: large_party
-  text: ${variant_large_party_sms}
+  text: Thanks for calling {{vrbl:site_name}}! {{vrbl:sms_info}}
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
-    live: '+12015550100'
+    live: '+15550100100'
+- name: private_dining
+  text: Thanks for calling {{vrbl:site_name}}! {{vrbl:sms_info}}
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+15550100100'

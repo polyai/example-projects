@@ -1,3 +1,3 @@
 name: make_booking
-description: Help the user to make a new reservation
-start_step: Collect booking info
+description: Book a table. One Make Booking step takes the party size, day, time, name and contact number in any order, offers one time at a time and books it on a yes. Opening hours, availability, the party size limit and the readback are checked in the two tools. No ID&V is needed for a new booking.
+start_step: booking_entry

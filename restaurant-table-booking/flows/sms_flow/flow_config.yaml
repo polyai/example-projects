@@ -1,3 +1,3 @@
 name: sms_flow
-description: The user can receive SMS about bookings or FAQs
-start_step: check_user_number
+description: Text the caller a link from config/sms_templates.yaml (menu, takeout, private dining, group booking form). One Send Text step settles the number (the calling number, or one the caller gives and confirms after a readback) and sends it.
+start_step: Send Text

@@ -1,11 +1,7 @@
-import time
-
 from _gen import *  # <AUTO GENERATED>
 
 
-@func_description(
-    "End the conversation by hanging up on the user - do not use if transferring"
-)
+@func_description("End the call after saying goodbye.")
 def hangup(conv: Conversation):
-    time.sleep(3)
-    return {"hangup": True}
+    conv.state.call_outcome = conv.state.call_outcome or "CONTAINED"
+    return {"utterance": "Thanks for calling, goodbye!", "hangup": True}

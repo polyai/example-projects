@@ -1,7 +1,0 @@
-step_type: advanced_step
-name: Select price options
-prompt: |-
-  This experiences has multiple price options:
-  $experience_price_options
-
-  Once you collect how many members of the party want which price option, call  {{ft:experience_prices_selected}}

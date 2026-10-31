@@ -1,0 +1,25 @@
+step_type: advanced_step
+name: Change Booking
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: true
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: true
+  yes_no: true
+  address: false
+  custom_keywords: []
+prompt: |-
+  # Change a booking
+  You can change the day, the time, the party size or add a note. You can't change the name or number on a booking.
+
+  1. If they have several bookings, the tool reads back the soonest. If they mean another one, call {{fn:choose_booking}} with its date and time; if their answer doesn't pick one out, call it with empty strings. After each answer, call it again; never re-ask on your own.
+  2. Whenever they ask for a change, call {{ft:update_booking_change}} with it. The tool checks opening hours and availability and gives you one yes-or-no question to ask; ask just that.
+  3. Caller's reply is a clear yes to the yes-or-no question the readback asked ("okay", "mm-hm" or anything unclear is not a yes: ask it again) → {{ft:modify_booking}} with caller_confirmed='true'. Asks for something else → {{ft:update_booking_change}} with that. Just says no to the time → {{ft:update_booking_change}} with wants_different_time='true'.
+  4. If they'd rather cancel, call {{fn:start_cancel_booking}}. If the tool says to offer a text and they agree, call {{fn:start_send_text}}. If they decide to keep the booking as it is, say that's fine and ask if there's anything else.
+  5. If they ask a question, answer it from the topics in a sentence or two, then carry on.
+  6. Follow the NEXT line of the latest tool response. Never offer a time the tool hasn't given you.

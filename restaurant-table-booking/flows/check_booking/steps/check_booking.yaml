@@ -1,0 +1,22 @@
+step_type: advanced_step
+name: Check Booking
+asr_biasing:
+  is_enabled: true
+  alphanumeric: false
+  name_spelling: false
+  numeric: false
+  party_size: false
+  precise_date: true
+  relative_date: true
+  single_number: false
+  time: true
+  yes_no: true
+  address: false
+  custom_keywords: []
+prompt: |-
+  # Check a booking
+  1. If they have several bookings, the tool reads back the soonest. If they mean another one, call {{fn:choose_booking}} with its date and time; if their answer doesn't pick one out, call it with empty strings. After each answer, call it again; never re-ask on your own.
+  2. Read the booking back as the tool says. Don't add anything the tool didn't give you.
+  3. To change the day, time, party size or add a note, call {{fn:start_change_booking}}. To cancel it, call {{fn:start_cancel_booking}}. For another table, call {{fn:start_make_booking}}.
+  4. If they ask a question, answer it from the topics in a sentence or two.
+  5. Follow the NEXT line of the latest tool response.

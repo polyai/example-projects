@@ -1,24 +1,27 @@
 phrase_filtering:
-- name: transfer_call
-  regular_expressions:
-  - ([Ll]et me|I'll|I will|while I|need to|I can) (put you through|transfer you|connect you|hand you over)
-  - '[Pp]lease hold\.'
-  - (I can't|I cannot|unable to|not able to|capacity to|ability to) (transfer|connect|put you through)
-  say_phrase: false
-  function: transfer_call_no_arg
 - name: tool call hallucinations
+  description: Agent narrated a tool call instead of making it; nudge it to call the tool
   regular_expressions:
-  - \[
-  - I will check availability
-  - '[Ll]et me confirm'
-  - '[Ll]et me check'
-  - '[Oo]ne moment'
   - <call
+  - '[Ll]et me check'
+  - '[Ll]et me confirm'
   say_phrase: false
   function: handle_hallucinated_tool_call
 - name: goodbye
-  description: goodbye
+  description: When we say goodbye, hang up
   regular_expressions:
-  - Goodbye
+  - ([Gg]ood)?[Bb]ye\b
+  - have (a good|a great|a wonderful|a fantastic|a lovely|an excellent) ?(rest of (the|your))? ?(day|evening|night)
   say_phrase: true
   function: hangup
+- name: try_handoff
+  description: The agent said it is transferring the caller but didn't call handoff
+  regular_expressions:
+  - handoff_reason
+  - '[Ll]et me (transfer|put) you'
+  - I'll (transfer|put) you (through|over)
+  - Transferring you
+  - '[Pp]lease hold the line'
+  - (unable to|cannot|can't|not able to) (transfer|put you through)
+  say_phrase: false
+  function: handoff_no_arg

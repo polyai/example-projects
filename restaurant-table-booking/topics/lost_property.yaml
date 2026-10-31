@@ -1,10 +1,6 @@
 name: lost_property
 enabled: true
-actions: |-
-  Immediately, without saying anything, call  {{fn:try_transfer_call}} with
-  "handoff_reason" = "lost_property" and
-  "handoff_utterance" = "Sure, let me hand you over to my colleague who can help with that, I'll transfer you now." and
-  "handoff_to" = "default"
+actions: Call {{fn:handoff}} with handoff_reason=LOST_PROPERTY and handoff_utterance="Let me put you through to the team, who can check for you. One moment please."
 content: ''
 example_queries:
 - I think I left something in the restaurant

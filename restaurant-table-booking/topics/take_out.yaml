@@ -1,9 +1,6 @@
 name: take_out
 enabled: true
-actions: |-
-  Answer the user's question using the relevant information, then offer an sms with more information.
-  If they accept, call {{fn:start_sms_flow}} with
-  template_id = 'take_out'.
+actions: Answer from the content in a sentence, then offer to text them the link. If they say yes, call {{fn:start_send_text}} with sms_id='take_out'.
 content: '{{attr:take_out_info}}'
 example_queries:
 - Can i place an order for pickup?

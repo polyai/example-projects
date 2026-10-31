@@ -1,0 +1,3 @@
+name: check_booking
+description: Read back an upcoming booking. The entry step checks ID&V (caller ID, or phone and name) and picks the booking; the Check Booking step answers questions about it and hands over to change or cancel.
+start_step: check_entry
