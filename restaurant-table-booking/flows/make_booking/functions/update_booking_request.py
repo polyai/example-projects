@@ -1,7 +1,6 @@
-from functions.handoff import handoff
-
 from _gen import *  # <AUTO GENERATED>
 from functions import bookings, idnv
+from functions.handoff import handoff
 
 READBACK_KEY = "new_booking"
 

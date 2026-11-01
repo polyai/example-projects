@@ -1,6 +1,5 @@
-from functions.end_call import GOODBYE
-
 from _gen import *  # <AUTO GENERATED>
+from functions.end_call import GOODBYE
 
 
 @func_description(

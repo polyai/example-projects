@@ -1,3 +1,4 @@
+from _gen import *  # <AUTO GENERATED>
 from flows.make_booking.functions.update_booking_request import (
     booking_request,
     next_step,
@@ -5,10 +6,8 @@ from flows.make_booking.functions.update_booking_request import (
     request_state,
     save,
 )
-from functions.handoff import handoff
-
-from _gen import *  # <AUTO GENERATED>
 from functions import bookings, idnv
+from functions.handoff import handoff
 
 MAX_UNCLEAR_PHONE = 3
 

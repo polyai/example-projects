@@ -1,8 +1,7 @@
-from functions.handoff import handoff
-
 from _gen import *  # <AUTO GENERATED>
 from flows.cancel_reservation.functions.cancel_booking import cancellation_enabled
 from functions import idnv
+from functions.handoff import handoff
 
 
 @func_description("The caller wants to cancel a booking they already have.")
