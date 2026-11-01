@@ -1,11 +1,10 @@
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
-from functions.in_hours import in_hours
-from functions.utils import variant_timezone
-
 from _gen import *  # <AUTO GENERATED>
 from functions import api_client, idnv
+from functions.in_hours import in_hours
+from functions.utils import variant_timezone
 
 
 def set_time(conv: Conversation):

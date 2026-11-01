@@ -1,7 +1,6 @@
-from functions.handoff import handoff
-
 from _gen import *  # <AUTO GENERATED>
 from functions import idnv, orders
+from functions.handoff import handoff
 
 COLLEAGUE_LINE = (
     "I've found your order, but a colleague will need to help you with it. One moment while I "
