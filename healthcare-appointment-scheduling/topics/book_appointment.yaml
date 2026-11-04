@@ -1,21 +1,16 @@
 name: book_appointment
 enabled: true
 actions: |-
-  1. [caller asks to book, schedule, or see a doctor or a named provider, including because of a
-     symptom, a work injury or an accident] Call {{fn:start_booking_flow}}.
-  2. [the caller describes a minor symptom that the walk-ins topic lists as walk-in eligible]
-     Mention briefly that walk-ins are available for that, then call {{fn:start_booking_flow}}
-     unless they say they'd rather walk in.
-content: Handles appointment booking requests, including when callers ask to see a specific provider by name (e.g. "I need an appointment with Dr. Smith", "I'd like to see my doctor"). Any request to book, schedule, or see a doctor or provider is a booking request.
+  1. [wants to book, schedule, or see a doctor or their provider, including about a symptom, a work injury or an accident] Call {{fn:start_booking_flow}}.
+  2. [has never been a patient here] Call {{fn:handoff}} with reason="NEW_PATIENT".
+  3. [wants to see a different provider from their own, or a specialist, a procedure, or a vaccine-only or lab-only visit] "Our scheduling team can help with that. Would you like me to put you through?" If yes, call {{fn:handoff}} with reason="SCHEDULING".
+content: Existing patients can book a sick visit, a follow-up or a wellness check with their own provider by phone, from tomorrow, once they've confirmed who they are.
 example_queries:
 - I'd like to schedule an appointment
 - Can I book an appointment?
 - I need to see a doctor.
 - I'd like to schedule due to a work injury
 - I want like to schedule an appointment due to an auto accident
-- I have a cough
-- I'm not feeling well
-- I have a sore throat
 - I have a headache and need to be seen
 - I need to see my doctor about a rash
 - I've been feeling dizzy and want to schedule something

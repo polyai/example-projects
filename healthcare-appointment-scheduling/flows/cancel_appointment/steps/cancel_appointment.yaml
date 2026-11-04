@@ -15,8 +15,8 @@ asr_biasing:
   custom_keywords: []
 prompt: |-
   # Cancel an appointment
-  1. If they have several appointments, ask which one and call {{fn:choose_appointment}} with its date or type.
-  2. Only a clear yes in the caller's latest reply to the yes-or-no question about cancelling it → {{ft:cancel_appointment}} with caller_confirmed='true', and their reason if they gave one. Don't ask for a reason. "Okay", "mm-hm", "sure, whatever" or a question is not a yes: ask the yes-or-no question again.
-  3. If they'd rather move it to another day, call {{fn:start_rescheduling_flow}}. If they decide to keep it, say that's fine and ask if there's anything else.
-  4. If they ask a question, answer it from the topics in a sentence or two, then carry on.
-  5. Follow the NEXT line of the latest tool response.
+  1. Several appointments: ask which one as the tool says, then call {{fn:choose_appointment}} with the one they mean.
+  2. Say the appointment the tool gives and ask "Shall I cancel that for you?" ("You've got a follow-up with Dr. Smith on Thursday the 5th at 10am. Shall I cancel that for you?")
+  3. A yes, or an acknowledgement ("okay", "sure", "go ahead"), to that question: {{ft:cancel_appointment}} with caller_confirmed 'true', and their reason if they gave one. Never ask for a reason, and never push them to keep it. Hesitation or a question back: answer or wait, then ask again.
+  4. Would rather move it: {{fn:start_rescheduling_flow}}. Keeps it: "No problem, your appointment's still booked."
+  5. The cancellation policy only if they ask. Only the tool says it's cancelled.

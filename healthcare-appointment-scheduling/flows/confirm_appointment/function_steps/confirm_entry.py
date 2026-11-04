@@ -1,11 +1,11 @@
 from _gen import *  # <AUTO GENERATED>
-from functions import appointments, idnv
+from functions import appointments
 
 
 def confirm_entry(conv: Conversation, flow: Flow):
     """Entry gate: verify, then look up the caller's upcoming appointments."""
     conv.state.task = "confirm"
-    gate = idnv.require(conv, "confirm_appointment", strength=idnv.STRICT)
+    gate = appointments.gate(conv, "confirm_appointment")
     if gate:
         return gate
 
@@ -16,7 +16,7 @@ def confirm_entry(conv: Conversation, flow: Flow):
     if appt:
         conv.write_metric("CONFIRM_FLOW_COMPLETED")
         return (
-            f"Read the appointment back in one natural sentence: {appointments.describe(appt, conv)}. "
-            "Then ask if there's anything else you can help with."
+            f'{picked} Say it in one natural sentence ("You\'ve got {appointments.describe(appt, conv)}."), '
+            'adding nothing else, then ask "Is there anything you\'d like to change?"'
         )
     return picked

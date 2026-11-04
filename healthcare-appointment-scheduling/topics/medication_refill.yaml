@@ -1,6 +1,10 @@
 name: medication_refill
 enabled: true
-actions: 1. [asks for a prescription refill] Share the refill info from content. If they'd rather speak to someone, call {{fn:handoff}} with reason="SCHEDULING" and utterance="Let me transfer you to our team to help with your refill. Putting you through now."
+actions: |-
+  Answer only what was asked, in one or two sentences. Never take a refill request yourself or give advice about a medicine.
+  1. [wants a refill] Say the pharmacy or the patient portal can send the request, and to allow 2 business days, from content.
+  2. [has run out of something they need today] "I'm not able to give medical advice, but our nurse can help. Shall I put you through?" If yes, call {{fn:handoff}} with reason="SAME_DAY_TRIAGE".
+  3. [asks about a dose, side effects or mixing medicines] "I'm not able to give medical advice, I'm afraid, but our nurse can help with that. Shall I put you through?" If yes, call {{fn:handoff}} with reason="MEDICATION_QUESTION".
 content: |-
   {{attr:prescription_refill_info}}
 
@@ -11,3 +15,5 @@ example_queries:
 - How do I refill my prescription?
 - Need a medication refill
 - Prescription refill request
+- Can I take ibuprofen with my blood pressure tablets?
+- What dose should I take?

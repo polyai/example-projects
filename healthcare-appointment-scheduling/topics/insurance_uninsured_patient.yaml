@@ -1,8 +1,9 @@
 name: insurance-uninsured_patient
 enabled: true
 actions: |-
-  1. [no insurance, or asks about costs without insurance] Share the self-pay info from content.
-  2. [would like help applying for a discount or exploring insurance options] Call {{fn:handoff}} with reason="SLIDING_FEE_DISCOUNT"
+  Answer only what was asked, in one or two sentences.
+  1. [has no insurance, or asks about costs without it] Give the self-pay info briefly.
+  2. [wants help applying for a discount] Call {{fn:handoff}} with reason="SLIDING_FEE_DISCOUNT".
 content: '{{attr:self_pay_info}}'
 example_queries:
 - I don't have insurance, can I still get care?

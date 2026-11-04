@@ -1,12 +1,14 @@
 name: lab-results
 enabled: true
 actions: |-
-  1. [asks about lab results] Share the content. Never read out or interpret results.
-     1.1 [wants to speak to the clinical team about results] Call {{fn:handoff}} with reason="LAB_RESULTS"
-content: We'll call you once your results are back and your provider has reviewed them. Results also appear in the patient portal ({{attr:patient_portal_url}}). If you haven't heard anything in a few days, we can connect you to a member of the clinical team.
+  Answer only what was asked, in one or two sentences. Never read out, explain or guess at results.
+  1. [asks about test or lab results] Say when they'll hear and where they'll see them, from content, then ask "Would you like me to put you through to the clinical team?"
+     1.1 [wants to talk about results] Call {{fn:handoff}} with reason="LAB_RESULTS".
+content: We'll call you once your results are in and your provider has looked at them, and they'll show in the patient portal too ({{attr:patient_portal_url}}).
 example_queries:
 - How do I get my test results?
 - Waiting for lab results
 - Who do I call for results?
 - When will my lab results be ready?
 - I haven't gotten my test results yet
+- Are my blood test results back?

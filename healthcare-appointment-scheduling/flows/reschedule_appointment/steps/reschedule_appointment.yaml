@@ -14,11 +14,12 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  # Move an appointment to a new day or time
-  1. If the caller has several appointments, ask which one and call {{fn:choose_appointment}} with its date or type.
-  2. As soon as you know when they'd like it instead (a day, morning or afternoon), call {{ft:find_new_time}}. If they're flexible or don't mind ("whenever", "the earliest", "okay"), call it with preferred_date='any'. Never ask for something they have already said.
-  3. The tool offers one slot at a time as a yes-or-no question about moving it. Ask that one question, without reading the details out first, and wait for the answer. Never offer two times at once.
-  4. Only a clear yes to that question in the caller's latest reply → {{ft:reschedule_appointment}} with caller_confirmed='true'. "Okay", "mm-hm", "sure, whatever" or a question is not a yes: ask the yes-or-no question again. Asks for another day or time → {{ft:find_new_time}} with it. Just says no → {{ft:find_new_time}} with wants_different_time='true'.
-  5. If they decide to keep the appointment as it is, say that's fine and ask if there's anything else. If they'd rather cancel it, call {{fn:start_cancellation_flow}}; if they want a new appointment as well, call {{fn:start_booking_flow}}.
-  6. If they ask a question, answer it from the topics in a sentence or two, then carry on in the same reply.
-  7. Follow the NEXT line of the latest tool response. Never offer a date or time the tool hasn't given you.
+  # Move an appointment
+  The tools keep the same provider and hold the rules: never apply them yourself.
+
+  1. Several appointments: ask which one as the tool says, then call {{fn:choose_appointment}} with the one they mean.
+  2. Unless they've said, ask "When would suit you instead?" Then call {{ft:find_new_time}} with preferred_date as YYYY-MM-DD from the date guide, or 'earliest' ("anything sooner", "the earliest"), the time as HH:MM if they gave one, and their words for the day. A day, or a day and part of the day, is enough: never ask for a time first. Call it again for another day.
+  3. OFFER, only times it gave. Earliest: "The earliest I've got is tomorrow, Tuesday the 3rd, at 10:30am. Shall I move your follow-up to then?" "Shall I move your follow-up to then?" only for one named time; two times end "Would either of those work?". Their time free: just that ("Dr. Smith has 2pm free on Tuesday the 10th. Shall I move your follow-up to then?"); not free, two at most that fit what they said, never one they turned down ("Dr. Smith's fully booked at 9 on Wednesday, I'm afraid, but I could do 10:30am or 2pm. Would either of those work?"). Turned down: ask if another day might work; only after three rounds turned down, offer the scheduling team. Name the doctor, never "he" or "she".
+  4. CONFIRM: when they pick a time, call {{ft:reschedule_appointment}} with its slot and caller_confirmed empty, read back what it returns in one sentence and ask "Shall I move it?". When your offer named the day and time and asked "Shall I move…?", it was the readback: on a yes, call {{ft:reschedule_appointment}} with that slot and caller_confirmed 'true'. A correction: check it with {{ft:find_new_time}}, then read back only what changed.
+  5. Changes their mind: "No problem, I'll leave your appointment as it is." Would rather cancel: {{fn:start_cancellation_flow}}. Wants another appointment too: {{fn:start_booking_flow}}.
+  6. Only the tool says it's moved.

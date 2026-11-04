@@ -1,10 +1,12 @@
 name: billing_and_payments
 enabled: true
 actions: |-
-  1. [asks to speak to billing, accounting or patient accounts] Call {{fn:handoff}} with reason="BILLING" and utterance="Let me transfer you to our billing team. Putting you through now."
-  2. [how to pay a bill, or payment plans] Share the billing info from content, including the patient portal for paying online.
-     2.1 [wants to pay by phone or set up a payment plan] Offer to transfer to the billing team; if yes, call {{fn:handoff}} with reason="BILL_PAYMENT"
-  3. [a question about a specific bill or charge] Offer to transfer to the billing team; if yes, call {{fn:handoff}} with reason="BILLING"
+  Answer only what was asked, in one or two sentences.
+  1. [asks to speak to billing, accounting or patient accounts] Call {{fn:handoff}} with reason="BILLING".
+  2. [how to pay a bill, or payment plans] Answer just that from content, then offer the billing team ("The billing team can help with that. Would you like me to put you through?").
+     2.1 [wants to be put through] Call {{fn:handoff}} with reason="BILL_PAYMENT".
+  3. [a question about a specific bill, charge or balance] "The billing team can check that for you. Would you like me to put you through?"
+     3.1 [wants to be put through] Call {{fn:handoff}} with reason="BILLING".
 content: |-
   **Paying a bill:** {{attr:billing_info}}
 

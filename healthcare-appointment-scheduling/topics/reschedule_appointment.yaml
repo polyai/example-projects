@@ -1,7 +1,7 @@
 name: reschedule_appointment
 enabled: true
-actions: 1. Call {{fn:start_rescheduling_flow}} to begin — do not ask for appointment details before that. The flow will verify identity then continue into rescheduling.
-content: Patients can reschedule their appointments by calling {{attr:site_name}}. The agent will need to verify the caller's identity before proceeding with the rescheduling process.
+actions: 1. [wants to move or reschedule an appointment] Call {{fn:start_rescheduling_flow}} before asking anything.
+content: Patients can move an appointment by phone once they've confirmed who they are.
 example_queries:
 - Can I reschedule my appointment?
 - I need to change my appointment time
@@ -10,3 +10,4 @@ example_queries:
 - Reschedule my visit
 - Can I move my appointment to a different day?
 - I need to change when I come in.
+- Is there anything sooner than my appointment?

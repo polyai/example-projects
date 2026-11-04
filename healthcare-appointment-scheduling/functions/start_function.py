@@ -8,6 +8,12 @@ import functions.idnv as idnv
 DEFAULT_TIMEZONE = "America/New_York"
 
 
+def clock_now(conv) -> datetime:
+    """Now, from conv.clock: the only time source a Studio test's simulated_at can pin. Every
+    time read in the template goes through here (Builder Knowledge conversation-clock.md)."""
+    return conv.clock.now()
+
+
 def local_now(conv: Conversation) -> tuple[str, datetime]:
     """The variant's timezone (DEFAULT_TIMEZONE if unset or invalid) and the time there."""
     variant = conv.variant
@@ -21,7 +27,7 @@ def local_now(conv: Conversation) -> tuple[str, datetime]:
             "Invalid timezone in config", timezone=timezone_str, error=str(e)
         )
         timezone_str, timezone = DEFAULT_TIMEZONE, ZoneInfo(DEFAULT_TIMEZONE)
-    return timezone_str, datetime.now(timezone)
+    return timezone_str, clock_now(conv).astimezone(timezone)
 
 
 def set_time(conv: Conversation):
@@ -51,8 +57,11 @@ def date_guide(today) -> str:
 
 
 def _is_ooh(conv: Conversation, now: datetime) -> bool:
-    """Outside the opening_hours attribute. In draft, sandbox and pre-release,
-    real-time config `ooh_slider` (or flags.ooh_forced) forces it on or off."""
+    """Outside the opening_hours attribute. Never with blank hours: they never mean closed.
+    In draft, sandbox and pre-release, real-time config `ooh_slider` (or flags.ooh_forced)
+    forces it on or off."""
+    if not appointments.hours_known(conv):
+        return False
     config = conv.real_time_config or {}
     flags = config.get("flags") or {}
     forced = config.get("ooh_slider")
@@ -73,26 +82,22 @@ def start_function(conv: Conversation):
     variant = conv.variant
     conv.state.site_name = (getattr(variant, "site_name", "") or "") if variant else ""
     conv.state.address = (getattr(variant, "address", "") or "") if variant else ""
+    # The hours topic reads these. With blank hours each is the not-to-hand line.
     conv.state.opening_hours_spoken = appointments.say_opening_hours(conv)
+    conv.state.hours_today_spoken = appointments.say_hours_today(conv, now)
+    conv.state.open_now_spoken = appointments.say_open_now(conv, now)
+    conv.state.website_spoken = appointments.spoken_website(conv) or "our website"
 
     # Strict ID&V: the caller ID never verifies anyone on its own.
     idnv.state(conv)
 
-    after_hours = (getattr(variant, "after_hours_info", "") or "") if variant else ""
     conv.state.is_ooh = _is_ooh(conv, now)
     if conv.state.is_ooh:
         conv.write_metric("OOH", write_once=True)
-        if appointments.hours_known(conv):
-            hours_line = f"give the opening hours ({conv.state.opening_hours_spoken})"
-        else:
-            # Blank hours: the default decides when we're closed but is never spoken.
-            hours_line = f'say "{conv.state.opening_hours_spoken}"'
         conv.state.hours_mode_instructions = (
-            "## Out of hours\n"
             "The clinic is closed right now. You can still book, check, move and cancel "
-            "appointments and answer questions. For anything that needs a person (except an "
-            f"emergency), say we're closed, {hours_line} and tell them what to do while we're "
-            f"closed: {after_hours} Don't transfer."
+            "appointments and answer questions. Transfers other than the nurse and emergencies "
+            "aren't possible: the handoff tool says so."
         )
     else:
         conv.state.hours_mode_instructions = ""

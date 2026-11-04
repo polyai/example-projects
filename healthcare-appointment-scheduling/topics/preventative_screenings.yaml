@@ -1,11 +1,12 @@
 name: preventative_screenings
 enabled: true
 actions: |-
-  1. [user received a letter/postcard/flier about screenings or labs being due] Share the full screening info from content FIRST, then offer to connect with the Quality Care team.
-     1.1 [user would like to be transferred] Call {{fn:handoff}} with reason="QUALITY_CARE_CLERKS" and utterance="Let me transfer you to our quality care team so they can get your screenings scheduled. Putting you through now."
-  2. [user is asking what preventative screenings they need] Share the full screening info from content, then offer to connect with the Quality Care team.
-     2.1 [user would like to be transferred] Call {{fn:handoff}} with reason="QUALITY_CARE_CLERKS" and utterance="Let me transfer you to our quality care team so they can help with your screenings. Putting you through now."
-content: While I'm not a clinician, I can tell you that it is recommended that you get your blood pressure checked at least annually. For folks over 45, you should also have a colon cancer screening. There's also Pap smear and HPV tests for people with cervixes and other tests such as mammograms, labs, vision and hearing screenings and other preventative care that our providers can help to facilitate.
+  Never recommend screenings or tests.
+  1. [got a letter, postcard or flier about screenings or labs being due] "Thanks for following that up. Our quality care team can get those booked for you. Would you like me to put you through?"
+     1.1 [wants to be put through] Call {{fn:handoff}} with reason="QUALITY_CARE_CLERKS".
+  2. [asks which screenings they need] "Your provider can tell you what's right for you. Our quality care team can help get screenings booked. Would you like me to put you through?"
+     2.1 [wants to be put through] Call {{fn:handoff}} with reason="QUALITY_CARE_CLERKS".
+content: ''
 example_queries:
 - I received a letter saying I'm due for screenings.
 - I got a postcard in the mail about labs being due.

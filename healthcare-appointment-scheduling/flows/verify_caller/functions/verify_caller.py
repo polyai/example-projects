@@ -2,16 +2,21 @@ from _gen import *  # <AUTO GENERATED>
 import re
 
 import functions.api_client as api_client
+import functions.appointments as appointments
 import functions.idnv as idnv
 from functions.handoff import handoff
 
 FAIL_UTTERANCE = (
-    "I'm sorry, I wasn't able to verify your details. Let me put you through to our scheduling "
-    "team, who can help. One moment please."
+    "I'm sorry, I wasn't able to confirm your details. I'll put you through to our scheduling "
+    "team, who can help. One moment, please."
+)
+DECLINED_UTTERANCE = (
+    "No problem. Our scheduling team can help confirm your details another way. I'll put you "
+    "through now. One moment, please."
 )
 LOOKUP_ERROR_UTTERANCE = (
-    "I'm sorry, I'm having trouble looking up patient records right now. Let me put you through "
-    "to our scheduling team. One moment please."
+    "I'm sorry, I'm having trouble looking up patient records right now. I'll put you through "
+    "to our scheduling team, who can help. One moment, please."
 )
 
 _DIGIT_WORDS = {
@@ -131,27 +136,26 @@ def _lookup(conv):
 
 
 @func_description(
-    "Check who the caller is from the phone number on their patient record, their date of birth and their member ID. Call it whenever the caller gives any of these, or confirms or corrects a number you read back."
+    "Check who the caller is from the phone number on their patient record, their date of birth and their member ID. Call it whenever the caller gives or corrects any of these, or answers the question it asked."
 )
 @func_parameter(
     "phone_number",
-    "The phone number the caller gave THIS time, as they said it (words or digits). Never add, guess or repeat digits. Empty string if they gave no number.",
+    "The phone number the caller gave this time, as they said it (words or digits). Never add, guess or repeat digits.",
 )
 @func_parameter(
     "date_of_birth",
-    "Their date of birth as YYYY-MM-DD if you can, otherwise as they said it. Empty string if not given.",
+    "Their date of birth as YYYY-MM-DD if you can, otherwise as they said it.",
 )
 @func_parameter(
-    "member_id",
-    "Their member ID, letters and digits only, e.g. 'HC48213'. Empty string if not given.",
+    "member_id", "Their member ID, letters and digits only, e.g. 'HC48213'."
 )
 @func_parameter(
     "caller_cannot_verify",
-    "'true' only if the caller says they don't have or won't give these details, or that there is no other number to try. Otherwise 'false'.",
+    "'true' only if the caller says they don't have or won't give these details, or that there is no other number to try.",
 )
 @func_parameter(
     "phone_confirmed",
-    "'true' only if, in their latest reply, the caller clearly said yes to the phone number this tool told you to read back, or repeated that same number. An \"okay\", or anything unclear, is not a yes. Otherwise 'false'.",
+    "'true' if the caller's latest reply agreed to the question this tool asked about their number: whether the number they're calling from is the one on their record, or (after a miss) that it's the same one. A yes or an acknowledgement ('okay', 'sure', 'yeah') to that question is agreement; pass no phone number with it.",
 )
 @func_latency_control(
     delay_before_responses_start=1,
@@ -170,6 +174,25 @@ def verify_caller(
     caller_cannot_verify: str,
     phone_confirmed: str,
 ):
+    # After a miss the model tends to pass the failed details again. The design asks for them
+    # again one at a time (number, date of birth, member ID), so until each has been asked
+    # again, a call keeps only the next one.
+    redo = list(conv.state.idnv_redo or [])
+    if redo:
+        given = {
+            "phone": bool(str(phone_number or "").strip()) or phone_confirmed == "true",
+            "date_of_birth": bool(str(date_of_birth or "").strip()),
+            "member_id": bool(str(member_id or "").strip()),
+        }
+        if redo[0] != "date_of_birth":
+            date_of_birth = ""
+        if redo[0] != "member_id":
+            member_id = ""
+        if redo[0] != "phone":
+            phone_number, phone_confirmed = "", "false"
+        if given[redo[0]]:
+            redo.pop(0)
+        conv.state.idnv_redo = redo
     try:
         result = idnv.verify_strict(
             conv,
@@ -179,13 +202,19 @@ def verify_caller(
             lookup=_lookup(conv),
             caller_cannot_verify=str(caller_cannot_verify).strip().lower() == "true",
             phone_confirmed=str(phone_confirmed).strip().lower() == "true",
+            caller_id_question=appointments.CALLER_ID_QUESTION,
         )
     except Exception:
         conv.log.error("verify_caller lookup failed", exc_info=True)
         return handoff(conv, "IDNV_API_ERROR", LOOKUP_ERROR_UTTERANCE)
 
     if result.failed:
-        return handoff(conv, result.handoff_reason, FAIL_UTTERANCE)
+        declined = result.handoff_reason == idnv.FAILED_REASON_DECLINED
+        return handoff(
+            conv,
+            result.handoff_reason,
+            DECLINED_UTTERANCE if declined else FAIL_UTTERANCE,
+        )
 
     if result.verified:
         target = idnv.take_resume(conv)
@@ -193,23 +222,21 @@ def verify_caller(
         if target:
             conv.goto_flow(target)
             return (
-                f"The caller is verified as {first}. Don't thank them for verifying or say you're "
-                "looking anything up; carry on with their request in this same reply, without "
-                "asking for anything they have already told you."
+                f'VERIFIED as {first}. Say "Thanks, {first}." and carry on with their request in '
+                "this same reply, without asking again for anything they've already told you."
             )
         conv.exit_flow()
-        return f"The caller is verified as {first}. Ask how you can help."
+        return f'VERIFIED as {first}. Say "Thanks, {first}." and ask how you can help.'
 
-    if result.outcome == "read_back" and result.say.startswith("WAIT"):
-        # A second call in the turn that read the number back: the caller hasn't answered
-        # yet. Say the readback and end the turn here, so the model can't keep calling (on
-        # RSN-1 a same-turn loop runs out the turn's steps and the turn errors with a 422).
-        return {"utterance": readback_question(conv)}
+    if result.outcome == "wait":
+        # WAIT: called again in the turn the question was asked. Say the question and end the turn,
+        # so the model can't keep calling (on RSN-1 a same-turn loop ends in a 422).
+        return {"utterance": appointments.idnv_wording(result.utterance)}
 
-    return f"{idnv.state_line(conv)}.\n{result.say}"
-
-
-def readback_question(conv) -> str:
-    return (
-        f"Just to check, is your number {idnv.spell_phone(idnv.state(conv)['phone'])}?"
-    )
+    if result.outcome == "retry" and result.missing == [
+        "phone",
+        "date_of_birth",
+        "member_id",
+    ]:
+        conv.state.idnv_redo = ["phone", "date_of_birth", "member_id"]
+    return appointments.idnv_wording(f"{idnv.state_line(conv)}.\n{result.say}")

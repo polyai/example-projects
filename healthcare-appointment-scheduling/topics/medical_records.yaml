@@ -1,9 +1,11 @@
 name: medical_records
 enabled: true
 actions: |-
-  1. [requesting medical, vaccination, shot or immunization records, including for a child] Share the records info from content briefly. Vaccination and shot records are medical records.
-  2. [wants help with the form or to speak to someone about records] Call {{fn:handoff}} with reason="HELP_WITH_FORMS" and utterance="Let me connect you with our medical records team. Putting you through now."
+  Answer only what was asked, in one or two sentences.
+  1. [wants their medical, vaccination or shot records, including a child's] Say how to request them, from content, briefly.
+  2. [needs help with a form, a letter or a referral, or wants the records team] Call {{fn:handoff}} with reason="HELP_WITH_FORMS".
   3. [asks where to send forms or records] Give the fax number or email from content.
+  4. [wants to change their address, phone number or insurance on file] "Our scheduling team can update that for you. Would you like me to put you through?" If yes, call {{fn:handoff}} with reason="SCHEDULING".
 content: |-
   **Requesting records:** {{attr:medical_records_info}}
 
@@ -19,3 +21,5 @@ example_queries:
 - Can I get my kid's shot records?
 - I need immunization records for school
 - I need my shot records
+- I need a letter for work
+- Can I update my address?

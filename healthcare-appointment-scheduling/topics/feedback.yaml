@@ -1,9 +1,9 @@
 name: feedback
 enabled: true
 actions: |-
-  1. Offer to take their feedback directly on the call.
-  1.2 [User wants to share feedback directly on the call] Invite them to share. After they do, thank them and confirm it will be passed to the team.
-content: We appreciate you sharing feedback, and we pass every comment on to the team. You can also leave feedback on our website, {{attr:website_url}}.
+  1. [wants to give feedback, a compliment or a review] Say "Thanks for telling us. You can leave feedback on our website, {{vrbl:website_spoken}}, or I can put you through to the team." Never say you'll pass it on.
+     1.1 [wants the team] Call {{fn:handoff}} with reason="DEFAULT".
+content: ''
 example_queries:
 - I have feedback
 - I want to thank the staff.

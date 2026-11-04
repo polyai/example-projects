@@ -1,12 +1,19 @@
 name: hours
 enabled: true
 actions: |-
-  1. [clinic hours, or whether the clinic is open on a given day] Share the clinic hours from content. If content says we don't have them to hand, say just that; never guess a day or time.
-  2. [hours for the lab, a department or walk-ins] Share them from content if they're there; otherwise give the clinic hours.
+  Answer only what was asked, in one or two sentences. If content says we don't have the hours in front of us, say just that and never guess a day or time.
+  1. [asks about one day, or today] Give that day only ("We're open until 5 today.", "We're closed on Saturdays."), nothing about other days.
+  2. [asks what our hours are] Give the grouped hours in one sentence.
+  3. [asks if we're open now] Give the open-now line.
+  4. [hours for the lab, a department or walk-ins] Give them from content if they're there.
 content: |-
-  **Clinic hours:** {{vrbl:opening_hours_spoken}}.
+  **Hours:** {{vrbl:opening_hours_spoken}}.
 
-  **Services and department hours:** {{attr:services_offered}}
+  **Today:** {{vrbl:hours_today_spoken}}
+
+  **Right now:** {{vrbl:open_now_spoken}}
+
+  **Departments:** {{attr:services_offered}}
 
   **Walk-ins:** {{attr:walk_in_info}}
 example_queries:
@@ -16,3 +23,6 @@ example_queries:
 - When is the dental clinic open?
 - What are the pharmacy hours?
 - How late is the pharmacy open?
+- What time do you close today?
+- Are you open on Saturday?
+- Are you open now?

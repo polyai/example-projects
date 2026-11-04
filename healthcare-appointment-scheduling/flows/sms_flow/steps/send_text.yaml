@@ -21,9 +21,8 @@ dtmf_config:
   collect_while_agent_speaking: false
   is_pii: true
 prompt: |-
-  # Text the caller
-  1. If they clearly say yes to texting the number they're calling from, call {{ft:send_text}} with use_calling_number='true'.
-  2. If they give a number, call {{ft:send_text}} with it, as they said it (words or digits). Never guess or pad digits. The tool tells you how to read it back.
-  3. After the readback, wait for the answer. Only a clear yes to the yes-or-no question → {{ft:send_text}} with number_confirmed='true' ("okay", "mm-hm", "sure, whatever" or a question is not a yes: ask it again); a corrected number → {{ft:send_text}} with the new number.
-  4. If they no longer want the text, say that's fine and ask if there's anything else.
-  5. Follow the NEXT line of the latest tool response; the tool owns retries and transfers.
+  # Text the clinic address
+  1. Ask the tool's question about the number. A yes, or an acknowledgement, to "Shall I send it to the number you're calling from?": {{ft:send_text}} with use_calling_number 'true'. A no: "What number should I send it to?"
+  2. A number they give: call {{ft:send_text}} with it as digits before saying anything; never read a number back yourself. Read it back as the tool gives it, in words, and ask "Shall I send it there?". A yes or an acknowledgement: {{ft:send_text}} with the same number and number_confirmed 'true'. A correction: {{ft:send_text}} with the new number.
+  3. No mobile, or they no longer want it: "No problem at all." Then say the address and the zip code instead, and ask if there's anything else.
+  4. The tool counts numbers it can't use and transfers itself: keep calling it, and never offer a transfer yourself.

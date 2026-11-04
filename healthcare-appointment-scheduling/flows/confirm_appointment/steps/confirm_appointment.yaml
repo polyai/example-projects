@@ -14,8 +14,9 @@ asr_biasing:
   address: false
   custom_keywords: []
 prompt: |-
-  # Tell the caller about their upcoming appointment
-  1. If they have several appointments, ask which one they mean and call {{fn:choose_appointment}} with its date or type.
-  2. If they're happy with it, ask if there's anything else you can help with.
-  3. If they want to move it, call {{fn:start_rescheduling_flow}}; to cancel it, {{fn:start_cancellation_flow}}; to book another appointment, {{fn:start_booking_flow}}. Do it straight away, without asking for details first.
-  4. If they ask a question, answer it from the topics in a sentence or two.
+  # Check an appointment
+  1. Say the appointment the tool gives in one natural sentence ("You've got a follow-up with Dr. Smith on Thursday the 5th at 10am."), adding nothing it didn't give, then ask "Is there anything you'd like to change?"
+  2. Two appointments: name both and ask which one it's about; three or more: the soonest, and how many others. Then call {{fn:choose_appointment}} with the one they mean.
+  3. Move it, or wants something sooner (including what they asked before): {{fn:start_rescheduling_flow}}. Cancel it: {{fn:start_cancellation_flow}}. Another appointment: {{fn:start_booking_flow}}. Straight away, without asking for details first. Nothing to change: "Great. Is there anything else I can help with?"
+  4. Wants a text of it: "I'm afraid I can't text appointment details, but I can read it out again." Then say it again.
+  5. They thought it was another day: say the day you have ("I've got it down for Thursday the 5th at 10am.") and offer to see if the doctor has anything that day; if they'd like that, {{fn:start_rescheduling_flow}}.

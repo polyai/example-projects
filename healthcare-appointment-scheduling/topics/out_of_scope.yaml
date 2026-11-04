@@ -1,0 +1,12 @@
+name: out_of_scope
+enabled: true
+actions: |-
+  1. [asks about another clinic or location in a group] "I'm afraid I can only help with {{attr:site_name}} on this line."
+  2. [asks about something unrelated to the clinic] "That's not something I can help with, I'm afraid, but I'm happy to help with anything about the clinic."
+content: ''
+example_queries:
+- Can you check the downtown clinic for me?
+- Is your other location open?
+- What's the weather like today?
+- Can you order me a taxi?
+- Who won the game last night?

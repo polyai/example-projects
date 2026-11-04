@@ -1,9 +1,6 @@
 from _gen import *  # <AUTO GENERATED>
 import functions.appointments as appointments
 import functions.idnv as idnv
-from functions.handoff import handoff
-
-READBACK_KEY = "move"
 
 
 def move_request(conv) -> dict:
@@ -12,173 +9,91 @@ def move_request(conv) -> dict:
         not isinstance(req, dict)
         or req.get("appointment_id") != conv.state.selected_appointment_id
     ):
-        req = {
-            "appointment_id": conv.state.selected_appointment_id or "",
-            "preferred_date": "",
-            "time_of_day": "any",
-            "offer": None,
-            "rejected": 0,
-        }
+        req = {"appointment_id": conv.state.selected_appointment_id or "", "slots": {}}
     return dict(req)
 
 
-def move_fields(conv, req: dict) -> list[tuple[str, str]]:
-    offer = req.get("offer") or {}
-    appt = appointments.selected(conv)
-    return [
-        ("appointment", f"moving {appointments.describe(appt, conv)}" if appt else ""),
-        (
-            "when",
-            f"to {appointments.say_slot(offer, appointments.today(conv))}"
-            if offer
-            else "",
-        ),
-    ]
-
-
-def move_words(conv, req: dict) -> str:
-    """The move confirmation the caller hears: the appointment's type and the new
-    slot. The old day and time only when they have more than one appointment, and
-    the doctor only when it changes."""
-    appt = appointments.selected(conv) or {}
-    today = appointments.today(conv)
-    kind = str(appt.get("type") or "appointment").lower()
-    offer = req["offer"]
-    item = f"your {kind}"
-    if appt.get("date") and len(appointments.upcoming(conv)) > 1:
-        item += f" on {appointments.say_slot(appt, today, provider=False)}"
-    changes_doctor = offer.get("provider") != appt.get("provider")
-    when = appointments.say_slot(offer, today, provider=changes_doctor)
-    return f"Shall I move {item} to {when}, yes or no?"
-
-
-def move_question(conv, req: dict, lead: str = "Ask") -> str:
-    return appointments.ask_yes_no(move_words(conv, req), lead)
-
-
-def move_state(conv) -> str:
-    req = move_request(conv)
-    appt = appointments.selected(conv)
-    offer = req.get("offer")
-    today = appointments.today(conv)
-    lines = [
-        "Task: move an existing appointment",
-        "Appointment: "
-        + (appointments.describe(appt, conv) if appt else "not chosen yet"),
-        "Wants it: "
-        + (req["preferred_date"] or "not said yet")
-        + ("" if req["time_of_day"] == "any" else f", {req['time_of_day']}"),
-        "Offered: " + (appointments.say_slot(offer, today) if offer else "nothing yet"),
-    ]
-    if not appt:
-        nxt = "Find out which appointment they mean."
-    elif not req["preferred_date"]:
-        nxt = (
-            "Ask when would suit them instead. If they're flexible, call find_new_time with "
-            "preferred_date='any'."
-        )
-    elif offer:
-        nxt = (
-            "Wait for the caller's answer to the yes-or-no question about moving it to this slot. "
-            "A clear yes means move it: call reschedule_appointment with caller_confirmed='true'. "
-            "'Okay', 'mm-hm' or anything unclear is not a yes: ask the yes-or-no question again."
-        )
-    else:
-        nxt = "Call find_new_time."
-    return appointments.call_state(conv, lines, nxt)
-
-
 @func_description(
-    "Find a new slot for the appointment being moved, from the caller's preferred day and time of day, or the next one after the slot they turned down."
+    "Check when the provider is free for the appointment being moved. Call it once you know when they'd like it instead (a day, a day and time, or the earliest), and again whenever they ask for another day. Don't say a time is free before it returns."
 )
 @func_parameter(
     "preferred_date",
-    "The day they asked for, as YYYY-MM-DD from the date guide; for a range, its first day ('next week' is the Monday the guide names). 'any' only if they don't mind which day or want the earliest. Empty string if they only turned the last offer down.",
+    "The day as YYYY-MM-DD from the date guide, or 'earliest' when they want the earliest available (never tomorrow's date for that).",
 )
-@func_parameter("time_of_day", "'morning', 'afternoon' or 'any'.")
 @func_parameter(
-    "wants_different_time",
-    "'true' only when the caller turned down the slot you offered without saying what they want instead. Otherwise 'false'.",
+    "preferred_time",
+    "A time the caller said, as HH:MM in 24-hour time (2pm is 14:00). Never one they didn't say.",
 )
+@func_parameter("day_said", "The caller's own words for the day, e.g. 'next Tuesday'.")
 @func_latency_control(
     delay_before_responses_start=1,
     silence_after_each_response=3,
-    delay_responses=[("Let me see what we have.", 3), ("One more moment.", 3)],
+    delay_responses=[("Let me just check what we've got.", 3), ("Nearly there.", 3)],
 )
 def find_new_time(
     conv: Conversation,
     flow: Flow,
     preferred_date: str,
-    time_of_day: str,
-    wants_different_time: str,
+    preferred_time: str,
+    day_said: str,
 ):
     if not idnv.is_verified(conv, idnv.STRICT):
-        return idnv.require(conv, "reschedule_appointment", strength=idnv.STRICT)
+        return appointments.gate(conv, "reschedule_appointment")
     appt = appointments.selected(conv)
     if not appt:
-        return (
-            f"First find out which appointment they want to move.\n\n{move_state(conv)}"
-        )
+        return "First find out which appointment they want to move, then call choose_appointment."
+    if not str(preferred_date or "").strip():
+        return 'Ask: "When would suit you instead?" Then call find_new_time with their answer.'
 
     req = move_request(conv)
-    before = (req["preferred_date"], req["time_of_day"])
-    if str(preferred_date or "").strip():
-        req["preferred_date"] = str(preferred_date).strip()
-    if str(time_of_day or "").strip().lower() in appointments.TIME_OF_DAY:
-        req["time_of_day"] = str(time_of_day).strip().lower()
-    rejected = str(wants_different_time).strip().lower() == "true"
-
-    after = None
-    if rejected and req["offer"]:
-        req["rejected"] += 1
-        conv.write_metric("RESCHEDULE_SLOT_REJECTED")
-        if req["rejected"] >= appointments.MAX_REJECTED_OFFERS:
-            conv.state.move_request = req
-            return handoff(
-                conv,
-                "RESCHEDULE_SLOTS_REJECTED",
-                "I'm sorry I couldn't find a time that suits. Let me put you through to our "
-                "scheduling team, one moment please.",
-            )
-        after = req["offer"]
-    if not req["preferred_date"]:
-        req["preferred_date"] = "any" if rejected else ""
-    if not req["preferred_date"]:
-        conv.state.move_request = req
-        return f"Ask when would suit them instead.\n\n{move_state(conv)}"
-
-    note = ""
-    if (
-        rejected
-        or before != (req["preferred_date"], req["time_of_day"])
-        or not req["offer"]
-    ):
-        try:
-            slot, note = appointments.find_slot(
-                conv,
-                req["preferred_date"],
-                req["time_of_day"],
-                appt.get("provider_id", ""),
-                after,
-            )
-        except Exception:
-            conv.log.error("open_slots failed", exc_info=True)
-            slot = None
-        if slot is None:
-            conv.state.move_request = req
-            return handoff(
-                conv,
-                "RESCHEDULE_NO_SLOTS_AVAILABLE",
-                "I'm sorry, I can't see any open appointments right now. Let me put you through "
-                "to our scheduling team, one moment please.",
-            )
-        req["offer"] = slot
+    kind = appointments.kind(appt["type"])
+    try:
+        found = appointments.availability(
+            conv,
+            appt.get("provider_id", ""),
+            preferred_date,
+            preferred_time,
+            day_said,
+            question=f"Shall I move your {kind} to then?",
+            handoff_reason="RESCHEDULE_NO_SLOTS_AVAILABLE",
+        )
+    except Exception:
+        conv.log.error("open_slots failed", exc_info=True)
+        conv.write_metric("RESCHEDULE_FLOW_API_ERROR")
+        return (
+            "NOT CHECKED: the appointment system didn't answer. Say you're sorry, you can't see "
+            "the diary just now, and offer to put them through to our scheduling team; if they "
+            'agree, call handoff with reason="RESCHEDULE_API_ERROR".'
+        )
+    # The appointment's own time is never a new time for it.
+    slots = [
+        s
+        for s in found["slots"]
+        if (s["date"], s["start"]) != (appt["date"], appt["start"])
+    ]
+    req["slots"] = {
+        **(req.get("slots") or {}),
+        **{appointments.slot_key(s): s for s in slots},
+    }
     conv.state.move_request = req
-    conv.write_metric("RESCHEDULE_SLOT_OFFERED")
-
-    _text, mode = appointments.readback_text(conv, READBACK_KEY, move_fields(conv, req))
-    appointments.mark_question(conv, READBACK_KEY)
-    if mode == "none":
-        return f"Nothing has changed. {move_question(conv, req, 'Ask again')}\n\n{move_state(conv)}"
-    lead = f"{note} Offer only this slot. Ask" if note else "Offer only this slot. Ask"
-    return f"{move_question(conv, req, lead)}\n\n{move_state(conv)}"
+    if slots:
+        conv.write_metric("RESCHEDULE_FLOW_SLOT_OFFERED")
+    offer = found["offer"]
+    if offer and offer in slots:
+        fields = appointments.readback_fields(
+            offer, appt["type"], appointments.today(conv), doctor=False
+        )
+        appointments.mark_readback(
+            conv, "move", appointments.slot_key(offer), fields, offer=True
+        )
+        return (
+            f"{found['text']} {appointments.CONSENT_HINT} Then call reschedule_appointment with "
+            "that slot and caller_confirmed 'true'. If they pick another time, call "
+            "reschedule_appointment with it and caller_confirmed empty."
+        )
+    if slots:
+        return (
+            f"{found['text']} When they pick one, call reschedule_appointment with its slot and "
+            "caller_confirmed empty."
+        )
+    return found["text"]

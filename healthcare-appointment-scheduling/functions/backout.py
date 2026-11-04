@@ -8,4 +8,4 @@ def backout(conv: Conversation):
     conv.write_metric("BACKOUT", True)
     conv.exit_flow()
     conv.state.task = ""
-    return 'Say: "Sorry about that! What can I do for you?"'
+    return {"utterance": "Sorry about that! What can I help you with?"}

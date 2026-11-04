@@ -1,101 +1,36 @@
 from _gen import *  # <AUTO GENERATED>
 import functions.appointments as appointments
 import functions.idnv as idnv
-from functions.handoff import handoff
-
-READBACK_KEY = "booking"
 
 
-def booking_request(conv) -> dict:
+def _request(conv) -> dict:
     req = conv.state.booking_request
     if not isinstance(req, dict):
-        req = {
-            "type": "",
-            "reason": "",
-            "preferred_date": "",
-            "time_of_day": "any",
-            "offer": None,
-            "rejected": 0,
-        }
+        req = {"type": "", "reason": "", "slots": {}}
     return dict(req)
 
 
-def booking_fields(conv, req: dict) -> list[tuple[str, str]]:
-    offer = req.get("offer") or {}
-    kind = (req["type"] or "appointment").lower()
-    return [
-        ("what", f"a {kind}" + (f" for {req['reason']}" if req["reason"] else "")),
-        (
-            "when",
-            f"on {appointments.say_slot(offer, appointments.today(conv))}"
-            if offer
-            else "",
-        ),
-    ]
-
-
-def book_words(conv, req: dict) -> str:
-    """The booking confirmation the caller hears: the action, the type and the
-    slot (day, time, doctor). The reason is left out."""
-    kind = (req["type"] or "appointment").lower()
-    when = appointments.say_slot(req["offer"], appointments.today(conv))
-    return f"Shall I book your {kind} for {when}, yes or no?"
-
-
-def book_question(conv, req: dict, lead: str = "Ask") -> str:
-    return appointments.ask_yes_no(book_words(conv, req), lead)
-
-
-def request_state(conv) -> str:
-    req = booking_request(conv)
-    offer = req.get("offer")
-    today = appointments.today(conv)
-    lines = [
-        "Task: book a new appointment",
-        "Type: " + (req["type"] or "not given"),
-        "Reason: " + (req["reason"] or "not given (optional)"),
-        "When suits: "
-        + (req["preferred_date"] or "earliest available")
-        + ("" if req["time_of_day"] == "any" else f", {req['time_of_day']}"),
-        "Offered: " + (appointments.say_slot(offer, today) if offer else "nothing yet"),
-    ]
-    if not req["type"]:
-        nxt = "Ask what kind of appointment they need: a sick visit, a follow-up or a wellness check."
-    elif offer:
-        nxt = (
-            "Wait for the caller's answer to the yes-or-no question about booking this slot. A "
-            "clear yes means book it: call book_appointment with caller_confirmed='true'. 'Okay', "
-            "'mm-hm' or anything unclear is not a yes: ask the yes-or-no question again."
-        )
-    else:
-        nxt = "Call update_booking_request to get a slot to offer."
-    return appointments.call_state(conv, lines, nxt)
-
-
 @func_description(
-    "Save what the caller has told you about the appointment they want, and get the next slot to offer once you know the appointment type. Call it whenever they give or change any detail, or turn down the slot you offered."
+    "Check when the patient's own provider is free for a new appointment. Call it once you know the type and when they'd like to come in (a day, a day and time, or the earliest), and again whenever they ask for another day. Don't say a time is free before it returns."
 )
 @func_parameter(
     "appointment_type",
-    "One of: Sick visit (any new problem the caller describes: 'a new health issue', an illness, an injury, symptoms, pain), Follow-up (a recheck or follow-up on something already seen), Wellness check (annual physical, checkup, screening). Pick it yourself from what they said; empty string only if they haven't said what it's for.",
+    "'Sick visit' (a new problem), 'Follow-up' (a recheck of something already seen) or 'Wellness check' (a physical or check-up), worked out from what the caller said.",
 )
-@func_parameter(
-    "reason",
-    "What it's for in the caller's own words, e.g. 'sore throat'. Empty string if not said.",
-)
+@func_parameter("reason", "What it's for, in the caller's own words.")
 @func_parameter(
     "preferred_date",
-    "The day they asked for, as YYYY-MM-DD from the date guide; for a range, its first day ('next week' is the Monday the guide names). 'any' only if they don't mind which day or want the earliest. Empty if not said.",
+    "The day as YYYY-MM-DD from the date guide, or 'earliest' when they want the earliest available (never tomorrow's date for that).",
 )
-@func_parameter("time_of_day", "'morning', 'afternoon' or 'any'.")
 @func_parameter(
-    "wants_different_time",
-    "'true' only when the caller turned down the slot you offered without saying what they want instead. Otherwise 'false'.",
+    "preferred_time",
+    "A time the caller said, as HH:MM in 24-hour time (2pm is 14:00). Never one they didn't say.",
 )
+@func_parameter("day_said", "The caller's own words for the day, e.g. 'next Thursday'.")
 @func_latency_control(
     delay_before_responses_start=1,
     silence_after_each_response=3,
-    delay_responses=[("Let me see what we have.", 3), ("One more moment.", 3)],
+    delay_responses=[("Let me just check what we've got.", 3), ("Nearly there.", 3)],
 )
 def update_booking_request(
     conv: Conversation,
@@ -103,93 +38,86 @@ def update_booking_request(
     appointment_type: str,
     reason: str,
     preferred_date: str,
-    time_of_day: str,
-    wants_different_time: str,
+    preferred_time: str,
+    day_said: str,
 ):
     if not idnv.is_verified(conv, idnv.STRICT):
-        return idnv.require(conv, "book_appointment", strength=idnv.STRICT)
+        return appointments.gate(conv, "book_appointment")
     if conv.state.booked_appointment_id:
         return (
-            "This appointment is already booked. If the caller wants to change it, call "
-            "start_rescheduling_flow."
+            "ALREADY BOOKED: this appointment is booked; don't book it again. For another one, "
+            "call start_booking_flow."
         )
 
-    req = booking_request(conv)
-    before = (req["preferred_date"], req["time_of_day"])
+    req = _request(conv)
     said_type = str(appointment_type or "").strip()
-    kind = appointments.normalise_type(said_type)
-    type_changed = bool(kind) and kind != req["type"]
-    if kind:
-        req["type"] = kind
-    # Code only checks the type is one of the three; it never works one out.
-    unknown_type = not kind and said_type.lower() not in ("", "na", "none")
-    if str(reason or "").strip() and str(reason).strip().lower() not in ("na", "none"):
-        req["reason"] = str(reason).strip()
-    if str(preferred_date or "").strip():
-        req["preferred_date"] = str(preferred_date).strip()
-    if str(time_of_day or "").strip().lower() in appointments.TIME_OF_DAY:
-        req["time_of_day"] = str(time_of_day).strip().lower()
-
-    rejected = str(wants_different_time).strip().lower() == "true"
-    preference_changed = before != (req["preferred_date"], req["time_of_day"])
-    after = None
-    if rejected and req["offer"]:
-        req["rejected"] += 1
-        conv.write_metric("BOOKING_SLOT_REJECTED")
-        if req["rejected"] >= appointments.MAX_REJECTED_OFFERS:
-            conv.state.booking_request = req
-            return handoff(
-                conv,
-                "BOOKING_SLOTS_REJECTED",
-                "I'm sorry I couldn't find a time that suits. Let me put you through to our "
-                "scheduling team, one moment please.",
-            )
-        after = req["offer"]
-
-    if unknown_type or not req["type"]:
-        conv.state.booking_request = req
+    new_type = appointments.normalise_type(said_type)
+    if new_type:
+        req["type"] = new_type
+    if str(reason or "").strip():
+        req["reason"] = str(reason).strip()[:200]
+    conv.state.booking_request = req
+    if not req["type"]:
         head = (
-            f"NOT A TYPE: '{said_type}' is not one of the three."
-            if unknown_type
+            f"NOT A TYPE: '{said_type}' isn't one of the three."
+            if said_type
             else "NO TYPE YET."
         )
         return (
-            f"{head} Ask what kind of appointment they need: a sick visit, a follow-up or a "
-            "wellness check. Then call update_booking_request again with their answer."
-            f"\n\n{request_state(conv)}"
+            f"{head} Unless they've said, ask \"What's the appointment for?\" and work the type out "
+            "from the answer. Then call update_booking_request again."
+        )
+    if not str(preferred_date or "").strip():
+        return (
+            'Ask: "Would you like the earliest available, or a particular day and time?" Then '
+            "call update_booking_request again with their answer."
         )
 
-    note = ""
-    if rejected or preference_changed or not req["offer"]:
-        patient = idnv.customer(conv) or {}
-        try:
-            slot, note = appointments.find_slot(
-                conv,
-                req["preferred_date"],
-                req["time_of_day"],
-                patient.get("provider_id", ""),
-                after,
-            )
-        except Exception:
-            conv.log.error("open_slots failed", exc_info=True)
-            slot = None
-        if slot is None:
-            conv.state.booking_request = req
-            return handoff(
-                conv,
-                "BOOKING_NO_SLOTS_AVAILABLE",
-                "I'm sorry, I can't see any open appointments right now. Let me put you through "
-                "to our scheduling team, one moment please.",
-            )
-        req["offer"] = slot
-    conv.state.booking_request = req
-    conv.write_metric("BOOKING_SLOT_OFFERED")
+    patient = idnv.customer(conv) or {}
+    kind = appointments.kind(req["type"])
+    try:
+        found = appointments.availability(
+            conv,
+            patient.get("provider_id", ""),
+            preferred_date,
+            preferred_time,
+            day_said,
+            question=f"Shall I book your {kind} for then?",
+            handoff_reason="BOOKING_NO_SLOTS_AVAILABLE",
+            walk_ins=req["type"] == "Sick visit",
+        )
+    except Exception:
+        conv.log.error("open_slots failed", exc_info=True)
+        conv.write_metric("BOOKING_FLOW_API_ERROR")
+        return (
+            "NOT CHECKED: the appointment system didn't answer. Say you're sorry, you can't see "
+            "the diary just now, and offer to put them through to our scheduling team; if they "
+            'agree, call handoff with reason="BOOKING_API_ERROR".'
+        )
 
-    _text, mode = appointments.readback_text(
-        conv, READBACK_KEY, booking_fields(conv, req)
-    )
-    appointments.mark_question(conv, READBACK_KEY)
-    if mode == "none" and not type_changed:
-        return f"Nothing has changed. {book_question(conv, req, 'Ask again')}\n\n{request_state(conv)}"
-    lead = f"{note} Offer only this slot. Ask" if note else "Offer only this slot. Ask"
-    return f"{book_question(conv, req, lead)}\n\n{request_state(conv)}"
+    slots = dict(req.get("slots") or {})
+    slots.update({appointments.slot_key(s): s for s in found["slots"]})
+    req["slots"] = slots
+    conv.state.booking_request = req
+    if found["slots"]:
+        conv.write_metric("BOOKING_FLOW_SLOTS_OFFERED")
+    offer = found["offer"]
+    if offer:
+        # The offer names the doctor, day and time and asks to book: it is the readback.
+        fields = appointments.readback_fields(
+            offer, req["type"], appointments.today(conv)
+        )
+        appointments.mark_readback(
+            conv, "booking", appointments.slot_key(offer), fields, offer=True
+        )
+        return (
+            f"{found['text']} {appointments.CONSENT_HINT} Then call book_appointment with that "
+            "slot and caller_confirmed 'true'. If they pick another time, call book_appointment "
+            "with it and caller_confirmed empty."
+        )
+    if found["slots"]:
+        return (
+            f"{found['text']} When they pick one, call book_appointment with its slot and "
+            "caller_confirmed empty."
+        )
+    return found["text"]

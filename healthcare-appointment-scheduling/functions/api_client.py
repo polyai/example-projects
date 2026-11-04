@@ -20,6 +20,11 @@ Fixtures (strict ID&V: phone + date of birth + member ID):
   the first provider (fifth open day, 9am) and a sick visit with the second
   (Dr. Johnson by default; seventh open day, 2pm)
 - 201-555-0199: no patient
+
+Free times: SLOT_TIMES on each open day, minus this call's bookings and the
+slots other patients hold (OTHER_BOOKINGS): the first provider's Wednesday 9am
+and every Friday, and the second provider's Thursday 2pm. So a caller can hear
+a time that's free, a time that isn't, and a day with nothing.
 """
 
 import re
@@ -36,6 +41,12 @@ APPOINTMENT_TYPES = ["Sick visit", "Follow-up", "Wellness check"]
 SLOT_TIMES = ["09:00", "10:30", "14:00", "15:30"]
 SLOT_MINUTES = 30
 SEARCH_DAYS = 21
+
+# Slots other patients hold, by provider position and weekday (0 = Monday).
+OTHER_BOOKINGS = {
+    0: {2: ("09:00",), 4: tuple(SLOT_TIMES)},
+    1: {3: ("14:00",)},
+}
 
 # Used when the providers variant attribute is blank.
 DEFAULT_PROVIDERS = ["Dr. Smith", "Dr. Johnson"]
@@ -70,7 +81,9 @@ def _today(conv=None) -> date:
     try:
         return date.fromisoformat(conv.state.today_iso)
     except (AttributeError, TypeError, ValueError):
-        return date.today()
+        from functions.start_function import local_now
+
+        return local_now(conv)[1].date()
 
 
 def _nth_open_day(conv, n: int) -> date:
@@ -221,6 +234,8 @@ def open_slots(
 
     provider_id = _provider_id(conv, provider_id)
     name = providers(conv)[provider_id]
+    position = list(providers(conv)).index(provider_id)
+    others = OTHER_BOOKINGS.get(position, {})
     taken = {
         (a["date"], a["start"])
         for a in _live_appointments(conv)
@@ -235,6 +250,8 @@ def open_slots(
         opens, closes = hours
         for begin in SLOT_TIMES:
             if not opens <= begin < closes or (day.isoformat(), begin) in taken:
+                continue
+            if begin in others.get(day.weekday(), ()):
                 continue
             slots.append(
                 {

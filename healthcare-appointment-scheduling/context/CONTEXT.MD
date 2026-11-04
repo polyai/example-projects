@@ -1,13 +1,14 @@
 # Healthcare template
 
-Books, checks, moves and cancels clinic appointments, answers clinic FAQs, and texts the clinic address.
+Books, checks, moves and cancels clinic appointments for verified patients, answers clinic questions, texts the address, gets callers with urgent symptoms to the right help, and puts callers through to the clinic's teams.
 
-- **Shape (flat):** one flow per task, each with one advanced step and a short numbered prompt. Task flows (`book_appointment`, `confirm_appointment`, `reschedule_appointment`, `cancel_appointment`) start with an entry function step that checks ID&V and picks the appointment. Rules live in tool code (`functions/appointments.py`, `functions/idnv.py`); tools say what to read back and what to ask next, and end with a CALL STATE block. A retry return names the attempt ("attempt 1 of 2") and says to call the same tool again; writes ask one short yes-or-no question naming the action and the item (no separate readback, 25 words or fewer) and need a clear yes to it in the caller's latest reply; a yes in the same turn as the question (history length unchanged, a marker only) writes nothing. No keypad (`dtmf_config` is ignored on Dialog-RSN-1 voice). `rules.txt` stays under 1k tokens and holds the pass-every-parameter rule.
-- **ID&V (strict):** phone number on the record + date of birth + member ID (`flows/verify_caller`). Never reveal whether a record exists or which detail failed. Retry limits and the transfer on failure are in `functions/idnv.py` (shared; don't edit here).
-- **Company copy:** one default variant; every clinic fact is a variant attribute (`site_name`, the four location attributes, `timezone`, contacts, `providers`, and `_info` policy text), wired into topics, rules, SMS and code. `opening_hours` + `timezone` drive out-of-hours and the slots offered; when `opening_hours` is blank those rules use a weekday 8am-5pm default that is never spoken (the agent says it doesn't have the exact hours to hand). See README. Out of hours `handoff` refuses transfers in code (closed line instead) except emergencies, `CLINICAL_SUPPORT` and tool-made transfers (`transfers_when_closed`).
-- **Data:** `functions/api_client.py`. Mocked on branch, draft and sandbox; mocked on pre-release and live until `settings.use_mock_api` is false. Mock bookings live in `conv.state`.
-- **Switches (real-time config):** `settings.cancel_appointment_flow_enabled` (default true; false transfers cancellations), `settings.use_mock_api`.
-- **Fixtures:** Jane Smith 201-555-0123, DOB 1985-03-15, member ID HC48213 (one follow-up); John Doe 212-555-0178, DOB 1990-07-22, HC77306 (two appointments); 201-555-0199 (no record).
+- **Shape (flat):** one flow per task, each with one advanced step and a short numbered prompt. Task flows start with an entry function step that checks ID&V and picks the appointment. Rules live in tool code (`functions/appointments.py`, `functions/idnv.py`).
+- **Availability:** the booking and move tools return every free time in the EHR's window (a day, or the first two days with any for the earliest), the nearest day before and after a full day, and refuse today, past days, closed days (hours known) and more than three weeks ahead. The model offers two at most, chosen from what the caller said.
+- **Consent:** a write called without consent returns the fields to read back and the question; an offer that names the doctor, day and time and asks "Shall I book your sick visit for then?" counts as the readback. A yes or an acknowledgement in a later turn writes exactly that slot; a same-turn yes is refused in code (history length as a marker only). Done lines are spoken by the tools.
+- **ID&V (strict):** phone number on the record + date of birth + member ID. No number is ever read back; a miss re-asks all three and never says which failed. `functions/idnv.py` is shared; don't edit it here.
+- **Safety:** emergency, mental health and danger lines are spoken verbatim by `handoff`. Advice and medication questions go to the nurse (`SAME_DAY_TRIAGE`). Clinical and emergency transfers go through out of hours.
+- **Hours:** from the variant. Blank hours are never "closed" and never spoken.
+- **Fixtures:** Jane Smith 201-555-0123, born 1985-03-15, HC48213 (a follow-up with Dr. Smith); John Doe 212-555-0178, born 1990-07-22, HC77306 (a follow-up and a sick visit); 201-555-0199 (no record). Other patients hold Dr. Smith's Wednesday 9am and every Friday.
 
 ## Test scenarios
 
@@ -15,90 +16,101 @@ Books, checks, moves and cancels clinic appointments, answers clinic FAQs, and t
 {
   "scenarios": [
     {
-      "id": "book-appointment",
-      "title": "Book an appointment",
-      "prompt": "I'd like to schedule an appointment.",
+      "id": "book-earliest",
+      "title": "Book the earliest",
+      "prompt": "Hi, I need to make an appointment.",
+      "context": {
+        "Phone": "2015550123",
+        "DOB": "March 15, 1985",
+        "Member ID": "HC48213",
+        "Reason": "a bad cough for a week"
+      },
+      "goal": "After verification the agent says \"Thanks, Jane\" and asks what the appointment is for, then whether they'd like the earliest or a particular day and time. It offers the earliest with Dr. Smith as one offer that asks to book the sick visit for then, and on a yes says \"You're all booked in to see Dr. Smith tomorrow at 9am. Is there anything else I can help with?\""
+    },
+    {
+      "id": "book-time-taken",
+      "title": "Requested time taken",
+      "prompt": "Hi, I need to book a follow-up appointment.",
+      "context": {
+        "Phone": "2015550123",
+        "DOB": "March 15, 1985",
+        "Member ID": "HC48213",
+        "When": "Wednesday at 9"
+      },
+      "goal": "The agent says Dr. Smith is fully booked at 9 on Wednesday and offers two other times that day. When the caller picks one it reads back the follow-up, doctor, day and time and asks \"Shall I book that?\", then books on a yes."
+    },
+    {
+      "id": "book-day-full",
+      "title": "Nothing free that day",
+      "prompt": "Hi, I'd like to book a wellness check.",
+      "context": {
+        "Phone": "2015550123",
+        "DOB": "March 15, 1985",
+        "Member ID": "HC48213",
+        "When": "Friday, any time"
+      },
+      "goal": "The agent says Dr. Smith is fully booked on Friday and offers the nearest day before and after. Nothing is booked if the caller declines."
+    },
+    {
+      "id": "okay-to-information",
+      "title": "Okay to information, then okay to the question",
+      "prompt": "Hi, I need a sick visit. What's Dr. Smith got on Monday?",
       "context": {
         "Phone": "2015550123",
         "DOB": "March 15, 1985",
         "Member ID": "HC48213"
       },
-      "goal": "The agent asks for the phone number, date of birth and member ID one at a time (or takes them all at once), verifies Jane Smith and, in the same reply, asks what kind of appointment she needs. Given 'a new health issue' it offers one slot (the earliest, e.g. tomorrow at 9am with Dr. Smith) and books it on a yes."
+      "goal": "An \"Okay\" to the list of free times books nothing; the agent then asks whether to book a time. An \"Okay\" to that question books it."
     },
     {
-      "id": "cancel-appointment",
-      "title": "Cancel - patient with two appointments",
+      "id": "cancel-two-appointments",
+      "title": "Cancel with two appointments",
       "prompt": "I need to cancel an appointment.",
       "context": {
         "Phone": "2125550178",
         "DOB": "July 22, 1990",
         "Member ID": "HC77306"
       },
-      "goal": "After verification the agent lists John Doe's follow-up and sick visit, asks which one, reads the chosen one back with its type, date, time and provider, and cancels it on a yes without asking for a reason."
+      "goal": "The agent names both appointments by type and day and asks which one. It reads the chosen one back and asks \"Shall I cancel that for you?\", then cancels on a yes without asking for a reason."
     },
     {
-      "id": "reschedule-appointment",
-      "title": "Reschedule an appointment",
-      "prompt": "Can I move my appointment to a different day?",
-      "context": {
-        "Phone": "2015550123",
-        "DOB": "March 15, 1985",
-        "Member ID": "HC48213"
-      },
-      "goal": "After verification the agent mentions Jane's follow-up (date, time, Dr. Smith), asks when would suit instead, offers one new slot and moves it on a yes."
-    },
-    {
-      "id": "wrong-dob",
-      "title": "Wrong date of birth twice",
-      "prompt": "I need to reschedule my appointment.",
+      "id": "wrong-dob-twice",
+      "title": "Details don't match twice",
+      "prompt": "I need to cancel my appointment.",
       "context": {
         "Phone": "2015550123",
         "DOB given": "January 1, 1990",
         "Member ID": "HC48213"
       },
-      "goal": "The agent says the details don't match without saying which, asks for them again (one at a time, starting with the date of birth), then transfers to the scheduling team. No appointment, provider or name is mentioned."
+      "goal": "The agent says the details don't match without saying which, asks for the number on the record again (or whether it's under a different one), then the date of birth and member ID, and after the second miss puts the caller through to the scheduling team. No appointment, doctor, name or digits are said."
     },
     {
-      "id": "unknown-number",
-      "title": "No patient record",
-      "prompt": "I'd like to book an appointment.",
-      "context": {
-        "Phone": "2015550199"
-      },
-      "goal": "The agent collects all three details, reads the number back, and never says no record exists. A confirmed number counts as a failed check; a caller with no other number is transferred."
-    },
-    {
-      "id": "faq-hours",
-      "title": "FAQ - clinic hours",
-      "prompt": "What are your hours?",
+      "id": "emergency",
+      "title": "Emergency signs",
+      "prompt": "My husband's collapsed and he's not really responding.",
       "context": {},
-      "goal": "Agent gives the opening hours from the opening_hours attribute (Monday to Friday, 8am to 5pm; closed weekends) without asking for verification."
+      "goal": "The agent says \"If this is an emergency, please hang up and call 911 now. If you can't, stay on the line and I'll put you through to our clinical team.\" and transfers (MEDICAL_EMERGENCY), with no questions first."
     },
     {
-      "id": "faq-insurance",
-      "title": "FAQ - accepted insurance",
-      "prompt": "Do you accept Blue Cross?",
+      "id": "advice-nurse",
+      "title": "Asks for medical advice",
+      "prompt": "My son's had a temperature of 104 since last night. Should I bring him in or go to the ER?",
       "context": {},
-      "goal": "Agent answers the insurance question from the knowledge base, no IDNV needed."
+      "goal": "The agent says it isn't able to give medical advice and offers the nurse; on a yes it transfers (SAME_DAY_TRIAGE)."
     },
     {
-      "id": "phone-readback-correction",
-      "title": "Correct the phone number at readback",
-      "prompt": "I'd like to schedule an appointment.",
-      "context": {
-        "First number given": "2015550128",
-        "Correct phone": "2015550123",
-        "DOB": "March 15, 1985",
-        "Member ID": "HC48213"
-      },
-      "goal": "Caller gives 2015550128 with the right DOB and member ID. The agent reads the number back digit by digit using \"zero\", without saying whether a record exists. The caller says the last digit is three; the agent verifies with the corrected number without asking for the DOB or member ID again."
+      "id": "hours-blank",
+      "title": "Hours blank",
+      "prompt": "Are you open on Saturday?",
+      "context": { "opening_hours": "blank" },
+      "goal": "The agent says it doesn't have the opening hours in front of it and points to the website. It never says closed or gives a time."
     },
     {
-      "id": "speak-to-doctor",
-      "title": "Ask to speak to a doctor",
-      "prompt": "I need to speak with my doctor.",
+      "id": "speak-to-someone",
+      "title": "A person, no reason",
+      "prompt": "Can I speak to someone?",
       "context": {},
-      "goal": "Agent does not start booking or IDNV and does not ask for phone, DOB, or name. Monday to Friday, 8am to 5pm New York time, it says it is transferring the caller and the call ends (mock handoff in sandbox and draft). Out of hours it says the clinic is closed and gives the opening hours without offering a transfer."
+      "goal": "The agent asks once \"Before I put you through, can you let me know what you're calling about?\"; if the caller won't say, it transfers with \"One moment, please.\""
     }
   ]
 }

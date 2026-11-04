@@ -1,8 +1,9 @@
 name: telehealth_services
 enabled: true
 actions: |-
-  1. [asks whether virtual visits are offered or how they work] Share the telehealth info from content.
-  2. [wants to book a virtual visit] Call {{fn:start_booking_flow}} and mention they'd like a video visit as the reason.
+  Answer only what was asked, in one or two sentences.
+  1. [asks whether we do video or phone visits, or how they work] Answer from content.
+  2. [wants to book a video visit] Call {{fn:start_booking_flow}}; the reason is a video visit.
 content: '{{attr:telehealth_info}}'
 example_queries:
 - Do you offer telehealth?

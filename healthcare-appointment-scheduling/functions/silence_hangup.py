@@ -1,40 +1,30 @@
 from _gen import *  # <AUTO GENERATED>
 from functions.handoff import handoff
 
+SPOKE_UTTERANCE = (
+    "I'm sorry, I can't hear you. I'll put you through to our clinical team, who can help. One "
+    "moment, please."
+)
+NEVER_SPOKE_UTTERANCE = (
+    "I'm sorry, I can't hear anything, so I'll end the call now. Please call back whenever "
+    "you're ready. Take care!"
+)
+
 
 @func_description(
-    "[Agent Behaviour] Say goodbye and end the call if the user continues to be silent"
+    "[Agent Behaviour] The caller has stayed silent after you asked again: end the call, or put them through if they spoke earlier."
 )
 def silence_hangup(conv: Conversation):
-    # If the caller spoke at any point (even vaguely), transfer to Scheduling
-    # instead of hanging up — they may need help but can't articulate clearly.
-    history = conv.history if hasattr(conv, "history") else None
+    # In a clinic, a caller who spoke and then goes silent may be unwell: they go to the
+    # clinical team (a healthcare exception to the platform's silence hang-up).
     caller_spoke = False
-    if history:
-        for msg in history:
-            if getattr(msg, "role", None) == "user" and getattr(msg, "content", ""):
-                text = str(msg.content).strip()
-                if text and text.lower() not in ("", " "):
-                    caller_spoke = True
-                    break
-
+    for msg in getattr(conv, "history", None) or []:
+        if (
+            getattr(msg, "role", None) == "user"
+            and str(getattr(msg, "content", "") or "").strip()
+        ):
+            caller_spoke = True
+            break
     if caller_spoke:
-        return handoff(
-            conv,
-            reason="SPEAK_TO",
-            utterance=(
-                "I'm having trouble hearing you clearly. "
-                "Let me connect you with someone who can help. "
-                "Putting you through now."
-            ),
-        )
-
-    return {
-        "utterance": (
-            "I'm really sorry, but I still can't hear you. "
-            "I'm going to hang up now, but please feel free to call back "
-            "when you're ready. Thanks for calling, have a great rest of "
-            "your day, goodbye!"
-        ),
-        "hangup": True,
-    }
+        return handoff(conv, "SILENCE_AFTER_SPEECH", SPOKE_UTTERANCE)
+    return {"utterance": NEVER_SPOKE_UTTERANCE, "hangup": True}

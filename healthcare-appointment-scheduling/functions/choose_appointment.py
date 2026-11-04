@@ -4,8 +4,8 @@ from functions.handoff import handoff
 
 TRIES = 2
 NOT_PICKED_UTTERANCE = (
-    "I'm sorry, I can't tell which appointment you mean. Let me put you through to our "
-    "scheduling team, one moment please."
+    "I'm sorry, I can't tell which appointment you mean. I'll put you through to our "
+    "scheduling team, who can help. One moment, please."
 )
 
 
@@ -13,12 +13,11 @@ NOT_PICKED_UTTERANCE = (
     "The caller has several upcoming appointments and has said which one they mean. Pass its date, its type, or both."
 )
 @func_parameter(
-    "appointment_date",
-    "The date of the appointment they mean, as YYYY-MM-DD. Empty if not said.",
+    "appointment_date", "The date of the appointment they mean, as YYYY-MM-DD."
 )
 @func_parameter(
     "appointment_type",
-    "The type they named, as one of 'Sick visit', 'Follow-up' or 'Wellness check': pick the one that fits what they said (a recheck is a Follow-up). Empty if not said.",
+    "Its type, as 'Sick visit', 'Follow-up' or 'Wellness check', from what they said.",
 )
 def choose_appointment(
     conv: Conversation, appointment_date: str, appointment_type: str
@@ -29,7 +28,7 @@ def choose_appointment(
         conv.state.choose_misses = misses
         if misses >= TRIES:
             conv.state.choose_misses = 0
-            return handoff(conv, "SCHEDULING", NOT_PICKED_UTTERANCE)
+            return handoff(conv, "APPOINTMENT_NOT_PICKED", NOT_PICKED_UTTERANCE)
         listing = "; ".join(
             appointments.describe(a, conv) for a in appointments.upcoming(conv)
         )
@@ -42,11 +41,14 @@ def choose_appointment(
     task = conv.state.task
     described = appointments.describe(appt, conv)
     if task == "cancel":
-        from flows.cancel_appointment.functions.cancel_appointment import (
-            cancel_readback,
-        )
-
-        return cancel_readback(conv)
+        return appointments.cancel_readback(conv)
     if task == "reschedule":
-        return f"They mean {described}. Ask when would suit them instead, unless they've said."
-    return f"Read the appointment back in one natural sentence: {described}. Then ask if there's anything else."
+        return (
+            f"APPOINTMENT: {described}. Say it in a few words (\"That's your "
+            f'{appointments.kind(appt["type"])} {appointments.on_date(appt["date"], appointments.today(conv))}.")'
+            ' and, unless they\'ve said, ask "When would suit you instead?"'
+        )
+    return (
+        f'APPOINTMENT: {described}. Say it in one natural sentence ("That\'s {described}."), '
+        'then ask "Is there anything you\'d like to change?"'
+    )

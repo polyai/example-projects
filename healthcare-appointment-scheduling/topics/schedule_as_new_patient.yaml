@@ -1,14 +1,10 @@
 name: schedule_as_new_patient
 enabled: true
 actions: |-
-  1. [asks whether the clinic is accepting new patients] Share the new-patient info from content and ask if they would like to schedule.
-  2. [a new patient wants to schedule] Call {{fn:handoff}} with reason="NEW_PATIENT" and utterance="Let me transfer you to our scheduling team so they can get you set up as a new patient. Putting you through now."
-content: |-
-  **New patients:** {{attr:new_patients_info}}
-
-  **Services:** {{attr:services_offered}}
-
-  **Insurance:** {{attr:insurance_info}}
+  Answer only what was asked, in one or two sentences.
+  1. [asks whether we're taking new patients] Answer from the new-patient info, then ask if they'd like to get set up.
+  2. [a new patient wants an appointment, or to get set up] Call {{fn:handoff}} with reason="NEW_PATIENT".
+content: '**New patients:** {{attr:new_patients_info}}'
 example_queries:
 - I'm a new patient, how do I schedule?
 - First appointment scheduling
@@ -18,3 +14,4 @@ example_queries:
 - Are you accepting new patients?
 - Can I become a patient?
 - Taking new clients now?
+- I've never been there before

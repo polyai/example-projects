@@ -2,79 +2,106 @@ from _gen import *  # <AUTO GENERATED>
 import functions.api_client as api_client
 import functions.appointments as appointments
 import functions.idnv as idnv
-from flows.reschedule_appointment.functions.find_new_time import (
-    READBACK_KEY,
-    move_fields,
-    move_question,
-    move_request,
-    move_state,
-)
 from functions.handoff import handoff
+
+KEY = "move"
+API_ERROR_UTTERANCE = (
+    "I'm sorry, I couldn't move that appointment just now. I'll put you through to our "
+    "scheduling team, who can help. One moment, please."
+)
+
+
+def done_line(appt: dict, slot: dict, today_) -> str:
+    """'I've moved your follow-up to Tuesday the 10th at 2pm. Is there anything else I can
+    help with?'"""
+    return (
+        f"I've moved your {appointments.kind(appt['type'])} to "
+        f"{appointments.short_date(slot['date'], today_)} at "
+        f"{appointments.say_time(slot['start'])}. {appointments.ANYTHING_ELSE}"
+    )
 
 
 @func_description(
-    "Move the appointment to the slot you offered, once the caller has clearly said yes to it. If anything changed since the caller last heard the details, this reads back only the change first."
+    "Move the appointment to the time the caller picked. Called without caller_confirmed it moves nothing and returns what to read back. Call it with caller_confirmed 'true' once the caller agrees."
+)
+@func_parameter(
+    "slot", "The new time, as 'YYYY-MM-DD HH:MM', exactly as find_new_time gave it."
 )
 @func_parameter(
     "caller_confirmed",
-    "'true' only if the caller's latest reply was a clear yes to the yes-or-no question about moving it to this slot. 'Okay', 'mm-hm', 'sure, whatever', silence or a question is not a yes: ask the yes-or-no question again. Otherwise 'false'.",
+    "'true' only if the caller's latest reply agreed to the question about moving it to this slot (the readback this tool returned, or your offer that named the day and time). 'Okay', 'sure' or 'sounds good' to that question is agreement; an answer to something else, or real hesitation, is not.",
 )
-@func_parameter(
-    "reason", "Why they're moving it, if they said. Empty string otherwise."
-)
+@func_parameter("reason", "Why they're moving it, if they said.")
 @func_latency_control(
     delay_before_responses_start=1,
     silence_after_each_response=3,
-    delay_responses=[("Okay, moving that for you now.", 3), ("Just a moment.", 3)],
+    delay_responses=[("Let me just move that for you.", 3), ("Nearly there.", 3)],
 )
 def reschedule_appointment(
-    conv: Conversation, flow: Flow, caller_confirmed: str, reason: str
+    conv: Conversation, flow: Flow, slot: str, caller_confirmed: str, reason: str
 ):
     if not idnv.is_verified(conv, idnv.STRICT):
-        return idnv.require(conv, "reschedule_appointment", strength=idnv.STRICT)
+        return appointments.gate(conv, "reschedule_appointment")
     appt = appointments.selected(conv)
-    req = move_request(conv)
     if not appt:
+        return "First find out which appointment they want to move, then call choose_appointment."
+    req = conv.state.move_request if isinstance(conv.state.move_request, dict) else {}
+    parsed = appointments.parse_slot(slot)
+    key = f"{parsed[0]} {parsed[1]}" if parsed else ""
+    chosen = (
+        (req.get("slots") or {}).get(key)
+        if req.get("appointment_id") == appt["id"]
+        else None
+    )
+    if not chosen:
         return (
-            f"First find out which appointment they want to move.\n\n{move_state(conv)}"
+            f"NOT MOVED: '{slot}' isn't one of the free times find_new_time gave. Call "
+            "find_new_time for that day and time first."
         )
-    if not req.get("offer"):
-        return f"No new slot offered yet: call find_new_time.\n\n{move_state(conv)}"
 
-    fields = move_fields(conv, req)
-    if not appointments.readback_is_current(conv, READBACK_KEY, fields):
-        appointments.readback_text(conv, READBACK_KEY, fields)
-        appointments.mark_question(conv, READBACK_KEY)
+    today_ = appointments.today(conv)
+    fields = appointments.readback_fields(chosen, appt["type"], today_, doctor=False)
+    item = f"{appt['id']} {key}"
+    last = appointments.readback(conv, KEY) or {}
+    if last.get("item") not in (item, key) or last.get("fields") != fields:
+        changed = appointments.mark_readback(conv, KEY, item, fields)
         return (
-            "NOT MOVED YET: the caller hasn't heard these details. "
-            f"{move_question(conv, req)}\n\n{move_state(conv)}"
+            f"NOT MOVED YET: {appointments.read_back_text(fields, changed)}, then ask "
+            f'"Shall I move it?" {appointments.CONSENT_HINT} Then call reschedule_appointment '
+            "again with the same slot and caller_confirmed 'true'."
         )
-    if str(caller_confirmed).strip().lower() != "true":
-        appointments.mark_question(conv, READBACK_KEY)
-        return f"NOT MOVED YET. {move_question(conv, req, 'Ask again')}\n\n{move_state(conv)}"
-    if appointments.asked_this_turn(conv, READBACK_KEY):
-        return appointments.NOT_DONE_YET
+    if str(caller_confirmed or "").strip().lower() != "true":
+        appointments.remark_turn(conv, KEY)
+        return (
+            "NOT MOVED YET: the caller hasn't agreed yet. If they hesitated or asked something, "
+            'answer or wait, then ask again ("Shall I go ahead and move it?"). Once they agree, '
+            "call reschedule_appointment again with the same slot and caller_confirmed 'true'."
+        )
+    if appointments.asked_this_turn(conv, KEY):
+        return appointments.not_done_yet(fields, "move")
 
     try:
-        api_client.move_appointment(conv, appt["id"], req["offer"])
+        if not appointments.slot_is_free(
+            conv, chosen["provider_id"], chosen["date"], chosen["start"]
+        ):
+            appointments.forget_readback(conv, KEY)
+            return (
+                "NOT MOVED: that time was taken before it could be moved. Say \"I'm sorry, that "
+                "time's just been taken.\" Then call find_new_time for that day again and offer "
+                "what it returns."
+            )
+        api_client.move_appointment(conv, appt["id"], chosen)
     except Exception:
         conv.log.error("move_appointment failed", exc_info=True)
-        return handoff(
-            conv,
-            "RESCHEDULE_API_ERROR",
-            "I'm sorry, I couldn't move that appointment just now. Let me put you through to our "
-            "scheduling team, one moment please.",
-        )
+        conv.write_metric("RESCHEDULE_FLOW_API_ERROR")
+        return handoff(conv, "RESCHEDULE_API_ERROR", API_ERROR_UTTERANCE)
 
     if str(reason or "").strip():
         conv.write_metric("RESCHEDULE_REASON", str(reason).strip()[:100])
     conv.write_metric("RESCHEDULE_FLOW_COMPLETED")
+    conv.state.visit_date = chosen["date"]
     conv.state.move_request = None
     conv.state.task = ""
-    appointments.forget_readback(conv, READBACK_KEY)
+    appointments.forget_readback(conv, KEY)
     conv.exit_flow()
-    when = appointments.say_slot(req["offer"], appointments.today(conv))
-    return (
-        f"Moved. Tell the caller their {appt['type'].lower()} is now {when}. Then ask if there's "
-        "anything else."
-    )
+    return {"utterance": done_line(appt, chosen, today_)}

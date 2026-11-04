@@ -1,7 +1,7 @@
 name: confirm_appointment
 enabled: true
-actions: 1. [caller wants to check or confirm an upcoming appointment] Call {{fn:start_confirmation_flow}}.
-content: Patients can check the date, time and provider of an upcoming appointment once they've confirmed who they are.
+actions: 1. [wants to check or confirm an upcoming appointment] Call {{fn:start_confirmation_flow}}.
+content: Patients can check the day, time and provider of an upcoming appointment once they've confirmed who they are.
 example_queries:
 - I want to confirm an appointment
 - I'm calling to confirm my appointment
@@ -9,3 +9,4 @@ example_queries:
 - Confirm my appointment
 - Can I confirm my visit?
 - I need to know what my next appointment is
+- I just want to check when my appointment is

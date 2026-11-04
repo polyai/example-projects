@@ -1,15 +1,17 @@
 name: appointment_guidelines
 enabled: true
 actions: |-
-  1. [asks what to bring, when to arrive, or what to expect at a visit] Share the first-visit info from content.
-  2. [asks about cancelling or missing an appointment] Share the cancellation policy from content.
+  Answer only what was asked, in one or two sentences.
+  1. [asks what to bring, when to arrive, or what to expect] Answer just that from the before-your-visit info.
+  2. [asks about the cancellation policy, or missing an appointment] Give the cancellation policy from content.
 content: |-
   **Before your visit:** {{attr:first_visit_info}}
 
-  **Cancellations:** {{attr:cancellation_policy_info}}
+  **Cancellation policy:** {{attr:cancellation_policy_info}}
 example_queries:
 - What should I bring to my appointment?
 - Are any documents needed for my visit?
 - Do I need to arrive to my appointment early?
 - What do I need for my first visit?
 - Any paperwork I should bring?
+- What's your cancellation policy?

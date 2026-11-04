@@ -1,15 +1,11 @@
 name: speak_to_person
 enabled: true
 actions: |-
-  1. [caller asks to speak to a nurse]
-     Call {{fn:handoff}} with reason="SPEAK_TO" and utterance="Let me connect you with someone who can help. Putting you through now."
-  2. [caller wants to speak to, talk to, or be transferred to anyone else, or a specific person by name]
-     Call {{fn:handoff}} with reason="SCHEDULING" and utterance="Let me transfer you to our team so they can connect you with the right person. Putting you through now."
-content: |-
-  A caller who asks for a nurse is put through to the clinical team. When a
-  caller asks to speak to or be connected to anyone else, or a specific person
-  by name, the agent will transfer them to the scheduling team who can route
-  the call to the correct department.
+  1. [asks for "someone" or "a person" with no reason] "Before I put you through, can you let me know what you're calling about?" Then help with it, or transfer to the team that can. Asks again, or won't say: call {{fn:handoff}} with reason="DEFAULT".
+  2. [asks for a nurse, or has a clinical worry] Call {{fn:handoff}} with reason="SAME_DAY_TRIAGE".
+  3. [asks for their doctor or a named staff member, or says someone called them] Call {{fn:handoff}} with reason="SPEAK_TO_PROVIDER".
+  4. [asks for billing or medical records] Call {{fn:handoff}} with reason="BILLING" or reason="RECORDS".
+content: ''
 example_queries:
 - Can I speak to a nurse?
 - I need to talk to someone
@@ -18,3 +14,5 @@ example_queries:
 - Transfer me to my doctor please
 - Someone from the office called me and I need to speak back with them
 - I need to speak back with my provider
+- Can I speak to someone?
+- Can I talk to a real person?

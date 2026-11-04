@@ -1,6 +1,8 @@
 name: lab-testing
 enabled: true
-actions: 1. [asks whether there is a lab, or about lab hours] Share the services info from content.
+actions: |-
+  Answer only what was asked, in one or two sentences.
+  1. [asks whether there's a lab, or about lab hours] Answer from the services info.
 content: '{{attr:services_offered}}'
 example_queries:
 - Do you have a lab on-site?
