@@ -1,6 +1,6 @@
 name: celebrations
 enabled: true
-actions: ''
+actions: Answer only what they asked, in a sentence or two, from the content. If they're booking, offer to add the occasion as a note.
 content: '{{attr:celebrations_info}}'
 example_queries:
 - Can I bring balloons?

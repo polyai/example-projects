@@ -1,14 +1,29 @@
+import re
+
 from _gen import *  # <AUTO GENERATED>
 from functions import bookings, hours
 
 DESTINATION = "RESTAURANT"  # config/handoffs.yaml
 MOCK_ENVS_EXCLUDED = ("pre-release", "pre_release", "live")
 
-DEFAULT_UTTERANCE = "Sure, I'll put you through to the team. One moment please."
+DEFAULT_UTTERANCE = (
+    "Of course. I'll put you through to the team now. One moment, please."
+)
 OUT_OF_HOURS_UTTERANCE = (
     "We're closed right now, but I'll put you through so you can leave a voicemail, and the team "
-    "will get back to you as soon as they can. One moment please."
+    "will get back to you. One moment, please."
 )
+
+
+def _lead(utterance: str) -> str:
+    """What the line said before the transfer itself ("I'm really sorry to hear that. "),
+    kept when the out-of-hours line replaces the rest."""
+    kept = []
+    for sentence in re.split(r"(?<=[.!?])\s+", utterance.strip()):
+        if re.search(r"put you through|one moment|of course|sure", sentence, re.IGNORECASE):
+            break
+        kept.append(sentence)
+    return " ".join(kept) + " " if kept else ""
 
 
 def restaurant_open_now(conv) -> bool:
@@ -24,7 +39,7 @@ def restaurant_open_now(conv) -> bool:
 )
 @func_parameter(
     "handoff_utterance",
-    'What to say before transferring. Empty string to use "Sure, I\'ll put you through to the team. One moment please."',
+    'What to say before transferring, from your instructions. Empty string to use "Of course. I\'ll put you through to the team now. One moment, please."',
 )
 def handoff(conv: Conversation, handoff_reason: str, handoff_utterance: str):
     reason = (handoff_reason or "").strip().upper() or "UNSPECIFIED"
@@ -41,12 +56,14 @@ def handoff(conv: Conversation, handoff_reason: str, handoff_utterance: str):
         ):
             if conv.current_flow:
                 conv.exit_flow()
+            today = hours.say_day(conv, bookings.today(conv))
             return (
                 "The restaurant is closed right now, so you can't put the caller through. Tell "
-                "them that, give today's opening hours if you know them, and ask if there's "
-                "anything else you can help with."
+                "them that"
+                + (f", give today's hours ({today})" if today else "")
+                + ", and ask if there's anything else you can help with."
             )
-        utterance = OUT_OF_HOURS_UTTERANCE
+        utterance = f"{_lead(utterance)}{OUT_OF_HOURS_UTTERANCE}"
 
     if (conv.env or "").lower() not in MOCK_ENVS_EXCLUDED:
         conv.log.info("Mock handoff", handoff_reason=reason, handoff_to=DESTINATION)

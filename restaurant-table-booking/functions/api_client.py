@@ -13,29 +13,49 @@ The mock keeps every change a call makes (new bookings, changes, cancellations)
 in conv.state, so two test calls never see each other's bookings. The seed data
 is rebuilt from the functions below on every read and never mutated.
 
+Availability works like OpenTable: a search for a party at a day and time returns
+every free start time within about three hours either side of it
+(search_availability). The mock floor has tables for 2, 4, 6 and 8 (and 12, joined), and a
+party takes the smallest table that fits it.
+
 Fixtures (dates are relative to the day of the call):
 - John Smith, 201-555-0123: table for 4 tomorrow at 7pm
 - Jane Doe, 212-555-0178: table for 2 the day after tomorrow at 8pm
 - Maria Garcia, 312-555-0144: table for 2 in two days at 6pm, and for 6 in four days at 7:30pm
 - Alex Turner, 201-555-0177: guest with no upcoming bookings
 - 201-555-0199: no guest on file
+- Busy times, every week: Friday, tables for 2 from 7pm and tables for 4 at 7 and 7:30;
+  Saturday, tables for 2 at 8 and 8:30 and tables for 4 at 7 and 7:30; tables for 6 are
+  free on Friday only at 8:30pm, never on Saturday, and on Sunday from 6pm.
 """
 
+from _gen import *  # <AUTO GENERATED>
 import re
 import uuid
 from datetime import date, timedelta
 
-from _gen import *  # <AUTO GENERATED>
 
 LIVE_ENVS = ("pre-release", "pre_release", "live")
 
-# Mock floor plan: the times a table can start, and how many covers (seats) the
-# room takes at each of them. Opening hours are applied by bookings.py.
-SLOT_TIMES = [
-    "12:00", "12:30", "13:00", "13:30",
-    "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30",
-]  # fmt: skip
-COVERS_PER_SLOT = 10
+# Mock floor plan: the times a table can start, and how many tables of each size the
+# room has at each of them. Opening hours are applied by bookings.py.
+SLOT_TIMES = [f"{h:02d}:{m:02d}" for h in range(11, 23) for m in (0, 30)]
+TABLES = {
+    2: 4,
+    4: 3,
+    6: 2,
+    8: 1,
+    12: 1,
+}  # 12: tables joined, for a raised max_party_size
+WINDOW_MINUTES = (
+    180  # OpenTable returns free times about 3 hours either side of the request
+)
+# Every table of a size taken, by weekday (Monday 0) and start-time range, every week.
+BUSY = {
+    4: {2: [("19:00", "22:30")], 4: [("19:00", "19:30")], 6: [("11:00", "20:00"), ("21:00", "22:30")]},
+    5: {2: [("20:00", "20:30")], 4: [("19:00", "19:30")], 6: [("11:00", "22:30")]},
+    6: {6: [("11:00", "17:30")]},
+}  # fmt: skip
 
 
 @func_description("[UTIL] Reservation API client, not callable directly")
@@ -208,23 +228,54 @@ def get_booking(conv, booking_id: str) -> dict | None:
     return next((b for b in _all_bookings(conv) if b["id"] == booking_id), None)
 
 
+def table_size(party_size: int) -> int:
+    """The smallest table that seats the party, or 0 when no table is big enough."""
+    return next((size for size in sorted(TABLES) if size >= int(party_size)), 0)
+
+
+def _mins(hhmm: str) -> int:
+    h, m = hhmm.split(":")
+    return int(h) * 60 + int(m)
+
+
+def _busy(day: date, size: int, hhmm: str) -> bool:
+    ranges = BUSY.get(day.weekday(), {}).get(size, [])
+    return any(_mins(a) <= _mins(hhmm) <= _mins(b) for a, b in ranges)
+
+
 def available_times(
     conv, day: date, party_size: int, ignore_booking_id: str = ""
 ) -> list[str]:
-    """Start times on `day` with room for `party_size` ("HH:MM", earliest first).
+    """Every start time on `day` with a table for `party_size` ("HH:MM", earliest first).
 
-    ignore_booking_id: a booking being changed, whose own covers don't count
-    against the room.
+    ignore_booking_id: a booking being changed, whose own table doesn't count against it.
     """
     if not use_mock_api(conv):
         _real_api_missing("available_times")
+    size = table_size(party_size)
+    if not size:
+        return []
     taken: dict[str, int] = {}
     for b in _all_bookings(conv):
         if b["date"] == day.isoformat() and b["id"] != ignore_booking_id:
-            taken[b["time"]] = taken.get(b["time"], 0) + int(b["party_size"])
+            if table_size(b["party_size"]) == size:
+                taken[b["time"]] = taken.get(b["time"], 0) + 1
     return [
-        t for t in SLOT_TIMES if taken.get(t, 0) + int(party_size) <= COVERS_PER_SLOT
+        t
+        for t in SLOT_TIMES
+        if not _busy(day, size, t) and taken.get(t, 0) < TABLES[size]
     ]
+
+
+def search_availability(
+    conv, day: date, hhmm: str, party_size: int, ignore_booking_id: str = ""
+) -> list[str]:
+    """The booking API's availability search: every free time within about three hours
+    either side of `hhmm` (OpenTable's window). With no time, the whole day."""
+    free = available_times(conv, day, party_size, ignore_booking_id)
+    if not hhmm:
+        return free
+    return [t for t in free if abs(_mins(t) - _mins(hhmm)) <= WINDOW_MINUTES]
 
 
 def create_booking(

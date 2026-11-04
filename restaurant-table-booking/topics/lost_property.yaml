@@ -1,6 +1,6 @@
 name: lost_property
 enabled: true
-actions: Call {{fn:handoff}} with handoff_reason=LOST_PROPERTY and handoff_utterance="Let me put you through to the team, who can check for you. One moment please."
+actions: Call {{fn:handoff}} straight away with handoff_reason=LOST_PROPERTY and handoff_utterance="Of course. I'll put you through to the team now, so they can check for you. One moment, please."
 content: ''
 example_queries:
 - I think I left something in the restaurant

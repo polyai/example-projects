@@ -1,6 +1,6 @@
 name: walk_in
 enabled: true
-actions: ''
+actions: Answer only what they asked, in a sentence or two, from the content. No waitlist is offered.
 content: '{{attr:walk_in_info}}'
 example_queries:
 - Do I have to make a booking or can I walk in without a reservation?

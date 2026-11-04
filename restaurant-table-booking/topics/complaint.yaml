@@ -1,6 +1,6 @@
 name: complaint
 enabled: true
-actions: Say you're sorry to hear that, then immediately call {{fn:handoff}} with handoff_reason=COMPLAINT and handoff_utterance="I'm sorry to hear that. Let me put you through to the team so they can help. One moment please."
+actions: Call {{fn:handoff}} straight away with handoff_reason=COMPLAINT and handoff_utterance="I'm really sorry to hear that. Let me put you through to the team so they can help. One moment, please."
 content: ''
 example_queries:
 - I want to make a complaint

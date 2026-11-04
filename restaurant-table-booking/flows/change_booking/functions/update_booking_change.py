@@ -1,107 +1,15 @@
+import functions.existing_booking as existing
+
 from _gen import *  # <AUTO GENERATED>
-from functions import bookings, idnv
-from functions.handoff import handoff
+from functions import bookings
 
 
-def readback_key(booking_id: str) -> str:
-    return f"change:{booking_id}"
-
-
-def change_fields(conv, values: dict) -> list[tuple[str, str]]:
-    fields = [
-        ("party", f"for {bookings.say_party(values['party_size'])}"),
-        ("when", bookings.say_when(conv, values["date"], values["time"])),
-    ]
-    if values.get("notes"):
-        fields.append(("notes", f"note: {values['notes']}"))
-    return fields
-
-
-def pending_change(conv) -> dict | None:
-    change = conv.state.booking_change
-    booking = bookings.selected(conv)
-    if (
-        not isinstance(change, dict)
-        or not booking
-        or change.get("booking_id") != booking["id"]
-    ):
-        return None
-    return dict(change)
-
-
-def start_change(conv, booking: dict) -> str:
-    """Remember the booking as the caller hears it, so later readbacks give only the change."""
-    conv.state.booking_change = {
-        "booking_id": booking["id"],
-        "party_size": booking["party_size"],
-        "date": booking["date"],
-        "time": booking["time"],
-        "notes": booking.get("notes", ""),
-        "offer": None,
-        "declined": [],
-    }
-    bookings.remember_readback(
-        conv, readback_key(booking["id"]), change_fields(conv, booking)
-    )
-    return (
-        f"Read the booking back in one natural sentence: {bookings.describe_booking(conv, booking)}. "
-        "If the caller has already said what they want to change, call update_booking_change with "
-        f"it now; otherwise ask what they'd like to change.\n\n{change_state(conv)}"
-    )
-
-
-def _proposed(change: dict) -> dict:
-    offer = change.get("offer") or {}
-    return {
-        "party_size": change["party_size"],
-        "date": offer.get("date", change["date"]),
-        "time": offer.get("time", change["time"]),
-        "notes": change["notes"],
-    }
-
-
-def change_question(conv, booking: dict, change: dict) -> str:
-    """The yes-or-no question for this change, naming the action and only what changes."""
-    p = _proposed(change)
-    parts = []
-    if str(p["party_size"]) != str(booking.get("party_size", "")):
-        parts.append(bookings.say_party(p["party_size"]))
-    if (p["date"], p["time"]) != (booking.get("date"), booking.get("time")):
-        parts.append(bookings.short_when(conv, p["date"], p["time"]))
-    if p["notes"] != booking.get("notes", "") and p["notes"]:
-        parts.append(f"the note '{p['notes']}'")
-    what = " and ".join(parts) or bookings.short_table(
-        conv, p["party_size"], p["date"], p["time"]
-    )
-    return f"Shall I change your booking to {what}"
-
-
-def is_different(booking: dict, change: dict) -> bool:
-    p = _proposed(change)
-    return any(
-        str(p[k]) != str(booking.get(k, ""))
-        for k in ("party_size", "date", "time", "notes")
-    )
-
-
-def change_state(conv) -> str:
-    booking = bookings.selected(conv)
-    change = pending_change(conv)
-    lines = ["Task: change a booking"]
-    if booking:
-        lines.append(f"Booking now: {bookings.describe_booking(conv, booking)}")
-    nxt = "Ask what they'd like to change."
-    if booking and change and is_different(booking, change):
-        lines.append(f"Proposed: {bookings.describe_booking(conv, _proposed(change))}")
-        nxt = (
-            "Wait for a clear yes or no to the change, or another change. 'Okay' or 'mm-hm' is "
-            "not a yes: ask the yes-or-no question again."
-        )
-    return bookings.call_state(conv, lines, nxt)
+def _key(day_iso: str, hhmm: str) -> str:
+    return f"{day_iso}T{hhmm}"
 
 
 @func_description(
-    "Save the change the caller wants to their booking (day, time, party size or a note) and check it: opening hours and availability are checked here, and it gives you the yes-or-no question to ask. Call it whenever they ask for a change or turn down the time you offered."
+    "Check the change the caller wants to their booking: the day, time, party size or a note. Opening hours and availability are checked here, and it gives you the question to ask. Call it whenever they ask for a change or pick one of the times you offered."
 )
 @func_parameter(
     "party_size", "The new number of people, as digits, e.g. '6'. Empty if unchanged."
@@ -112,15 +20,17 @@ def change_state(conv) -> str:
 @func_parameter(
     "time", "The new time, 24-hour HH:MM, e.g. '20:00' for 8pm. Empty if unchanged."
 )
-@func_parameter("notes", "A note or special request to add. Empty if none.")
 @func_parameter(
-    "wants_different_time",
-    "'true' only when the caller turned down the time you offered without saying what they want instead. Otherwise 'false'.",
+    "notes", "A note to add, in a few of the caller's words. Empty if none."
+)
+@func_parameter(
+    "day_said",
+    "The caller's own words for the new day, e.g. 'Saturday', 'next Friday'. Empty if they didn't say a day.",
 )
 @func_latency_control(
     delay_before_responses_start=1,
     silence_after_each_response=3,
-    delay_responses=[("Let me check that for you.", 3), ("One more moment.", 3)],
+    delay_responses=[("Let me just check what we've got.", 3), ("One more moment.", 3)],
 )
 def update_booking_change(
     conv: Conversation,
@@ -129,81 +39,117 @@ def update_booking_change(
     date: str,
     time: str,
     notes: str,
-    wants_different_time: str,
+    day_said: str,
 ):
-    if not idnv.is_verified(conv):
-        return idnv.require(conv, "change_booking")
+    gate = bookings.require(conv, "change_booking")
+    if gate:
+        return gate
     booking = bookings.selected(conv)
     if not booking:
         return "First find out which booking they want to change, then call choose_booking."
-    change = pending_change(conv)
+    change = existing.pending_change(conv)
     if change is None:
-        start_change(conv, booking)
-        change = pending_change(conv) or {}
+        existing.start_change(conv, booking)
+        change = existing.pending_change(conv) or {}
 
-    before = (change["party_size"], change["date"], change["time"])
+    current = existing.proposed(change)
+    wanted = {
+        "party_size": current["party_size"],
+        "date": current["date"],
+        "time": current["time"],
+    }
     party = bookings.parse_party(party_size)
     if party:
-        change["party_size"] = party
-    day = bookings.parse_date(conv, date)
-    if day:
-        change["date"] = day.isoformat()
+        wanted["party_size"] = party
+    if str(date or "").strip() or str(day_said or "").strip():
+        day, problem = bookings.resolve_day(conv, date, day_said)
+        if problem:
+            return f"{problem} Then call update_booking_change again.\n\n{existing.change_state(conv)}"
+        if day:
+            wanted["date"] = day.isoformat()
     hhmm = bookings.parse_time(time)
     if hhmm:
-        change["time"] = hhmm
-    if notes.strip() and notes.strip().lower() not in ("na", "none", "no", "nothing"):
-        change["notes"] = notes.strip()
+        wanted["time"] = hhmm
+    note = str(notes or "").strip()
+    if note and note.lower() not in ("na", "none", "no", "nothing"):
+        change["notes"] = note
 
     limit = bookings.max_party_size(conv)
-    if change["party_size"] > limit:
+    if wanted["party_size"] > limit:
         conv.state.booking_change = {**change, "offer": None}
+        conv.write_metric("LARGE_PARTY_COVERS", wanted["party_size"])
         return (
-            f"We can't book tables for more than {bookings.say_party(limit)} over the phone. Tell "
-            "the caller that, and ask if you can text them the link to our group booking form. "
-            "Yes → call start_send_text with sms_id='large_party' and any number they gave (don't transfer). Only if they'd "
-            "rather speak to someone, call handoff with handoff_reason=LARGE_PARTY."
+            f"LARGE PARTY: groups of more than {bookings.say_party(limit)} are booked by the team, "
+            "so the booking stays as it is. Say so, and offer to text a link to our group booking "
+            "form (yes → call start_send_text with sms_id='large_party'), or to put them through "
+            "to the team (handoff with handoff_reason=LARGE_PARTY)."
         )
 
-    rejected = bookings.is_true(wants_different_time) and bool(change["offer"])
-    if rejected:
-        change["declined"] = change["declined"] + [change["offer"]["time"]]
-        if len(change["declined"]) >= bookings.MAX_REJECTED_OFFERS:
-            conv.state.booking_change = change
-            return handoff(
-                conv,
-                "OFFERED_TIME_REJECTED",
-                "I'm sorry I couldn't find a time that suits. Let me put you through to the team, "
-                "one moment please.",
-            )
-
-    note = ""
-    moved = before != (change["party_size"], change["date"], change["time"])
-    if moved or rejected or not change["offer"]:
-        # Every change of party, day or time is re-checked, without counting this booking's own table.
-        found, note = bookings.find_time(
-            conv,
-            bookings.parse_date(conv, change["date"]),
-            change["time"],
-            change["party_size"],
-            declined=change["declined"],
-            ignore_booking_id=booking["id"],
+    chosen = _key(wanted["date"], wanted["time"]) in change.get("offered", [])
+    day = bookings.parse_date(conv, wanted["date"])
+    moved = (wanted["party_size"], wanted["date"], wanted["time"]) != (
+        booking["party_size"],
+        booking["date"],
+        booking["time"],
+    )
+    lead = ""
+    if moved:
+        # Every change of party, day or time is re-checked, without this booking's own table.
+        result = bookings.check_table(
+            conv, day, wanted["time"], wanted["party_size"], booking["id"]
         )
-        if found is None:
+        if result["outcome"] != "free":
             change["offer"] = None
-            change["party_size"], change["date"], change["time"] = before
+            change["offered"] = [
+                _key(wanted["date"], t) for t in result.get("times", [])
+            ]
+            for d, times in (
+                bookings.nearest_days(
+                    conv, day, wanted["time"], wanted["party_size"], booking["id"]
+                )
+                if result["outcome"] == "day_full"
+                else []
+            ):
+                change["offered"] += [_key(d.isoformat(), t) for t in times]
             conv.state.booking_change = change
-            return f"{note} The booking is unchanged so far.\n\n{change_state(conv)}"
-        change["offer"] = {"date": change["date"], "time": found}
+            return (
+                f"NOT AVAILABLE. {result['say']} The booking stays as it is until they agree a "
+                "time. When they pick one, call update_booking_change with it.\n\n"
+                + existing.change_state(conv)
+            )
+        wanted["time"] = result["time"]
+        if not chosen:
+            if wanted["party_size"] != booking["party_size"] and (
+                wanted["date"],
+                wanted["time"],
+            ) == (booking["date"], booking["time"]):
+                lead = f"That's fine, we've got room for {bookings.say_party(wanted['party_size'])} at {bookings.say_time(wanted['time'])}. "
+            elif wanted["date"] == booking["date"]:
+                lead = f"We've got a table at {bookings.say_time(wanted['time'])} that night. "
+            else:
+                lead = f"We've got a table at {bookings.say_time(wanted['time'])} on {day.strftime('%A')}. "
+    change.update(
+        party_size=wanted["party_size"], date=wanted["date"], time=wanted["time"]
+    )
+    change["offer"] = {"date": wanted["date"], "time": wanted["time"]}
+    change["offered"] = []
     conv.state.booking_change = change
 
-    if not is_different(booking, change):
+    if not existing.is_different(booking, change):
+        change["offer"] = None
+        conv.state.booking_change = change
         return (
             "That's the same as the booking already. Say so and ask what they'd like to change."
-            f"\n\n{change_state(conv)}"
+            f"\n\n{existing.change_state(conv)}"
         )
-    # The question names exactly what changes; record that the caller has heard it.
-    key = readback_key(booking["id"])
-    bookings.readback_text(conv, key, change_fields(conv, _proposed(change)))
+    key = existing.change_key(booking["id"])
+    bookings.readback_changes(
+        conv, key, existing.change_fields(conv, existing.proposed(change))
+    )
     bookings.mark_asked(conv, key)
-    ask = bookings.ask_yes_no(change_question(conv, booking, change))
-    return f"{note} {ask}".strip() + f"\n\n{change_state(conv)}"
+    question = existing.change_question(conv, booking, change)
+    return (
+        f'NOT CHANGED YET. Say: "{lead}{question}" A yes, or an acknowledgement to that question '
+        '("okay", "sure", "go on"), is a yes: call modify_booking with caller_confirmed=\'true\'.'
+        f"\n\n{existing.change_state(conv)}"
+    )

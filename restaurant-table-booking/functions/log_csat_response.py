@@ -1,5 +1,5 @@
 from _gen import *  # <AUTO GENERATED>
-from functions.end_call import GOODBYE
+from functions.end_call import goodbye
 
 
 @func_description(
@@ -11,4 +11,4 @@ from functions.end_call import GOODBYE
 def log_csat_response(conv: Conversation, got_what_they_needed: str):
     resolved = str(got_what_they_needed).strip().lower() == "true"
     conv.write_metric("CSAT_RESPONSE", "YES" if resolved else "NO")
-    return {"utterance": GOODBYE, "hangup": True}
+    return {"utterance": goodbye(conv), "hangup": True}

@@ -22,8 +22,8 @@ dtmf_config:
   is_pii: true
 prompt: |-
   # Text the caller a link
-  1. If they clearly say yes to texting the number they're calling from, or ask for it, call {{ft:send_text}} with use_calling_number='true'.
-  2. If they give a number, call {{ft:send_text}} with it, as they said it (words or digits). Never guess or pad digits. The tool gives you the yes-or-no question that reads it back.
-  3. After the readback: a clear yes to the yes-or-no question → {{ft:send_text}} with number_confirmed='true' ("okay", "mm-hm" or anything unclear is not a yes: ask it again); a corrected number → {{ft:send_text}} with the new number.
-  4. If they no longer want the text, say that's fine and ask if there's anything else.
-  5. Follow the latest tool response. After every number the caller gives, call {{ft:send_text}} again, even if it's the same: the tool counts the attempts and owns retries and transfers.
+  1. Ask the question the tool gives you. A yes, or an acknowledgement to "Shall I send it to the number you're calling from?", means call {{ft:send_text}} with use_calling_number='true'. Never say the number they're calling from.
+  2. If they give a number, call {{ft:send_text}} with it before you say anything, as they said it (words or digits); never read it back yourself. Never guess or pad digits. The tool gives you the readback: "That's nine one seven, five five five, zero one four two. Shall I send it there?"
+  3. A yes, or an acknowledgement to that question, means call {{ft:send_text}} with number_confirmed='true'. A corrected number: call {{ft:send_text}} with the new number.
+  4. No mobile: say where they can find it instead, from the topic ("You can find it at example-restaurant dot com slash menu."), and send nothing. If they no longer want the text, say that's fine and ask if there's anything else.
+  5. After every number the caller gives, call {{ft:send_text}} again, even if it's the same: the tool counts the attempts and owns retries and transfers.

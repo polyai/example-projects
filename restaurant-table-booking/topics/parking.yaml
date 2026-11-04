@@ -1,6 +1,6 @@
 name: parking
 enabled: true
-actions: ''
+actions: Answer only what they asked, in a sentence or two, from the content.
 content: '{{attr:parking_info}}'
 example_queries:
 - Where can I find parking near the restaurant?

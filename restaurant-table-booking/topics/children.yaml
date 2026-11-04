@@ -1,6 +1,6 @@
 name: children
 enabled: true
-actions: ''
+actions: Answer only what they asked, in a sentence or two, from the content.
 content: '{{attr:children_info}}'
 example_queries:
 - Who is welcome to come?

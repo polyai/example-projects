@@ -1,6 +1,6 @@
 name: late
 enabled: true
-actions: Tell the caller how long we hold a table, from the content. If they'll be later than that, offer to move their booking to a later time (call {{fn:start_change_booking}}) or to put them through to the team (call {{fn:handoff}} with handoff_reason=RUNNING_LATE).
+actions: 'Say: "Thanks for letting us know." Then the hold time from the content, in a sentence. If they''ll be later than that: "...so it might be best to move your booking. Shall I see what we''ve got a bit later?" Yes → {{fn:start_change_booking}}. If they''d rather speak to the team, call {{fn:handoff}} with handoff_reason=RUNNING_LATE. If they''d rather keep it, say that''s fine and ask if there''s anything else; don''t offer again.'
 content: '{{attr:late_arrival_info}}'
 example_queries:
 - If we show up 10 minutes late, what happens?

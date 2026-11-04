@@ -1,6 +1,6 @@
 name: reservations-sms_confirmations
 enabled: true
-actions: Say you can't send booking confirmations by text, but you can read the booking details out now. If they'd like that, call {{fn:start_check_booking}}.
+actions: 'Say: "I''m afraid I can''t send confirmations by text, but I can read it out for you now." If they''d like that, call {{fn:start_check_booking}}.'
 content: ''
 example_queries:
 - Could you send me a confirmation text?

@@ -1,6 +1,6 @@
 name: pets
 enabled: true
-actions: ''
+actions: Answer only what they asked, in a sentence or two, from the content.
 content: '{{attr:pets_info}}'
 example_queries:
 - Can I bring my dog?

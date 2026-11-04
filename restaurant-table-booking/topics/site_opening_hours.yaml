@@ -1,6 +1,6 @@
 name: site_opening_hours
 enabled: true
-actions: Call {{fn:get_opening_hours}} with the date they asked about, or an empty date for the week.
+actions: Call {{fn:get_opening_hours}} with the day they asked about (empty for today; 'week' only if they asked for the whole week) and day_said in their words.
 content: ''
 example_queries:
 - when are you open?

@@ -1,5 +1,5 @@
 from _gen import *  # <AUTO GENERATED>
-from functions import idnv
+from functions import idnv, texts
 
 # sms_id -> the variant attribute whose text is sent (config/sms_templates.yaml)
 SMS_INFO = {
@@ -11,7 +11,7 @@ SMS_INFO = {
 
 
 @func_description(
-    "Text the caller a link. Only call this when a topic or tool tells you to, with that sms_id, and the caller has said yes to the text."
+    "Text the caller a link. Only call this when a topic or tool offers a text, with that sms_id, and the caller has said yes to it."
 )
 @func_parameter("sms_id", "One of: menu, take_out, private_dining, large_party.")
 @func_parameter(
@@ -33,12 +33,11 @@ def start_send_text(conv: Conversation, sms_id: str, phone_number: str):
         conv.current_flow if conv.current_flow != "sms_flow" else ""
     )
     conv.goto_flow("sms_flow")
-    from flows.sms_flow.functions.send_text import ask_calling_number, ask_number
 
     digits = idnv.normalize_phone(phone_number)
     if idnv.is_valid_phone(digits):
         conv.state.sms = {**conv.state.sms, "pending": digits}
-        return ask_number(conv, digits)
+        return texts.ask_number(conv, digits)
     if idnv.is_valid_phone(idnv.normalize_phone(conv.state.caller_phone)):
-        return ask_calling_number(conv)
-    return "Ask which mobile number you should text the link to. Then call send_text with it."
+        return texts.ask_calling_number(conv)
+    return texts.ask_mobile()

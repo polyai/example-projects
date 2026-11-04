@@ -9,6 +9,18 @@ import functions.idnv as idnv
 DEFAULT_TIMEZONE = "America/New_York"
 
 
+def _now(conv) -> datetime:
+    """Now from conv.clock, which a Studio test's simulated_at pins; the wall clock only
+    when the platform gives no clock."""
+    try:
+        now = conv.clock.now()
+    except Exception:
+        now = None
+    if isinstance(now, datetime) and now.tzinfo is not None:
+        return now
+    return datetime.now(ZoneInfo("UTC"))
+
+
 def set_time(conv: Conversation):
     """The restaurant's local time, from the `timezone` variant attribute (per site)."""
     timezone_str = (
@@ -22,7 +34,7 @@ def set_time(conv: Conversation):
         )
         timezone_str, timezone = DEFAULT_TIMEZONE, ZoneInfo(DEFAULT_TIMEZONE)
 
-    now = datetime.now(timezone)
+    now = _now(conv).astimezone(timezone)
     conv.state.timezone = timezone_str
     conv.state.now_iso = now.replace(tzinfo=None).isoformat(timespec="minutes")
     conv.state.today_iso = now.date().isoformat()

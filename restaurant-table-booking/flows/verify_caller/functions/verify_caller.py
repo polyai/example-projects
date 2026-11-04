@@ -1,20 +1,25 @@
 from _gen import *  # <AUTO GENERATED>
 import functions.api_client as api_client
+import functions.bookings as bookings
 import functions.idnv as idnv
 from functions.handoff import handoff
 
 FAIL_UTTERANCE = (
     "I'm sorry, I wasn't able to find your booking with those details. Let me put you through to "
-    "the team, who can help. One moment please."
+    "the team, who can help. One moment, please."
 )
-# The number was never confirmed (unclear digits, or no clear yes to the readback):
-# nothing was looked up against a confirmed number, so don't say no booking was found.
-UNCONFIRMED_UTTERANCE = (
-    "I'm sorry, I wasn't able to confirm your number. Let me put you through to the team, who "
-    "can help. One moment please."
+UNCLEAR_UTTERANCE = (
+    "I'm sorry, I'm having trouble catching the number. Let me put you through to the team, who "
+    "can help. One moment, please."
 )
-# Reasons that mean "no booking found" rather than "wrong details": offer a new booking.
-NO_BOOKING_REASONS = (idnv.FAILED_REASON_NOT_FOUND, idnv.FAILED_REASON_DECLINED)
+NOT_FOUND_UTTERANCE = (
+    "I'm sorry, I still can't find a booking under that number. Would you like to make a new one, "
+    "or shall I put you through to the team?"
+)
+DECLINED_UTTERANCE = (
+    "No problem. I can't look up a booking without those details, I'm afraid. Would you like to "
+    "make a new one, or shall I put you through to the team?"
+)
 
 
 def _lookup(conv):
@@ -22,7 +27,7 @@ def _lookup(conv):
 
 
 @func_description(
-    "Find who the caller is from the phone number their booking is under and the name on it. Call it whenever the caller gives either one, or answers or corrects a number you read back."
+    "Find the caller's booking from the phone number it's under and the name on it. Call it whenever the caller gives either one, or answers a question this tool told you to ask."
 )
 @func_parameter(
     "phone_number",
@@ -30,7 +35,7 @@ def _lookup(conv):
 )
 @func_parameter(
     "full_name",
-    "The name the booking is under as they said it, e.g. 'John Smith'. Empty string if not given.",
+    "The name the booking is under as they said it, e.g. 'Jane Doe'. Empty string if not given.",
 )
 @func_parameter(
     "caller_cannot_verify",
@@ -38,7 +43,7 @@ def _lookup(conv):
 )
 @func_parameter(
     "phone_confirmed",
-    "'true' only if, in their latest reply, the caller clearly said yes to the phone number this tool told you to read back, or repeated that same number. An \"okay\", or anything unclear, is not a yes. Otherwise 'false'.",
+    "'true' if the caller said yes, or an acknowledgement ('okay', 'sure', 'yeah'), to the question this tool asked: whether the booking is under the number they're calling from, or, after a miss, that it's the same number. Otherwise 'false'.",
 )
 @func_latency_control(
     delay_before_responses_start=1,
@@ -69,6 +74,7 @@ def verify_caller(
             lookup=_lookup(conv),
             caller_cannot_verify=cannot_verify,
             phone_confirmed=str(phone_confirmed).strip().lower() == "true",
+            caller_id_question=bookings.CALLER_ID_QUESTION,
         )
     except Exception:
         conv.log.error("verify_caller lookup failed", exc_info=True)
@@ -76,28 +82,31 @@ def verify_caller(
             conv,
             "API_ERROR",
             "I'm sorry, I'm having trouble looking up bookings right now. Let me put you through "
-            "to the team. One moment please.",
+            "to the team. One moment, please.",
         )
 
     if result.failed:
-        if result.handoff_reason in NO_BOOKING_REASONS:
+        if result.handoff_reason in (
+            idnv.FAILED_REASON_NOT_FOUND,
+            idnv.FAILED_REASON_DECLINED,
+        ):
             idnv.take_resume(conv)
             conv.exit_flow()
             conv.write_metric("NO_BOOKING_FOUND", result.handoff_reason)
-            told = (
-                "you couldn't find a booking under that number"
+            said = (
+                NOT_FOUND_UTTERANCE
                 if result.handoff_reason == idnv.FAILED_REASON_NOT_FOUND
-                else "you can't look up a booking without those details"
+                else DECLINED_UTTERANCE
             )
-            return (
-                f'Tell the caller {told}, and ask: "Would '
-                'you like to make a new booking, or shall I put you through to the team?" New '
-                "booking: call start_make_booking. The team, or an answer that doesn't pick one "
-                "(like 'okay' or 'yes'): call handoff with handoff_reason=NO_BOOKING_FOUND. Don't "
-                "ask the question again."
-            )
+            return {
+                "utterance": said,
+                "content": (
+                    "A new booking: call start_make_booking. The team, or an answer that doesn't "
+                    "pick one: call handoff with handoff_reason=NO_BOOKING_FOUND. Don't ask again."
+                ),
+            }
         if result.handoff_reason == idnv.FAILED_REASON_UNCLEAR:
-            return handoff(conv, result.handoff_reason, UNCONFIRMED_UTTERANCE)
+            return handoff(conv, result.handoff_reason, UNCLEAR_UTTERANCE)
         return handoff(conv, result.handoff_reason, FAIL_UTTERANCE)
 
     if result.verified:
@@ -106,16 +115,17 @@ def verify_caller(
         if target:
             conv.goto_flow(target)
             return (
-                f"The caller is verified as {first}. Don't ask for anything they have already "
-                "told you; carry on with their request in this same reply."
+                f"The caller is verified as {first}. Thank them by first name once, don't ask for "
+                "anything they have already told you, and carry on with their request in this "
+                "same reply."
             )
         conv.exit_flow()
         return f"The caller is verified as {first}. Ask how you can help."
 
-    if result.say.startswith("WAIT:"):
-        # A repeat call in the turn the number was read back (the caller hasn't answered):
-        # on RSN-1 the model kept calling here until the turn failed. Speak the readback,
+    if result.outcome == "wait":
+        # idnv's WAIT: called again in the turn a question was asked (the caller hasn't answered): on
+        # RSN-1 the model kept calling here until the turn failed. Speak the question,
         # which ends the tool loop; nothing is counted or confirmed.
-        return {"utterance": f"Is that {idnv.spell_phone(idnv.state(conv)['phone'])}?"}
+        return {"utterance": result.utterance}
     # idnv's say ends with the instruction to call verify_caller again: pass it through whole.
-    return f"{result.say}\n\n{idnv.state_line(conv)}"
+    return f"{bookings.booking_words(result.say)}\n\n{idnv.state_line(conv)}"

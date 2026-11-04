@@ -1,6 +1,6 @@
 name: address
 enabled: true
-actions: ''
+actions: Answer only what they asked, in a sentence or two, from the content.
 content: '{{attr:address_info}}'
 example_queries:
 - What's your address?

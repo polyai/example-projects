@@ -12,13 +12,19 @@ matching, retry limits and the fail path. The model only passes on what the
 caller said and says what the result tells it to. A template wires this up with
 one tool (verify_caller) and one gate (require) - see IDNV_PATTERN.md.
 
+The ID&V phone number is only used to find the record, so it is never read
+back: a misheard digit shows up as a miss, and the retry asks for it again.
+The number the caller is calling from is never said either; the caller is
+asked whether it's the one on their account, and a yes uses it.
+
 State lives in conv.state.idnv (a dict), so it survives across turns and flows.
 Nothing here ever returns the account holder's details to the model before the
 caller is verified, and a failure never says which detail was wrong (strict).
 
 Copy this file unchanged into a template's functions/ folder. Per-template
 choices (which lookup to call, what to say on success, where the fail path
-transfers to) belong in the template's verify_caller tool, not here.
+transfers to, the caller-ID question's wording) belong in the template's
+verify_caller tool, not here.
 """
 
 from _gen import *  # <AUTO GENERATED>
@@ -32,37 +38,36 @@ STRICT = "strict"
 
 # Limits. A template may pass its own to verify_lax / verify_strict.
 MAX_MISMATCHES = 2  # identity checks that fail before the fail path
-MAX_NOT_FOUND = 2  # confirmed phone numbers with no account before the fail path
+MAX_NOT_FOUND = 2  # phone numbers with no account before the fail path (lax)
 MAX_UNCLEAR = 3  # unusable phone numbers (too short, garbled) before the fail path
-MAX_UNCONFIRMED = (
-    2  # readbacks the caller doesn't confirm or correct before the fail path
-)
 
 VERIFY_FLOW = "verify_caller"
 VERIFY_TOOL = "verify_caller"
+
+# The default caller-ID question. A template passes its own wording as
+# caller_id_question to require / verify_lax / verify_strict.
+CALLER_ID_QUESTION = "Is the number you're calling from the one on your account?"
+NOT_FOUND_QUESTION = "Could you say it again for me, or is it under a different one?"
+MISMATCH_LINE = (
+    "I'm sorry, those details don't match what we have. Could you say the phone number on "
+    "your account again for me, or is it under a different one?"
+)
 
 # Every return that needs another answer from the caller ends with this, so the
 # model passes the next answer to the tool (Dialog-RSN-1 won't repeat a lookup
 # on its own after a miss).
 CALL_AGAIN = f"Then call {VERIFY_TOOL} again with whatever they say, even if it's the same as before."
+# How a yes to a question about a number reaches the tool. An acknowledgement
+# answers the question, so it counts as agreement.
+YES_TO_NUMBER = (
+    'A yes or an acknowledgement ("okay", "sure", "yeah") means it is: pass '
+    "phone_confirmed='true' and no phone number."
+)
 
 
 def _again(say: str, label: str = "", attempt: int = 0, limit: int = 0) -> str:
     head = f"{label} (attempt {attempt} of {limit}): " if label else ""
     return f"{head}{say} {CALL_AGAIN}"
-
-
-def _confirm_phone(phone: str, label: str = "") -> str:
-    """The phone readback. Like a write tool's readback, only an explicit
-    phone_confirmed='true' (a clear yes to this number) confirms it."""
-    head = f"{label}: " if label else ""
-    return (
-        f'{head}Read the phone number back exactly as "{spell_phone(phone)}" and ask if '
-        "that's right, then wait for the caller's answer. Only after they reply, call "
-        f"{VERIFY_TOOL} again with whatever they said: phone_confirmed='true' only if they "
-        'clearly said yes or repeated the same number (an "okay" or anything unclear is not '
-        "a yes); if they corrected it, pass the corrected number with phone_confirmed='false'."
-    )
 
 
 FAILED_REASON_MISMATCH = "IDNV_FAILED"
@@ -86,8 +91,11 @@ class Result:
     outcome:
       verified   the caller is verified (customer holds the matched record)
       need       something is still missing (see missing); `say` asks for it
-      read_back  no account on this number yet: read the number back first
       retry      a check failed but attempts remain; `say` asks again
+      read_back  the member ID is read back before the final check (only with
+                 read_back_member_id); `say` gives the readback
+      wait       called again in the turn a question was asked, before the
+                 caller answered: speak `utterance` and end the turn
       failed     limits reached or the caller can't/won't verify; transfer
     """
 
@@ -96,6 +104,7 @@ class Result:
     missing: list = field(default_factory=list)
     customer: dict | None = None
     handoff_reason: str = ""
+    utterance: str = ""
 
     @property
     def verified(self) -> bool:
@@ -116,17 +125,21 @@ def _fresh() -> dict:
         "method": "",
         "customer": None,
         "phone": "",
-        "phone_read_back": False,
-        "phone_confirmed": False,
         "name": "",
         "dob": "",
         "member_id": "",
         "mismatches": 0,
         "not_found": 0,
         "unclear": 0,
-        "unconfirmed": 0,
         "missed_numbers": [],
-        "readback_turn": None,
+        "caller_id": "",  # usable caller ID, never returned to the model
+        "caller_id_matches": None,  # records on the caller ID, from match_ani
+        "caller_id_offered": False,
+        "pending": "",  # what a yes about a number means: caller_id | previous
+        "previous_phone": "",  # the number before a miss, for "it's the same one"
+        "question": "",  # the last question a yes answers (spoken again on wait)
+        "question_turn": None,
+        "id_read_back": "",
         "resume": "",
     }
 
@@ -136,6 +149,8 @@ def state(conv) -> dict:
     if not isinstance(current, dict):
         current = _fresh()
         conv.state.idnv = current
+    for key, value in _fresh().items():
+        current.setdefault(key, value)
     return current
 
 
@@ -286,31 +301,56 @@ def normalize_id(value) -> str:
     return re.sub(r"[^A-Za-z0-9]", "", str(value or "")).upper()
 
 
+_WORDS = "zero one two three four five six seven eight nine".split()
+
+
 def spell_phone(digits: str) -> str:
     """'2015550123' -> 'two zero one, five five five, zero one two three'."""
-    words = "zero one two three four five six seven eight nine".split()
     groups = [digits[:3], digits[3:6], digits[6:]] if len(digits) == 10 else [digits]
-    return ", ".join(" ".join(words[int(d)] for d in g) for g in groups if g)
+    return ", ".join(" ".join(_WORDS[int(d)] for d in g) for g in groups if g)
+
+
+def spell_id(value) -> str:
+    """'58204452' -> 'five eight two zero, four four five two'. Groups of four;
+    letters are said as letters."""
+    chars = normalize_id(value)
+    groups = [chars[i : i + 4] for i in range(0, len(chars), 4)]
+    return ", ".join(
+        " ".join(_WORDS[int(c)] if c.isdigit() else c for c in g) for g in groups
+    )
 
 
 # --- Caller ID --------------------------------------------------------------
+
+
+def _caller_id(conv, s) -> str:
+    """The usable caller ID as ten digits, or ''. Never returned to the model."""
+    if s.get("caller_id"):
+        return s["caller_id"]
+    digits = normalize_phone(getattr(conv, "caller_number", "") or "")
+    return digits if is_valid_phone(digits) else ""
 
 
 def match_ani(conv, caller_number, lookup) -> bool:
     """Lax verification from the caller ID alone. Call once from start_function.
 
     Verifies only when the number is a valid US number with exactly one account
-    on it; a shared number (several accounts) still needs a name.
+    on it; a shared number (several accounts) still needs a name, and the caller
+    is asked whether the number they're calling from is the one on the account.
     """
     s = state(conv)
     digits = normalize_phone(caller_number)
     if not is_valid_phone(digits):
         return False
+    s["caller_id"] = digits
+    _save(conv, s)
     try:
         customers = lookup(digits) or []
     except Exception as e:  # a lookup failure must never break call start
         conv.log.warning("ID&V caller ID lookup failed", error=str(e))
         return False
+    s["caller_id_matches"] = len(customers)
+    _save(conv, s)
     if len(customers) != 1:
         return False
     s.update(status="verified", strength=LAX, method="caller_id", customer=customers[0])
@@ -318,6 +358,65 @@ def match_ani(conv, caller_number, lookup) -> bool:
     _save(conv, s)
     conv.write_metric("IDNV_SUCCESS", "caller_id")
     return True
+
+
+def _offers_caller_id(conv, s, strength: str) -> bool:
+    """Whether to ask if the number they're calling from is the one on the
+    account: a usable caller ID, not asked yet, no phone number given. Lax asks
+    only when the caller ID matched records (one record already verified at call
+    start); strict asks whenever the caller ID is usable, since the date of
+    birth and ID must still match."""
+    if s["phone"] or s["caller_id_offered"] or not _caller_id(conv, s):
+        return False
+    return strength == STRICT or bool(s.get("caller_id_matches"))
+
+
+def _ask_caller_id(conv, s, question: str) -> str:
+    question = question or CALLER_ID_QUESTION
+    s.update(caller_id_offered=True, pending="caller_id")
+    _asked(conv, s, question)
+    return _again(
+        f'Ask: "{question}" Never say the number. {YES_TO_NUMBER} If they give another number, '
+        "pass that. If they say no, ask for the phone number on their account."
+    )
+
+
+# --- Same-turn guard --------------------------------------------------------
+
+
+def _turn(conv):
+    """The history's length, used only as a same-turn marker (the history at tool
+    time holds earlier turns, so it grows once the caller has replied). None if
+    the platform doesn't expose it."""
+    try:
+        return len(conv.history)
+    except Exception:
+        return None
+
+
+def _asked(conv, s, question: str) -> None:
+    """Remember the question a yes would answer, and the turn it was asked in."""
+    s.update(question=question, question_turn=_turn(conv))
+    _save(conv, s)
+
+
+def _same_turn(conv, s) -> bool:
+    turn = _turn(conv)
+    return turn is not None and turn == s.get("question_turn")
+
+
+def _wait(s, missing: list) -> Result:
+    """Called again in the turn a question was asked: the caller hasn't answered.
+    Nothing is counted or confirmed; the template speaks `utterance`."""
+    return Result(
+        "wait",
+        missing=missing,
+        say=(
+            f'WAIT for the caller\'s answer to "{s["question"]}" before calling {VERIFY_TOOL} '
+            "again."
+        ),
+        utterance=s["question"],
+    )
 
 
 # --- Verification -----------------------------------------------------------
@@ -337,23 +436,27 @@ def _verified(conv, s, record: dict, strength: str, method: str) -> Result:
     return Result("verified", customer=record)
 
 
-def _take_phone(
-    conv, s, phone, max_unclear: int, phone_confirmed: bool
-) -> Result | None:
+def _take_phone(conv, s, phone, max_unclear: int, agreed: bool) -> Result | None:
     """Store a newly given phone number. Returns a Result when the caller has to
-    be asked again (or the limit is hit), None when the number is usable.
+    be asked again (or the limit is hit), None otherwise.
 
-    A number read back is confirmed only by phone_confirmed=True, with the same
-    number or none; a different number replaces it and is read back in turn."""
+    With no number given, a yes (agreed) to the pending question uses the caller
+    ID or the number given before; it is never read back."""
     if not str(phone or "").strip():
-        if (
-            s["phone_read_back"]
-            and not s["phone_confirmed"]
-            and phone_confirmed
-            and not _same_turn_as_readback(conv, s)
-        ):
-            s["phone_confirmed"] = True
-            _save(conv, s)
+        if not s["pending"]:
+            return None
+        if _same_turn(conv, s):
+            return _wait(s, ["phone"])
+        if agreed:
+            number = (
+                _caller_id(conv, s)
+                if s["pending"] == "caller_id"
+                else s["previous_phone"]
+            )
+            s.update(phone=number, pending="")
+        elif s["pending"] == "caller_id":
+            s["pending"] = ""  # not the number they're calling from
+        _save(conv, s)
         return None
     digits = normalize_phone(phone)
     if not digits:
@@ -372,70 +475,16 @@ def _take_phone(
             "retry",
             missing=["phone"],
             say=_again(
-                "That wasn't a full phone number. Ask for the ten-digit number on their account, "
-                "starting with the area code.",
+                "That wasn't a full phone number. Say: \"Sorry, I didn't catch all of that. "
+                'Could you say the full number again for me?" Never repeat the digits they said.',
                 "NOT A FULL NUMBER",
                 s["unclear"],
                 max_unclear,
             ),
         )
-    if digits != s["phone"] and digits in s.get("missed_numbers", []):
-        # A number already read back, confirmed and found to have no account:
-        # the caller is standing by it again, so don't read it back a second time.
-        s.update(phone=digits, phone_read_back=True, phone_confirmed=True)
-    elif digits != s["phone"]:
-        s.update(
-            phone=digits, phone_read_back=False, phone_confirmed=False, unconfirmed=0
-        )
-    elif (
-        s["phone_read_back"] and phone_confirmed and not _same_turn_as_readback(conv, s)
-    ):
-        s["phone_confirmed"] = True
+    s.update(phone=digits, pending="")
     _save(conv, s)
     return None
-
-
-def _turn(conv):
-    """The history's length, used only as a same-turn marker (the history at tool
-    time holds earlier turns, so it grows once the caller has replied). None if
-    the platform doesn't expose it."""
-    try:
-        return len(conv.history)
-    except Exception:
-        return None
-
-
-def _same_turn_as_readback(conv, s) -> bool:
-    turn = _turn(conv)
-    return turn is not None and turn == s.get("readback_turn")
-
-
-def _read_back(conv, s, label: str = "") -> Result:
-    s["readback_turn"] = _turn(conv)
-    _save(conv, s)
-    return Result("read_back", missing=["phone"], say=_confirm_phone(s["phone"], label))
-
-
-def _not_confirmed(conv, s, max_unconfirmed: int) -> Result:
-    """The caller neither confirmed nor corrected the read-back number. Counted,
-    so a caller who keeps saying "okay" reaches the fail path instead of a loop.
-    A call in the same turn as the readback (the caller hasn't answered yet) is
-    not counted: the model is told to wait."""
-    if _same_turn_as_readback(conv, s):
-        return Result(
-            "read_back",
-            missing=["phone"],
-            say=(
-                f'WAIT: you have just asked the caller to confirm "{spell_phone(s["phone"])}". '
-                f"Wait for their answer; don't call {VERIFY_TOOL} again until they reply."
-            ),
-        )
-    s["unconfirmed"] = s.get("unconfirmed", 0) + 1
-    _save(conv, s)
-    if s["unconfirmed"] >= max_unconfirmed:
-        return _fail(conv, s, FAILED_REASON_UNCLEAR)
-    label = f"NOT CONFIRMED YET (attempt {s['unconfirmed']} of {max_unconfirmed})"
-    return _read_back(conv, s, label)
 
 
 def _lookup(conv, s, lookup) -> list[dict]:
@@ -446,30 +495,25 @@ def _lookup(conv, s, lookup) -> list[dict]:
         raise
 
 
-def _not_found(conv, s, max_not_found: int, max_unconfirmed: int) -> Result:
-    """No account on this number. First time for a number: read it back, since
-    a misheard digit is the likeliest cause. If the caller stands by it, count
-    a miss and ask whether the account is under another number."""
-    if not s["phone_read_back"]:
-        s["phone_read_back"] = True
-        s["phone_confirmed"] = False
-        return _read_back(conv, s)
-    if not s["phone_confirmed"]:
-        return _not_confirmed(conv, s, max_unconfirmed)
+def _not_found(conv, s, max_not_found: int) -> Result:
+    """No account on this number (lax): counted, and the caller is asked to say
+    it again or give another. The number is never read back."""
     s["not_found"] += 1
     missed = s.get("missed_numbers", [])
     s["missed_numbers"] = missed + ([s["phone"]] if s["phone"] not in missed else [])
-    s.update(phone="", phone_read_back=False, phone_confirmed=False, unconfirmed=0)
+    s.update(previous_phone=s["phone"], phone="", pending="previous")
     _save(conv, s)
     if s["not_found"] >= max_not_found:
         return _fail(conv, s, FAILED_REASON_NOT_FOUND)
+    _asked(conv, s, NOT_FOUND_QUESTION)
     return Result(
         "retry",
         missing=["phone"],
         say=_again(
-            "There's no account under that number. Ask if the account could be under a "
-            "different phone number. If they say there isn't another one, call verify_caller "
-            "with caller_cannot_verify='true'.",
+            "Nothing is under that number. Say you can't find one under that number, then ask: "
+            f'"{NOT_FOUND_QUESTION}" Never read the number back. If they say it\'s the same '
+            "number, pass phone_confirmed='true' and no phone number. If they say there isn't "
+            f"another one, call {VERIFY_TOOL} with caller_cannot_verify='true'.",
             "NO ACCOUNT",
             s["not_found"],
             max_not_found,
@@ -487,12 +531,14 @@ def verify_lax(
     max_not_found: int = MAX_NOT_FOUND,
     max_unclear: int = MAX_UNCLEAR,
     phone_confirmed: bool = False,
-    max_unconfirmed: int = MAX_UNCONFIRMED,
+    caller_id_question: str = "",
 ) -> Result:
     """Phone number on the account + the account holder's name.
 
     Call with whatever the caller has given so far; empty strings for the rest.
     lookup(phone_digits) -> list of records with first_name and last_name.
+    phone_confirmed: the caller said yes (or "okay") to the number the last
+    return asked about - the number they're calling from, or the same one again.
     """
     s = state(conv)
     if s["status"] == "verified":
@@ -507,24 +553,29 @@ def verify_lax(
             FAILED_REASON_NOT_FOUND if s["not_found"] else FAILED_REASON_DECLINED,
         )
 
-    retry = _take_phone(conv, s, phone, max_unclear, phone_confirmed)
-    if retry:
-        return retry
     if str(name or "").strip():
         s["name"] = str(name).strip()
         _save(conv, s)
+    retry = _take_phone(conv, s, phone, max_unclear, phone_confirmed)
+    if retry:
+        return retry
 
     if not s["phone"]:
+        missing = ["phone"] + ([] if s["name"] else ["name"])
+        if _offers_caller_id(conv, s, LAX):
+            return Result(
+                "need", missing=missing, say=_ask_caller_id(conv, s, caller_id_question)
+            )
         return Result(
             "need",
-            missing=["phone"] + ([] if s["name"] else ["name"]),
+            missing=missing,
             say=_again(
                 "Ask for the phone number on their account, starting with the area code."
             ),
         )
     customers = _lookup(conv, s, lookup)
     if not customers:
-        return _not_found(conv, s, max_not_found, max_unconfirmed)
+        return _not_found(conv, s, max_not_found)
     if not s["name"]:
         return Result(
             "need",
@@ -565,6 +616,31 @@ def verify_lax(
     )
 
 
+def _member_id_read_back(conv, s, agreed: bool) -> Result | None:
+    """Before the final strict check (read_back_member_id only): read the member
+    ID back. A yes or an acknowledgement confirms it (None: go on to the check);
+    a corrected ID is read back in turn."""
+    if s["id_read_back"] != s["member_id"]:
+        s["id_read_back"] = s["member_id"]
+        _asked(conv, s, f"Just to check, that's {spell_id(s['member_id'])}?")
+    elif _same_turn(conv, s):
+        return _wait(s, ["member_id"])
+    elif agreed:
+        return None
+    else:
+        _asked(conv, s, s["question"])
+    return Result(
+        "read_back",
+        missing=["member_id"],
+        say=(
+            f'Read the member ID back: "{s["question"]}" Then wait for their answer. A yes or an '
+            'acknowledgement ("okay", "sure", "yeah") confirms it: call '
+            f"{VERIFY_TOOL} again with member_id_confirmed='true'. If they correct it, call "
+            f"{VERIFY_TOOL} again with the corrected member ID."
+        ),
+    )
+
+
 def verify_strict(
     conv,
     phone,
@@ -576,13 +652,22 @@ def verify_strict(
     max_not_found: int = MAX_NOT_FOUND,
     max_unclear: int = MAX_UNCLEAR,
     phone_confirmed: bool = False,
-    max_unconfirmed: int = MAX_UNCONFIRMED,
+    caller_id_question: str = "",
+    read_back_member_id: bool = False,
+    member_id_confirmed: bool = False,
 ) -> Result:
     """Phone number + date of birth + member/account ID, all on one record.
 
     lookup(phone_digits) -> list of records with dob (YYYY-MM-DD) and member_id.
-    A failed check never says which detail was wrong, and clears the date of
-    birth and ID so both are asked again.
+    A failed check (a number with no account included) never says which detail
+    was wrong, and clears all three, so the retry asks for the phone number,
+    then the date of birth and ID.
+    phone_confirmed: the caller said yes (or "okay") to the number the last
+    return asked about - the number they're calling from, or the same one again.
+    read_back_member_id: read the member ID back before the final check, where a
+    miss means the fail path; member_id_confirmed is the caller's yes to it.
+    max_not_found is unused (a number with no account is a mismatch); it is kept
+    so both verify functions take the same limits.
     """
     s = state(conv)
     if is_verified(conv, STRICT):
@@ -590,28 +675,30 @@ def verify_strict(
     if s["status"] == "failed":
         return Result("failed", handoff_reason=FAILED_REASON_MISMATCH)
     if caller_cannot_verify:
-        # After a number with no account, "there's no other number" means not found.
         return _fail(
             conv,
             s,
             FAILED_REASON_NOT_FOUND if s["not_found"] else FAILED_REASON_DECLINED,
         )
 
-    retry = _take_phone(conv, s, phone, max_unclear, phone_confirmed)
-    if retry:
-        return retry
+    bad_dob = False
     if str(date_of_birth or "").strip():
         dob = normalize_dob(date_of_birth)
-        if not dob:
-            return Result(
-                "retry",
-                missing=["date_of_birth"],
-                say=_again("Ask for their full date of birth: day, month and year."),
-            )
-        s["dob"] = dob
+        bad_dob = not dob
+        if dob:
+            s["dob"] = dob
     if str(member_id or "").strip():
         s["member_id"] = normalize_id(member_id)
     _save(conv, s)
+    retry = _take_phone(conv, s, phone, max_unclear, phone_confirmed)
+    if retry:
+        return retry
+    if bad_dob:
+        return Result(
+            "retry",
+            missing=["date_of_birth"],
+            say=_again("Ask for their full date of birth: day, month and year."),
+        )
 
     missing = [
         k
@@ -623,6 +710,10 @@ def verify_strict(
         if not v
     ]
     if missing:
+        if missing[0] == "phone" and _offers_caller_id(conv, s, STRICT):
+            return Result(
+                "need", missing=missing, say=_ask_caller_id(conv, s, caller_id_question)
+            )
         labels = {
             "phone": "the phone number on their account",
             "date_of_birth": "their date of birth",
@@ -634,45 +725,48 @@ def verify_strict(
             say=_again(f"Ask for {labels[missing[0]]}. Ask for one thing at a time."),
         )
 
+    if read_back_member_id and s["mismatches"] + 1 >= max_mismatches:
+        read_back = _member_id_read_back(conv, s, member_id_confirmed)
+        if read_back:
+            return read_back
+
     customers = _lookup(conv, s, lookup)
-    if not customers:
-        # A phone readback guards against a misheard digit, as in lax, but the
-        # caller is never told that no account exists on the number.
-        if not s["phone_read_back"]:
-            s["phone_read_back"] = True
-            s["phone_confirmed"] = False
-            return _read_back(conv, s)
-        if not s["phone_confirmed"]:
-            return _not_confirmed(conv, s, max_unconfirmed)
-        record = None
-    else:
-        record = next(
-            (
-                c
-                for c in customers
-                if normalize_dob(c.get("dob")) == s["dob"]
-                and normalize_id(c.get("member_id")) == s["member_id"]
-            ),
-            None,
-        )
+    record = next(
+        (
+            c
+            for c in customers
+            if normalize_dob(c.get("dob")) == s["dob"]
+            and normalize_id(c.get("member_id")) == s["member_id"]
+        ),
+        None,
+    )
     if record:
         return _verified(conv, s, record, STRICT, "phone_dob_member_id")
 
-    # The phone number is kept whether or not it found an account, so the next
-    # question is the same either way and never hints at which detail failed.
+    # No account on the number and a wrong detail get the same reply, so it
+    # never hints at which detail failed or whether there's an account.
     s["mismatches"] += 1
-    s.update(dob="", member_id="")
+    s.update(
+        previous_phone=s["phone"],
+        phone="",
+        dob="",
+        member_id="",
+        id_read_back="",
+        pending="previous",
+    )
     _save(conv, s)
     if s["mismatches"] >= max_mismatches:
         return _fail(conv, s, FAILED_REASON_MISMATCH)
+    _asked(conv, s, MISMATCH_LINE)
     return Result(
         "retry",
-        missing=["date_of_birth", "member_id"],
+        missing=["phone", "date_of_birth", "member_id"],
         say=_again(
-            "Those details don't match our records; never say which one. Kept: the phone "
-            "number, so don't ask for it again and pass phone_number as an empty string. Ask "
-            "again for: their date of birth, then their member ID, one at a time. Pass only "
-            "what they say from now on, never the date of birth or ID they gave before.",
+            "Those details don't match our records; never say which one, or whether there's an "
+            f'account on the number. Say: "{MISMATCH_LINE}" Then ask again for their date of '
+            "birth, then their member ID, one at a time. Never read the number back. If they say "
+            "it's the same number, pass phone_confirmed='true' and no phone number. Pass only "
+            "what they say from now on, never the details they gave before.",
             "NOT VERIFIED",
             s["mismatches"],
             max_mismatches,
@@ -683,7 +777,13 @@ def verify_strict(
 # --- Gate -------------------------------------------------------------------
 
 
-def require(conv, resume: str, strength: str = LAX, verify_flow: str = VERIFY_FLOW):
+def require(
+    conv,
+    resume: str,
+    strength: str = LAX,
+    verify_flow: str = VERIFY_FLOW,
+    caller_id_question: str = "",
+):
     """Gate for a task: call it first in the task flow's entry function step (or
     in a global tool, for a task with no flow).
 
@@ -698,11 +798,14 @@ def require(conv, resume: str, strength: str = LAX, verify_flow: str = VERIFY_FL
     s["resume"] = resume
     _save(conv, s)
     conv.goto_flow(verify_flow)
-    return (
+    head = (
         "Before you can help with this you need to confirm who the caller is. If they already "
-        "gave their phone number or name, call verify_caller with them now; otherwise ask for "
-        "the phone number on their account."
+        f"gave their phone number or name, call {VERIFY_TOOL} with them now; otherwise "
     )
+    if _offers_caller_id(conv, s, strength):
+        ask = _ask_caller_id(conv, s, caller_id_question)
+        return f"{head}{ask[0].lower()}{ask[1:]}"
+    return f"{head}ask for the phone number on their account."
 
 
 def take_resume(conv) -> str:

@@ -1,0 +1,10 @@
+name: leave_message
+enabled: true
+actions: Messages for the manager go to the team. Call {{fn:handoff}} with handoff_reason=MESSAGE and handoff_utterance="Of course. I'll put you through to the team now, so you can leave a message. One moment, please." A complaint or something urgent ("I left my phone there tonight") is put through the same way.
+content: ''
+example_queries:
+- Can I leave a message for the manager?
+- I'd like to leave a message
+- Can you pass a message on to the owner?
+- I'm a supplier and I'd like to talk to the manager
+- Can someone call me back?

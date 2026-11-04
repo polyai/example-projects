@@ -1,23 +1,15 @@
-from _gen import *  # <AUTO GENERATED>
-from flows.make_booking.functions.update_booking_request import (
-    booking_request,
-    next_step,
-    offer_or_readback,
-    request_state,
-    save,
-)
-from functions import bookings, idnv
-from functions.handoff import handoff
+import functions.new_booking as nb
 
-MAX_UNCLEAR_PHONE = 3
+from _gen import *  # <AUTO GENERATED>
+from functions import bookings
 
 
 @func_description(
-    "Save who the booking is for and how to reach them: the name, the contact number and any note. Call it whenever the caller gives or changes any of these. Once a time has been offered and the name and number are known, it tells you what to read back."
+    "Save who the booking is for and how to reach them: the name, the contact number and any note. Call it whenever the caller gives or changes any of these, or answers the question about the number they're calling from or the note question."
 )
 @func_parameter(
     "name",
-    "The name for the booking as they said it, e.g. 'John Smith'. Empty if not said.",
+    "The name for the booking as they said it, e.g. 'Tom Baker'. Empty if not said.",
 )
 @func_parameter(
     "phone_number",
@@ -25,11 +17,11 @@ MAX_UNCLEAR_PHONE = 3
 )
 @func_parameter(
     "use_calling_number",
-    "'true' if the caller said to use the number they're calling from. Otherwise 'false'.",
+    "'true' if the caller said yes, or an acknowledgement ('okay', 'yeah'), to the question whether the number they're calling from is the best one. 'false' if they said no to it. Empty otherwise.",
 )
 @func_parameter(
     "notes",
-    "A note or special request for the restaurant (occasion, allergy, high chair). Empty if none.",
+    "Anything the restaurant should know (an allergy, an occasion, a table request), in a few of the caller's words. 'none' only if the caller themselves said there's nothing (in answer to the note question, or on their own). Empty if they haven't said anything about it.",
 )
 def update_booking_details(
     conv: Conversation,
@@ -45,40 +37,38 @@ def update_booking_details(
             "start_change_booking; for another table, call start_make_booking."
         )
 
-    req = booking_request(conv)
+    req = nb.booking_request(conv)
     name, notes = str(name or "").strip(), str(notes or "").strip()
     if name and name.lower() not in ("na", "none", "unknown"):
         req["name"] = " ".join(
             w.capitalize() if w.islower() else w for w in name.split()
         )
-    if notes and notes.lower() not in ("na", "none", "no", "nothing"):
-        req["notes"] = notes
+    if notes:
+        if notes.lower().strip(" .!") not in nb.NO_NOTE:
+            req["notes"], req["notes_answered"] = notes, True
+        else:
+            req["notes_answered"] = True  # "no" is an answer
 
-    calling = idnv.normalize_phone(conv.state.caller_phone)
-    if bookings.is_true(use_calling_number) and idnv.is_valid_phone(calling):
+    calling = nb.caller_id(conv)
+    answer = str(use_calling_number or "").strip().lower()
+    if answer == "true" and calling and not str(phone_number or "").strip():
+        if bookings.asked_this_turn(conv, nb.CALLER_ID_KEY):
+            nb.save(conv, req)
+            return {"utterance": nb.CALLER_ID_QUESTION}
         req["phone"], req["phone_from_caller_id"] = calling, True
+    elif (
+        answer == "false"
+        and calling
+        and not req["phone"]
+        and not str(phone_number or "").strip()
+    ):
+        req["caller_id_declined"] = True
     elif str(phone_number or "").strip():
-        digits = idnv.normalize_phone(phone_number)
-        if digits and idnv.is_valid_phone(digits):
-            req["phone"], req["phone_from_caller_id"] = digits, False
-        elif digits:
-            req["phone_unclear"] += 1
-            save(conv, req)
-            if req["phone_unclear"] >= MAX_UNCLEAR_PHONE:
-                return handoff(
-                    conv,
-                    "BOOKING_PHONE_NOT_CAPTURED",
-                    "Sorry, I'm having trouble getting your number. Let me put you through to the "
-                    "team to finish the booking, one moment please.",
-                )
-            return (
-                f"NOT A FULL NUMBER (attempt {req['phone_unclear']} of {MAX_UNCLEAR_PHONE}): ask "
-                "for the ten-digit number, starting with the area code. Then call "
-                "update_booking_details again with whatever they say, even if it's the same as "
-                f"before.\n\n{request_state(conv)}"
-            )
-    save(conv, req)
+        retry = nb.take_phone(conv, req, phone_number, "update_booking_details")
+        if retry is not None:
+            return retry
+    nb.save(conv, req)
 
     if not req.get("offer"):
-        return f"Saved. {next_step(conv, req)}\n\n{request_state(conv)}"
-    return offer_or_readback(conv, req)
+        return f"Saved. {nb.next_step(conv, req)}\n\n{nb.request_state(conv, req)}"
+    return nb.after_details(conv, req)

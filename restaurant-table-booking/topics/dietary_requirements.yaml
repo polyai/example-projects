@@ -1,6 +1,6 @@
 name: dietary_requirements
 enabled: true
-actions: ''
+actions: Answer only what they asked, in a sentence or two, from the content.
 content: '{{attr:dietary_requirements_info}}'
 example_queries:
 - Do you have vegan options on the menu?

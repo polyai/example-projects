@@ -1,5 +1,5 @@
 from _gen import *  # <AUTO GENERATED>
-from functions import idnv
+from functions import bookings
 
 
 @func_description(
@@ -7,7 +7,7 @@ from functions import idnv
 )
 def start_check_booking(conv: Conversation):
     conv.write_metric("PRIMARY_INTENT", "CHECK_BOOKING")
-    gate = idnv.require(conv, "check_booking")
+    gate = bookings.require(conv, "check_booking")
     if gate:
         return gate
     conv.goto_flow("check_booking")

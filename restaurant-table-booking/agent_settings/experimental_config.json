@@ -4,16 +4,16 @@
     "disable_punctuation": true,
     "eager_final": true,
     "flow_overrides": {
-      "confirm_cancel_modify_booking": {
+      "sms_flow": {
         "steps": {
-          "Should try another number": {
+          "Send Text": {
             "eager_final": false
           }
         }
       },
-      "make_booking": {
+      "verify_caller": {
         "steps": {
-          "Should use callers phone number": {
+          "Verify Caller": {
             "eager_final": false
           }
         }
@@ -29,18 +29,16 @@
   },
   "barge_in": {
     "flow_overrides": {
-      "confirm_cancel_modify_booking": {
-        "is_enabled": false
-      },
-      "make_booking": {
-        "is_enabled": false
-      },
       "sms_flow": {
         "steps": {
-          "Ask this number": {
+          "Send Text": {
             "is_enabled": false
-          },
-          "Collect phone number": {
+          }
+        }
+      },
+      "verify_caller": {
+        "steps": {
+          "Verify Caller": {
             "is_enabled": false
           }
         }
@@ -53,41 +51,21 @@
     }
   },
   "conversation_control": {
-    "max_silence_count": 10
+    "max_silence_count": 3
   },
   "eot": {
     "flow_overrides": {
-      "confirm_cancel_modify_booking": {
-        "steps": {
-          "Collect phone number": {
-            "threshold": 0.6,
-            "timeout_ms": 2000
-          },
-          "Should try another number": {
-            "threshold": 0.6,
-            "timeout_ms": 2000
-          }
-        }
-      },
-      "make_booking": {
-        "steps": {
-          "Collect phone number": {
-            "threshold": 0.6,
-            "timeout_ms": 2000
-          },
-          "Should use callers phone number": {
-            "threshold": 0.6,
-            "timeout_ms": 2000
-          }
-        }
-      },
       "sms_flow": {
         "steps": {
-          "Ask this number": {
+          "Send Text": {
             "threshold": 0.6,
             "timeout_ms": 2000
-          },
-          "Collect phone number": {
+          }
+        }
+      },
+      "verify_caller": {
+        "steps": {
+          "Verify Caller": {
             "threshold": 0.6,
             "timeout_ms": 2000
           }
@@ -104,7 +82,7 @@
   "prompts": {
     "context_information_precursor": "Your TASK is to answer questions and perform certain actions based on the CONTEXT_INFORMATION list below.\nEach entry consists of \"faq_id\", \"faq_example_questions\", \"faq_description\", and \"faq_instructions\":\n- You must always follow the instructions in \"faq_instructions\".\n- You can only answer questions with reference to the information in \"faq_description\".\n- If the user's query is unclear, ask for clarification.",
     "silence": "The user is silent.",
-    "step_footer": "Make sure to address any question the user asks before proceeding.\nAlways collect all required pieces of information from the user before proceeding.\nIf you already said you are waiting for the user to find the requested information and the user remains silent or asks for more time to find required information, continue calling the user_requested_more_time function. Do not continue the conversation or re-prompt them unless they give you new input. Be patient and do not repeat your question while waiting.\n\nRemember to be conversational and brief. Avoid repeating date, time and number of people to the user more than once."
+    "step_footer": "Answer any question the caller asks before carrying on.\nUse what the caller has already told you; never ask for it again.\nIf the caller needs time to find something, call the wait function and stay quiet until they speak.\n\nBe conversational and brief."
   },
   "ragdoll": {
     "top_k": 7
@@ -112,30 +90,24 @@
   "smart_vad": {
     "gated_functions": {
       "": [
-        "cancel_booking",
-        "finalize_booking"
+        "finalize_booking",
+        "modify_booking",
+        "cancel_booking"
       ]
     }
   },
   "vad": {
     "flow_overrides": {
-      "confirm_cancel_modify_booking": {
-        "steps": {
-          "Collect phone number": {
-            "vad_end": 1600
-          }
-        }
-      },
-      "make_booking": {
-        "steps": {
-          "Collect phone number": {
-            "vad_end": 1600
-          }
-        }
-      },
       "sms_flow": {
         "steps": {
-          "Collect phone number": {
+          "Send Text": {
+            "vad_end": 1600
+          }
+        }
+      },
+      "verify_caller": {
+        "steps": {
+          "Verify Caller": {
             "vad_end": 1600
           }
         }

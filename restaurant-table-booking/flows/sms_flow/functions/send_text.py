@@ -2,40 +2,13 @@ from _gen import *  # <AUTO GENERATED>
 import functions.api_client as api_client
 import functions.bookings as bookings
 import functions.idnv as idnv
+import functions.texts as texts
 from functions.handoff import handoff
 
 MAX_UNCLEAR = 3  # unclear numbers before the caller is put through
 CALL_AGAIN = (
     "Then call send_text again with whatever they say, even if it's the same as before."
 )
-ASKED_KEY = "sms"
-
-
-CALLING_QUESTION = "Shall I text the link to the number you're calling from"
-
-
-def number_question(digits: str) -> str:
-    return f"Shall I text the link to {idnv.spell_phone(digits)}"
-
-
-def ask_number(conv, digits: str) -> str:
-    """Read a number back as a yes-or-no question about texting it."""
-    bookings.mark_asked(conv, ASKED_KEY)
-    return (
-        bookings.ask_yes_no(number_question(digits))
-        + " On a clear yes, call send_text again with that number and number_confirmed='true'; "
-        "if they correct it, call send_text with the corrected number."
-    )
-
-
-def ask_calling_number(conv) -> str:
-    """Ask whether to text the number they're calling from, as a yes-or-no question."""
-    bookings.mark_asked(conv, ASKED_KEY)
-    return (
-        bookings.ask_yes_no(CALLING_QUESTION)
-        + " On a clear yes, call send_text with use_calling_number='true'; if they give "
-        "another number, call send_text with it."
-    )
 
 
 def _sms(conv) -> dict:
@@ -47,7 +20,7 @@ def _sms(conv) -> dict:
     )
 
 
-def _send(conv, sms: dict, digits: str):
+def _send(conv, sms: dict, digits: str, calling: bool):
     number = f"+1{digits}"
     if api_client.use_mock_api(conv):
         conv.log.info("Mock SMS (not sent outside live)", template=sms["template"])
@@ -61,35 +34,35 @@ def _send(conv, sms: dict, digits: str):
             return handoff(
                 conv,
                 "CANNOT_SEND_SMS",
-                "I'm sorry, that text didn't go through. Let me put you through to the team, "
-                "one moment please.",
+                "I'm sorry, that text didn't go through. Let me put you through to the team. "
+                "One moment, please.",
             )
         conv.write_metric("SMS_SENT", sms["template"])
     sms["sent_to"] = digits
     sms["pending"] = ""
     conv.state.sms = sms
+    sent = texts.SENT_CALLING if calling else texts.SENT_OTHER
     back_to = conv.state.sms_return_flow
     conv.state.sms_return_flow = ""
     if back_to:
-        # Texted in the middle of a task (e.g. the menu while booking): pick the task back up.
+        # Texted in the middle of a task (the menu while booking): pick the task back up.
         conv.goto_flow(back_to)
         return (
-            "Sent. Tell the caller the text is on its way (don't read the number again), then "
-            "carry on where you left off without asking again for anything they've told you."
+            f'SENT. Say "{sent}" (never read the number again), then carry on where you left '
+            "off, without asking again for anything they've told you."
         )
     conv.exit_flow()
-    return (
-        "Sent. Tell the caller the text is on its way (don't read the number again), then ask if "
-        "there's anything else."
-    )
+    line = f"{sent} {texts.ANYTHING_ELSE}"
+    bookings.said_line(conv, line)
+    return {"utterance": line}
 
 
 @func_description(
-    "Settle the number to text the link to, and send it. Call it whenever the caller gives a number, agrees to the number they're calling from, or answers the readback."
+    "Settle the number to text the link to, and send it. Call it whenever the caller gives a number, or answers the question this tool or start_send_text asked."
 )
 @func_parameter(
     "use_calling_number",
-    "'true' only if the caller's latest reply was a clear yes to texting the number they're calling from, or they asked for it. 'Okay' or anything unclear is not a yes. Otherwise 'false'.",
+    "'true' only if the caller's latest reply agreed to the question whether to send it to the number they're calling from ('okay' or 'sure' to it is agreement). Otherwise 'false'.",
 )
 @func_parameter(
     "phone_number",
@@ -97,7 +70,7 @@ def _send(conv, sms: dict, digits: str):
 )
 @func_parameter(
     "number_confirmed",
-    "'true' only if the caller's latest reply was a clear yes to the yes-or-no question this tool's readback asked. 'Okay', 'mm-hm', 'sure, whatever', silence or a question is not a yes: ask the yes-or-no question again. Otherwise 'false'.",
+    "'true' only if the caller's latest reply agreed to the readback question this tool returned. 'Okay', 'sure' or 'sounds good' to that question is agreement; an answer to something else, or real hesitation, is not. Otherwise 'false'.",
 )
 def send_text(
     conv: Conversation,
@@ -109,12 +82,10 @@ def send_text(
     sms = _sms(conv)
     calling = idnv.normalize_phone(conv.state.caller_phone)
 
-    if str(use_calling_number).strip().lower() == "true" and idnv.is_valid_phone(
-        calling
-    ):
-        if bookings.asked_this_turn(conv, ASKED_KEY):
-            return bookings.not_done_yet(CALLING_QUESTION)
-        return _send(conv, sms, calling)
+    if bookings.is_true(use_calling_number) and idnv.is_valid_phone(calling):
+        if bookings.asked_this_turn(conv, texts.ASKED_KEY):
+            return bookings.not_done_yet(texts.CALLING_QUESTION)
+        return _send(conv, sms, calling, calling=True)
 
     if str(phone_number or "").strip():
         digits = idnv.normalize_phone(phone_number)
@@ -125,29 +96,28 @@ def send_text(
                 return handoff(
                     conv,
                     "SMS_PHONE_NUMBER_COLLECTION_FAIL",
-                    "Sorry, that still isn't working. Let me put you through to the team, one "
-                    "moment please.",
+                    "I'm sorry, I'm having trouble catching the number. Let me put you through to "
+                    "the team. One moment, please.",
                 )
             return (
-                f"NOT A FULL NUMBER (attempt {sms['retries']} of {MAX_UNCLEAR}): ask for the "
-                f"ten-digit mobile number, starting with the area code. {CALL_AGAIN}"
+                f'NOT A FULL NUMBER (attempt {sms["retries"]} of {MAX_UNCLEAR}): say "Sorry, I '
+                "didn't catch all of that. Could you say the full number again for me?\" "
+                f"{CALL_AGAIN}"
             )
-        confirmed = str(number_confirmed).strip().lower() == "true"
-        if confirmed and digits == (sms["pending"] or digits):
-            # A yes to this same number (or to a readback the agent gave itself): send it,
-            # unless the caller hasn't answered the readback yet.
-            if sms["pending"] and bookings.asked_this_turn(conv, ASKED_KEY):
-                return bookings.not_done_yet(number_question(sms["pending"]))
-            return _send(conv, sms, digits)
+        if bookings.is_true(number_confirmed) and digits == sms["pending"]:
+            # A yes with the number repeated: send it, unless the caller hasn't answered yet.
+            if bookings.asked_this_turn(conv, texts.ASKED_KEY):
+                return bookings.not_done_yet(texts.number_sentence(sms["pending"]))
+            return _send(conv, sms, digits, calling=False)
         sms["pending"] = digits
         conv.state.sms = sms
-        return f"NOT SENT YET. {ask_number(conv, digits)}"
+        return f"NOT SENT YET. {texts.ask_number(conv, digits)}"
 
-    if str(number_confirmed).strip().lower() == "true" and sms["pending"]:
-        if bookings.asked_this_turn(conv, ASKED_KEY):
-            return bookings.not_done_yet(number_question(sms["pending"]))
-        return _send(conv, sms, sms["pending"])
+    if bookings.is_true(number_confirmed) and sms["pending"]:
+        if bookings.asked_this_turn(conv, texts.ASKED_KEY):
+            return bookings.not_done_yet(texts.number_sentence(sms["pending"]))
+        return _send(conv, sms, sms["pending"], calling=False)
 
     if idnv.is_valid_phone(calling):
-        return f"NOT SENT YET. {ask_calling_number(conv)}"
-    return f"NOT SENT YET. Ask which mobile number to text the link to. {CALL_AGAIN}"
+        return f"NOT SENT YET. {texts.ask_calling_number(conv)}"
+    return f"NOT SENT YET. {texts.ask_mobile()} {CALL_AGAIN}"

@@ -1,6 +1,6 @@
 name: dress_code
 enabled: true
-actions: ''
+actions: Answer only what they asked, in a sentence or two, from the content.
 content: '{{attr:dress_code_info}}'
 example_queries:
 - Is there a specific dress code?

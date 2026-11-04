@@ -1,12 +1,12 @@
+import functions.existing_booking as existing
 from _gen import *  # <AUTO GENERATED>
-from flows.change_booking.functions.update_booking_change import start_change
-from functions import bookings, idnv
+from functions import bookings
 
 
 def change_entry(conv: Conversation, flow: Flow):
     """Entry gate: verify, then pick the booking to change (none, one or several)."""
     conv.state.task = "change"
-    gate = idnv.require(conv, "change_booking")
+    gate = bookings.require(conv, "change_booking")
     if gate:
         return gate
 
@@ -16,4 +16,4 @@ def change_entry(conv: Conversation, flow: Flow):
     booking = bookings.selected(conv)
     if not booking:
         return picked
-    return f"{picked}\n\n{start_change(conv, booking)}".strip()
+    return existing.start_change(conv, booking)

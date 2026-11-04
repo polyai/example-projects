@@ -1,12 +1,12 @@
+import functions.existing_booking as existing
 from _gen import *  # <AUTO GENERATED>
-from flows.cancel_reservation.functions.cancel_booking import cancel_readback
-from functions import bookings, idnv
+from functions import bookings
 
 
 def cancel_entry(conv: Conversation, flow: Flow):
     """Entry gate: verify, then pick the booking to cancel (none, one or several)."""
     conv.state.task = "cancel"
-    gate = idnv.require(conv, "cancel_reservation")
+    gate = bookings.require(conv, "cancel_reservation")
     if gate:
         return gate
 
@@ -15,4 +15,4 @@ def cancel_entry(conv: Conversation, flow: Flow):
     picked = bookings.select_for_task(conv, "cancel")
     if not conv.state.selected_booking_id:
         return picked
-    return f"{picked}\n\n{cancel_readback(conv)}".strip()
+    return existing.cancel_readback(conv)

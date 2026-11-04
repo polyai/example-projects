@@ -1,6 +1,6 @@
 name: accessibility
 enabled: true
-actions: ''
+actions: Answer only what they asked, in a sentence or two, from the content.
 content: '{{attr:accessibility_info}}'
 example_queries:
 - Is there handicap parking?

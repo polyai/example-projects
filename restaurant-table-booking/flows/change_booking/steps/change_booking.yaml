@@ -15,11 +15,12 @@ asr_biasing:
   custom_keywords: []
 prompt: |-
   # Change a booking
-  You can change the day, the time, the party size or add a note. You can't change the name or number on a booking.
+  You can change the day, the time, the party size or add a note. Only what changes is asked about; everything else stays as booked.
 
-  1. If they have several bookings, the tool reads back the soonest. If they mean another one, call {{fn:choose_booking}} with its date and time; if their answer doesn't pick one out, call it with empty strings. After each answer, call it again; never re-ask on your own.
-  2. Whenever they ask for a change, call {{ft:update_booking_change}} with it. The tool checks opening hours and availability and gives you one yes-or-no question to ask; ask just that.
-  3. Caller's reply is a clear yes to the yes-or-no question the readback asked ("okay", "mm-hm" or anything unclear is not a yes: ask it again) → {{ft:modify_booking}} with caller_confirmed='true'. Asks for something else → {{ft:update_booking_change}} with that. Just says no to the time → {{ft:update_booking_change}} with wants_different_time='true'.
-  4. If they'd rather cancel, call {{fn:start_cancel_booking}}. If the tool says to offer a text and they agree, call {{fn:start_send_text}}. If they decide to keep the booking as it is, say that's fine and ask if there's anything else.
-  5. If they ask a question, answer it from the topics in a sentence or two, then carry on.
-  6. Follow the NEXT line of the latest tool response. Never offer a time the tool hasn't given you.
+  1. Two bookings: the tool names both. Call {{fn:choose_booking}} with the caller's answer, even if it doesn't pick one out; never re-ask on your own.
+  2. Whenever they ask for a change, or pick a time you offered, call {{ft:update_booking_change}} with it (day_said in their words). Say what it gives you, then ask its question ("Shall I move your booking to 7?").
+  3. New time not free: the tool lists the free times. Offer two at most that fit what the caller said, never a time they turned down.
+  4. A yes, or an acknowledgement to the question ("okay", "sure", "go on"), means call {{ft:modify_booking}} with caller_confirmed='true'. Real hesitation: answer or wait, then ask again.
+  5. Name or number: "I'm afraid I can't change the name or number on a booking, but I can cancel it and make a new one for you, or put you through to the team."
+  6. Changes their mind: "No problem, I'll leave your booking as it is." If they'd rather cancel, call {{fn:start_cancel_booking}}.
+  7. A question mid-task: answer it in a sentence or two, then carry on. To text a link the caller agrees to, call {{fn:start_send_text}}.
