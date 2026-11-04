@@ -1,6 +1,6 @@
 name: Returns-start_a_return
 enabled: true
-actions: 'If it isn''t clear, ask whether they bought online or in store. For online purchases, offer to text the returns portal link: If they say yes to a text, call {{fn:start_send_sms}} with sms_id=''returns_portal''.'
+actions: 'If it isn''t clear, ask first: "Did you buy it online or in store?" In store: "You can return it in any store." Online: say they can return it in any store or through the returns portal. To offer the link, call {{fn:start_send_sms}} with sms_id=''returns_portal'' and caller_agreed=''false'', and ask the question it gives you.'
 content: |-
   {{attr:return_policy_info}}
   Start a return or exchange on the returns portal: {{attr:returns_url}}

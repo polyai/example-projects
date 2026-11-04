@@ -2,17 +2,20 @@
 shared by every order task.
 
 The flows stay one prompt and a tool each because the rules live here:
-- which order the caller means, from an item ("the running shoes") or digits of
-  the order number ("ending 7561"), in code (match_orders / pick_order);
-- what each status means for the caller, and which statuses need a colleague
-  (status_text / needs_colleague);
-- what can be cancelled or re-addressed (cancel_block / address_block);
-- what the agent reads back: everything the first time, then only what changed
-  (readback_text), and whether a yes came in the same turn as the readback, before
-  the caller could answer (asked / same_turn_as_ask);
-- the CALL STATE block every tool response ends with. On voice a step prompt is
-  rendered once, when the step is entered, so state shown in the prompt would
-  freeze; the latest tool response is always current.
+- which order the caller means, from an item ("the backpack") or digits of the order
+  number ("ending 7561"), in code (match_orders / pick_order);
+- how orders are named: by their items, newest first, three at most, with the last four
+  digits only when two orders hold the same items (listing / which_order_instruction);
+- what each status means for the caller: one sentence per status group to say, and the
+  details to give only if asked (status_parts); whether an order is late (late_days);
+  which statuses need a colleague (needs_colleague);
+- what can be cancelled or re-addressed, and the line that says why not
+  (cancel_block / address_block);
+- what the agent reads back (readback_text), and whether a yes came in the same turn as
+  the readback, before the caller could answer (asked / same_turn_as_ask);
+- the CALL STATE block every order return ends with. On voice a step prompt is rendered
+  once, when the step is entered, so state shown in the prompt would freeze; the latest
+  tool response is always current.
 """
 
 from _gen import *  # <AUTO GENERATED>
@@ -24,14 +27,22 @@ import functions.idnv as idnv
 import functions.store_info as store_info
 from functions.handoff import handoff
 
-MAX_ORDERS_SUMMARISED = 3
+MAX_ORDERS_LISTED = 3
 MAX_ORDER_MISSES = (
     2  # descriptions that match no order on the account; the last one transfers
 )
+# Business days past the expected date before a late order is offered to the team. A constant
+# until a client gives their own policy.
+LATE_BUSINESS_DAYS = 3
+ANYTHING_ELSE = "Is there anything else I can help with?"
 NO_MATCH_LINE = (
-    "I'm sorry, I can't find that order on your account. Let me put you through to a colleague "
-    "who can look into it. One moment please."
+    "I'm sorry, I can't find that order. I'll put you through to the team, who can look into "
+    "it. One moment, please."
 )
+# Asked when the caller ID is on more than one account (idnv's caller-ID question).
+CALLER_ID_QUESTION = "Is the number you're calling from the one on your account?"
+NUMBER_ASK = "Sure, I can help with that. What's the phone number on your account?"
+
 _ACKS = {
     "okay",
     "ok",
@@ -58,12 +69,25 @@ _NUMBER_WORDS = [
     "eight",
     "nine",
 ]
+_COUNT_WORDS = [
+    "no",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+]
 _DIGIT_TOKENS = {w: str(i) for i, w in enumerate(_NUMBER_WORDS)} | {"oh": "0"}
 _ALL_WORDS = {"all", "both", "every", "everything", "each"}
 _CURRENT_WORDS = {"current", "same", "that", "this", "it", "one", "order", "the"}
 _STOP_WORDS = {
     "the", "a", "an", "my", "one", "order", "orders", "with", "for", "of", "and", "that", "this",
     "ending", "ends", "in", "number", "item", "items", "i", "ordered", "pair", "please", "some",
+    "about", "calling", "where", "is", "are", "was", "new", "where's", "s", "me", "to", "on",
 }  # fmt: skip
 
 
@@ -72,7 +96,15 @@ def orders(conv: Conversation):
     return "Order helpers module."
 
 
-# --- Speaking dates, items and orders ---------------------------------------
+def require(conv, resume: str):
+    """idnv's gate, with the design's question for the phone number."""
+    gate = idnv.require(conv, resume, caller_id_question=CALLER_ID_QUESTION)
+    if gate and gate.endswith("ask for the phone number on their account."):
+        gate += f' Ask it in these words: "{NUMBER_ASK}"'
+    return gate
+
+
+# --- Speaking dates, digits and items -----------------------------------------
 
 
 def today(conv) -> date:
@@ -90,16 +122,34 @@ def _ordinal(n: int) -> str:
 
 
 def say_date(iso: str, conv) -> str:
+    """'today', 'tomorrow', 'yesterday'; 'Thursday' within the week; 'Thursday the 5th'
+    within two weeks; then 'Saturday, December 12th'. Past: 'Saturday' within the week,
+    'last Monday, the 26th' within two weeks. Never the year."""
     day = date.fromisoformat(iso[:10])
-    text = f"{day.strftime('%A')}, {day.strftime('%B')} {_ordinal(day.day)}"
-    now = today(conv)
-    if day == now:
-        return f"today, {text}"
-    if day == now + timedelta(days=1):
-        return f"tomorrow, {text}"
-    if day == now - timedelta(days=1):
-        return f"yesterday, {text}"
-    return text
+    delta = (day - today(conv)).days
+    weekday = day.strftime("%A")
+    if delta == 0:
+        return "today"
+    if delta == 1:
+        return "tomorrow"
+    if delta == -1:
+        return "yesterday"
+    if 2 <= delta <= 6 or -6 <= delta <= -2:
+        return weekday
+    if 7 <= delta <= 13:
+        return f"{weekday} the {_ordinal(day.day)}"
+    if -13 <= delta <= -7:
+        return f"last {weekday}, the {_ordinal(day.day)}"
+    return f"{weekday}, {day.strftime('%B')} {_ordinal(day.day)}"
+
+
+def on_date(iso: str, conv) -> str:
+    """say_date with 'on' where English needs it: 'on Thursday', but 'tomorrow' and
+    'last Monday, the 26th'."""
+    said = say_date(iso, conv)
+    if said in ("today", "tomorrow", "yesterday") or said.startswith("last "):
+        return said
+    return f"on {said}"
 
 
 def say_digits(digits: str) -> str:
@@ -110,23 +160,45 @@ def last_four(order: dict) -> str:
     return re.sub(r"\D", "", order["order_number"])[-4:]
 
 
-def item_phrase(item: dict) -> str:
-    name = f"{item['brand']} {item['name']}".strip()
-    if item["category"] == "Footwear" and item["size"]:
+def _join(parts: list[str], word: str = "and") -> str:
+    if len(parts) <= 1:
+        return "".join(parts)
+    return ", ".join(parts[:-1]) + f" {word} " + parts[-1]
+
+
+def _list(parts: list[str], word: str = "and") -> str:
+    """Orders in a list: 'the running shoes and socks, and the backpack'."""
+    if len(parts) <= 1:
+        return "".join(parts)
+    return ", ".join(parts[:-1]) + f", {word} " + parts[-1]
+
+
+def _item_name(item: dict, items: list[dict]) -> str:
+    name = item["name"].lower()
+    twins = [i for i in items if i["name"].lower() == name]
+    if len(twins) > 1 and item["size"] and len({i["size"] for i in twins}) > 1:
         name += f" in a size {item['size']}"
     qty = int(item.get("quantity") or 1)
     if qty > 1:
-        name = f"{_NUMBER_WORDS[qty] if qty < 10 else qty} {name}"
+        name = f"{_COUNT_WORDS[qty] if qty < 10 else qty} {name}"
     return name
 
 
-def _join(parts: list[str]) -> str:
-    if len(parts) <= 1:
-        return "".join(parts)
-    return ", ".join(parts[:-1]) + " and " + parts[-1]
+def items_phrase(items: list[dict], brand: bool = True) -> str:
+    """'Nike running shoes and socks' (brand on first mention), or 'running shoes and
+    socks'. The size only when two items differ only by size."""
+    names = [_item_name(i, items) for i in items]
+    if not brand:
+        return _join(names)
+    brands = {i["brand"] for i in items}
+    if len(brands) == 1 and items[0]["brand"]:
+        return f"{items[0]['brand']} {_join(names)}"
+    return _join(
+        [f"{i['brand']} {n}".strip() for i, n in zip(items, names, strict=True)]
+    )
 
 
-def _plural(items: list[dict]) -> bool:
+def plural(items: list[dict]) -> bool:
     return (
         len(items) > 1
         or int(items[0].get("quantity") or 1) > 1
@@ -134,21 +206,46 @@ def _plural(items: list[dict]) -> bool:
     )
 
 
-def describe_order(order: dict, conv) -> str:
-    """'the order from Saturday, October 17th, ending seven five six one, with the
-    Nike Running Shoes in a size 10 and Nike Sport Socks'"""
-    items = _join([item_phrase(i) for i in order["items"]])
-    return (
-        f"the order from {say_date(order['placed'], conv)}, ending {say_digits(last_four(order))}, "
-        f"with the {items}"
+class _Words:
+    """Agreement for a group of items: 'is'/'are', 'it'/'them' and so on."""
+
+    def __init__(self, items: list[dict]):
+        p = plural(items)
+        self.is_ = "are" if p else "is"
+        self.was = "were" if p else "was"
+        self.has = "have" if p else "has"
+        self.hasnt = "haven't" if p else "hasn't"
+        self.does = "do" if p else "does"
+        self.it = "they" if p else "it"
+        self.them = "them" if p else "it"
+        self.its = "their" if p else "its"
+        self.its_short = "they're" if p else "it's"
+        self.s = "" if p else "s"
+
+
+def same_items(a: dict, b: dict) -> bool:
+    return items_phrase(a["items"], brand=False) == items_phrase(
+        b["items"], brand=False
     )
 
 
-def short_order(order: dict) -> str:
-    return f"the {_join([i['name'] for i in order['items']])} order"
+def order_name(order: dict, orders_: list[dict] | None = None) -> str:
+    """'the running shoes and socks'; with the last four digits, said digit by digit,
+    only when another order holds the same items."""
+    name = f"the {items_phrase(order['items'], brand=False)}"
+    if orders_ and any(
+        o["order_number"] != order["order_number"] and same_items(o, order)
+        for o in orders_
+    ):
+        name += f" ending {say_digits(last_four(order))}"
+    return name
 
 
-# --- The caller's orders and which one they mean -----------------------------
+def short_items(order: dict) -> str:
+    return items_phrase(order["items"], brand=False)
+
+
+# --- The caller's orders and which one they mean -------------------------------
 
 
 def caller_orders(conv) -> list[dict]:
@@ -203,6 +300,15 @@ def _order_words(order: dict) -> set[str]:
     return words
 
 
+def _wanted_words(text: str) -> list[str]:
+    words = re.findall(r"[a-z]+", text.lower())
+    return [
+        w
+        for w in words
+        if w not in _STOP_WORDS and w not in _NUMBER_WORDS and w != "oh"
+    ]
+
+
 def match_orders(orders_: list[dict], hint: str) -> list[dict]:
     """The orders a caller's description fits: digits of the order number (three or
     more, matched against the end of the number first), or words from the items."""
@@ -222,9 +328,7 @@ def match_orders(orders_: list[dict], hint: str) -> list[dict]:
         inside = [o for o in orders_ if run in numbers[o["order_number"]]]
         if inside:
             return inside
-    wanted = {
-        _stem(w) for w in words if w not in _STOP_WORDS and w not in _NUMBER_WORDS
-    }
+    wanted = {_stem(w) for w in _wanted_words(text)}
     if not wanted:
         return []
     scored = [(len(wanted & _order_words(o)), o) for o in orders_]
@@ -235,10 +339,16 @@ def match_orders(orders_: list[dict], hint: str) -> list[dict]:
 def names_an_order(text: str) -> bool:
     """Whether a hint names anything (digits, or a word that isn't filler like 'my order' or
     'okay')."""
-    words = set(re.findall(r"[a-z]+", text.lower()))
+    words = set(re.findall(r"[a-z]+", (text or "").lower()))
     return bool(
-        _digit_runs(text) or words - _STOP_WORDS - _CURRENT_WORDS - _ALL_WORDS - _ACKS
+        _digit_runs(text or "")
+        or words - _STOP_WORDS - _CURRENT_WORDS - _ALL_WORDS - _ACKS
     )
+
+
+def by_digits(text: str) -> bool:
+    """The caller picked the order by digits of its number, not by an item."""
+    return bool(_digit_runs(text or ""))
 
 
 def pick_order(conv, hint: str) -> tuple[dict | None, list[dict], list[dict]]:
@@ -265,8 +375,17 @@ def pick_order(conv, hint: str) -> tuple[dict | None, list[dict], list[dict]]:
     return None, matches, orders_
 
 
-def listing(orders_: list[dict], conv) -> str:
-    return "; ".join(describe_order(o, conv) for o in orders_)
+def listing(orders_: list[dict]) -> str:
+    """The three most recent orders by item: 'the hoodie and water bottle, the cap, and the
+    jacket', then 'and a couple of older ones' if there are more."""
+    names = [order_name(o, orders_) for o in orders_[:MAX_ORDERS_LISTED]]
+    if len(orders_) > MAX_ORDERS_LISTED:
+        names.append("a couple of older ones")
+    return _list(names)
+
+
+def count_word(n: int) -> str:
+    return _COUNT_WORDS[n] if n < len(_COUNT_WORDS) else str(n)
 
 
 def call_again(task_tool: str) -> str:
@@ -275,21 +394,43 @@ def call_again(task_tool: str) -> str:
     return f"Then call {task_tool} again with whatever they say, even if it's the same as before."
 
 
-def which_order_instruction(
-    orders_: list[dict], conv, task_tool: str, matched=None
+def which_order_line(
+    orders_: list[dict], question: str, matched: list[dict] | None = None
 ) -> str:
-    """Ask which order the caller means: none named yet, or a description that fits several."""
+    """What the caller hears when the agent needs to know which order: none named yet, or a
+    description that fits several."""
     if matched:
-        lead = "That fits more than one order."
-    else:
-        lead = f"The caller has {len(orders_)} recent orders."
+        names = [order_name(o, matched) for o in matched[:MAX_ORDERS_LISTED]]
+        return f"Is it {_list(names, 'or')}?"
+    many = count_word(len(orders_)) if len(orders_) <= MAX_ORDERS_LISTED else "a few"
+    return f"I can see {many} recent orders: {listing(orders_)}. {question}"
+
+
+def which_order_instruction(
+    orders_: list[dict], conv, task_tool: str, question: str, matched=None
+) -> str:
+    line = which_order_line(orders_, question, matched)
     return (
-        f"{lead} Their orders: {listing(orders_, conv)}. Ask which one they mean (an item, or the "
-        f"last digits of the order number). {call_again(task_tool)}"
+        f'Ask which order, in these words: "{line}" Don\'t say order numbers. '
+        f"{call_again(task_tool)}"
     )
 
 
-def no_matching_order(orders_: list[dict], conv, task_tool: str) -> str | dict:
+def _missing_thing(hint: str) -> str:
+    if by_digits(hint):
+        return "that number"
+    words = _wanted_words(hint)
+    if not words:
+        return "that"
+    thing = " ".join(words)
+    if thing.endswith("s"):
+        return thing
+    return ("an " if thing[0] in "aeiou" else "a ") + thing
+
+
+def no_matching_order(
+    orders_: list[dict], conv, task_tool: str, hint: str
+) -> str | dict:
     """The caller described an order that isn't on the account: a miss, counted here. The
     attempt is named, and the last miss transfers."""
     misses = int(conv.state.order_misses or 0) + 1
@@ -298,14 +439,17 @@ def no_matching_order(orders_: list[dict], conv, task_tool: str) -> str | dict:
         conv.state.order_misses = 0
         conv.write_metric("ORDER_NOT_MATCHED")
         return handoff(conv, "ORDER_NOT_FOUND", NO_MATCH_LINE, "CUSTOMER_SERVICE")
+    line = (
+        f"I can't see an order with {_missing_thing(hint)} on your account. The ones I can see "
+        f"are {listing(orders_)}. Is it one of those?"
+    )
     return (
-        f"NO MATCHING ORDER (attempt {misses} of {MAX_ORDER_MISSES}): that doesn't match any order "
-        f"on the account. Their orders: {listing(orders_, conv)}. Ask which one they mean (an "
-        f"item, or the last digits of the order number). {call_again(task_tool)}"
+        f'NO MATCHING ORDER (attempt {misses} of {MAX_ORDER_MISSES}): say "{line}" '
+        f"{call_again(task_tool)}"
     )
 
 
-# --- Status ------------------------------------------------------------------
+# --- Status ---------------------------------------------------------------------
 
 
 def needs_colleague(order: dict) -> str:
@@ -321,50 +465,43 @@ def needs_colleague(order: dict) -> str:
     return ""
 
 
-def _group_sentence(status: str, items: list[dict], order: dict, conv) -> str:
-    names = _join([f"the {item_phrase(i)}" for i in items])
-    plural = _plural(items)
-    have, are, were = ("have", "are", "were") if plural else ("has", "is", "was")
-    first = items[0]
-    if status == api.SHIPPED:
-        text = f"{names} {have} shipped with {first['carrier']}"
-        if first["tracking_status"]:
-            text += f" and {are} {first['tracking_status']}"
-        if first["last_scan"]:
-            text += f", last scanned in {first['last_scan']}"
-        if first["expected_delivery"]:
-            text += f", and should arrive {say_date(first['expected_delivery'], conv)}"
-        return text + "."
-    if status == api.DELIVERED:
-        when = (
-            f" on {say_date(first['completed_on'], conv)}"
-            if first["completed_on"]
-            else ""
-        )
-        return f"{names} {were} delivered{when}."
-    if status == api.READY_FOR_PICKUP:
-        return f"{names} {are} ready to pick up in store. {store_info.attr(conv, 'instore_pickup_info')}".strip()
-    if status == api.PICKED_UP:
-        when = (
-            f" on {say_date(first['completed_on'], conv)}"
-            if first["completed_on"]
-            else ""
-        )
-        return f"{names} {were} picked up{when}."
-    if status == api.CANCELLED:
-        if first["cancel_reason"] == "customer_request":
-            return f"{names} {were} cancelled at your request."
-        return f"{names} {were} cancelled. {store_info.CANCELLED_OUT_OF_STOCK}"
-    if order["fulfilment"] == "pickup":
-        return (
-            f"{names} {are} still being prepared. {store_info.PROCESSING_PICKUP} "
-            f"{store_info.attr(conv, 'instore_pickup_info')}"
-        ).strip()
-    return f"{names} {are} still being processed. {store_info.PROCESSING_SHIP}"
+def colleague_line(order: dict) -> str:
+    return (
+        f"I can see your {items_phrase(order['items'])} order, but it needs someone on the team "
+        "to look at it. I'll put you through now. One moment, please."
+    )
 
 
-def status_text(order: dict, conv) -> str:
-    """What to tell the caller about one order, grouping items that share a status."""
+def _business_days_between(start: date, end: date) -> int:
+    return sum(
+        1
+        for n in range(1, (end - start).days + 1)
+        if (start + timedelta(n)).weekday() < 5
+    )
+
+
+def late_days(item: dict, conv) -> int | None:
+    """Business days a shipped, undelivered item is past its expected date; None if it
+    isn't late."""
+    if item["status"] != api.SHIPPED or not item["expected_delivery"]:
+        return None
+    expected = date.fromisoformat(item["expected_delivery"][:10])
+    now = today(conv)
+    if expected >= now:
+        return None
+    return _business_days_between(expected, now)
+
+
+def is_well_overdue(order: dict, conv) -> bool:
+    return any((late_days(i, conv) or 0) > LATE_BUSINESS_DAYS for i in order["items"])
+
+
+def is_late(order: dict, conv) -> bool:
+    return any(late_days(i, conv) is not None for i in order["items"])
+
+
+def _groups(order: dict, conv) -> list[tuple[str, list[dict]]]:
+    """Items grouped by what the caller is told about them; cancelled items last."""
     groups: dict[tuple, list[dict]] = {}
     for item in order["items"]:
         key = (
@@ -372,10 +509,207 @@ def status_text(order: dict, conv) -> str:
             item["carrier"],
             item["expected_delivery"],
             item["completed_on"],
+            item["cancel_reason"],
         )
         groups.setdefault(key, []).append(item)
+    out = [(key[0], items) for key, items in groups.items()]
+    return sorted(out, key=lambda g: g[0] == api.CANCELLED)
+
+
+def _city(item: dict) -> str:
+    return (item["last_scan"] or "").split(",")[0].strip()
+
+
+def _pickup_bring(conv) -> str:
+    """The sentence of instore_pickup_info that says what to bring, if there is one."""
+    info = store_info.attr(conv, "instore_pickup_info")
+    for sentence in re.split(r"(?<=[.!?])\s+", info):
+        if re.search(r"\bbring\b", sentence, re.I):
+            sentence = sentence.strip()
+            if sentence.lower().startswith("bring "):
+                sentence = "Just bring " + sentence[6:]
+            return sentence
+    return ""
+
+
+def _group_sentence(
+    status: str, items: list[dict], order: dict, conv, split: bool
+) -> str:
+    w = _Words(items)
+    first = items[0]
+    if status == api.CANCELLED:
+        names = items_phrase(items, brand=False)
+        whole = len(items) == len(order["items"])
+        if first["cancel_reason"] == "customer_request":
+            if whole:
+                return "That order was cancelled at your request, so you won't be charged for it."
+            return (
+                f"The {names} {w.was} cancelled at your request, so you won't be charged for "
+                f"{w.them}."
+            )
+        lead = f"The {names} from that order" if split else f"The {names}"
+        return (
+            f"{lead} {w.was} out of stock, I'm afraid, so we cancelled {w.them}, and you won't be "
+            f"charged for {w.them}."
+        )
+    names = items_phrase(items)
+    if status == api.SHIPPED:
+        late = late_days(first, conv)
+        if late is not None:
+            due = on_date(first["expected_delivery"], conv)
+            if late > LATE_BUSINESS_DAYS:
+                return (
+                    f"Your {names} {w.was} due {due}, so {w.its_short} well overdue, I'm sorry. "
+                    "The team can look into it with the carrier. Would you like me to put you "
+                    "through?"
+                )
+            text = f"Your {names} {w.was} due {due}, so {w.its_short} running a little late, I'm sorry."
+            if first["last_scan"]:
+                when = (
+                    f" {on_date(first['last_scan_on'], conv)}"
+                    if first["last_scan_on"]
+                    else ""
+                )
+                text += f" The last update was in {_city(first)}{when}."
+            return text
+        if first["expected_delivery"]:
+            return (
+                f"Your {names} {w.is_} on {w.its} way and should arrive "
+                f"{on_date(first['expected_delivery'], conv)}."
+            )
+        carrier = f" with {first['carrier']}" if first["carrier"] else ""
+        return (
+            f"Your {names} {w.is_} on {w.its} way{carrier}, but I don't have a delivery date "
+            f"for {w.them} yet."
+        )
+    if status == api.DELIVERED:
+        when = (
+            f" {on_date(first['completed_on'], conv)}" if first["completed_on"] else ""
+        )
+        return f"Your {names} {w.was} delivered{when}."
+    if status == api.READY_FOR_PICKUP:
+        return f"Your {names} {w.is_} ready to pick up in store. {_pickup_bring(conv)}".strip()
+    if status == api.PICKED_UP:
+        when = (
+            f" {on_date(first['completed_on'], conv)}" if first["completed_on"] else ""
+        )
+        return f"Your {names} {w.was} picked up{when}."
+    if order["fulfilment"] == "pickup":
+        return (
+            f"Your {names} {w.is_} still being prepared. We'll email you as soon as {w.its_short} "
+            "ready to pick up in store."
+        )
+    return (
+        f"Your {names} {w.is_} still being prepared, so {w.it} {w.hasnt} shipped yet. We'll "
+        f"email you a tracking link as soon as {w.it} {w.does}."
+    )
+
+
+def say_status(order: dict, conv) -> str:
+    """What to tell the caller about one order: one sentence per status group, the shipped
+    part first."""
+    groups = _groups(order, conv)
+    split = len(groups) > 1
     return " ".join(
-        _group_sentence(key[0], items, order, conv) for key, items in groups.items()
+        _group_sentence(s, items, order, conv, split) for s, items in groups
+    )
+
+
+def status_details(order: dict, conv) -> str:
+    """Details to give only if asked: carrier, last scan, ship date, delivery address, and
+    the pickup policy."""
+    parts = []
+    for status, items in _groups(order, conv):
+        first = items[0]
+        names = items_phrase(items, brand=False)
+        bits = []
+        if first["carrier"]:
+            bits.append(f"carrier {first['carrier']}")
+        if first["last_scan"]:
+            when = (
+                f" {on_date(first['last_scan_on'], conv)}"
+                if first["last_scan_on"]
+                else ""
+            )
+            bits.append(f"last scanned in {first['last_scan']}{when}")
+        if first["shipped_on"]:
+            bits.append(f"shipped {on_date(first['shipped_on'], conv)}")
+        if first["expected_delivery"] and status == api.SHIPPED:
+            bits.append(f"expected {on_date(first['expected_delivery'], conv)}")
+        if bits:
+            parts.append(f"{names}: " + ", ".join(bits))
+    if order["fulfilment"] == "pickup":
+        info = store_info.attr(conv, "instore_pickup_info")
+        if info:
+            parts.append(f"pickup: {info}")
+    elif order["shipping_address"]:
+        parts.append(f"being delivered to {order['shipping_address']}")
+    return "; ".join(parts)
+
+
+def short_status(order: dict, conv) -> str:
+    """One short clause for an order in a summary of several: 'your Adidas backpack hasn't
+    shipped yet'."""
+    if needs_colleague(order):
+        return f"your {items_phrase(order['items'])} order needs someone on the team to look at it"
+    groups = _groups(order, conv)
+    status, items = groups[0]
+    w = _Words(items)
+    names = items_phrase(items)
+    first = items[0]
+    if status == api.CANCELLED:
+        return f"your {items_phrase(order['items'])} order was cancelled"
+    if status == api.SHIPPED:
+        late = late_days(first, conv)
+        if late is not None:
+            due = on_date(first["expected_delivery"], conv)
+            return f"your {names} {w.was} due {due}, so {w.its_short} running late"
+        if first["expected_delivery"]:
+            return (
+                f"your {names} {w.is_} on {w.its} way and should arrive "
+                f"{on_date(first['expected_delivery'], conv)}"
+            )
+        return f"your {names} {w.is_} on {w.its} way"
+    if status == api.DELIVERED:
+        when = (
+            f" {on_date(first['completed_on'], conv)}" if first["completed_on"] else ""
+        )
+        return f"your {names} {w.was} delivered{when}"
+    if status == api.READY_FOR_PICKUP:
+        return f"your {names} {w.is_} ready to pick up in store"
+    if status == api.PICKED_UP:
+        return f"your {names} {w.was} picked up"
+    if order["fulfilment"] == "pickup":
+        return f"your {names} {w.is_} still being prepared"
+    return f"your {names} {w.hasnt} shipped yet"
+
+
+def summary_line(orders_: list[dict], conv) -> str:
+    """Two orders: one sentence. Three: a sentence each."""
+    shown = sorted(
+        orders_[:MAX_ORDERS_LISTED], key=lambda o: not in_transit(o)
+    )  # shipped first
+    clauses = [short_status(o, conv) for o in shown]
+    if len(clauses) == 2:
+        text = f"{clauses[0]}, and {clauses[1]}."
+        return text[0].upper() + text[1:]
+    return " ".join(c[0].upper() + c[1:] + "." for c in clauses)
+
+
+def not_received_line(order: dict, conv) -> str:
+    """Delivered, but the caller hasn't got it: the one question before a transfer."""
+    delivered = [i for i in order["items"] if i["status"] == api.DELIVERED]
+    if not delivered:
+        return ""
+    w = _Words(delivered)
+    when = (
+        f" {on_date(delivered[0]['completed_on'], conv)}"
+        if delivered[0]["completed_on"]
+        else ""
+    )
+    return (
+        f"I'm sorry about that. {w.it.capitalize()} show{w.s} as delivered{when}. Sometimes "
+        "parcels are left with a neighbor or somewhere safe nearby. Have you had a chance to check?"
     )
 
 
@@ -384,66 +718,107 @@ def tracking_url(order: dict) -> str:
         (
             i["tracking_url"]
             for i in order["items"]
-            if i["status"] == api.SHIPPED and i["tracking_url"]
+            if i["status"] in (api.SHIPPED, api.DELIVERED) and i["tracking_url"]
         ),
         "",
     )
 
 
-# --- What can change ----------------------------------------------------------
+def in_transit(order: dict) -> bool:
+    return any(i["status"] == api.SHIPPED for i in order["items"])
 
 
-def _any_status(order: dict, statuses: tuple) -> bool:
-    return any(i["status"] in statuses for i in order["items"])
+# --- What can change -------------------------------------------------------------
+
+
+def items_with(order: dict, statuses: tuple) -> list[dict]:
+    return [i for i in order["items"] if i["status"] in statuses]
 
 
 def cancel_block(order: dict) -> str:
-    """Why this order can't be cancelled here, or '' if it can."""
+    """Why this order can't be cancelled here, as the caller hears it, or '' if it can."""
     if all(i["status"] == api.CANCELLED for i in order["items"]):
-        return "This order is already cancelled."
-    if _any_status(order, (api.SHIPPED, api.DELIVERED, api.PICKED_UP)):
-        return "Part or all of this order has already shipped, so it can't be cancelled; it can be returned once it arrives."
-    if _any_status(order, (api.READY_FOR_PICKUP,)):
+        return "That order's already been cancelled, so there's nothing more you need to do."
+    moving = items_with(order, (api.SHIPPED,))
+    done = items_with(order, (api.DELIVERED, api.PICKED_UP))
+    if moving or done:
+        items = moving or done
+        w = _Words(items)
+        lead = (
+            f"Your {items_phrase(items)} {w.has} already shipped"
+            if moving
+            else f"Your {items_phrase(items)} {w.has} already been delivered"
+        )
+        after = (
+            f"Once {w.it} arrive{'' if w.it == 'they' else 's'}, you"
+            if moving
+            else "You"
+        )
         return (
-            "This order is already waiting in store. If they don't want it, they can simply "
-            "not collect it, or a colleague can cancel it."
+            f"{lead}, so I'm afraid I can't cancel {w.them} now. {after} can return {w.them} in "
+            "any store or through our returns portal."
+        )
+    ready = items_with(order, (api.READY_FOR_PICKUP,))
+    if ready:
+        w = _Words(ready)
+        waiting = "are" if w.it == "they" else "'s"
+        sep = " " if waiting == "are" else ""
+        return (
+            f"Your {items_phrase(ready, brand=False)}{sep}{waiting} already waiting for you in "
+            f"store, so I can't cancel {w.them} from here. If you don't want {w.them}, you can "
+            "just not collect it, or I can put you through to the team to cancel it."
         )
     return ""
 
 
 def address_block(order: dict) -> str:
-    """Why this order's delivery address can't be changed, or '' if it can."""
+    """Why this order's delivery address can't be changed, as the caller hears it, or ''."""
     if order["fulfilment"] == "pickup":
-        return "This is an in-store pickup order, so it has no delivery address."
+        return "That's a pickup order, so it'll be waiting for you in store rather than delivered."
     if all(i["status"] == api.CANCELLED for i in order["items"]):
-        return "This order is cancelled."
-    if _any_status(order, (api.SHIPPED, api.DELIVERED, api.PICKED_UP)):
+        return "That order's been cancelled, so there's nothing on its way."
+    moving = items_with(order, (api.SHIPPED,))
+    if moving:
+        w = _Words(moving)
+        carrier = moving[0]["carrier"]
+        page = (
+            f"the {carrier} tracking page" if carrier else "the carrier's tracking page"
+        )
         return (
-            "Part or all of this order has already shipped, so the delivery address can't be "
-            "changed. The carrier's tracking page may let them redirect the parcel."
+            f"Your {items_phrase(moving, brand=False)} {w.has} already shipped, so I can't change "
+            f"the address from here, I'm afraid. You might be able to redirect {w.them} on {page}."
+        )
+    done = items_with(order, (api.DELIVERED, api.PICKED_UP))
+    if done:
+        w = _Words(done)
+        return (
+            f"Your {items_phrase(done, brand=False)} {w.has} already been delivered, so I can't "
+            "change the address now."
         )
     return ""
 
 
-# --- Readbacks ------------------------------------------------------------------
+# --- Readbacks ---------------------------------------------------------------------
 
 
-def readback_text(conv, key: str, fields: list[tuple[str, str]]) -> tuple[str, str]:
-    """What to read back for `key`: every field the first time, then only the
-    fields whose value changed since the last readback.
+def readback_text(
+    conv, key: str, fields: list[tuple[str, str]]
+) -> tuple[list[str], str]:
+    """What to read back for `key`: every field the first time, then only the fields whose
+    value changed since the last readback.
 
-    Returns (text, mode): mode is "full" the first time, "changes" when some
-    fields changed, and "none" when the caller has already heard all of it, so
-    a write tool can go ahead on a "yes".
+    Returns (labels, mode): mode is "full" the first time, "changes" when some fields
+    changed, and "none" when the caller has already heard all of it.
     """
     store = conv.state.readbacks if isinstance(conv.state.readbacks, dict) else {}
     last = store.get(key)
     current = {label: value for label, value in fields if value}
     conv.state.readbacks = {**store, key: current}
     if last is None:
-        return "; ".join(current.values()), "full"
-    changed = [value for label, value in current.items() if last.get(label) != value]
-    return "; ".join(changed), ("changes" if changed else "none")
+        return list(current), "full"
+    changed = [label for label, value in current.items() if last.get(label) != value]
+    changed += [label for label in last if label not in current]
+    return changed, ("changes" if changed else "none")
 
 
 def readback_is_current(conv, key: str, fields: list[tuple[str, str]]) -> bool:
@@ -474,8 +849,9 @@ def _turn(conv):
         return None
 
 
-def asked(conv, key: str) -> None:
-    """Record the turn in which a write tool's readback asked its yes-or-no question."""
+def asked(conv, key: str, question: str = "") -> None:
+    """Record the turn in which a write's readback asked its question, and the question,
+    so a same-turn call can speak it again."""
     turns = (
         dict(conv.state.readback_turns)
         if isinstance(conv.state.readback_turns, dict)
@@ -483,6 +859,21 @@ def asked(conv, key: str) -> None:
     )
     turns[key] = _turn(conv)
     conv.state.readback_turns = turns
+    if question:
+        said = (
+            dict(conv.state.readback_said)
+            if isinstance(conv.state.readback_said, dict)
+            else {}
+        )
+        said[key] = question
+        conv.state.readback_said = said
+
+
+def last_question(conv, key: str) -> str:
+    said = (
+        conv.state.readback_said if isinstance(conv.state.readback_said, dict) else {}
+    )
+    return said.get(key, "")
 
 
 def same_turn_as_ask(conv, key: str) -> bool:
@@ -491,34 +882,23 @@ def same_turn_as_ask(conv, key: str) -> bool:
         conv.state.readback_turns if isinstance(conv.state.readback_turns, dict) else {}
     )
     turn = _turn(conv)
-    return turn is not None and turns.get(key) == turn
+    return turn is not None and key in turns and turns.get(key) == turn
 
 
-def yes_no_question(action: str) -> str:
-    """The whole spoken confirmation for a write: the action and the key value only."""
-    return f"Shall I {action}, yes or no?"
+def wait_for_answer(conv, key: str) -> dict:
+    """The same-turn refusal: nothing is written, and the readback and its question are
+    spoken again as the utterance, which ends the turn (on RSN-1 a same-turn utterance
+    replaces the model's turn, so code builds it)."""
+    return {"utterance": last_question(conv, key)}
 
 
-def confirm_instruction(
-    question: str, tool: str, param: str = "caller_confirmed"
-) -> str:
-    """Tell the model to ask `question` as the readback, with nothing added, and that only a
-    clear yes to it lets the tool write."""
-    return (
-        f'Ask the caller just this, in about these words: "{question}" '
-        "Don't add dates, order numbers or other details. Wait for the answer. Only a clear yes to that question counts: "
-        f"then call {tool} with {param}='true'."
-    )
+YES_LINE = (
+    'A yes, or an acknowledgement in answer to it ("okay", "sure", "sounds good", "go on"), is '
+    "agreement"
+)
 
 
-def wait_for_answer(tool: str) -> str:
-    return (
-        "NOT DONE YET: wait for the caller's answer to the yes-or-no question, then call "
-        f"{tool} again."
-    )
-
-
-# --- Call state -----------------------------------------------------------------
+# --- Call state ---------------------------------------------------------------------
 
 
 def call_state(conv, task_lines: list[str], next_line: str) -> str:
@@ -526,7 +906,7 @@ def call_state(conv, task_lines: list[str], next_line: str) -> str:
     lines = [
         "CALL STATE (this replaces any earlier copy; never read it aloud)",
         f"- {idnv.state_line(conv)}",
-        "- Order: " + (describe_order(order, conv) if order else "none chosen yet"),
+        "- Order: " + (f"{order_name(order)} order" if order else "none chosen yet"),
     ]
     lines += [f"- {line}" for line in task_lines if line]
     lines.append(f"NEXT: {next_line}")

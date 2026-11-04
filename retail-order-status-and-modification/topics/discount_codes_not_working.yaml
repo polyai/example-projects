@@ -1,6 +1,6 @@
 name: Discount_Codes-not_working
 enabled: true
-actions: Go through the three reasons one at a time, as a question each, and wait for the answer. If one explains it, say that may be why, and mention our current offers are at {{attr:promotions_url}}; If they say yes to a text, call {{fn:start_send_sms}} with sms_id='promotions'. If none of them explains it, ask if they'd like to speak to someone; if yes, call {{fn:handoff}} with handoff_reason=DISCOUNT_CODE and handoff_utterance="Let me put you through to someone who can help. One moment please.". Never mention specific discounts (student, veteran and so on).
+actions: Ask about the three reasons one at a time, as a question each, and wait for the answer. If one explains it, say that may be why. To offer the link, call {{fn:start_send_sms}} with sms_id='promotions' and caller_agreed='false', and ask the question it gives you. If none explains it, ask "Would you like me to put you through to the team?" and on a yes call {{fn:handoff}} with handoff_reason=DISCOUNT_CODE and handoff_utterance="I'll put you through to the team now. One moment, please." Never mention specific discounts.
 content: |-
   Three common reasons a discount code doesn't work:
   1. The item is excluded from discounts: there's a note under the "add to cart" button on the product page.

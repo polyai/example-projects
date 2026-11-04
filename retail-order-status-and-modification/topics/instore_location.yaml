@@ -1,6 +1,6 @@
 name: Instore-location
 enabled: true
-actions: 'Give the address naturally. For another store, offer to text the store locator: If they say yes to a text, call {{fn:start_send_sms}} with sms_id=''store_locator''.'
+actions: 'Give the address in a sentence. For another store: To offer the link, call {{fn:start_send_sms}} with sms_id=''store_locator'' and caller_agreed=''false'', and ask the question it gives you.'
 content: |-
   {{attr:address_info}}
   Full address: {{attr:address}}

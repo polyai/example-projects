@@ -1,6 +1,6 @@
 name: Technical_Issues-update_info
 enabled: true
-actions: Answer from the content; don't troubleshoot. Only if they still need help, offer to put them through; if yes, call {{fn:handoff}} with handoff_reason=ACCOUNT_UPDATE and handoff_utterance="Let me put you through to someone who can help. One moment please.".
+actions: Answer from the content in a sentence or two; don't troubleshoot. Only if they still need help, offer the team; on a yes, call {{fn:handoff}} with handoff_reason=ACCOUNT_UPDATE and handoff_utterance="I'll put you through to the team now. One moment, please."
 content: 'To update account details, log in and go to Personal Info: Profile for contact details, Addresses for shipping and billing addresses, and Payment for payment details. Changes there don''t affect orders already placed.'
 example_queries:
 - I can't update my phone number on my account

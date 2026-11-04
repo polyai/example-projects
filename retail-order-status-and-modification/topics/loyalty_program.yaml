@@ -1,6 +1,6 @@
 name: Loyalty-program
 enabled: true
-actions: Answer from the content. If they say yes to a text, call {{fn:start_send_sms}} with sms_id='website'.
+actions: Answer only what they asked, in a sentence or two. To offer the link, call {{fn:start_send_sms}} with sms_id='website' and caller_agreed='false', and ask the question it gives you.
 content: |-
   {{attr:loyalty_program_info}}
   Website: {{attr:website_url}}

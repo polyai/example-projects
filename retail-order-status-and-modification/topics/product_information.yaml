@@ -1,6 +1,6 @@
 name: Product-information
 enabled: true
-actions: 'Recommend the website and offer to text the link: If they say yes to a text, call {{fn:start_send_sms}} with sms_id=''website''. Don''t offer a transfer for product questions.'
+actions: Say the website has the latest product information and prices, in a sentence. To offer the link, call {{fn:start_send_sms}} with sms_id='website' and caller_agreed='false', and ask the question it gives you. Don't offer a transfer.
 content: Our website, {{attr:website_url}}, has the latest product information, prices, photos and reviews.
 example_queries:
 - can I get some information on a product

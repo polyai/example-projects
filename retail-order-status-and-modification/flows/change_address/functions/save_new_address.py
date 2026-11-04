@@ -1,73 +1,43 @@
 from _gen import *  # <AUTO GENERATED>
-import re
-
+import functions.address as address
 import functions.api_client as api_client
 import functions.idnv as idnv
 import functions.orders as orders
+import functions.sms as sms
 from functions.handoff import handoff
 
 READBACK_KEY = "address"
-MAX_UNCLEAR = 3  # answers that aren't a full address; the last one transfers
+MAX_UNCLEAR = 3  # answers that can't be made out as an address; the last one transfers
 TOOL = "save_new_address"
+WHICH = "Which one is it about?"
 NOT_SAVED_LINE = (
-    "I'm sorry, I'm not able to take that address down. Let me put you through to a colleague "
-    "who can change it for you. One moment please."
+    "I'm sorry, I'm not able to take that address down. I'll put you through to the team, who "
+    "can change it for you. One moment, please."
 )
+FAILED_LINE = (
+    "I'm sorry, I couldn't change that just now. I'll put you through to the team, who can do "
+    "it for you. One moment, please."
+)
+ASK_ADDRESS = "What's the new address, with the ZIP code?"
+ASK_PART = {
+    "zip": "And what's the ZIP code?",
+    "number": "And what's the house or building number?",
+}
 
 
-def _pending(conv, order: dict) -> str:
+def _pending(conv, order: dict) -> dict | None:
     change = conv.state.address_change
     if isinstance(change, dict) and change.get("order_number") == order["order_number"]:
-        return change.get("address", "")
-    return ""
+        return change.get("address")
+    return None
 
 
-def _fields(conv, order: dict, address: str) -> list[tuple[str, str]]:
-    return [
-        ("order", f"the new delivery address for {orders.short_order(order)}"),
-        ("address", f"is {address}" if address else ""),
-    ]
+def _state(conv, next_line: str) -> str:
+    return orders.call_state(conv, ["Task: change the delivery address"], next_line)
 
 
-WAITING = "Wait for the caller's yes or no to changing the delivery address."
-
-
-def confirm_question(order: dict, address: str) -> str:
-    """What the caller hears before an address change: the order's items and the new address."""
-    return orders.yes_no_question(
-        f"deliver {orders.short_order(order)} to {address} instead"
-    )
-
-
-def _ask(order: dict, address: str) -> str:
-    return orders.confirm_instruction(confirm_question(order, address), TOOL)
-
-
-def _state(conv, order: dict | None, next_line: str) -> str:
-    address = _pending(conv, order) if order else ""
-    return orders.call_state(
-        conv,
-        [
-            "Task: change the delivery address",
-            "New address: " + (address or "not given yet"),
-        ],
-        next_line,
-    )
-
-
-_NUMBER_WORDS = set(
-    "zero oh one two three four five six seven eight nine ten eleven twelve thirteen fourteen "
-    "fifteen sixteen seventeen eighteen nineteen twenty thirty forty fifty sixty seventy eighty "
-    "ninety hundred thousand".split()
-)
-
-
-def looks_like_address(text: str) -> bool:
-    """A street number (digits or spoken, e.g. 'forty-five') and at least two more words
-    (street, city or ZIP)."""
-    words = re.findall(r"[A-Za-z0-9]+", (text or "").lower())
-    has_number = bool(re.search(r"\d", text or "")) or bool(_NUMBER_WORDS & set(words))
-    return has_number and len(words) >= 3
+def _items(order: dict) -> str:
+    return orders.short_items(order)
 
 
 def address_reply(conv, order: dict) -> str:
@@ -75,21 +45,59 @@ def address_reply(conv, order: dict) -> str:
     blocked = orders.address_block(order)
     if blocked:
         conv.write_metric("MODIFY_ORDER_NOT_ALLOWED")
+        offer, follow = "", ""
+        if orders.in_transit(order) and orders.tracking_url(order):
+            offer = " " + sms.offer(conv, "tracking_link", order["order_number"])
+            follow = (
+                " A yes to the text offer → call start_send_sms with sms_id='tracking_link' and "
+                "caller_agreed='true'."
+            )
         return (
-            f"This order's address can't be changed: {blocked} Tell the caller that kindly, and "
-            "don't offer a transfer unless they ask for one.\n\n"
-            + _state(conv, order, "Help with whatever they want next.")
+            f'Say: "{blocked}{offer}" Don\'t offer a transfer unless they ask.{follow}\n\n'
+            + _state(conv, "Help with whatever they want next.")
         )
+    w = orders._Words(order["items"])
+    lead = f"Your {_items(order)} {w.hasnt} shipped yet, so I can change where {w.its_short} going."
     return (
-        f"It's {orders.describe_order(order, conv)}, going to {order['shipping_address']}. If the "
-        "caller has already given the new address, call save_new_address with it now; otherwise "
-        "ask for the new delivery address.\n\n"
-        + _state(conv, order, "Get the new delivery address.")
+        f"If the caller has already given the new address, call {TOOL} with it now. Otherwise "
+        f'say: "{lead} {ASK_ADDRESS}" (just "What\'s the new address?" if that would repeat '
+        f"what they've said). If they ask whether changing it changes when it arrives: \"It "
+        f"shouldn't, as it hasn't shipped yet.\" Don't say where it's going now unless they ask: "
+        f"{order['shipping_address']}. {orders.call_again(TOOL)}\n\n"
+        + _state(conv, "Get the new delivery address.")
     )
 
 
+def confirm_question(order: dict, addr: dict, only: list[str] | None = None) -> str:
+    """The readback and the question, built in code: 'So that's four five Elm Street, New
+    York, New York, one zero zero zero two. Shall I send your backpack there instead?'.
+    After a correction, only what changed."""
+    if only is not None:
+        changed = address.spoken(addr, only)
+        return f"{changed[0].upper()}{changed[1:]}. Shall I send it there instead?"
+    return f"So that's {address.spoken(addr)}. Shall I send your {_items(order)} there instead?"
+
+
+def _readback(conv, order: dict, addr: dict) -> dict:
+    """The readback and its question, spoken as written: the model dropped the repeated "New
+    York, New York" and the street type when it voiced the readback itself."""
+    fields = address.readback_fields(addr)
+    changed, mode = orders.readback_text(
+        conv, READBACK_KEY, [("order", order["order_number"])] + fields
+    )
+    only = (
+        None
+        if mode == "full" or "order" in changed
+        else [c for c in changed if c != "order"]
+    )
+    question = confirm_question(order, addr, only)
+    orders.asked(conv, READBACK_KEY, question)
+    lead = "Sorry about that. " if only else ""
+    return {"utterance": f"{lead}{question}"}
+
+
 @func_description(
-    "Pick the order, take the new delivery address and save it once the caller has said yes to the readback. Call it whenever the caller says which order or gives or corrects the address, even if it's the same as before."
+    "Pick the order, take the new delivery address, read it back and save it once the caller has agreed to the readback question this tool gave you. Call it whenever the caller says which order, gives or corrects the address, or answers the question, even if it's the same as before."
 )
 @func_parameter(
     "order_hint",
@@ -97,11 +105,11 @@ def address_reply(conv, order: dict) -> str:
 )
 @func_parameter(
     "new_address",
-    "The full new delivery address as the caller said it, e.g. '45 Elm Street, New York, NY 10002'. Empty string if they didn't give one this time.",
+    "The new delivery address as the caller said it, with number words as digits, e.g. '45 Elm Street, New York, 10002'. Only a ZIP code or a house number if that's all they gave. Empty string if they gave none this time.",
 )
 @func_parameter(
     "caller_confirmed",
-    "'true' only if the caller's latest reply was a clear yes to the yes-or-no question this tool's readback asked. 'Okay', 'mm-hm', 'sure, whatever', silence or a question is not a yes: ask the yes-or-no question again. Otherwise 'false'.",
+    "'true' only if the caller's latest reply agreed to the readback question this tool returned. 'Okay', 'sure', 'sounds good' or 'go on' in answer to that question is agreement; a correction, an answer to something else, or real hesitation is not. Otherwise 'false'.",
 )
 @func_latency_control(
     delay_before_responses_start=1,
@@ -116,24 +124,27 @@ def save_new_address(
     caller_confirmed: str,
 ):
     if not idnv.is_verified(conv):
-        return idnv.require(conv, "change_address")
+        return orders.require(conv, "change_address")
 
     order, matches, orders_ = orders.pick_order(conv, order_hint)
     if not order:
         if not orders_:
-            return "There are no recent orders on this account. Tell the caller."
+            return "Say: \"I can't see any recent orders on your account.\" Then ask if there's anything else."
         named = orders.names_an_order(order_hint)
         if named and not matches:
-            return orders.no_matching_order(orders_, conv, TOOL)
+            return orders.no_matching_order(orders_, conv, TOOL, order_hint)
         return orders.which_order_instruction(
-            orders_, conv, TOOL, matched=matches if named else None
+            orders_, conv, TOOL, WHICH, matched=matches if named else None
         )
     if orders.address_block(order):
         return address_reply(conv, order)
 
-    address = (new_address or "").strip()
-    if address:
-        if not looks_like_address(address):
+    said = str(new_address or "").strip()
+    addr = _pending(conv, order)
+    if said:
+        parsed = address.parse(said)
+        merged = address.merge(addr, parsed)
+        if not address.recognisable(parsed):
             misses = int(conv.state.address_misses or 0) + 1
             conv.state.address_misses = misses
             if misses >= MAX_UNCLEAR:
@@ -145,53 +156,56 @@ def save_new_address(
                     "CUSTOMER_SERVICE",
                 )
             return (
-                f"NOT A FULL ADDRESS (attempt {misses} of {MAX_UNCLEAR}): ask for the street "
-                f"number and name, the city and the ZIP code. {orders.call_again(TOOL)}"
+                f"NOT A FULL ADDRESS (attempt {misses} of {MAX_UNCLEAR}): ask for the new address "
+                f"again, with the house number, street, city and ZIP code. {orders.call_again(TOOL)}"
             )
         conv.state.address_misses = 0
         conv.state.address_change = {
             "order_number": order["order_number"],
-            "address": address,
+            "address": merged,
         }
-    address = _pending(conv, order)
-    if not address:
-        return f"Ask for the new delivery address. {orders.call_again(TOOL)}"
-
-    fields = _fields(conv, order, address)
-    if not orders.readback_is_current(conv, READBACK_KEY, fields):
-        orders.readback_text(conv, READBACK_KEY, fields)
-        orders.asked(conv, READBACK_KEY)
+        addr = merged
+    if not addr:
+        return f'Ask: "{ASK_ADDRESS}" {orders.call_again(TOOL)}'
+    gap = address.missing(addr)
+    if gap:
+        if gap == "street":
+            return f'Ask: "{ASK_ADDRESS}" {orders.call_again(TOOL)}'
         return (
-            f"NOT SAVED YET. {_ask(order, address)} A correction goes to save_new_address "
-            "without it. Don't say it's updated.\n\n"
-        ) + _state(conv, order, WAITING)
+            f'Ask only for the missing part: "{ASK_PART[gap]}" Pass just what they say as '
+            f"new_address. {orders.call_again(TOOL)}"
+        )
+
+    fields = [("order", order["order_number"])] + address.readback_fields(addr)
+    if not orders.readback_is_current(conv, READBACK_KEY, fields):
+        return _readback(conv, order, addr)
     if str(caller_confirmed).strip().lower() != "true":
-        orders.asked(conv, READBACK_KEY)
-        return f"NOT SAVED YET. {_ask(order, address)}\n\n" + _state(
-            conv, order, WAITING
+        question = orders.last_question(conv, READBACK_KEY)
+        orders.asked(conv, READBACK_KEY, question)
+        return (
+            f'NOT SAVED YET. Answer anything they asked, then ask again: "{question}" '
+            f"{orders.YES_LINE}: call {TOOL} with caller_confirmed='true'.\n\n"
+            + _state(conv, "Wait for the caller's answer to the readback.")
         )
     if orders.same_turn_as_ask(conv, READBACK_KEY):
-        return orders.wait_for_answer(TOOL)
+        return orders.wait_for_answer(conv, READBACK_KEY)
 
     try:
-        api_client.update_delivery_address(conv, order["order_number"], address)
+        api_client.update_delivery_address(
+            conv, order["order_number"], address.formatted(addr)
+        )
     except Exception:
         conv.log.error("update_delivery_address failed", exc_info=True)
-        return handoff(
-            conv,
-            "MODIFY_ORDER_FAIL",
-            "I'm sorry, I couldn't change that just now. Let me put you through to a colleague "
-            "who can, one moment please.",
-            "CUSTOMER_SERVICE",
-        )
+        return handoff(conv, "MODIFY_ORDER_FAIL", FAILED_LINE, "CUSTOMER_SERVICE")
 
     conv.write_metric("ORDER_ADDRESS_MODIFIED")
     conv.state.task = ""
     conv.state.address_change = None
     orders.forget_readback(conv, READBACK_KEY)
     conv.exit_flow()
-    return (
-        f"Saved. Tell the caller {orders.short_order(order)} will now go to the new address (don't "
-        "read it again), and they'll get an email confirming the change. Then ask if there's "
-        "anything else."
-    )
+    return {
+        "utterance": (
+            f"I've changed the delivery address for your {_items(order)}, and you'll get an email "
+            f"confirming it. {orders.ANYTHING_ELSE}"
+        )
+    }

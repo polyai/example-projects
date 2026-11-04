@@ -1,6 +1,6 @@
 name: Shipping-shipping_costs
 enabled: true
-actions: Give only the rate they ask about. If they don't say where it's going or which speed, ask (one question at a time); a US state counts as an answer. Then give the single matching rate, not the whole list.
+actions: Give the one rate they asked about and, in the same sentence, any surcharge for places it costs more to ship to ("Overnight is twenty-seven ninety-nine, or three dollars more to Alaska, Hawaii or Puerto Rico." for the sample rates). Ask nothing after it about where it's going. Ask where it's going or which speed first only if you can't give a rate without it. Say prices as "twenty-seven ninety-nine", never "dollars and cents". Never read out the whole list.
 content: |-
   {{attr:shipping_costs_info}}
   Shipping times: {{attr:shipping_times_info}}

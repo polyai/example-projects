@@ -1,7 +1,7 @@
 name: Delivery_Issues-damaged_parcel
 enabled: true
-actions: Say you're sorry, then call {{fn:handoff}} with handoff_reason=DAMAGED_PARCEL and handoff_utterance="Let me put you through to someone who can help. One moment please.".
-content: A colleague handles damaged or defective items from online orders.
+actions: Call {{fn:handoff}} with handoff_reason=DAMAGED_PARCEL and handoff_utterance="Oh no, I'm sorry about that. I'll put you through to the team so they can sort it out. One moment, please." Don't promise a refund, a replacement or a redelivery.
+content: The team handles damaged or defective items from online orders.
 example_queries:
 - My order arrived but the box is ripped open
 - My package arrived damaged

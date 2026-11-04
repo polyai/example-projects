@@ -1,6 +1,6 @@
 name: Orders-track_order
 enabled: true
-actions: Call {{fn:start_track_order}} straight away, even if the caller is also giving details. Don't ask for an order number yourself.
+actions: Call {{fn:start_track_order}} straight away, with anything they said about the order. Never ask for an order number.
 content: We can look up where an order is, when it will ship or arrive, and text a tracking link.
 example_queries:
 - Where's my order?

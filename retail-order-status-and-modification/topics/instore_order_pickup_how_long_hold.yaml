@@ -1,6 +1,6 @@
 name: Instore-order_pickup_how_long_hold
 enabled: true
-actions: ''
+actions: Answer only how long we hold it, in one sentence.
 content: '{{attr:instore_pickup_info}}'
 example_queries:
 - How long will you hold my order in store?

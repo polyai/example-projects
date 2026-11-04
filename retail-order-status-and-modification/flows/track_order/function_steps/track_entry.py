@@ -1,11 +1,11 @@
 from _gen import *  # <AUTO GENERATED>
-from functions import idnv, orders
+from functions import orders
 
 
 def track_entry(conv: Conversation, flow: Flow):
     """Entry gate: unverified callers go to verify_caller and come back here."""
     conv.state.task = "track"
-    gate = idnv.require(conv, "track_order")
+    gate = orders.require(conv, "track_order")
     if gate:
         return gate
 
@@ -15,7 +15,8 @@ def track_entry(conv: Conversation, flow: Flow):
     if hint:
         return (
             f"Call get_order_status now with order_hint='{hint}' (what the caller already said). "
-            "Don't ask which order first.\n\n"
+            "Don't ask which order first. If they've said it never arrived, pass "
+            "caller_said='not_received'; if they asked for the tracking link by text, caller_said='tracking_link'; for the tracking number, caller_said='tracking_number'.\n\n"
             + orders.call_state(
                 conv, ["Task: track an order"], "Call get_order_status."
             )
@@ -23,6 +24,7 @@ def track_entry(conv: Conversation, flow: Flow):
     return (
         "Call get_order_status now. Set order_hint to anything the caller has said that picks "
         "out an order (an item such as 'running shoes', or digits of the order number), or leave "
-        "it empty. Don't ask which order first.\n\n"
+        "it empty. Don't ask which order first. If they've said it never arrived, pass "
+        "caller_said='not_received'; if they asked for the tracking link by text, caller_said='tracking_link'; for the tracking number, caller_said='tracking_number'.\n\n"
         + orders.call_state(conv, ["Task: track an order"], "Call get_order_status.")
     )

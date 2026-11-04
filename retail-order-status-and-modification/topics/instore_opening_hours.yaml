@@ -1,6 +1,6 @@
 name: Instore-opening_hours
 enabled: true
-actions: 'For this store''s hours, call {{fn:get_opening_hours}} and follow what it returns. For other stores, offer to text the store locator: If they say yes to a text, call {{fn:start_send_sms}} with sms_id=''store_locator''.'
+actions: 'For this store''s hours, call {{fn:get_opening_hours}} and answer only what they asked. Never guess the hours or say we''re closed unless it says so. For other stores: To offer the link, call {{fn:start_send_sms}} with sms_id=''store_locator'' and caller_agreed=''false'', and ask the question it gives you.'
 content: |-
   This store's opening hours come from the get_opening_hours tool. Never guess them.
 

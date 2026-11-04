@@ -17,12 +17,16 @@ rebuilt from the functions below on every read and never mutated.
 
 Fixtures (dates are relative to the day of the call):
 - John Smith, 201-555-0123
-    P1032847561 (ending 7561): Nike Running Shoes size 10 + Nike Sport Socks,
+    P1032847561 (ending 7561): Nike Running Shoes size 10 + Nike Socks,
         shipped with UPS, in transit, arriving in 3 days
     P1032891204 (ending 1204): Adidas Backpack, still processing (can be
         cancelled, delivery address can be changed)
 - Jane Doe, 212-555-0178
     P1031956738 (ending 6738): New Balance Sneakers size 8, delivered a week ago
+- Sam Taylor, 415-555-0136
+    P1033027713 (ending 7713): Brooks Running Shoes, shipped with UPS, due yesterday
+        and not delivered (late), last scanned in Memphis three days ago
+- Chris Lee, 646-555-0187: an account with no recent orders
 - Maria Garcia, 310-555-0142
     P1033012345 (ending 2345): Champion Hoodie cancelled (out of stock) + Hydro
         Water Bottle shipped with FedEx, arriving in 2 days
@@ -99,6 +103,18 @@ def _customers() -> list[dict]:
             "last_name": "Garcia",
             "phone": "3105550142",
         },
+        {
+            "id": "CUST-004",
+            "first_name": "Sam",
+            "last_name": "Taylor",
+            "phone": "4155550136",
+        },
+        {
+            "id": "CUST-005",
+            "first_name": "Chris",
+            "last_name": "Lee",
+            "phone": "6465550187",
+        },
     ]
 
 
@@ -116,6 +132,8 @@ def _item(
         "carrier": shipment.get("carrier", ""),
         "tracking_status": shipment.get("tracking_status", ""),
         "last_scan": shipment.get("last_scan", ""),
+        "last_scan_on": shipment.get("last_scan_on", ""),
+        "shipped_on": shipment.get("shipped_on", ""),
         "tracking_url": shipment.get("tracking_url", ""),
         "expected_delivery": shipment.get("expected_delivery", ""),
         "completed_on": shipment.get("completed_on", ""),
@@ -141,13 +159,13 @@ def _seed_orders(conv=None) -> list[dict]:
                 _item(
                     "Running Shoes", "Nike", "Footwear", "10", status=SHIPPED, carrier="UPS",
                     tracking_status="in transit", last_scan="Memphis, Tennessee",
-                    expected_delivery=day(3),
+                    last_scan_on=day(-1), shipped_on=day(-3), expected_delivery=day(3),
                     tracking_url="https://tracking.example.com/track?order=P1032847561&carrier=UPS",
                 ),
                 _item(
-                    "Sport Socks", "Nike", "Accessories", "L", status=SHIPPED, carrier="UPS",
+                    "Socks", "Nike", "Accessories", "L", status=SHIPPED, carrier="UPS",
                     tracking_status="in transit", last_scan="Memphis, Tennessee",
-                    expected_delivery=day(3),
+                    last_scan_on=day(-1), shipped_on=day(-3), expected_delivery=day(3),
                     tracking_url="https://tracking.example.com/track?order=P1032847561&carrier=UPS",
                 ),
             ],
@@ -171,7 +189,7 @@ def _seed_orders(conv=None) -> list[dict]:
             "items": [
                 _item(
                     "Sneakers", "New Balance", "Footwear", "8", status=DELIVERED,
-                    carrier="FedEx", completed_on=day(-7),
+                    carrier="FedEx", shipped_on=day(-9), completed_on=day(-7),
                     tracking_url="https://tracking.example.com/track?order=P1031956738&carrier=FedEx",
                 )
             ],
@@ -188,7 +206,7 @@ def _seed_orders(conv=None) -> list[dict]:
                 _item(
                     "Water Bottle", "Hydro", "Accessories", status=SHIPPED, carrier="FedEx",
                     tracking_status="in transit", last_scan="Phoenix, Arizona",
-                    expected_delivery=day(2),
+                    last_scan_on=day(-1), shipped_on=day(-2), expected_delivery=day(2),
                     tracking_url="https://tracking.example.com/track?order=P1033012345&carrier=FedEx",
                 ),
             ],
@@ -210,6 +228,22 @@ def _seed_orders(conv=None) -> list[dict]:
             "hold": "review",
             "shipping_address": "8 Palm Drive, Santa Monica, CA 90401",
             "items": [_item("Jacket", "North Face", "Clothing", "M")],
+        },
+        {
+            "order_number": "P1033027713",
+            "customer_id": "CUST-004",
+            "placed": day(-6),
+            "fulfilment": "ship",
+            "hold": "",
+            "shipping_address": "300 Pine Street, San Francisco, CA 94104",
+            "items": [
+                _item(
+                    "Running Shoes", "Brooks", "Footwear", "9", status=SHIPPED, carrier="UPS",
+                    tracking_status="in transit", last_scan="Memphis, Tennessee",
+                    last_scan_on=day(-3), shipped_on=day(-5), expected_delivery=day(-1),
+                    tracking_url="https://tracking.example.com/track?order=P1033027713&carrier=UPS",
+                ),
+            ],
         },
     ]  # fmt: skip
 

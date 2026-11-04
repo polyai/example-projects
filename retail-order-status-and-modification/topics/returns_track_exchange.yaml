@@ -1,6 +1,6 @@
 name: Returns-track_exchange
 enabled: true
-actions: 'Offer to text the returns portal link: If they say yes to a text, call {{fn:start_send_sms}} with sms_id=''returns_portal''.'
+actions: Answer in a sentence or two. To offer the link, call {{fn:start_send_sms}} with sms_id='returns_portal' and caller_agreed='false', and ask the question it gives you.
 content: |-
   {{attr:exchange_policy_info}}
   Returns and exchanges can be tracked on the returns portal: {{attr:returns_url}}

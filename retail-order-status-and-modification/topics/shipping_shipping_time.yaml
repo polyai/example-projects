@@ -1,6 +1,6 @@
 name: Shipping-shipping_time
 enabled: true
-actions: ''
+actions: Answer only what they asked, in a sentence.
 content: '{{attr:shipping_times_info}}'
 example_queries:
 - How quickly can you ship?

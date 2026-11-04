@@ -1,5 +1,5 @@
 greeting:
-  welcome_message: '[Ring] Hi, thanks for calling Poly Store! How can I help you today?'
+  welcome_message: Thanks for calling {{attr:site_name}}! Are you looking to check on an order?
   language_code: en-US
 style_prompt:
   prompt: ''

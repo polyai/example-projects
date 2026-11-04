@@ -1,6 +1,6 @@
 name: Delivery_Issues-claim_denied
 enabled: true
-actions: Give the information in the content. If the caller asks for a person, call {{fn:handoff}} with handoff_reason=CLAIM_DENIED and handoff_utterance="Let me put you through to someone who can help. One moment please.".
+actions: Explain in a sentence or two from the content. If they ask for a person, call {{fn:handoff}} with handoff_reason=CLAIM_DENIED and handoff_utterance="I'll put you through to the team now. One moment, please."
 content: We use external data sources to help verify delivery claims. When certain limits are met, the claim is denied. We don't share the data points or limits used in the decision.
 example_queries:
 - Why was my claim denied

@@ -5,8 +5,7 @@ variant attribute in config/variant_attributes.yaml, so onboarding can fill it
 and a chain can give each site its own. Rules and topics read them with
 {{attr:...}}; Python reads them through attr().
 
-The sentences below are agent wording about an order's state, not store
-policy, so they stay in code.
+CHARGE_DAYS is agent wording about a cancellation, so it stays in code.
 """
 
 from _gen import *  # <AUTO GENERATED>
@@ -22,16 +21,9 @@ LINKS = {
     ),
 }
 
-CANCELLED_OUT_OF_STOCK = (
-    "We occasionally find an item is out of stock while fulfilling an order; any pending charge "
-    "for it drops off the card within 5 to 7 business days, so they won't be charged."
-)
-CANCELLED_BY_CALLER = (
-    "They'll get a confirmation email shortly, and any pending charge drops off their card within "
-    "5 to 7 business days."
-)
-PROCESSING_SHIP = "We'll email a tracking link as soon as it ships."
-PROCESSING_PICKUP = "We'll email as soon as it's ready to pick up in store."
+# How long a pending charge takes to drop off the card after a cancellation. Agent wording,
+# said once per call.
+CHARGE_DAYS = "5 to 7 business days"
 
 
 @func_description(

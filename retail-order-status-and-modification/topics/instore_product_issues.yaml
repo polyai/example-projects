@@ -1,6 +1,6 @@
 name: Instore-product_issues
 enabled: true
-actions: ''
+actions: Answer in a sentence or two from the content.
 content: For a problem with something bought in store, the best thing is to take it back to the store and speak to the store team, with the receipt if they have it.
 example_queries:
 - I've got an issue with a product I bought in store

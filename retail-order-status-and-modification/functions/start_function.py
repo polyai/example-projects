@@ -3,6 +3,7 @@ from zoneinfo import ZoneInfo
 
 from _gen import *  # <AUTO GENERATED>
 from functions import api_client, idnv
+from functions.handoff import ooh_utterance
 from functions.in_hours import in_hours
 from functions.utils import variant_timezone
 
@@ -59,9 +60,9 @@ def start_function(conv: Conversation):
         conv.write_metric("OOH")
         conv.state.hours_mode_instructions = (
             "## Out of hours\n"
-            "The store is closed. You can still track, cancel and re-address orders and "
-            "answer questions. For anything that needs a person, say: \"I'm only able to help "
-            "with orders and general questions right now. Please call back when we're open.\" Don't transfer."
+            "The team is closed. You can still track, cancel and re-address orders, text links "
+            "and answer questions. For anything that needs a person, call handoff as usual: it "
+            f'says "{ooh_utterance(conv)}" instead of transferring, and the call carries on.'
         )
     else:
         conv.state.hours_mode_instructions = ""

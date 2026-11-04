@@ -1,6 +1,6 @@
 name: Orders-email_not_received
 enabled: true
-actions: Ask if they've checked those folders, and offer to wait while they look. If they still can't find it, call {{fn:handoff}} with handoff_reason=EMAIL_NOT_RECEIVED and handoff_utterance="Let me put you through to someone who can help. One moment please.". If they just want to know the order status, call {{fn:start_track_order}}.
+actions: Ask if they've checked their spam, junk or promotions folders, and offer to wait while they look. If it's still not there, call {{fn:handoff}} with handoff_reason=EMAIL_NOT_RECEIVED and handoff_utterance="I'll put you through to the team now. One moment, please." If they just want the order's status, call {{fn:start_track_order}}.
 content: Order emails sometimes end up in the spam, junk or promotions folder.
 example_queries:
 - I didn't get an email confirmation for my order
