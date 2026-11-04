@@ -1,11 +1,6 @@
 name: technician-eta
 enabled: true
-actions: |-
-  call {{fn:handoff}}
-   function with
-  'handoff_destination'='CUSTOMER_CARE' and
-  'handoff_reason'='TECHNICIAN_IS_LATE' and
-  "handoff_utterance" = "Sorry about that. One moment while I put you through to a customer care team member."
+actions: Transfer straight away. Call {{fn:handoff}} with handoff_destination=CUSTOMER_CARE, handoff_reason=TECHNICIAN_IS_LATE and handoff_utterance="I'm sorry about that. Let me put you through to the team so they can check where the technician is. One moment, please."
 content: ''
 example_queries:
 - the technician is late

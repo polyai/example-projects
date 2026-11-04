@@ -1,6 +1,6 @@
 name: visits-not_home
 enabled: true
-actions: Answer only the part of the content about whether someone needs to be home.
+actions: Answer only whether someone needs to be home, in one sentence ("Yes, someone 18 or over needs to be home to let them in.").
 content: '{{attr:visit_prep_info}}'
 example_queries:
 - What happens if I am not available at the time of service?
@@ -10,3 +10,5 @@ example_queries:
 - do you need me at home?
 - Can the technician come when no one is home?
 - Do I need to be home when the tech arrives?
+- Do I need to be there?
+- Does someone have to be in?

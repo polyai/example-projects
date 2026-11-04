@@ -1,6 +1,6 @@
 name: payment-method
 enabled: true
-actions: Answer only the payment methods part of the content.
+actions: Answer only the payment methods part of the content, in one sentence.
 content: '{{attr:payment_info}}'
 example_queries:
 - What payment methods do you accept?

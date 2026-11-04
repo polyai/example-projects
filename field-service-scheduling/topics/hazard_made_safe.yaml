@@ -1,0 +1,10 @@
+name: hazard-made-safe
+enabled: true
+actions: 'A gas leak or other hazard that''s already been made safe by the gas company or the emergency services is urgent, not danger now. Don''t give a safety line and don''t answer whether we do the job. Say: "Oh, I''m glad you''re safe. That sounds urgent. I can put you through to our emergency team to get someone out today, or book a regular visit from tomorrow. Which would you prefer?" The emergency team → {{fn:handoff}} with handoff_destination=EMERGENCY, handoff_reason=URGENT_REPAIR and handoff_utterance="Of course. I''m putting you through to our emergency team now. One moment, please." A regular visit → {{fn:start_make_appointment}}.'
+content: ''
+example_queries:
+- The gas company came out last night and capped a leak. I need someone to fix the line to the stove.
+- The gas company shut the gas off, now I need a plumber
+- The fire department came and it's safe now, but the wiring needs fixing
+- We had a gas leak, it's been capped, can you send someone to repair it?
+- The gas is off and we're safe, I need the line repaired

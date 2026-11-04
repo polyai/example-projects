@@ -1,9 +1,7 @@
 name: generic-name_address_provided
 enabled: true
-actions: |-
-  ## If the user has just provided their address or name, greet the user and ask for more information about what they need help with.
-  ## If they offer to read the account number, thank the user and tell them that you can help them even without their account number or address.
-content: Hi there! How can I help you?
+actions: Thank them and ask what they need help with. Don't ask for an address or an account number.
+content: Thanks. What can I help you with today?
 example_queries:
 - I'm calling from 18 Fox Lane
 - this is Tom Gottlieb on 1514 Riverside Avenue

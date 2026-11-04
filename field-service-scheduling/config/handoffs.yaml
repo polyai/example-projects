@@ -47,3 +47,9 @@ handoffs:
   sip_config:
     method: refer
     phone_number: '+1234567890'
+- name: EMERGENCY
+  description: Emergency team for urgent repairs and electrical hazards, at any hour. Set its number at onboarding and turn on settings.emergency_line_configured; until then these calls go to customer care
+  is_default: false
+  sip_config:
+    method: refer
+    phone_number: '+1234567890'

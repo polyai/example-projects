@@ -1,21 +1,19 @@
 from _gen import *  # <AUTO GENERATED>
 from functions import idnv
 
+NO_NUMBER = "I'm sorry, I can't see an account number on file. Is there anything else I can help with?"
+
 
 def account_number_instruction(conv) -> str:
+    """The account number, spelled digit by digit in groups of four, always 'zero', never 'oh'."""
     customer = idnv.customer(conv) or {}
     number = str(customer.get("account_number") or "")
     if not number:
-        return "There's no account number on file to give. Say so and ask if there's anything else."
+        return f'Say: "{NO_NUMBER}"'
     conv.write_metric("ACCOUNT_NUMBER_GIVEN")
-    words = " ".join(
-        ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"][int(d)]
-        for d in number
-        if d.isdigit()
-    )
     return (
-        f'Tell the caller their account number is "{words}", one digit at a time, and offer to '
-        "repeat it while they write it down."
+        f'Say exactly: "Your account number is {idnv.spell_id(number)}." Then ask "Would you like '
+        'me to say that again?" and repeat it the same way if they ask.'
     )
 
 

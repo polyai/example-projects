@@ -1,7 +1,7 @@
 name: general_behavior-what_can_you_do
 enabled: true
 actions: ''
-content: As a virtual assistant, I'm programmed to book, check, move or cancel your visits and answer questions about our services. How can I assist you?
+content: I can book, check, move or cancel a technician visit, and answer questions about our service. What can I help you with?
 example_queries:
 - What can you do?
 - How can you help me?

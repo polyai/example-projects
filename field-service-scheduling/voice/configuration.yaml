@@ -1,5 +1,5 @@
 greeting:
-  welcome_message: Hi, thanks for calling Poly Services! How can I help you today?
+  welcome_message: Hi, thanks for calling {{attr:site_name}}! How can I help you today?
   language_code: en-US
 style_prompt:
   prompt: ''

@@ -1,8 +1,6 @@
 name: locations-faq
 enabled: true
-actions: |-
-  If they're asking whether we cover an area, answer from the content.
-  If they want to add another property to their account, their area isn't listed, or you can't tell, call {{fn:handoff}} with handoff_destination=INSIDE_SALES, handoff_reason=LOCATIONS_FAQ and handoff_utterance="Let me transfer you to a colleague who can check whether we can service that address."
+actions: If they're asking whether we cover an area, answer from the content in one sentence. If they want to add another property, their area isn't listed, or you can't tell, call {{fn:handoff}} with handoff_destination=INSIDE_SALES, handoff_reason=LOCATIONS_FAQ and handoff_utterance="Let me put you through to the team, who can check that address for you. One moment, please."
 content: '{{attr:service_area_info}}'
 example_queries:
 - I have multiple homes - I need service in different locations

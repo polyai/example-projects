@@ -1,9 +1,6 @@
 name: generic-account_number
 enabled: true
-actions: |-
-  If the user is giving you their account number at the beginning of the call and you don't know what they're calling about, say: "I'd be happy to help you with your account, could you first tell me a little more about what you need help with?"
-
-  If they ask you what their account number is, then call the {{fn:start_get_account_number}} function.
+actions: 'If they''re giving you their account number and you don''t know what they''re calling about, say: "Thanks. What can I help you with today?" If they ask what their account number is, call {{fn:start_get_account_number}}.'
 content: ''
 example_queries:
 - Can I give you my account number?

@@ -1,11 +1,6 @@
 name: change-address
 enabled: true
-actions: |-
-  If the caller is informing of an address change or that they have moved,  call {{fn:handoff}}
-   function with
-  'handoff_destination'='CUSTOMER_CARE' and
-  'handoff_reason'='ADDRESS_CHANGE' and
-  "handoff_utterance" = "To update your contact info, I'll need to put you through to a team member. One moment please."
+actions: If they're telling us they've moved or want to change the address on their account, transfer straight away. Call {{fn:handoff}} with handoff_destination=CUSTOMER_CARE, handoff_reason=ADDRESS_CHANGE and handoff_utterance="Let me put you through to the team, who can update your address. One moment, please."
 content: |-
   transfer service
   talk to someone about transferring service

@@ -3,7 +3,12 @@ import functions.api_client as api_client
 import functions.idnv as idnv
 import functions.visits as visits
 from functions.handoff import handoff
-from functions.start_send_sms import CALLING_NUMBER_KEY
+from functions.start_send_sms import (
+    ASK_NUMBER,
+    CALLING_NUMBER_KEY,
+    CALLING_NUMBER_QUESTION,
+    no_mobile_line,
+)
 
 READBACK_KEY = "sms_number"
 
@@ -22,6 +27,16 @@ def _sms(conv) -> dict:
     )
 
 
+def _sent_line(conv, digits: str) -> str:
+    calling = idnv.normalize_phone(conv.state.caller_phone)
+    where = "over to you" if digits == calling else "to that number"
+    return f"I've sent the link {where} now. Is there anything else I can help with?"
+
+
+def _readback(digits: str) -> str:
+    return f"Sure. That's {idnv.spell_phone(digits)}. Shall I send it there?"
+
+
 def _send(conv, sms: dict, digits: str):
     number = f"+1{digits}"
     if api_client.use_mock_api(conv):
@@ -36,8 +51,8 @@ def _send(conv, sms: dict, digits: str):
             return handoff(
                 conv,
                 "CANNOT_SEND_SMS",
-                "I'm sorry, that text didn't go through. Let me put you through to a colleague, "
-                "one moment please.",
+                "I'm sorry, that text didn't go through. Let me put you through to the team. "
+                "One moment, please.",
                 "CUSTOMER_CARE",
             )
         conv.write_metric("SMS_SENT", sms["template"])
@@ -45,13 +60,13 @@ def _send(conv, sms: dict, digits: str):
     sms["pending"] = ""
     conv.state.sms = sms
     conv.exit_flow()
-    return "Sent. Tell the caller the text is on its way (don't read the number again), then ask if there's anything else."
+    return {"utterance": _sent_line(conv, digits)}
 
 
 @func_description("Settle the number to text the link to, and send it.")
 @func_parameter(
     "use_calling_number",
-    "'true' only if the caller's latest reply was a clear yes to texting the number they're calling from, or they asked for that number themselves. Otherwise 'false'.",
+    "'true' if the caller's latest reply was a yes, or an acknowledgement, to the question about the number they're calling from, or they asked for that number themselves. Otherwise 'false'.",
 )
 @func_parameter(
     "phone_number",
@@ -59,7 +74,7 @@ def _send(conv, sms: dict, digits: str):
 )
 @func_parameter(
     "number_confirmed",
-    "'true' only if the caller's latest reply was a clear yes to the yes-or-no question this tool's readback asked. 'Okay', 'mm-hm', 'sure, whatever', silence or a question is not a yes: ask the yes-or-no question again. Otherwise 'false'.",
+    "'true' only if the caller's latest reply agreed to the readback question this tool returned. 'Okay', 'sure' or 'yes' to that question is agreement; an answer to something else, a question back or real hesitation is not. Otherwise 'false'.",
 )
 def send_link(
     conv: Conversation,
@@ -75,7 +90,7 @@ def send_link(
         calling
     ):
         if visits.same_turn_as_question(conv, CALLING_NUMBER_KEY):
-            return visits.NOT_DONE_YET
+            return visits.ask_again(conv, CALLING_NUMBER_KEY, CALLING_NUMBER_QUESTION)
         return _send(conv, sms, calling)
 
     if str(phone_number or "").strip():
@@ -87,43 +102,39 @@ def send_link(
                 return handoff(
                     conv,
                     "SMS_PHONE_NUMBER_COLLECTION_FAIL",
-                    "Sorry, that still isn't working. Let me put you through to a colleague, one "
-                    "moment please.",
+                    "Sorry, that still isn't working. Let me put you through to the team. One "
+                    "moment, please.",
                     "CUSTOMER_CARE",
                 )
             return (
                 f"NOT A FULL NUMBER (attempt {sms['retries']} of {MAX_UNCLEAR}): don't read it "
-                "back. Ask for the ten-digit mobile number, starting with the area code. "
-                + CALL_AGAIN
+                "back. Say: \"Sorry, I didn't catch all of that. Could you give me the full mobile "
+                'number, starting with the area code?" ' + CALL_AGAIN
             )
         confirmed = str(number_confirmed).strip().lower() == "true"
         if confirmed and digits == sms["pending"]:
             # A yes to the number this tool read back, repeated with the yes: send it.
             if visits.same_turn_as_question(conv, READBACK_KEY):
-                return visits.NOT_DONE_YET
+                return visits.ask_again(conv, READBACK_KEY, _readback(digits))
             return _send(conv, sms, digits)
         sms["pending"] = digits
         conv.state.sms = sms
         visits.mark_question(conv, READBACK_KEY)
         return (
-            "NOT SENT YET: in one short question, ask whether to text the link to "
-            f'"{idnv.spell_phone(digits)}" (read the number exactly like that), yes or no. Wait '
-            "for the answer. If they clearly say yes, call send_link again with "
-            "number_confirmed='true'; if they give another number, call send_link with it."
+            f'NOT SENT YET. Say exactly: "{_readback(digits)}" Then wait. A yes or an '
+            "acknowledgement → call send_link again with number_confirmed='true'; another number "
+            "→ call send_link with it."
         )
 
     if str(number_confirmed).strip().lower() == "true" and sms["pending"]:
         if visits.same_turn_as_question(conv, READBACK_KEY):
-            return visits.NOT_DONE_YET
+            return visits.ask_again(conv, READBACK_KEY, _readback(sms["pending"]))
         return _send(conv, sms, sms["pending"])
 
     if idnv.is_valid_phone(calling):
         visits.mark_question(conv, CALLING_NUMBER_KEY)
         return (
-            visits.yes_no_question(
-                "text the link to the number they're calling from", "Ask"
-            )
-            + " If they'd rather use another number, ask for it. "
-            + CALL_AGAIN
+            f'Ask: "{CALLING_NUMBER_QUESTION}" If they say no, ask "What number should I send it '
+            f'to?" {CALL_AGAIN}{no_mobile_line(conv)}'
         )
-    return "Ask which mobile number to text the link to. " + CALL_AGAIN
+    return f'Ask: "{ASK_NUMBER}" {CALL_AGAIN}{no_mobile_line(conv)}'

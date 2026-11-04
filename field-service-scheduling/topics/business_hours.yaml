@@ -1,6 +1,6 @@
 name: business-hours
 enabled: true
-actions: Immediately call {{fn:handle_business_hours_faq}}.
+actions: Immediately call {{fn:handle_business_hours_faq}} with the day they asked about.
 content: ''
 example_queries:
 - What are your hours?

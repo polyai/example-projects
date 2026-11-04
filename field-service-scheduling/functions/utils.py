@@ -7,6 +7,7 @@ stay in real-time config.
 
 from _gen import *  # <AUTO GENERATED>
 import re
+from datetime import datetime, timedelta
 from itertools import groupby
 from zoneinfo import ZoneInfo
 
@@ -16,7 +17,7 @@ DEFAULT_TIMEZONE = "America/Chicago"
 _ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 # Said instead of the hours when `opening_hours` is blank or unreadable. Never a default
 # schedule or a made-up time.
-HOURS_NOT_TO_HAND = "I don't have our exact opening hours to hand."
+HOURS_NOT_TO_HAND = "I'm sorry, I don't have our opening hours in front of me."
 
 SPOKEN_TIMEZONES = {
     "America/New_York": "eastern time",
@@ -152,6 +153,77 @@ def site_hours_utterance(conv) -> str:
     except Exception as e:
         conv.log.warning("Could not build opening hours utterance", error=str(e))
         return ""
+
+
+def _clock(t: str) -> str:
+    """'07:00' -> '7', '19:30' -> '7:30', '12:00' -> 'noon': how a time is said in a sentence."""
+    h, m = map(int, t.strip().split(":"))
+    if h in (0, 24) and m == 0:
+        return "midnight"
+    if h == 12 and m == 0:
+        return "noon"
+    h12 = h % 12 or 12
+    return f"{h12}:{m:02d}" if m else f"{h12}"
+
+
+def _span(hours: str):
+    """'07:00-19:00' -> ('07:00', '19:00'), or None for a closed or unreadable day."""
+    m = re.fullmatch(r"\s*(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})\s*", str(hours or ""))
+    return (m.group(1).zfill(5), m.group(2).zfill(5)) if m else None
+
+
+def hours_on(opening_hours: dict, day) -> tuple[str, str] | None:
+    """A date's opening hours as (open, close), a dated line beating the weekday; None if closed."""
+    value = opening_hours.get(day.isoformat()) or opening_hours.get(
+        DAYS[day.weekday()], "closed"
+    )
+    return _span(value)
+
+
+def site_now(conv) -> datetime:
+    _, tz = site_timezone(conv)
+    now = conv.state.datetime_now
+    return now.astimezone(tz) if isinstance(now, datetime) else datetime.now(tz)
+
+
+def next_opening(conv) -> str:
+    """When the office next opens: 'today at 7', 'tomorrow at 7', 'on Monday at 8'. "" when the
+    hours are blank or never open."""
+    hours = site_opening_hours(conv)
+    if not any(_span(v) for v in hours.values()):
+        return ""
+    now = site_now(conv)
+    for ahead in range(0, 8):
+        day = (now + timedelta(days=ahead)).date()
+        span = hours_on(hours, day)
+        if not span or (ahead == 0 and now.strftime("%H:%M") >= span[0]):
+            continue
+        when = (
+            "today"
+            if ahead == 0
+            else "tomorrow"
+            if ahead == 1
+            else f"on {day.strftime('%A')}"
+        )
+        return f"{when} at {_clock(span[0])}"
+    return ""
+
+
+def day_hours_sentence(conv, day) -> str:
+    """One day's hours as a short sentence: 'On Saturday we're open from 8 to 4.'"""
+    hours = site_opening_hours(conv)
+    span = hours_on(hours, day)
+    now = site_now(conv).date()
+    name = (
+        "today"
+        if day == now
+        else "tomorrow"
+        if day == now + timedelta(days=1)
+        else f"on {day.strftime('%A')}"
+    )
+    if not span:
+        return f"We're closed {name}."
+    return f"{name[0].upper() + name[1:]} we're open from {_clock(span[0])} to {_clock(span[1])}."
 
 
 @func_description("[UTIL] Site facts and opening hours helpers, not callable directly")

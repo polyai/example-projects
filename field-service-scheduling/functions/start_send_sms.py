@@ -1,12 +1,33 @@
+import re
+
 from _gen import *  # <AUTO GENERATED>
 from functions import idnv, visits
+from functions.utils import variant_attr
 
 CALLING_NUMBER_KEY = "sms_calling_number"
 SMS_TEMPLATES = ("balance-due", "update-billing-info", "pay-online", "auto-payment")
+CALLING_NUMBER_QUESTION = "Shall I send it to the number you're calling from?"
+ASK_NUMBER = "What's the best mobile number to send it to?"
+
+
+def spoken_url(url: str) -> str:
+    """'https://www.example-services.com/portal' -> 'example-services dot com slash portal'."""
+    text = re.sub(r"^https?://(www\.)?", "", (url or "").strip()).rstrip("/")
+    return text.replace(".", " dot ").replace("/", " slash ")
+
+
+def no_mobile_line(conv) -> str:
+    url = variant_attr(conv, "customer_portal_url")
+    if not url:
+        return ""
+    return (
+        " If they don't have a mobile, say instead: \"No problem at all. You can find it at "
+        f'{spoken_url(url)}."'
+    )
 
 
 @func_description(
-    "Text the caller a link. Only call this when a topic's actions tell you to, with that sms_id."
+    "Text the caller a link, once they've agreed to a text. Only when a topic's actions tell you to, with that sms_id."
 )
 @func_parameter("sms_id", "The SMS id the topic gives, e.g. 'pay-online'.")
 def start_send_sms(conv: Conversation, sms_id: str):
@@ -20,9 +41,7 @@ def start_send_sms(conv: Conversation, sms_id: str):
     if idnv.is_valid_phone(idnv.normalize_phone(conv.state.caller_phone)):
         visits.mark_question(conv, CALLING_NUMBER_KEY)
         return (
-            visits.yes_no_question(
-                "text the link to the number they're calling from", "Ask"
-            )
-            + " Then call send_link with their answer, or with the number they give instead."
+            f'Ask: "{CALLING_NUMBER_QUESTION}" Then call send_link with their answer, or with the '
+            f"number they give instead.{no_mobile_line(conv)}"
         )
-    return "Ask which mobile number you should text the link to. Then call send_link with it."
+    return f'Ask: "{ASK_NUMBER}" Then call send_link with it.{no_mobile_line(conv)}'

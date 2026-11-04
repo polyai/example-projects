@@ -1,6 +1,6 @@
 name: reschedule-appointment
 enabled: true
-actions: don't say anything, immediately call the function {{fn:start_reschedule_appointment}}
+actions: Don't say anything; immediately call {{fn:start_reschedule_appointment}}.
 content: |-
   It looks like someone is supposed to come by on Thursday for my regular visit, but I can't do that day anymore. Is it possible to change it now?
    can I change what day the technician comes?

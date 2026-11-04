@@ -2,17 +2,27 @@ import re
 
 from _gen import *  # <AUTO GENERATED>
 from functions import api_client, idnv, visits
-from functions.handoff import handoff
 
 READBACK_KEY = "booking"
+LOOKUP_KEY = "booking"
+
+ASK_PROBLEM = "What's going on? What do you need the technician for?"
+ASK_WHERE = "And is that inside the house or outside?"
+ASK_WHEN_REPAIR = "Would you like the earliest we've got, or is there a particular day that suits you?"
+ASK_WHEN_ROUTINE = "What day would suit you?"
+ROUTINE_TYPES = ("Maintenance Check", "Deep Clean")
 
 _INDOOR_WORDS = (
     "kitchen", "bathroom", "bedroom", "basement", "attic", "living room", "laundry", "inside",
-    "indoor", "interior", "sink", "toilet", "shower", "hallway", "closet", "dining", "loft",
+    "indoor", "indoors", "interior", "sink", "toilet", "shower", "bath", "tub", "hallway",
+    "closet", "dining", "loft", "garage", "upstairs", "downstairs", "ceiling", "dishwasher",
+    "disposal", "water heater", "furnace", "boiler", "washer", "dryer", "oven", "stove",
+    "fridge", "refrigerator", "outlet", "thermostat", "ac", "air conditioning", "heating",
+    "faucet", "drain", "pipe",
 )  # fmt: skip
 _OUTDOOR_WORDS = (
-    "yard", "garden", "lawn", "roof", "gutter", "driveway", "patio", "deck", "porch", "fence",
-    "outside", "outdoor", "exterior", "shed", "pool",
+    "yard", "garden", "lawn", "roof", "gutter", "gutters", "driveway", "patio", "deck", "porch",
+    "fence", "outside", "outdoor", "outdoors", "exterior", "shed", "pool", "sprinkler",
 )  # fmt: skip
 
 
@@ -24,17 +34,14 @@ def visit_request(conv) -> dict:
             "service_type": "",
             "location": "",
             "indoor": None,
-            "preferred_date": "",
-            "time_of_day": "any",
             "notes": "",
-            "offer": None,
-            "rejected": 0,
         }
     return dict(req)
 
 
-def _guess_indoor(location: str):
-    text = (location or "").lower()
+def guess_indoor(*texts: str):
+    """True or False when the words make it obvious, else None (the agent asks)."""
+    text = " ".join(t or "" for t in texts).lower()
     if any(re.search(rf"\b{w}\b", text) for w in _OUTDOOR_WORDS):
         return False
     if any(re.search(rf"\b{w}\b", text) for w in _INDOOR_WORDS):
@@ -42,160 +49,144 @@ def _guess_indoor(location: str):
     return None
 
 
-def missing_details(req: dict) -> list[str]:
-    missing = []
+def issue_phrase(issue: str) -> str:
+    """The problem as it follows "for": 'the leak under your sink', 'your AC tune-up'."""
+    text = re.sub(r"\s+", " ", (issue or "").strip().rstrip("."))
+    if not text:
+        return ""
+    # "the dishwasher won't drain" -> "the dishwasher": keep the thing, drop the verb clause.
+    text = re.split(
+        r"\s+(?:won'?t|isn'?t|is not|not|doesn'?t|does not|keeps|is|are|has|have|stopped|"
+        r"died|broke|quit|went)\b",
+        text,
+        maxsplit=1,
+        flags=re.IGNORECASE,
+    )[0]
+    text = re.sub(r"^(my|our)\b", "your", text, flags=re.IGNORECASE)
+    text = re.sub(r"\b(my|our)\b", "your", text, flags=re.IGNORECASE)
+    if not re.match(r"(the|your|a|an|some)\b", text, flags=re.IGNORECASE):
+        text = f"the {text}"
+    return text[0].lower() + text[1:]
+
+
+def missing_detail(req: dict) -> str:
+    """The next thing to ask for, in the design's words, or "" when the request is complete."""
     if not req["issue"]:
-        missing.append("what issue they're having")
-    if not req["location"]:
-        missing.append("where the problem is")
-    elif req["indoor"] is None:
-        missing.append("whether it's inside or outside")
-    if not req["preferred_date"]:
-        missing.append("when would suit them")
-    return missing
+        return ASK_PROBLEM
+    if req["indoor"] is None:
+        return ASK_WHERE
+    return ""
 
 
-def booking_fields(conv, req: dict) -> list[tuple[str, str]]:
-    offer = req.get("offer") or {}
-    """What the caller says yes to: the kind of visit and the window. The problem, the place
-    and any note are the caller's own words; the visit prep is given once it's booked."""
+def when_question(req: dict) -> str:
+    return ASK_WHEN_ROUTINE if req["service_type"] in ROUTINE_TYPES else ASK_WHEN_REPAIR
+
+
+def booking_fields(conv, req: dict, window: dict | None) -> list[tuple[str, str]]:
+    """What the caller says yes to: the problem in their words, the day, the window and the
+    address on the account (never read out)."""
+    now = visits.today(conv)
     return [
-        ("visit", f"a {req['service_type'] or 'General Service'} visit"),
-        ("when", visits.say_slot(offer, visits.today(conv)) if offer else ""),
+        ("problem", issue_phrase(req["issue"])),
+        ("day", visits.on_day(window["date"], now) if window else ""),
+        ("window", visits.between(window) if window else ""),
+        ("address", "at the address on your account"),
     ]
 
 
-def booking_question(conv, req: dict) -> str:
-    offer = req.get("offer") or {}
-    day = visits.say_date(offer["date"], visits.today(conv)) if offer else "that day"
-    return f"book the visit for {day}"
+def booking_readback(conv, req: dict, window: dict, only: dict | None = None) -> str:
+    """The readback sentence and the question. `only` holds the changed fields after a
+    correction: then only those are said (with the day, when the window changed)."""
+    f = dict(booking_fields(conv, req, window))
+    if only is None:
+        return (
+            f"So that's for {f['problem']} {f['day']}, arriving {f['window']}, {f['address']}. "
+            "Shall I book that?"
+        )
+
+    parts = []
+    if "problem" in only:
+        parts.append(f["problem"])
+    if "day" in only or "window" in only:
+        parts.append(f"arriving {f['window']} {f['day']}")
+    return f"So that's {', '.join(parts)}. Shall I book that?"
+
+
+def first_readback(conv, req: dict, window: dict) -> str:
+    """The first readback. Called in the same turn as the lookup, it starts with the
+    availability line and leaves out what that line has just said."""
+    hello = visits.thanks(conv)
+    lead = visits.lead_line(conv, LOOKUP_KEY, window)
+    if not lead:
+        return hello + booking_readback(conv, req, window)
+    f = dict(booking_fields(conv, req, window))
+    day = "" if lead.startswith("The earliest") else f" {f['day']}"
+    return f"{hello}{lead} So that's for {f['problem']}{day}, {f['address']}. Shall I book that?"
 
 
 def request_state(conv) -> str:
     req = visit_request(conv)
-    offer = req.get("offer")
+    windows = visits.looked_up(conv, LOOKUP_KEY)
     lines = [
+        "Task: book a new visit",
         "Problem: " + (req["issue"] or "not given"),
         "Service type: " + (req["service_type"] or "General Service (default)"),
-        "Where: "
-        + (req["location"] or "not given")
+        "Inside or outside: "
         + (
-            ""
+            "not known"
             if req["indoor"] is None
-            else (" (indoors)" if req["indoor"] else " (outdoors)")
+            else ("inside" if req["indoor"] else "outside")
         ),
-        "When suits: "
-        + (req["preferred_date"] or "not given")
-        + ("" if req["time_of_day"] == "any" else f", {req['time_of_day']}"),
-        "Offered: "
-        + (visits.say_window(offer, visits.today(conv)) if offer else "nothing yet"),
+        f"Windows looked up: {len(windows)}"
+        if windows
+        else "Windows looked up: none yet",
     ]
-    missing = missing_details(req)
+    missing = missing_detail(req)
     if missing:
-        nxt = f"Ask for {missing[0]}."
-    elif offer:
-        nxt = "Wait for the caller's yes or no to booking the offered window."
+        nxt = f'Ask: "{missing}"'
+    elif not windows:
+        nxt = (
+            "Ask when suits them, unless they've said: for a repair or estimate, "
+            f'"{ASK_WHEN_REPAIR}"; for routine maintenance or a clean, "{ASK_WHEN_ROUTINE}" '
+            "Then call find_visit_time with their answer."
+        )
     else:
-        nxt = "Call find_visit_time to get a window to offer."
-    return visits.call_state(conv, ["Task: book a new visit"] + lines, nxt)
-
-
-def offer_next(conv, req: dict, rejected: bool, preference_changed: bool):
-    """Shared by update_visit_request and find_visit_time: save the request, ask for what is
-    missing, or offer a window (a new one when the caller turned the last one down or changed
-    when suits) and say what to read back."""
-    after = None
-    if rejected and req["offer"]:
-        req["rejected"] += 1
-        conv.write_metric("OFFERED_SLOT_REJECTED")
-        if req["rejected"] >= visits.MAX_REJECTED_OFFERS:
-            conv.state.visit_request = req
-            return handoff(
-                conv,
-                "OFFERED_APPOINTMENT_SLOT_REJECTED",
-                "I'm sorry I couldn't find a time that suits. Let me put you through to our "
-                "scheduling team, one moment please.",
-                "CUSTOMER_CARE",
-            )
-        after = req["offer"]
-
-    missing = missing_details(req)
-    if missing:
-        conv.state.visit_request = req
-        tool = (
-            "find_visit_time"
-            if missing[0] == "when would suit them"
-            else "update_visit_request"
-        )
-        return (
-            f"Saved. Still needed: {missing[0]}. If the caller has already said it, call {tool} "
-            f"with it now; otherwise ask for it.\n\n{request_state(conv)}"
-        )
-
-    note = ""
-    if rejected or preference_changed or not req["offer"]:
-        window, note = visits.find_window(
-            conv, req["preferred_date"], req["time_of_day"], after
-        )
-        if window is None:
-            conv.state.visit_request = req
-            return handoff(
-                conv,
-                "NO_AVAILABILITY_FOUND",
-                "I'm sorry, I can't see any open times in the next two weeks. Let me put you "
-                "through to our scheduling team, one moment please.",
-                "CUSTOMER_CARE",
-            )
-        req["offer"] = window
-    conv.state.visit_request = req
-    conv.write_metric("SLOT_OFFERED")
-
-    text, mode = visits.readback_text(conv, READBACK_KEY, booking_fields(conv, req))
-    if mode == "none":
-        return (
-            "Nothing has changed since the readback. If the caller's latest reply was a clear yes "
-            "to booking it, call make_new_appointment with caller_confirmed='true'; otherwise "
-            f"{visits.yes_no_question(booking_question(conv, req), 'ask')}\n\n{request_state(conv)}"
-        )
-    lead = "Offer this" if mode == "full" else "Tell the caller only what changed"
-    say = visits.read_back_and_ask(lead, text, "book it")
-    return f"{note + ' ' if note else ''}{say}\n\n{request_state(conv)}"
+        nxt = "Offer windows from the latest find_visit_time response, then call make_new_appointment with the one they choose."
+    return visits.call_state(conv, lines, nxt)
 
 
 def check_open(conv):
-    """The refusal both request tools share, or None when the request can be updated."""
+    """The refusal every booking tool shares, or None when the request can be updated."""
     if not idnv.is_verified(conv):
         return idnv.require(conv, "schedule_appointment")
     if conv.state.booked_appointment_id:
         return (
-            "ALREADY BOOKED - do not call this again for it. If the caller wants to change it, "
-            "call start_reschedule_appointment."
+            "ALREADY BOOKED - do not book it again. If the caller wants to change it, call "
+            "start_reschedule_appointment; for another visit, start_make_appointment."
         )
     return None
 
 
 @func_description(
-    "Save what the visit is for: the problem, the service type, where it is and any note for the technician. Call it whenever the caller gives or changes any of these. When the caller has also said when suits, it offers a window."
+    "Save what the visit is for: the problem, the service type, whether it's inside or outside and any note for the technician. Call it whenever the caller gives or changes any of these."
 )
 @func_parameter(
-    "issue", "The problem in the caller's words, e.g. 'leak under the kitchen sink'."
+    "issue",
+    "The problem as a short noun phrase in the caller's own words, as it would follow 'for' in a readback: 'the leak under your sink', 'the dishwasher', 'your AC tune-up'. Never a verb phrase. Empty if not said.",
 )
 @func_parameter(
     "service_type",
-    "One of: General Service, Deep Clean, Emergency Repair, Maintenance Check. Use General Service when the caller isn't sure. Empty if nothing has been said about the problem.",
+    "One of: General Service, Deep Clean, Emergency Repair, Maintenance Check. Use General Service for a repair or when unsure, Maintenance Check for a tune-up or routine service. Empty if nothing has been said about the problem.",
 )
 @func_parameter(
-    "location", "Where the problem is, e.g. 'kitchen', 'back yard'. Empty if not said."
+    "location", "Where the problem is, e.g. 'kitchen', 'garage'. Empty if not said."
 )
 @func_parameter(
     "indoor_or_outdoor",
-    "'indoor' or 'outdoor' if the caller said so or it is obvious from the location; else empty.",
+    "'indoor' or 'outdoor' if the caller said so or it's obvious from the problem (a sink is indoors, gutters are outdoors); else empty.",
 )
-@func_parameter("notes", "Anything they want the technician to know. Empty if none.")
-@func_latency_control(
-    delay_before_responses_start=1,
-    silence_after_each_response=3,
-    delay_responses=[("Let me see what we have.", 3), ("One more moment.", 3)],
+@func_parameter(
+    "notes", "Anything the caller offers for the technician to know. Empty if none."
 )
 def update_visit_request(
     conv: Conversation,
@@ -222,13 +213,31 @@ def update_visit_request(
         req["service_type"] = "General Service"
     if str(location or "").strip():
         req["location"] = location.strip()
-        req["indoor"] = _guess_indoor(req["location"])
     side = str(indoor_or_outdoor or "").strip().lower()
-    if side in ("indoor", "outdoor"):
-        req["indoor"] = side == "indoor"
-    elif req["location"] and req["indoor"] is None:
-        req["indoor"] = _guess_indoor(req["issue"])
+    if side in ("indoor", "outdoor", "inside", "outside"):
+        req["indoor"] = side in ("indoor", "inside")
+    elif req["indoor"] is None:
+        req["indoor"] = guess_indoor(req["location"], req["issue"])
     note_text = str(notes or "").strip()
     if note_text and note_text.lower() not in ("na", "none", "no"):
         req["notes"] = note_text
-    return offer_next(conv, req, rejected=False, preference_changed=False)
+    conv.state.visit_request = req
+
+    missing = missing_detail(req)
+    if missing:
+        return f'Saved. Ask: "{missing}"\n\n{request_state(conv)}'
+    if visits.looked_up(conv, LOOKUP_KEY):
+        return (
+            "Saved. If a window has been chosen, call make_new_appointment with it "
+            f"(caller_confirmed='false') to read back the change.\n\n{request_state(conv)}"
+        )
+    said = str(conv.state.day_said or "").strip()
+    if said:
+        return (
+            f"Saved. They've already said when: {said!r}. Call find_visit_time now with "
+            f"day_said={said!r}; don't ask when.\n\n{request_state(conv)}"
+        )
+    return (
+        "Saved. If they've already said when suits them, call find_visit_time with it now. "
+        f'Otherwise ask: "{when_question(req)}"\n\n{request_state(conv)}'
+    )

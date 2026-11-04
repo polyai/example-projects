@@ -1,11 +1,10 @@
 from _gen import *  # <AUTO GENERATED>
-from functions.utils import HOURS_NOT_TO_HAND, site_hours_utterance, variant_attr
+from functions.utils import next_opening
 
 DEFAULT_DESTINATION = "CUSTOMER_CARE"
+EMERGENCY = "EMERGENCY"
 
-DEFAULT_HANDOFF_UTTERANCE = (
-    "Please hold the line while I put you through to a colleague who can help."
-)
+DEFAULT_HANDOFF_UTTERANCE = "Let me put you through to the team. One moment, please."
 
 SKILL_IDS = {
     "INSIDE_SALES": "10000001",
@@ -16,16 +15,30 @@ SKILL_IDS = {
     "WELCOME_CALL": "10000006",
     "COMMERCIAL": "10000007",
     "BILLING": "10000008",
+    "EMERGENCY": "10000009",
 }
 
 
 def _ooh_utterance(conv: Conversation) -> str:
-    hours = site_hours_utterance(conv) or HOURS_NOT_TO_HAND
-    phone = variant_attr(conv, "phone_number")
-    call_back = f" You can call us back on {phone}." if phone else ""
+    """The closed-office line: when the office is next open, not the whole week."""
+    opening = next_opening(conv)
+    again = (
+        f" We're open again {opening}, so please give us a call then."
+        if opening
+        else ""
+    )
+    return f"I'm sorry, our office is closed right now.{again} Thanks for calling!"
+
+
+def emergency_destination(conv) -> str:
+    """The emergency team takes the transfer at any hour. Until a client gives its number at
+    onboarding (settings.emergency_line_configured in real-time config), it goes to customer
+    care."""
+    settings = (conv.real_time_config or {}).get("settings", {})
     return (
-        "I'm sorry, I'll need a colleague to help with that, and our office is closed right now."
-        f" {hours}{call_back} Thanks for calling, goodbye."
+        EMERGENCY
+        if settings.get("emergency_line_configured", False)
+        else DEFAULT_DESTINATION
     )
 
 
@@ -38,7 +51,7 @@ def _ooh_utterance(conv: Conversation) -> str:
 )
 @func_parameter(
     "handoff_utterance",
-    'What to say before transferring. If not given, use "Please hold the line while I put you through to a colleague who can help."',
+    'What to say before transferring, ending "One moment, please." If not given, use "Let me put you through to the team. One moment, please."',
 )
 @func_parameter(
     "handoff_destination",
@@ -60,6 +73,9 @@ def handoff(
         )
         destination = DEFAULT_DESTINATION
     utterance = handoff_utterance or DEFAULT_HANDOFF_UTTERANCE
+    emergency = destination == EMERGENCY
+    if emergency:
+        destination = emergency_destination(conv)
     skill_id = SKILL_IDS[destination]
 
     conv.state.handoff_reason = reason
@@ -68,7 +84,9 @@ def handoff(
     conv.write_metric("HANDOFF_REASON", reason)
     conv.write_metric("HANDOFF_TO", destination)
 
-    if conv.state.is_ooh:
+    if (
+        conv.state.is_ooh and not emergency
+    ):  # the emergency team takes calls at any hour
         conv.write_metric("OUT_OF_HOURS_HANDOFF_REASON", reason)
         return {"utterance": _ooh_utterance(conv), "hangup": True}
 

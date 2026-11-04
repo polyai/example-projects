@@ -14,8 +14,10 @@ def ood_response(conv: Conversation):
         return handoff(
             conv,
             "OOD_LOOP",
-            "Let me transfer you to someone who can help with this. Please hold the line.",
+            "Let me put you through to someone who can help with this. One moment, please.",
             "CUSTOMER_CARE",
         )
     if conv.state.ood_counter > 0:
-        return {"utterance": "Would you mind saying that again?"}
+        return {
+            "utterance": "Sorry, I didn't quite catch that. Could you say it again?"
+        }

@@ -1,6 +1,6 @@
 name: visits-duration
 enabled: true
-actions: Answer only the part of the content about how long a visit takes. If the caller is really asking when their visit is (not how long it takes), call {{fn:start_confirm_appointment}} instead.
+actions: Answer only how long a visit takes, in one sentence. If they're really asking when their visit is, call {{fn:start_confirm_appointment}} instead.
 content: '{{attr:appointment_window_info}}'
 example_queries:
 - How long will the appointment take?

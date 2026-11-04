@@ -1,9 +1,7 @@
 name: pay-online
 enabled: true
-actions: |-
-  after answering, If the user confirms that they want to receive a text, call
-  {{fn:start_send_sms}} with sms_id="pay-online"
-content: Absolutely! We’ll send you a text with your online portal link. Once you log in, you’ll see your account details right away. Your username will be your Account Number. May I send you a text with the link to your portal account?
+actions: 'If they''ve already asked for the link by text, call {{fn:start_send_sms}} straight away with the sms_id below, without asking again. Otherwise: Say: "You can pay online through your account. Would you like me to text you the link?" If they agree, call {{fn:start_send_sms}} with sms_id="pay-online".'
+content: ''
 example_queries:
 - online payment
 - pay bill online

@@ -1,8 +1,6 @@
 name: inspection
 enabled: true
-actions: |-
-  Answer only the estimates and assessments part of the content, then ask if they'd like to book a visit. If they do, call {{fn:start_make_appointment}}.
-  If they want an assessment for a commercial property, call {{fn:handoff}} with handoff_destination=COMMERCIAL, handoff_reason=COMMERCIAL_INSPECTION and handoff_utterance="I'm going to transfer you to a colleague who specializes in business accounts. One moment please."
+actions: Answer only the estimates part of the content, in one sentence, then ask if they'd like to book a visit. If they do, call {{fn:start_make_appointment}}. An exact quote → {{fn:handoff}} with handoff_destination=INSIDE_SALES, handoff_reason=SERVICE-QUOTE and handoff_utterance="Let me put you through to the team, who can give you a quote. One moment, please." A commercial property → {{fn:handoff}} with handoff_destination=COMMERCIAL, handoff_reason=COMMERCIAL_INSPECTION and handoff_utterance="Let me put you through to our commercial team. One moment, please."
 content: '{{attr:pricing_info}}'
 example_queries:
 - Do you offer free estimates or assessments?

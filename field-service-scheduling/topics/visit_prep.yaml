@@ -1,6 +1,6 @@
 name: visit-prep
 enabled: true
-actions: ''
+actions: Answer only what they asked, in one or two sentences.
 content: '{{attr:visit_prep_info}}'
 example_queries:
 - Do I need to prepare my home before the service?

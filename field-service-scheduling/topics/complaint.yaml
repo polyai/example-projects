@@ -1,0 +1,10 @@
+name: complaint
+enabled: true
+actions: Say "I'm really sorry to hear that." and, in the same turn, call {{fn:handoff}} with handoff_destination=CUSTOMER_CARE, handoff_reason=COMPLAINT and handoff_utterance="I'm really sorry to hear that. Let me put you through to the team. One moment, please."
+content: ''
+example_queries:
+- I want to make a complaint
+- I'm not happy with the work your technician did
+- The repair didn't fix anything and I'm really unhappy
+- Your technician left a mess
+- I'd like to complain about my last visit

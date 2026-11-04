@@ -13,7 +13,7 @@ def start_cancel_appointment(conv: Conversation):
         return handoff(
             conv,
             "CANCEL_APPOINTMENT",
-            "For cancellations I'll need to put you through to a colleague. One moment please.",
+            "For cancellations I'll need to put you through to the team. One moment, please.",
             "CUSTOMER_CARE",
         )
     gate = idnv.require(conv, "cancel_appointment")

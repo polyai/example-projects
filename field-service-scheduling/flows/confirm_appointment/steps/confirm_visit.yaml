@@ -15,8 +15,9 @@ asr_biasing:
   custom_keywords: []
 prompt: |-
   # Tell the caller about their upcoming visit
-  1. If they have several visits, ask which one they mean and call {{fn:choose_visit}} with its date.
-  2. If they're happy with it, ask if there's anything else you can help with.
-  3. If they want to move it, call {{fn:start_reschedule_appointment}}; to cancel it, {{fn:start_cancel_appointment}}; to book another visit, {{fn:start_make_appointment}}. Do it straight away, without asking for details first.
-  4. If they want a different service or location for the visit, call {{fn:handoff}} with handoff_reason=CUSTOMER_WANTS_CHANGE_TO_CONFIRMED_APPOINTMENT.
-  5. If they ask a question, answer it from the topics in a sentence or two.
+  1. If they have two visits, name both and ask which; call {{fn:choose_visit}} with the date they mean.
+  2. Read the visit back as the tool gives it, adding nothing, and ask "Is there anything you'd like to change?"
+  3. Move it → {{fn:start_reschedule_appointment}}; cancel it → {{fn:start_cancel_appointment}}; another visit → {{fn:start_make_appointment}}. Straight away, without asking for details first.
+  4. A different service or address → {{fn:handoff}} with handoff_reason=CHANGE_APPOINTMENT_TYPE or CHANGE_APPOINTMENT_LOCATION and handoff_utterance="Let me put you through to the team, who can change that for you. One moment, please."
+  5. Nothing to change → "Is there anything else I can help with?"
+  6. "Do I need to be there?" for a visit inside → "Yes, someone 18 or over needs to be home to let them in." "Will they call first?" → "We'll text you when the technician's on the way." Other questions → answer only what was asked, in a sentence, from the topics.

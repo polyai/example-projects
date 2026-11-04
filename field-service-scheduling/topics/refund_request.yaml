@@ -1,11 +1,6 @@
 name: refund-request
 enabled: true
-actions: |-
-  call {{fn:handoff}}
-   function with
-  'handoff_destination'='CUSTOMER_CARE' and
-  'handoff_reason'='REFUND_REQUEST' and
-  "handoff_utterance" = "To discuss refund options, I'll need to put you through to a team member. One moment please."
+actions: Transfer straight away. Call {{fn:handoff}} with handoff_destination=BILLING, handoff_reason=REFUND_REQUEST and handoff_utterance="Let me put you through to the team, who can look at that for you. One moment, please."
 content: ''
 example_queries:
 - I want a refund

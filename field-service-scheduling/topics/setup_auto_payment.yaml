@@ -1,8 +1,6 @@
 name: setup_auto-payment
 enabled: true
-actions: |-
-  tell the user: "We can send you a text with your online portal link, where you can set up auto payments. Would you like that link?"
-  If the user confirms, call {{fn:start_send_sms}} with sms_id="auto-payment"
+actions: 'If they''ve already asked for the link by text, call {{fn:start_send_sms}} straight away with the sms_id below, without asking again. Otherwise: Say: "You can set up auto-pay in your online account. Would you like me to text you the link?" If they agree, call {{fn:start_send_sms}} with sms_id="auto-payment".'
 content: ''
 example_queries:
 - How can I set up auto payments?

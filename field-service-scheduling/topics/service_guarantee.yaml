@@ -1,6 +1,6 @@
 name: service-guarantee
 enabled: true
-actions: ''
+actions: Answer only what they asked, in one or two sentences.
 content: '{{attr:service_guarantee_info}}'
 example_queries:
 - Do you offer a warranty or guarantee for your service?

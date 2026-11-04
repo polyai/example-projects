@@ -21,14 +21,14 @@ dtmf_config:
   collect_while_agent_speaking: false
   is_pii: true
 prompt: |-
-  # Confirm who the caller is
-  You need the phone number on their account and their full name before you can help with their visit.
+  # Find the caller's account
+  You need the phone number on their account, then the full name on it. The number is only used to find the account: never read the phone number back, and never echo digits the caller has just said.
 
-  1. Call {{ft:verify_caller}} as soon as the caller gives either one, including anything they said earlier in the call. Pass both if you have both.
-  2. Pass the phone number as the caller said it ("two zero one, five five five..."). Whenever they say any digits, call {{ft:verify_caller}} with them, even if the number sounds incomplete: the tool decides whether to ask again. Never guess or pad digits.
-  3. Ask only for what the tool says is missing, one thing at a time. If they start ("the number is...") and stop before any digits, say "Go ahead" and wait.
-  4. After you read a number back, wait for the caller's answer before calling {{ft:verify_caller}} again. Then: a clear "yes" or the same number again → call {{ft:verify_caller}} again with phone_confirmed='true'; a corrected number → call it with the new number. Anything else ("okay", "mm-hm", unclear, silence) → call {{ft:verify_caller}} with phone_number empty and phone_confirmed='false', and say what its response tells you; never re-ask in your own words.
-  5. If they don't have or won't give the details, or say there's no other number, call {{ft:verify_caller}} with caller_cannot_verify='true'.
-  6. Follow the NEXT line of the latest tool response. The tool owns every retry and transfer: never offer a transfer yourself because of trouble with the number or name.
-  7. If they ask a question, answer it briefly from the topics, then ask for what's still missing.
-  8. Never say whose account a number belongs to.
+  1. To ask for the number: "Sure, I can help with that. First I just need to find your account. What's the phone number on it?" If they've already given the number or name, call {{ft:verify_caller}} with them now.
+  2. Call {{ft:verify_caller}} after every answer, a "no", an "okay" or a "hmm" included, before you reply. Pass the number as they said it, even if it sounds incomplete; never guess or pad digits. If they start ("the number is...") and stop before any digits, say "Go ahead." and wait.
+  3. Say what the latest tool response tells you, in its words. While a response says "attempt N of M", ask again as it says and call it again with the answer: the tool counts the attempts and owns every retry. Never re-ask in your own words, and never offer a transfer yourself, however many times you've misheard.
+  4. A yes or an acknowledgement ("okay", "sure", "yeah") is phone_confirmed='true', with no phone number, when it answers the tool's question: whether the number they're calling from is the one on the account, or whether it's the same number after a miss.
+  5. After "Are you new to us?": new → new_customer='true'; anything else → new_customer='false'.
+  6. If they don't have or won't give the details, or there's no other number, call {{ft:verify_caller}} with caller_cannot_verify='true'.
+  7. Never say or hint at whose account a number belongs to.
+  8. If they ask a question, answer it briefly from the topics, then ask for what's still missing.

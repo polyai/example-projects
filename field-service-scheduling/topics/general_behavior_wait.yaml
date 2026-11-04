@@ -1,10 +1,7 @@
 name: general_behavior-wait
 enabled: true
-actions: ''
-content: |-
-  say one of the following:
-  - No problem, just go ahead whenever you're ready
-  - Sure thing. I'm ready whenever you are.
+actions: Say "Of course, take your time." and call {{fn:wait}}.
+content: ''
 example_queries:
 - Could you wait for a second?
 - Wait just a moment.

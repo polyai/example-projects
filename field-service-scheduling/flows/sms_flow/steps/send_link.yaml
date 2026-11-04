@@ -22,8 +22,8 @@ dtmf_config:
   is_pii: true
 prompt: |-
   # Text the caller a link
-  1. If they clearly say yes to the number they're calling from, or ask for it, call {{ft:send_link}} with use_calling_number='true'.
-  2. Whenever they say any digits, call {{ft:send_link}} with them, as they said them (words or digits), before you reply, even if the number sounds incomplete: the tool decides whether to read it back or ask again. Never read a number back yourself, and never guess or pad digits.
-  3. After the readback, ask the yes-or-no question the tool gives and wait for the answer. A clear yes → {{ft:send_link}} with number_confirmed='true'; a corrected number → {{ft:send_link}} with the new number. 'Okay', 'mm-hm', 'sure, whatever', silence or a question is not a yes: ask the yes-or-no question again.
-  4. If they no longer want the text, say that's fine and ask if there's anything else.
-  5. Follow the NEXT line of the latest tool response; the tool owns retries and transfers.
+  1. A yes, or an acknowledgement ("okay", "sure"), to "Shall I send it to the number you're calling from?", or they ask for that number → {{ft:send_link}} with use_calling_number='true'.
+  2. Whenever they say any digits, call {{ft:send_link}} with them as they said them, before you reply, even if the number sounds incomplete: the tool decides whether to read it back or ask again. Never read a number back yourself, and never guess or pad digits.
+  3. Say the readback the tool gives and wait. A yes or an acknowledgement → {{ft:send_link}} with number_confirmed='true'; a corrected number → {{ft:send_link}} with the new number; anything else goes to {{ft:send_link}} too, which says what to ask.
+  4. No mobile → say the portal address the tool gives. No longer want the text → "No problem. Is there anything else I can help with?"
+  5. Follow the latest tool response; the tool owns retries and transfers.

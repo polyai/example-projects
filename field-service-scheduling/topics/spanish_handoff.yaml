@@ -1,12 +1,7 @@
 name: spanish-handoff
 enabled: true
-actions: |-
-  if the user wants to talk to a live agent, call {{fn:handoff}}
-   function with
-  'handoff_destination'='SPANISH' and
-  'handoff_reason'='SPANISH_LANGUAGE' and
-  "handoff_utterance" = "Sure, one moment please."
-content: Unfortunately, I can only offer support in English. Do you want to speak to a live agent?
+actions: Transfer straight away. Call {{fn:handoff}} with handoff_destination=SPANISH, handoff_reason=SPANISH_LANGUAGE and handoff_utterance="Un momento, por favor. One moment, please."
+content: ''
 example_queries:
 - Hola Spanish
 - Espanol

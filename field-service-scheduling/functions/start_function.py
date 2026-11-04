@@ -67,9 +67,8 @@ def start_function(conv: Conversation):
         conv.state.hours_mode_instructions = (
             "## Out of hours\n"
             "The office is closed. You can still book, check, move and cancel visits and answer "
-            "questions. For anything that needs a person, say: \"I'm only able to help with "
-            "visits and general questions right now. Please call back during business hours "
-            "for help with that.\" Don't transfer."
+            "questions. Anything that needs a person still goes to handoff, which says the office "
+            "is closed; the emergency team and the safety lines work at any hour."
         )
     else:
         conv.state.hours_mode_instructions = ""

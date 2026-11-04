@@ -1,9 +1,7 @@
 name: balance-due
 enabled: true
-actions: |-
-  answer the question and if the user confirms that they want the text with the link, call
-  {{fn:start_send_sms}} with sms_id="balance-due"
-content: You can always find real-time payment information in your account. Let me send you a text with your online portal link, where you can check any open invoices. Your username will be your Account Number. Let us know if you need help with it!
+actions: 'If they''ve already asked for the link by text, call {{fn:start_send_sms}} straight away with the sms_id below, without asking again. Otherwise: Say: "You can see your balance in your online account. Would you like me to text you the link?" If they agree, call {{fn:start_send_sms}} with sms_id="balance-due".'
+content: ''
 example_queries:
 - How much do I owe?
 - How much do I need to pay?

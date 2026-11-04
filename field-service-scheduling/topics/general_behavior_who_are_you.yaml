@@ -1,7 +1,7 @@
 name: general_behavior-who_are_you
 enabled: true
-actions: Introduce yourself by the name in your instructions.
-content: I'm a virtual assistant. I can book, check, move or cancel your visits and answer questions about our services. What can I do for you?
+actions: Say the content.
+content: I'm {{attr:agent_name}}, {{attr:site_name}}'s virtual assistant.
 example_queries:
 - Who am I speaking to?
 - Is this a person?

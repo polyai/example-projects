@@ -1,6 +1,6 @@
 name: visit-notification
 enabled: true
-actions: Answer only the part of the content about reminders and updates before the visit.
+actions: Answer only the part about how we let them know before the visit, in one sentence ("We'll text you when the technician's on the way.").
 content: '{{attr:appointment_window_info}}'
 example_queries:
 - Can you send me a reminder before my appointment?
@@ -8,3 +8,5 @@ example_queries:
 - Will you send me an email so I know when a technician is coming next?
 - Do I get notifications in advance of my service dates?
 - Will you text me the week before my tech is coming?
+- Will they ring before they come?
+- Will the technician call first?

@@ -1,11 +1,6 @@
 name: pay-over-phone
 enabled: true
-actions: |-
-  call
-  {{fn:handoff}} with
-  'handoff_destination'='CUSTOMER_CARE'  and
-  'handoff_reason'='PAY_BILL' and
-  "handoff_utterance" = "Absolutely! Let me get you over to our customer care team to help with that. One moment please."
+actions: Never take card details on the call. Say you can also text them the link to pay online. If they want the text, call {{fn:start_send_sms}} with sms_id="pay-online"; otherwise Call {{fn:handoff}} with handoff_destination=CUSTOMER_CARE, handoff_reason=PAY_BILL and handoff_utterance="Let me put you through to the team, who can take your payment. One moment, please."
 content: ''
 example_queries:
 - pay bill

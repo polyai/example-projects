@@ -13,15 +13,24 @@ The mock keeps every change a call makes (bookings, moves, cancellations) in
 conv.state, so two test calls never see each other's bookings. The seed data
 is rebuilt from the functions below on every read and never mutated.
 
+Availability works like a dispatch API: asked about a day, it returns every open
+arrival window from three working days before it (never before tomorrow) to three
+working days after; asked for the earliest, the first three working days with an
+opening from tomorrow (windows_around). The mock's diary is full on Thursday
+mornings and all day on Fridays, so the "not free" paths can be tried on any day.
+
 Fixtures:
-- John Smith, 201-555-0123, ZIP 12345: General Service visit tomorrow 9am-12pm
-- Jane Doe, 212-555-0178, ZIP 12345: no visits
+- John Smith, 201-555-0123: a visit tomorrow 9 to noon, for the leak under the sink
+- Jane Doe, 212-555-0178: no visits
+- Maria Garcia, 512-555-0144: two visits, tomorrow 9 to noon (the dripping shower) and the
+  first Friday after that, 1 to 4 (the outside light); no account number on file
+- Alex Chen, 312-555-0166: a visit about six hours from now (inside the fee window at any hour)
 - 201-555-0199: no account
 """
 
 import re
 import uuid
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 
 from _gen import *  # <AUTO GENERATED>
 
@@ -36,7 +45,10 @@ SERVICE_TYPES = [
 
 # Arrival windows the dispatch system offers each working day (Mon-Sat).
 WINDOWS = [("09:00", "12:00"), ("13:00", "16:00")]
-SEARCH_DAYS = 14
+SEARCH_DAYS = 14  # how far ahead a lookup goes before the scheduling-team handoff
+AROUND_DAYS = 3  # working days either side of the day asked for
+# The mock diary's full windows, by weekday (Monday = 0): Thursday mornings and all of Friday.
+MOCK_FULL = {3: {"09:00"}, 4: {"09:00", "13:00"}}
 
 
 @func_description("[UTIL] Dispatch API client, not callable directly")
@@ -91,24 +103,90 @@ def _customers() -> list[dict]:
             "zip": "12345",
             "account_number": "48120977",
         },
+        {
+            "id": "MOCK-C004",
+            "first_name": "Alex",
+            "last_name": "Chen",
+            "phone": "3125550166",
+            "address": "12 Pine Rd",
+            "zip": "12345",
+            "account_number": "48120955",
+        },
+        {
+            "id": "MOCK-C003",
+            "first_name": "Maria",
+            "last_name": "Garcia",
+            "phone": "5125550144",
+            "address": "789 Elm St",
+            "zip": "12345",
+            "account_number": "",
+        },
     ]
+
+
+def _next_weekday(start: date, weekday: int) -> date:
+    """The first day on or after `start` that falls on `weekday` (Monday = 0)."""
+    return start + timedelta(days=(weekday - start.weekday()) % 7)
+
+
+def _soon(conv) -> tuple[str, str, str]:
+    """Alex Chen's visit: about six hours from now, on the hour, so the cancellation fee
+    window can be tried at any time of day."""
+    now = getattr(getattr(conv, "state", None), "datetime_now", None)
+    if not isinstance(now, datetime):
+        now = datetime.combine(_today(conv), datetime.min.time()).replace(hour=12)
+    start = (now + timedelta(hours=6)).replace(minute=0, second=0, microsecond=0)
+    end = start + timedelta(hours=3)
+    return start.date().isoformat(), start.strftime("%H:%M"), end.strftime("%H:%M")
 
 
 def _seed_appointments(conv=None) -> list[dict]:
     tomorrow = _today(conv) + timedelta(days=1)
+    soon_date, soon_start, soon_end = _soon(conv)
+    # Maria's second visit: the first Friday after tomorrow.
+    friday = _next_weekday(tomorrow + timedelta(days=1), 4)
+    visit = {"service_type": "General Service", "location": "", "status": "Scheduled"}
     return [
         {
+            **visit,
             "id": "MOCK-APT-001",
             "customer_id": "MOCK-C001",
-            "service_type": "General Service",
-            "issue": "",
-            "location": "",
-            "indoor": False,
+            "issue": "the leak under your sink",
+            "indoor": True,
             "date": tomorrow.isoformat(),
             "start": "09:00",
             "end": "12:00",
-            "status": "Scheduled",
-        }
+        },
+        {
+            **visit,
+            "id": "MOCK-APT-002",
+            "customer_id": "MOCK-C003",
+            "issue": "the dripping shower",
+            "indoor": True,
+            "date": tomorrow.isoformat(),
+            "start": "09:00",
+            "end": "12:00",
+        },
+        {
+            **visit,
+            "id": "MOCK-APT-004",
+            "customer_id": "MOCK-C004",
+            "issue": "the blocked drain",
+            "indoor": True,
+            "date": soon_date,
+            "start": soon_start,
+            "end": soon_end,
+        },
+        {
+            **visit,
+            "id": "MOCK-APT-003",
+            "customer_id": "MOCK-C003",
+            "issue": "the outside light",
+            "indoor": False,
+            "date": friday.isoformat(),
+            "start": "13:00",
+            "end": "16:00",
+        },
     ]
 
 
@@ -168,23 +246,77 @@ def list_appointments(conv, customer_id: str) -> list[dict]:
     return sorted(appointments, key=lambda a: (a["date"], a["start"]))
 
 
+def is_working_day(day: date) -> bool:
+    return day.weekday() != 6  # technicians don't go out on Sundays
+
+
 def open_windows(conv, start: date, days: int = SEARCH_DAYS) -> list[dict]:
-    """Open arrival windows from `start` for `days` days, soonest first."""
+    """Open arrival windows from `start` for `days` days, soonest first. In the mock a window
+    is full when the diary is (MOCK_FULL) or this call has already booked it."""
     if not use_mock_api(conv):
         _real_api_missing("open_windows")
-    taken = set()
-    for appt in _all_live_appointments(conv):
-        taken.add((appt["date"], appt["start"]))
+    changes = _changes(conv)
+    taken = {(a["date"], a["start"]) for a in changes["created"]}
+    taken |= {(m["date"], m["start"]) for m in changes["moved"].values()}
     windows = []
     for offset in range(days):
         day = start + timedelta(days=offset)
-        if day.weekday() == 6:  # closed on Sundays
+        if not is_working_day(day):
             continue
         for begin, end in WINDOWS:
-            if (day.isoformat(), begin) in taken:
+            if (
+                begin in MOCK_FULL.get(day.weekday(), set())
+                or (day.isoformat(), begin) in taken
+            ):
                 continue
             windows.append({"date": day.isoformat(), "start": begin, "end": end})
     return windows
+
+
+def _working_days(start: date, count: int, step: int) -> list[date]:
+    days, day = [], start
+    while len(days) < count:
+        day += timedelta(days=step)
+        if is_working_day(day):
+            days.append(day)
+    return days
+
+
+def windows_around(conv, wanted: date | None) -> list[dict]:
+    """Every open arrival window around a requested day, as the dispatch API returns them.
+
+    wanted None (the earliest): the windows on the first AROUND_DAYS working days with an
+    opening, from tomorrow. A day: its windows and those up to AROUND_DAYS working days either
+    side, never before tomorrow. Nothing open in that range: the nearest open day after it.
+    Nothing within SEARCH_DAYS of tomorrow: an empty list."""
+    first = _today(conv) + timedelta(days=1)
+    horizon = first + timedelta(days=SEARCH_DAYS)
+    every = [
+        w
+        for w in open_windows(conv, first, SEARCH_DAYS)
+        if date.fromisoformat(w["date"]) < horizon
+    ]
+    if wanted is None:
+        days = sorted({w["date"] for w in every})[:AROUND_DAYS]
+        return [w for w in every if w["date"] in days]
+    wanted = max(wanted, first)
+    lo = max(first, (_working_days(wanted, AROUND_DAYS, -1) or [wanted])[-1])
+    hi = _working_days(wanted, AROUND_DAYS, 1)[-1]
+    inside = [w for w in every if lo.isoformat() <= w["date"] <= hi.isoformat()]
+    if inside:
+        return inside
+    later = [w for w in every if w["date"] > hi.isoformat()]
+    return [w for w in later if w["date"] == later[0]["date"]] if later else []
+
+
+def window_is_open(conv, window: dict) -> bool:
+    """Whether a window can still be booked (checked again at write time)."""
+    day = date.fromisoformat(window["date"])
+    return any(
+        w["start"] == window["start"]
+        for w in open_windows(conv, day, 1)
+        if w["date"] == window["date"]
+    )
 
 
 def _all_live_appointments(conv) -> list[dict]:

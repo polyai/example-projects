@@ -54,7 +54,7 @@
     }
   },
   "conversation_control": {
-    "max_silence_count": 20
+    "max_silence_count": 3
   },
   "eot": {
     "flow_overrides": {
@@ -84,8 +84,8 @@
     "is_enabled": true,
     "randomize": false,
     "utterances": [
-      "Just a moment...",
-      "One more second please..."
+      "One moment, please.",
+      "Nearly there."
     ]
   },
   "prompts": {

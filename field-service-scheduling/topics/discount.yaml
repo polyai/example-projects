@@ -1,6 +1,6 @@
 name: discount
 enabled: true
-actions: Answer only the discounts part of the content. If it says nothing about discounts, say we don't have any to share right now.
+actions: Answer only the discounts part of the content, in one sentence. If it says nothing about discounts, say we don't have any to share right now.
 content: '{{attr:pricing_info}}'
 example_queries:
 - Do you offer veteran discounts?

@@ -1,6 +1,6 @@
 name: service-catalog
 enabled: true
-actions: ''
+actions: Answer in one or two sentences, from the content.
 content: '{{attr:services_offered}}'
 example_queries:
 - What services do you offer?

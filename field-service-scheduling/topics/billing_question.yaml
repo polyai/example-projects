@@ -1,10 +1,6 @@
 name: billing-question
 enabled: true
-actions: |-
-  call {{fn:handoff}} function with
-  'handoff_destination'='BILLING' and
-  'handoff_reason'='BILLING_QUESTION' and
-  "handoff_utterance" = "Let me put you through to a colleague who can help with that. One moment please."
+actions: Transfer straight away. Call {{fn:handoff}} with handoff_destination=BILLING, handoff_reason=BILLING_QUESTION and handoff_utterance="Let me put you through to our billing team. One moment, please."
 content: |-
   confirm that I paid for the service
   hi yes i was calling about my account and just trying to figure out some billing um questions

@@ -1,6 +1,6 @@
 name: general-visit
 enabled: true
-actions: if the user wants to schedule a visit, call {{fn:start_make_appointment}}
-content: Absolutely! Our technicians are trained to assess the service needs at your home and provide the right solution. Let’s schedule a visit so we can help!
+actions: Say the content, then offer to book a visit. If they want one, call {{fn:start_make_appointment}}.
+content: Yes, of course. Our technicians will take a look and work out what's needed.
 example_queries:
 - I'm not sure what service I need, can I still schedule an appointment?

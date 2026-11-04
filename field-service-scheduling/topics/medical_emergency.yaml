@@ -1,18 +1,11 @@
 name: medical-emergency
 enabled: true
-actions: |-
-  call {{fn:handoff}}
-   function with
-  'handoff_destination'='CUSTOMER_CARE' and
-  'handoff_reason'='MEDICAL_EMERGENCY' and
-  "handoff_utterance" = "We take health and safety concerns very seriously. One moment while I connect you with a colleague who can help."
+actions: Immediately call {{fn:report_hazard}} with hazard='medical'.
 content: ''
 example_queries:
-- I have a health or safety concern
-- emergency
-- I'm not feeling well
-- Having difficulty breathing
-- There was an injury during the service visit
-- I need to report a safety issue
-- someone got hurt
-- there's a safety hazard
+- Someone's been hurt and needs an ambulance
+- My husband collapsed
+- Someone is having trouble breathing
+- There's been a bad injury, someone is bleeding
+- I think someone is having a heart attack
+- My son got an electric shock and isn't responding

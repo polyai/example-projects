@@ -1,7 +1,7 @@
 name: interior-exterior
 enabled: true
-actions: ''
-content: Our regular service does cover both the interior and the exterior of your home.
+actions: Say the content. If they'd like to be put through, call {{fn:handoff}} with handoff_reason=OUT_OF_SCOPE and handoff_utterance="Let me put you through to the team. One moment, please."
+content: I'm afraid I don't have that detail, but the team will. Would you like me to put you through?
 example_queries:
 - Do your plans cover both the interior and exterior of the home?
 - Is the service plan only for the inside of my house

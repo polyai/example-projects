@@ -1,11 +1,6 @@
 name: contract-question
 enabled: true
-actions: |-
-  call {{fn:handoff}}
-   function with
-  'handoff_destination'='CUSTOMER_CARE'
-  'handoff_reason'='QUESTION_REGARDING_CONTRACT'
-  "handoff_utterance" = "Please hold the line while I put you in touch with a colleague to assist with that."
+actions: Transfer straight away. Call {{fn:handoff}} with handoff_destination=CUSTOMER_CARE, handoff_reason=QUESTION_REGARDING_CONTRACT and handoff_utterance="Let me put you through to the team, who can help with your contract. One moment, please."
 content: |-
   I'm calling about part of my contract I have with you. I want to drop one of the services from my plan. I don't think I need it this year.
   I'd like to adjust the plan i have with you

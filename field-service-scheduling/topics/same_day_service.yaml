@@ -1,9 +1,6 @@
 name: same_day-service
 enabled: true
-actions: |-
-  Tell them what the content says about emergency service, then ask: "Is this an emergency, or would you like me to book a regular visit?" Regular visits can't be booked for today.
-  If it's an emergency, call {{fn:handoff}} with handoff_destination=CUSTOMER_CARE, handoff_reason=SAME_DAY_SERVICE and handoff_utterance="I understand. I'll connect you to a colleague for help with this. One moment please."
-  If they want a regular visit, call {{fn:start_make_appointment}}.
+actions: 'Asking for today isn''t urgent by itself. If the problem isn''t urgent (a drip, a jam, a leaking appliance), call {{fn:start_make_appointment}} straight away: regular visits start tomorrow, and the booking tool says so. If it is urgent (water pouring or flooding, no heat, no AC, or they say it''s an emergency or can''t wait), say: "That sounds urgent. I can put you through to our emergency team to get someone out today, or book a regular visit from tomorrow. Which would you prefer?" The emergency team → {{fn:handoff}} with handoff_destination=EMERGENCY, handoff_reason=URGENT_REPAIR and handoff_utterance="Of course. I''m putting you through to our emergency team now. One moment, please." (at any hour). A regular visit → {{fn:start_make_appointment}}. If they ask what the emergency team costs, give only the fee from the content in one sentence, then ask the same question again.'
 content: '{{attr:emergency_service_info}}'
 example_queries:
 - Do you provide same-day or emergency services?
@@ -14,3 +11,8 @@ example_queries:
 - Would I be able to get a technician out immediately?
 - can I get someone out here within the next day or so?
 - I need service right now
+- emergency
+- This is an emergency
+- Water's pouring through my ceiling
+- Our heat's out
+- The AC died

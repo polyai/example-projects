@@ -1,6 +1,6 @@
 name: payment-time
 enabled: true
-actions: Answer only the part of the content about when payment is due.
+actions: Answer only when payment is due, in one sentence, from the content.
 content: '{{attr:payment_info}}'
 example_queries:
 - When does payment occur?

@@ -1,17 +1,11 @@
 name: cancel-subscription
 enabled: true
-actions: |-
-  call {{fn:handoff}}
-   function with
-  'handoff_destination'='ACCOUNT_CARE' and
-  'handoff_reason'='CANCEL_SUBSCRIPTION' and
-  "handoff_utterance" = "I'm sorry to hear that you want to leave us! One moment, please, while I put you through to a colleague to help with this."
+actions: Transfer straight away. Call {{fn:handoff}} with handoff_destination=ACCOUNT_CARE, handoff_reason=CANCEL_SUBSCRIPTION and handoff_utterance="I'm sorry to hear that. Let me put you through to the team who look after plans. One moment, please."
 content: ''
 example_queries:
 - I would like to speak to someone because I wanted to end my contract.
 - cancel my account
 - cancel subscription
-- I'm not happy
 - too expensive
 - canceling you
 - cancel service(s)

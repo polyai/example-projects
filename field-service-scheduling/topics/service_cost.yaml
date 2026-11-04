@@ -1,8 +1,6 @@
 name: service-cost
 enabled: true
-actions: |-
-  Answer from the content in a sentence or two. If they want an exact quote, a plan, or to follow up on a quote, offer to connect them with a colleague. If they agree, call {{fn:handoff}} with handoff_destination=INSIDE_SALES, handoff_reason=SERVICE-QUOTE and handoff_utterance="Please hold the line while I connect you."
-  If they don't want to be transferred, ask if there's anything else you can help with.
+actions: Answer only the fee or price they asked about, in one sentence ("There's an $89 diagnostic fee, and it's waived if you go ahead with the repair."). Don't add discounts, estimates or anything else, and don't offer a transfer. Only if they ask for an exact quote or a plan, offer to put them through; if they agree, call {{fn:handoff}} with handoff_destination=INSIDE_SALES, handoff_reason=SERVICE-QUOTE and handoff_utterance="Let me put you through to the team, who can give you a quote. One moment, please."
 content: '{{attr:pricing_info}}'
 example_queries:
 - How much do your services cost?
@@ -15,3 +13,9 @@ example_queries:
 - you guys sent me a quote for $2000 last week, and I just wanted to follow up on that
 - Does the pricing depend on the size of my home?
 - does the cost of a plan depend on the size of my home?
+- How much is it going to cost?
+- How much will the visit cost?
+- Is there a call-out fee?
+- Do you charge to come out?
+- What's your diagnostic fee?
+- Do you charge for a visit?

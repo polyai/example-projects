@@ -1,11 +1,6 @@
 name: change-appointment-location
 enabled: true
-actions: |-
-  call {{fn:handoff}}
-   function with
-  'handoff_destination'='CUSTOMER_CARE'
-  'handoff_reason'='CHANGE_APPOINTMENT_LOCATION'
-  "handoff_utterance" = "I'll put you through to a colleague who can assist with that. One moment please."
+actions: Transfer straight away. Call {{fn:handoff}} with handoff_destination=CUSTOMER_CARE, handoff_reason=CHANGE_APPOINTMENT_LOCATION and handoff_utterance="Let me put you through to the team, who can change that for you. One moment, please."
 content: ''
 example_queries:
 - I accidentally put down the wrong address for my home

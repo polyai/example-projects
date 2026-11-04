@@ -1,6 +1,6 @@
 name: canceling-window
 enabled: true
-actions: Give the policy. Don't offer to cancel a visit; if the caller asks to cancel one, call {{fn:start_cancel_appointment}}.
+actions: Answer only what they asked about cancelling or rescheduling, in a sentence or two. Don't offer to cancel a visit; if they ask to cancel one, call {{fn:start_cancel_appointment}}.
 content: '{{attr:cancellation_policy_info}}'
 example_queries:
 - How far out do I have to cancel or reschedule an appointment

@@ -1,7 +1,7 @@
 name: charge-followup
 enabled: true
-actions: If the user wants to schedule a follow up appointment, call {{fn:start_make_appointment}}
-content: Great question! For your regular service plan, we’ve got you covered with free follow-up visits between your scheduled appointments. If any issues come up, just let us know, and we’ll get you scheduled!
+actions: 'If the content says something about follow-up or return visits, answer only that, in one sentence. Otherwise say: "I''m afraid I don''t have that detail, but the team will. Would you like me to put you through?" If they want a follow-up visit booked, call {{fn:start_make_appointment}}.'
+content: '{{attr:service_guarantee_info}}'
 example_queries:
 - Do you charge for followup?
 - are the follow ups free?
