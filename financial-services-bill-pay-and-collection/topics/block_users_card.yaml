@@ -1,9 +1,7 @@
 name: block_users_card
-enabled: true
-actions: |-
-  # Initial answer
-  Call {{fn:handoff}} with handoff_reason="BLOCK_USERS_CARD".
-content: ''
+enabled: false
+actions: 'Follow the freeze_lost_stolen_card topic: first ask "Have you noticed any payments you don''t recognize?"'
+content: The caller wants to block or freeze their card.
 example_queries:
 - I need to block a card
 - block my card

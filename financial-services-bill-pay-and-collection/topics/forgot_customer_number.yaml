@@ -1,12 +1,12 @@
 name: forgot_customer_number
 enabled: true
 actions: |-
-  Say: "Your account number is on your statement, and you can get it on our website: when you log in, choose 'Forgotten your customer number or username?' and we'll text it to you. Would you like me to text you those steps?"
-
-  - Yes: call {{fn:start_send_sms}} with sms_id="forgot_customer_number_website".
-  - No: "No problem. Anything else I can help with?"
-  - They've tried and still can't get in: call {{fn:handoff}} with handoff_reason="FORGOT_CUSTOMER_NUMBER".
-content: ''
+  If the caller has already asked for a text, call {{fn:start_send_sms}} with sms_id="forgot_customer_number_website" now, before you reply, with no offer.
+  Say: "It's on your statements, and in the app under My details. I can text you the steps to get it from our website. Would you like me to?"
+  - Yes → call {{fn:start_send_sms}} with sms_id="forgot_customer_number_website".
+  - No mobile: "No problem at all. On our website, choose 'Forgotten your customer number' when you log in, and we'll help you from there."
+  - Tried and still can't get it: call {{fn:handoff}} with handoff_reason="FORGOT_CUSTOMER_NUMBER".
+content: The caller can't find their account or customer number.
 example_queries:
 - I've forgotten my customer number
 - what's my customer number

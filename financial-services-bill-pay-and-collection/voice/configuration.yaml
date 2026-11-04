@@ -1,5 +1,5 @@
 greeting:
-  welcome_message: '[GREETING SET IN CODE]'
+  welcome_message: Hi, thanks for calling {{attr:site_name}}. You're speaking with our virtual assistant. How can I help?
   language_code: en-US
 style_prompt:
   prompt: ''

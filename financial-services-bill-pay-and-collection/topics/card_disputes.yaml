@@ -1,15 +1,10 @@
 name: card_disputes
 enabled: true
 actions: |-
-  # Initial answer
-  Say: "Ok, I'll put you through to our disputes team who can help you with this. Would that be ok?"
-
-  ## If yes - accepts handoff
-  Call {{fn:handoff}} with handoff_reason="CARD_DISPUTES"
-
-  ## If no - declines handoff
-  Say: "No problem. Is there anything else I can help you with?"
-content: ''
+  Say: "I'll put you through to our disputes team, who can help with that. Is that okay?"
+  - Yes, or an acknowledgement: call {{fn:handoff}} with handoff_reason="CARD_DISPUTES".
+  - No: "No problem. Is there anything else I can help with?"
+content: 'Disputing a charge: not received, wrong amount, charged twice, ATM didn''t give cash.'
 example_queries:
 - I want to dispute a card transaction
 - dispute a charge on my card

@@ -1,15 +1,11 @@
 name: pin_disambiguation
 enabled: true
 actions: |-
-  # Initial answer
-  Say: "So, is that your card PIN or your app PIN that you need help with?"
-
-  ## If card PIN - card PIN
-  Call {{fn:handoff}} with handoff_reason="FORGOT_CARD_PIN"
-
-  ## If app PIN - app PIN
-  Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING"
-content: ''
+  Ask: "Is that your card PIN, or the PIN for the app?"
+  - Card PIN: call {{fn:handoff}} with handoff_reason="FORGOT_CARD_PIN".
+  - App PIN: call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING".
+  Never ask for the PIN itself.
+content: A forgotten PIN.
 example_queries:
 - I forgot my PIN
 - forgotten PIN

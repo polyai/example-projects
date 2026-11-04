@@ -1,5 +1,5 @@
 name: faster_payments_general
-enabled: true
+enabled: false
 actions: |-
   # Initial question
   Say: "Sure, so, bank transfers, do you have our app or online banking?"

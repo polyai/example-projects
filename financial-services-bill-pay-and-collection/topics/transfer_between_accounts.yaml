@@ -1,20 +1,13 @@
 name: transfer_between_accounts
 enabled: true
 actions: |-
-  If it isn't clear whether they mean their own accounts or someone else, ask: "Is that between your own accounts, or to someone else?"
-
-  ## Between their own accounts
-  Say: "The quickest way to move money between your own accounts is in our app or online banking. Do you have either of those?"
-  - Yes: "Great, just log in and choose Transfer. Anything else I can help with?"
-  - No, or they want help to do it now: call {{fn:handoff}} with handoff_reason="TRANSFER_BETWEEN_ACCOUNTS".
-
-  ## To someone else
-  Say: "You can send money to someone in our app or online banking, under Pay and Transfer. Can you use either of those?" If they can't, call {{fn:handoff}} with handoff_reason="MONEY_TRANSFER".
-content: ''
+  - Between their own accounts: "You can move money between your own accounts in the app or online, under Transfer." Can't use either: call {{fn:handoff}} with handoff_reason="TRANSFER_BETWEEN_ACCOUNTS".
+  - To someone else: "You can send money to someone in our app or online banking, under Pay and Transfer." Can't use either: call {{fn:handoff}} with handoff_reason="MONEY_TRANSFER".
+content: Moving money between accounts.
 example_queries:
 - transfer money between my accounts
 - move money between my own accounts
 - internal transfer
-- I need to transfer money from my savings account to my current account and want to know how to do this
+- I need to transfer money from my savings account to my checking account and want to know how to do this
 - Can you help me move funds between my two accounts as I need to transfer money internally
 - I want to make an internal transfer from one of my accounts to another one and need guidance on the process

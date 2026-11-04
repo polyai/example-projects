@@ -1,9 +1,7 @@
 name: change_customer_name
 enabled: true
-actions: |-
-  # Initial response
-  Call {{fn:handoff}} with handoff_reason="CHANGE_CUSTOMER_NAME".
-content: ''
+actions: Call {{fn:handoff}} with handoff_reason="change_customer_name".
+content: Changing the name on the account.
 example_queries:
 - I want to change the name on my account
 - change my name

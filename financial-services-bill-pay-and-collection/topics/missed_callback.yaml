@@ -1,9 +1,7 @@
 name: missed_callback
 enabled: true
-actions: |-
-  # Initial answer
-  Call {{fn:handoff}} with handoff_reason="MISSED_CALLBACK".
-content: ''
+actions: Call {{fn:handoff}} with handoff_reason="missed_callback".
+content: A callback the caller missed or didn't get.
 example_queries:
 - I missed my callback
 - didn't receive callback

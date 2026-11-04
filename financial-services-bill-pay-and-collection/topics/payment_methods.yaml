@@ -1,10 +1,10 @@
 name: payment_methods
 enabled: true
 actions: |-
-  Answer from this: {{attr:payment_methods_info}}
+  Answer only what they asked, in one sentence, from this: {{attr:payment_methods_info}} Autopay can be set up online at {{attr:website_url}} or in the app.
 
-  If they'd like to pay now, call {{fn:start_make_payment}}. Autopay can be set up online at {{attr:website_url}} or in the app.
-content: 'Ways to pay a bill: online, app, phone, autopay, by mail.'
+  Wants to pay now: call {{fn:start_make_payment}}. A new card: "You can add a new card in the app or online, or our payments team can take the details securely."
+content: 'Ways to pay: online, the app, by phone, autopay, by mail.'
 example_queries:
 - how can I pay my bill
 - what payment methods do you accept

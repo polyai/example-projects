@@ -1,9 +1,9 @@
 name: fees
 enabled: true
 actions: |-
-  Answer from this: {{attr:fees_info}}
+  Answer only the fee they asked about, in one sentence, from this: {{attr:fees_info}} Say only the one fee, e.g. "There is. It's [the late fee] if a payment arrives after the due date."
 
-  If they want a fee reviewed or refunded, call {{fn:handoff}} with handoff_reason="FEE_QUERY".
+  Wants a fee reviewed or refunded: call {{fn:handoff}} with handoff_reason="FEE_QUERY".
 content: Late payment, returned payment and card fees.
 example_queries:
 - is there a late fee

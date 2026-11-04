@@ -1,15 +1,9 @@
 name: refund_status
 enabled: true
 actions: |-
-  # Initial answer
-  Say: "So, to check the status of a refund, you’ll need to talk to the merchant that’s issuing the refund. They should be able to provide you with a timescale as this isn’t controlled by us. Have you tried that already?"
-
-  ## If yes - has contacted the merchant or needs further help
-  Call {{fn:handoff}} with handoff_reason="REFUND_STATUS"
-
-  ## If no - hasn't contacted the merchant
-  Say: "Ok. In that case, please get in touch with the merchant to check on your refund. Is there anything else I can help you with?"
-content: ''
+  Say: "Refunds come from the merchant, so they're the best people to ask how long it'll take. If you've already asked them, I can put you through to our team. Would that help?"
+  - Yes: call {{fn:handoff}} with handoff_reason="REFUND_STATUS".
+content: Waiting for a refund.
 example_queries:
 - where is my refund
 - refund status

@@ -19,8 +19,17 @@ Fixtures (phone, date of birth, account number):
 - Jane Doe, 212-555-0178, 1990-07-22, 0987654321: $275.50 due in 10 days,
   checking account ending 6789 on file
 - Alex Rivera, 201-555-0144, 1978-11-02, 2468013579: $8,400.00 due in 20 days
-  (for the phone payment limit), Mastercard ending 5454 on file
+  (for the phone payment limit), Mastercard ending 5454 and checking account
+  ending 1357 on file
+- Sam Lee, 201-555-0166, 1982-06-30, 1357924680: $150.00 that was due 5 days
+  ago (overdue), Visa ending 8080 on file
+- Robin Park, 201-555-0177, 1975-01-09, 1122334455: $90.00 due in 7 days, Visa
+  ending 7777 on file; the mock payment API errors for this account, so the
+  "payment can't be confirmed" path can be tested
 - 201-555-0199: no account; 201-555-0150: flagged as a vulnerable customer
+
+The mock behaves like a billing API: a payment is refused (ValueError) when it
+breaks a rule, and a card provider's decline would raise PaymentDeclined.
 """
 
 import re
@@ -32,6 +41,12 @@ from _gen import *  # <AUTO GENERATED>
 LIVE_ENVS = ("pre-release", "pre_release", "live")
 
 VULNERABLE_PHONES = {"2015550150"}
+# Mock accounts whose payments fail at the API (no confirmation comes back).
+PAYMENT_ERROR_ACCOUNTS = {"MOCK-A005"}
+
+
+class PaymentDeclined(Exception):
+    """The card provider or bank declined the payment. Nothing was taken."""
 
 
 @func_description("[UTIL] Billing API client, not callable directly")
@@ -112,6 +127,30 @@ def _accounts(conv=None) -> list[dict]:
                 "Mastercard ending 5454",
                 "checking account ending 1357",
             ],
+            "scheduled_payments": [],
+        },
+        {
+            "id": "MOCK-A004",
+            "first_name": "Sam",
+            "last_name": "Lee",
+            "phone": "2015550166",
+            "dob": "1982-06-30",
+            "member_id": "1357924680",
+            "balance": 150.00,
+            "due_date": due(-5),
+            "payment_methods": ["Visa ending 8080"],
+            "scheduled_payments": [],
+        },
+        {
+            "id": "MOCK-A005",
+            "first_name": "Robin",
+            "last_name": "Park",
+            "phone": "2015550177",
+            "dob": "1975-01-09",
+            "member_id": "1122334455",
+            "balance": 90.00,
+            "due_date": due(7),
+            "payment_methods": ["Visa ending 7777"],
             "scheduled_payments": [],
         },
     ]
@@ -206,6 +245,8 @@ def make_payment(
         raise ValueError("payment method not on file")
     if amount <= 0 or amount > account["balance"]:
         raise ValueError("amount not allowed")
+    if account_id in PAYMENT_ERROR_ACCOUNTS:
+        raise TimeoutError("mock billing API did not confirm the payment")
     transaction = {
         "id": f"MOCK-T{uuid.uuid4().hex[:6].upper()}",
         "account_id": account_id,

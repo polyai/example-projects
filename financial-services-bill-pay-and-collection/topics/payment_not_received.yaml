@@ -1,9 +1,7 @@
 name: payment_not_received
 enabled: true
-actions: |-
-  # Initial answer
-  Call {{fn:handoff}} with handoff_reason="PAYMENT_NOT_RECEIVED".
-content: The user has problems with receiving a payment or transfer
+actions: Call {{fn:handoff}} with handoff_reason="payment_not_received".
+content: A payment or transfer the caller is expecting hasn't arrived.
 example_queries:
 - I haven't received a payment
 - Someone sent me money but it hasn't arrived

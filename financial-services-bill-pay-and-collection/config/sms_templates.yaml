@@ -72,13 +72,13 @@ sms_templates:
 
     2. Find it by searching '{{vrbl:site_name}}'.
 
-    3. Register with your customer number, your registered mobile number, and the security number and password you use for Online Banking.
+    3. Register with your customer number, your registered mobile number, and the security number and password you use for online banking.
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
     live: '+12015550100'
 - name: internet_banking_registration
-  text: To register for online banking, please visit our website. Click "Log In" in the top right corner, then "Register for Online Banking".
+  text: To register for online banking, please visit our website. Click "Log In" in the top right corner, then "Register for online banking".
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
@@ -100,7 +100,7 @@ sms_templates:
   text: |-
     To change your address:
 
-     1. Log in to Online Banking
+     1. Log in to online banking
 
      2. Click on 'Settings' and then 'Details'
 
@@ -111,28 +111,26 @@ sms_templates:
     live: '+12015550100'
 - name: freeze_lost_stolen_card_app
   text: |-
-    If your card has been lost or stolen, you'll need to log into Online Banking:
+    To freeze a lost or stolen card in our app:
 
-    1. Click 'Manage my card' next to the relevant account
+    1. Log in and tap 'Manage Card' under the card
 
-    2. Select 'Cancel and replace lost/stolen card' option for the relevant card
+    2. Tap 'Freeze card'. You can unfreeze it the same way if you find it
 
-    3. Click 'Lost' or 'Stolen' and make sure the address shown is correct
-
-    4. Select 'Cancel card and order new card'.
+    3. If it's gone for good, choose 'Cancel lost/stolen card' and check the address shown. We'll mail you a new card.
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
     live: '+12015550100'
 - name: freeze_lost_stolen_card_online
   text: |-
-    If your card has been lost or stolen:
+    To freeze a lost or stolen card in online banking ({{vrbl:website_url}}):
 
-    1. In our app, tap 'Manage Card' under the relevant account
+    1. Click 'Manage my card' next to the card
 
-    2. Choose 'Cancel lost/stolen card' and select either the lost or stolen option
+    2. Choose 'Freeze card', or 'Cancel and replace lost/stolen card' if it's gone for good
 
-    3. Make sure the address shown is correct. Select 'Cancel card and order a new one'. We'll mail you a new card.
+    3. Check the address shown. We'll mail you a new card.
   env_phone_numbers:
     sandbox: ''
     pre_release: ''
@@ -209,6 +207,119 @@ sms_templates:
     live: '+12015550100'
 - name: payment_confirmation
   text: '{{vrbl:site_name}}: thanks for your {{vrbl:last_transaction_summary}}. Your confirmation number is {{vrbl:last_confirmation_number}}.'
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+12015550100'
+- name: activate_card
+  text: |-
+    To activate your card in our app:
+
+    1. Log in and tap 'Manage Card' under the new card
+
+    2. Tap 'Activate card' and follow the steps on screen.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+12015550100'
+- name: cancel_autopay
+  text: |-
+    To turn off autopay:
+
+    1. Log in to our app or online banking ({{vrbl:website_url}})
+
+    2. Go to 'Payments', then 'Autopay'
+
+    3. Choose the autopay you want to stop and select 'Turn off'.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+12015550100'
+- name: recurring_payments
+  text: |-
+    To set up, change or cancel a recurring payment:
+
+    1. Log in to our app or online banking ({{vrbl:website_url}})
+
+    2. Go to 'Payments', then 'Recurring payments'
+
+    3. Tap a payment to change or cancel it, or tap the plus sign to set up a new one.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+12015550100'
+- name: change_email
+  text: |-
+    To change your email address:
+
+    1. Log in to our app and tap the settings icon in the top right-hand corner
+
+    2. Tap 'My details' and update your email address.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+12015550100'
+- name: change_statement
+  text: |-
+    To change how you get your statements:
+
+    1. Log in to online banking ({{vrbl:website_url}})
+
+    2. Go to 'Settings', then 'Statement preferences'
+
+    3. Choose paper statements by mail, or paperless.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+12015550100'
+- name: get_statement
+  text: |-
+    To get a statement:
+
+    1. Log in to our app or online banking ({{vrbl:website_url}})
+
+    2. Choose your account, then 'Documents' and 'Statements'
+
+    3. Pick the month you need to view or download it.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+12015550100'
+- name: add_payee
+  text: |-
+    To add a new payee:
+
+    1. Log in to our app or online banking ({{vrbl:website_url}})
+
+    2. Go to 'Pay and Transfer', then 'Add payee'
+
+    3. Follow the steps to add their details.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+12015550100'
+- name: delete_payee
+  text: |-
+    To remove a payee:
+
+    1. Log in to our app or online banking ({{vrbl:website_url}})
+
+    2. Go to 'Pay and Transfer', then 'Manage payees'
+
+    3. Choose the payee and select 'Delete payee'.
+  env_phone_numbers:
+    sandbox: ''
+    pre_release: ''
+    live: '+12015550100'
+- name: replace_card
+  text: |-
+    To order a replacement card in our app:
+
+    1. Log in and tap 'Manage Card' under the card
+
+    2. Choose 'Replace damaged card' and check the address shown
+
+    3. Tap 'Order a new card'. We'll mail it to you.
   env_phone_numbers:
     sandbox: ''
     pre_release: ''

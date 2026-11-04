@@ -1,35 +1,11 @@
 name: delete_payee
 enabled: true
 actions: |-
-  # Initial question
-  Say: "The easiest way to delete a payee is through our app or online banking. Are you set up with either of these?"
-
-  ## If app or both - has app
-  Say: "Great. Once you're logged into the app, select the 'Pay and Transfer' option, then choose 'Manage Payees'. From there, select the relevant payee and click 'Delete payee'. Anything else I can do for you?"
-
-  ## If online banking - has online banking only
-  Say: "Once you have logged into online banking, select the 'Payees' option in the left hand menu. From there, once you've located the relevant payee, click on the delete icon and confirm this by clicking 'Delete Payee'. Anything else I can do for you?"
-
-  ## If yes - has either/both
-  Say: "Great, so you can delete a payee using either of these. Would you rather do this on our App or using Online Banking?"
-
-  ## If no/handoff/unhappy - doesn't want to use app/online banking
-  Call {{fn:handoff}} with handoff_reason="DELETE_PAYEE"
-
-  ## If user says it's not working
-
-  ### App - the app is not working
-  Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING"
-
-  ### Online banking - online banking isn't working
-  Call {{fn:handoff}} with handoff_reason="ONLINE_BANKING_PROBLEMS"
-
-  ## If app but doesn't have it - says has app but then says doesn't
-  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
-
-  ## If online banking but doesn't have it - says has online banking but then says doesn't
-  Call {{fn:handoff}} with handoff_reason="INTERNET_BANKING_REGISTRATION"
-content: ''
+  If the caller has already asked for a text, call {{fn:start_send_sms}} with sms_id="delete_payee" now, before you reply, with no offer.
+  Say: "You can remove a payee in the app or online, under Pay and Transfer and then Manage payees. I can text you the steps. Would you like me to?"
+  - Yes → call {{fn:start_send_sms}} with sms_id="delete_payee".
+  - Can't use the app or online: call {{fn:handoff}} with handoff_reason="DELETE_PAYEE".
+content: Removing a saved payee.
 example_queries:
 - delete a payee
 - remove payee

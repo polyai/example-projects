@@ -1,15 +1,7 @@
 name: payment_reversals
 enabled: true
-actions: |-
-  # Initial answer
-  Say: "Just to double-check, what kind of payment are you looking to reverse: a card transaction or a bank transfer?"
-
-  ## If card - wants to reverse a card transaction
-  Call {{fn:handoff}} with handoff_reason="PAYMENT_REVERSALS_CARD".
-
-  ## If bank transfer - wants to reverse a bank transfer
-  Call {{fn:handoff}} with handoff_reason="PAYMENT_REVERSALS_BANK_TRANSFER".
-content: ''
+actions: Call {{fn:handoff}} with handoff_reason="payment_reversals".
+content: Reversing a payment or transaction.
 example_queries:
 - can you reverse a payment
 - I need to reverse a transaction

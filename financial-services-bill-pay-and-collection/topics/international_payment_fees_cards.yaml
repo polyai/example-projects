@@ -1,10 +1,10 @@
 name: international_payment_fees_cards
 enabled: true
 actions: |-
-  Answer from this: {{attr:fees_info}} Other fees may apply, and there are some countries we can't transact with.
+  Answer only what they asked, in one sentence, from this: {{attr:fees_info}}
 
-  If they need more detail, call {{fn:handoff}} with handoff_reason="INTERNATIONAL_PAYMENT_FEES_CARDS".
-content: ''
+  Needs more detail: call {{fn:handoff}} with handoff_reason="INTERNATIONAL_PAYMENT_FEES_CARDS".
+content: Fees for using a card abroad or in a foreign currency.
 example_queries:
 - what are the fees for using my card abroad
 - international card fees

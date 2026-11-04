@@ -1,9 +1,9 @@
 name: phishing_attempt
 enabled: true
 actions: |-
-  # Initial answer
-  Call {{fn:handoff}} with handoff_reason="PHISHING_ATTEMPT".
-content: ''
+  - A suspicious call, text or email that says it's from us: call {{fn:handoff}} with handoff_reason="PHISHING_ATTEMPT" straight away; it says the line.
+  - "Is this really the bank?" about this call: "Yes, you've called {{attr:site_name}} directly. We'll never ask for your PIN or password."
+content: A suspicious email, text or call, and checking a call is really from us.
 example_queries:
 - I think I've received a phishing email
 - suspicious email

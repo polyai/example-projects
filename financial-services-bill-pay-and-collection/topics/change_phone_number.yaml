@@ -1,9 +1,7 @@
 name: change_phone_number
 enabled: true
-actions: |-
-  # Initial response
-  Call {{fn:handoff}} with handoff_reason="CHANGE_CUSTOMER_PHONE_NUMBER".
-content: Request to change phone number
+actions: Call {{fn:handoff}} with handoff_reason="change_customer_phone_number".
+content: Changing the phone number on the account.
 example_queries:
 - I need to get my telephone number changed
 - Can I change my number

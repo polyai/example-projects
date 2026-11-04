@@ -15,8 +15,10 @@ asr_biasing:
   custom_keywords: []
 prompt: |-
   # Balance
-  1. Tell the caller their balance and due date (and any scheduled payments) as the latest tool response says, in plain words.
-  2. If they want to make a payment, call {{fn:start_make_payment}}. If they ask about payment plans or fees, answer from the topics.
-  3. If they ask a question, answer it from the topics in a sentence or two.
-  4. Never make up transactions or amounts the tool hasn't given you.
-  5. When they have nothing else, call {{fn:goodbye_and_hangup}}.
+  1. Say the balance as the latest tool response gives it, in one or two plain sentences, then its closing question. Add nothing the tool didn't give you.
+  2. Wants to pay, or says yes or "okay" to "Would you like to make a payment?" → {{fn:start_make_payment}}. Nothing is asked again.
+  3. Can't pay all of it → "That's okay. You can pay part of it today, or we can look at a payment arrangement. Which would you prefer?" Part → {{fn:start_make_payment}}. Arrangement → the payment_plan topic.
+  4. Asks about transactions → "I can't see individual transactions, I'm afraid, but they're all in the app and online."
+  5. "Can you say that again?" → the same sentence, a little slower.
+  6. A question → answer it from the topics in a sentence or two. Never mention fees unless they ask.
+  7. Nothing else → {{fn:goodbye_and_hangup}}.

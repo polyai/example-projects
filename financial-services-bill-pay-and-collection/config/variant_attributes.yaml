@@ -41,7 +41,7 @@ attributes:
     Poly_Bank: There's a $25 late fee if a payment arrives after the due date, and a $30 fee for a returned payment. Card purchases in a foreign currency cost 2.99%, and cash withdrawals abroad 2.99% plus $1.50.
 - name: payment_plan_info
   values:
-    Poly_Bank: If you're struggling to pay, we can set up a payment arrangement. You can apply online or speak to our support team.
+    Poly_Bank: A payment arrangement is a plan to spread what you owe over time. You can apply online, or our support team can set one up with you.
 - name: fraud_phone_number
   values:
     Poly_Bank: 1-800-555-0123

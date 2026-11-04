@@ -1,10 +1,10 @@
 name: payment_processing
 enabled: true
 actions: |-
-  Answer from this: {{attr:payment_processing_info}}
+  Answer only what they asked, in one sentence, from this: {{attr:payment_processing_info}}
 
-  If a payment they made still hasn't shown up after that, call {{fn:handoff}} with handoff_reason="PAYMENT_NOT_POSTED".
-content: When payments post to the account and cut-off times.
+  A payment they made still hasn't shown up after that: call {{fn:handoff}} with handoff_reason="PAYMENT_NOT_POSTED".
+content: When payments post, and cut-off times.
 example_queries:
 - when will my payment post
 - how long does a payment take to go through

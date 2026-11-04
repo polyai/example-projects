@@ -1,10 +1,12 @@
 name: contact_centre_hours
 enabled: true
 actions: |-
-  Say: "{{vrbl:opening_hours_line}}" Don't add, change or guess any day or time.
+  Our phone hours: {{vrbl:opening_hours_line}}
 
-  Our phone number is {{attr:phone_number}}. Then ask if there's anything else.
-content: ''
+  Answer in one sentence with only today's hours, or the day they asked about; the whole week only if they ask. If the line above says the hours aren't in front of you, say just that. Never guess a day or time, and never call a day closed unless the line says so.
+
+  If they ask for our number: {{vrbl:phone_number_spoken}}, digit by digit.
+content: Phone line opening hours and our phone number.
 example_queries:
 - what are your opening hours
 - when can I call you

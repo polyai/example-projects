@@ -1,14 +1,10 @@
 name: withdrawal_limits
 enabled: true
 actions: |-
-  If it's unclear whether they mean taking cash out or sending a payment, ask: "Is that about how much cash you can take out, or how much you can pay or send to someone?"
+  Answer only what they asked, in one sentence, from this: {{attr:card_limits_info}} Payment and transfer limits depend on the account and are in the app; never say they can send any amount.
 
-  ## Cash withdrawals and card limits
-  Answer from this: {{attr:card_limits_info}} For business accounts, call {{fn:handoff}} with handoff_reason="WITHDRAWAL_LIMITS".
-
-  ## Payment or transfer limits
-  Tell them limits depend on where the payment is going and their type of account, and that the app shows their limits. Never say they can send any amount. If they want to make a payment now, call {{fn:start_make_payment}}.
-content: Limits on cash withdrawals and card spending, or on payments.
+  A business account: call {{fn:handoff}} with handoff_reason="WITHDRAWAL_LIMITS".
+content: Cash withdrawal, card and payment limits.
 example_queries:
 - what are the withdrawal limits
 - cash withdrawal limit

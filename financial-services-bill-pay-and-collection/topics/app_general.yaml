@@ -1,21 +1,12 @@
 name: app_general
 enabled: true
 actions: |-
-  # Initial answer - if the user says something vague about their app (but not if they specifically say it's not working)
-  Say: "Oh, so how can I help with the app?"
-
-  ## If login - can't log in
-  Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING"
-
-  ## If register - wants to register
-  Call {{fn:handoff}} with handoff_reason="MOBILE_APP_REGISTRATION"
-
-  ## If not working - general not working
-  Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING"
-
-  ## If incompatible device - device not compatible
-  Call {{fn:handoff}} with handoff_reason="APP_NOT_WORKING_INCOMPATIBLE"
-content: ''
+  If the caller has already asked for a text, call {{fn:start_send_sms}} with sms_id="mobile_app_registration" now, before you reply, with no offer.
+  Ask: "What do you need help with in the app?"
+  - Can't log in, or it isn't working: answer from the app_not_working topic.
+  - Wants to register: say "You can download our app from the App Store or Google Play and register with your account details. I can text you the steps. Would you like me to?" Yes → call {{fn:start_send_sms}} with sms_id="mobile_app_registration".
+  - Anything else: call {{fn:handoff}} with handoff_reason="APP_GENERAL".
+content: A general question about our mobile app.
 example_queries:
 - it's my app
 - asking about my app

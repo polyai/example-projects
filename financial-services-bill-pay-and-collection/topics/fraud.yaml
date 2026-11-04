@@ -1,10 +1,10 @@
 name: fraud
 enabled: true
 actions: |-
-  Say: "I'm sorry to hear that. Let me put you through to our fraud team right away." Then call {{fn:handoff}} with handoff_reason="FRAUD". If it's specifically their card, use handoff_reason="CARD_FRAUD"; a payment or transfer, "PAYMENT_FRAUD"; online banking details, "INTERNET_BANK_DETAILS_COMPROMISED".
+  Call {{fn:handoff}} straight away, before anything else, even mid-task; it says the line. handoff_reason="FRAUD", or "CARD_FRAUD" for their card (lost or stolen with charges they didn't make), "PAYMENT_FRAUD" for a payment they don't recognize, "INTERNET_BANK_DETAILS_COMPROMISED" for stolen login details.
 
-  If they ask for the number to call later, our 24/7 fraud line is {{attr:fraud_phone_number}}.
-content: ''
+  If they only want the number to call later: "Our fraud line is open 24 hours a day on {{vrbl:fraud_line_spoken}}."
+content: Fraud, a payment they don't recognize, a hacked account or stolen details.
 example_queries:
 - fraud
 - I've been scammed

@@ -1,6 +1,5 @@
 from _gen import *  # <AUTO GENERATED>
-from flows.make_payment.functions.update_payment import fresh_payment, payment_state
-from functions import billing
+from functions import billing, payments
 
 
 def payment_entry(conv: Conversation, flow: Flow):
@@ -10,13 +9,11 @@ def payment_entry(conv: Conversation, flow: Flow):
         return gate
 
     conv.write_metric("PAYMENT_FLOW_INITIATED", write_once=True)
-    if not isinstance(conv.state.payment, dict) or conv.state.payment.get("paid"):
-        conv.state.payment = fresh_payment(conv)
     flow.goto_step("Make Payment", "caller verified")
-    acct = billing.verified_account(conv)
-    return (
-        f"Help the caller make a payment. Their balance is {billing.say_money(acct['balance'])}, "
-        f"due on {billing.say_date(acct['due_date'])}. If they have already said how much, call "
-        "update_payment with it now; otherwise tell them the balance and ask how much they'd "
-        f"like to pay.\n\n{payment_state(conv)}"
-    )
+    if (
+        conv.state.entry_said_turn is not None
+        and conv.state.entry_said_turn == billing.history_turn(conv)
+    ):
+        # The tool that brought the caller here has already said what comes next.
+        return f"Follow the previous tool response.\n\n{payments.state_block(conv)}"
+    return f"{payments.entry_instruction(conv)}\n\n{payments.state_block(conv)}"

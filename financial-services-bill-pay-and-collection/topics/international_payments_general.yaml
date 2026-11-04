@@ -1,13 +1,10 @@
 name: international_payments_general
 enabled: true
 actions: |-
-  Say: "International payments are quickest in our app, under Pay and Transfer, then International payment. Do you have the app?"
-
-  - Yes: "Great, it'll walk you through it. Just so you know, the app sends international payments in U.S. dollars or euros. Anything else I can help with?"
-  - No, or the app doesn't work for them: call {{fn:handoff}} with handoff_reason="INTERNATIONAL_PAYMENTS".
-
-  If they ask about fees, answer from this: {{attr:fees_info}}
-content: The user wants to make an international payment, or has explicitly said the payee is outside of the U.S. (User must mention a paying someone not in the U.S. or must say 'international payment')
+  Say: "You can send an international payment in our app, under Pay and Transfer and then International payment."
+  - Can't use the app: call {{fn:handoff}} with handoff_reason="INTERNATIONAL_PAYMENTS".
+  - Fees: answer in one sentence from this: {{attr:fees_info}}
+content: Sending money to someone outside the U.S.
 example_queries:
 - I want to make an international payment
 - send some money to a recipient outside of the U.S.

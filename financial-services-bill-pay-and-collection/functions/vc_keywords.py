@@ -21,7 +21,6 @@ VC_KEYWORDS_PHRASES = [
     "i can't do that",
     "i'm a disabled",
     "i'm disabled",
-    "individual voluntary arrangement",
     "intensive care",
     "life support",
     "long cane",
@@ -46,7 +45,6 @@ VC_KEYWORDS_PHRASES = [
     "terminal illness",
     "third party mandate",
     "threat to life",
-    "universal credit",
     "victim of abuse",
     "walking aid",
     "walking stick",
@@ -57,7 +55,6 @@ VC_KEYWORDS_PHRASES = [
     "disabled person",
     "disabled sister",
     "disabled son",
-    "relay uk",
     "synthetic voice",
 ]
 
@@ -149,7 +146,6 @@ VC_KEYWORDS_SINGLE = [
     "donor",
     "drugs",
     "dv",
-    "dwp",
     "dying",
     "dyscalculia",
     "dyslexia",
@@ -160,7 +156,6 @@ VC_KEYWORDS_SINGLE = [
     "english",
     "enslaved",
     "epilepsy",
-    "esa",
     "evicted",
     "exhaustion",
     "faint",
@@ -195,7 +190,6 @@ VC_KEYWORDS_SINGLE = [
     "insolvency",
     "insomnia",
     "interpret",
-    "iva",
     "kill",
     "killed",
     "killer",
@@ -237,7 +231,6 @@ VC_KEYWORDS_SINGLE = [
     "parkinsons",
     "pensioner",
     "phobia",
-    "pip",
     "pregnancy",
     "pregnant",
     "prison",
@@ -301,15 +294,65 @@ VC_KEYWORDS_SINGLE = [
     "wheelchair",
 ]
 
-# Combined: phrases first so e.g. "assisted living" matches before "assisted" or "living"
+# Signs of danger to life, self-harm, abuse or coercion: transfer straight away (design 2.7).
+VC_URGENT_KEYWORDS = [
+    "kill myself",
+    "end my life",
+    "ending my life",
+    "take my own life",
+    "want to die",
+    "suicide",
+    "suicidal",
+    "self harm",
+    "self-harm",
+    "hurt myself",
+    "harm myself",
+    "in danger",
+    "not safe",
+    "unsafe at home",
+    "domestic abuse",
+    "domestic violence",
+    "abused",
+    "abuser",
+    "abusing",
+    "abusive",
+    "coerced",
+    "coercion",
+    "coercive",
+    "controlling partner",
+    "forcing me",
+    "threat to life",
+    "victim of abuse",
+    "kill",
+    "killed",
+    "killing",
+    "murder",
+    "overdose",
+    "overdosed",
+    "overdosing",
+    "threat",
+    "violen",
+    "enslaved",
+    "slave",
+    "slavery",
+    "threatened",
+    "threatening",
+    "violence",
+    "violent",
+]
+
+# Combined: phrases first so e.g. "assisted living" matches before "assisted" or "living".
+# Any of these, and not one of the urgent ones: offer the support team once (design 2.7).
 VC_KEYWORDS = VC_KEYWORDS_PHRASES + VC_KEYWORDS_SINGLE
+VC_OFFER_KEYWORDS = [k for k in VC_KEYWORDS if k not in VC_URGENT_KEYWORDS]
 
 
 @func_description("utils function for VC handoff key words")
 def vc_keywords(conv: Conversation):
-    conv.state.vc_keywords = get_vc_keywords_for_prompt()
+    conv.state.vc_urgent_keywords = ", ".join(VC_URGENT_KEYWORDS)
+    conv.state.vc_offer_keywords = get_vc_keywords_for_prompt()
 
 
 def get_vc_keywords_for_prompt() -> str:
-    """String of VC keywords for injection into agent rules (e.g. $vc_keywords)."""
-    return ", ".join(VC_KEYWORDS)
+    """The offer-once words, for rules.txt ({{vrbl:vc_offer_keywords}})."""
+    return ", ".join(VC_OFFER_KEYWORDS)

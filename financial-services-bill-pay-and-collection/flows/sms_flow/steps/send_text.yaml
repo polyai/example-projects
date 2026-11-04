@@ -23,8 +23,8 @@ dtmf_config:
   is_pii: true
 prompt: |-
   # Text the caller
-  1. Only a clear yes to texting the number they're calling from → {{ft:send_text}} with use_calling_number='true'.
-  2. NUMBER: whatever number the caller gives, even if it sounds incomplete, pass it to {{ft:send_text}} as they said it (words or digits) in that same turn, before you reply. Never guess or pad digits, and never judge a number or read it back yourself: read back only what the tool returns.
-  3. Ask the yes-or-no question the tool gives, in its words (it is also the readback), and wait for the answer. Only a clear yes → {{ft:send_text}} with number_confirmed='true'; a corrected number, even just the last few digits → {{ft:send_text}} with the full corrected number. "Okay", "mm-hm", silence or a question is not a yes: ask the yes-or-no question again.
-  4. If they no longer want the text, say that's fine and ask if there's anything else.
-  5. Follow the latest tool response; the tool counts the attempts and owns retries and transfers.
+  1. Pass every answer to {{ft:send_text}} in that turn, before you reply: a yes, a no, or a number as they said it (words or digits), even if it sounds incomplete. Never guess or pad digits.
+  2. A yes or an acknowledgement ("okay", "sure", "go on") to the tool's question → use_calling_number='true' if it asked about the number they're calling from, otherwise number_confirmed='true'. A corrected number, even just the last few digits → the full corrected number.
+  3. Say only what the tool returns. Read back only a number it gives you; never say the number they're calling from or the one on their account.
+  4. No mobile → no text: give the one or two steps out loud, or point them to our website.
+  5. They no longer want the text → say that's fine and ask if there's anything else.

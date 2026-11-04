@@ -1,24 +1,9 @@
 name: savings_account_info
 enabled: true
 actions: |-
-  # Initial answer
-  Say: "You can find all the information about our savings accounts, including rates and features, on our website at {{attr:website_url}}/savings. Would you like me to repeat that for you?"
-
-  ## If yes - user wants repeat
-  Say: "Of course, that's 'w w w dot example dash bank dot com forward slash savings'. Is there anything else I can help you with today?"
-
-  ## If user refuses the website or needs more help
-  Say: "Ok, if you can't do this online you can open an account in branch. We have an online branch locator to help you find your nearest one, would you like the details for this?"
-
-  ### If yes - want branch locator
-  Call {{fn:handoff}} with handoff_reason="CLOSEST_BRANCH"
-
-  ### If no - doesn't want branch locator
-  Say: "No problem. Is there anything else I can do for you?"
-
-  ### If needs more help
-  Call {{fn:handoff}} with handoff_reason="SAVINGS_ACCOUNT_INFO"
-content: ''
+  Say: "You'll find our savings accounts, with their rates and features, on our website, {{attr:website_url}}."
+  - Wants help from the team: call {{fn:handoff}} with handoff_reason="SAVINGS_ACCOUNT_INFO".
+content: Information about savings accounts.
 example_queries:
 - tell me about savings accounts
 - savings account information

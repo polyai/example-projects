@@ -1,10 +1,10 @@
 name: branch_opening_hours
 enabled: true
 actions: |-
-  Answer from this: {{attr:branch_info}}
+  Answer only what they asked, in one sentence, from this: {{attr:branch_info}}
 
-  If they need the hours of a particular branch and the website doesn't help, call {{fn:handoff}} with handoff_reason="BRANCH_OPENING_HOURS".
-content: ''
+  A particular branch that the website doesn't cover: call {{fn:handoff}} with handoff_reason="BRANCH_OPENING_HOURS".
+content: Branch locations and branch opening hours.
 example_queries:
 - what are your branch opening hours
 - when is the branch open

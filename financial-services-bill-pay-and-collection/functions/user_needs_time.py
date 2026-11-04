@@ -17,7 +17,16 @@ def user_needs_time(conv: Conversation):
     # If user not silent, they requested time. Return wait behaviour prompt, and flag this
     if not user_silent:
         conv.state.user_requested_wait = True
-        utterance = "Sure, let me know when you're ready."
+        # A wait after a payment readback: the next reply answers the wait, not the question,
+        # so make_payment asks the question again before it pays.
+        payment = conv.state.payment
+        if (
+            isinstance(payment, dict)
+            and payment.get("amount")
+            and not payment.get("paid")
+        ):
+            conv.state.payment = {**payment, "waited": True}
+        utterance = "Of course, take your time."
     else:
         # If user silent and hasn't requested time, prompt for silence behaviour
         # Ideally this should not happen

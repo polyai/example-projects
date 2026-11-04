@@ -1,33 +1,17 @@
 name: statements_not_received
 enabled: true
 actions: |-
-  # Initial question
-  Say: "Are you looking to get paper or online statements?"
-
-  ## If paper - wants paper statements
-  Say: "We've switched all our customers to receive paperless statements. Would you like to change your statement preferences to continue receiving paper statements?"
-
-  ### If yes - wants to change preferences
-  Call {{fn:handoff}} with handoff_reason="CHANGE_STATEMENT"
-
-  ### If no - doesn't want to change
-  Say "No problem. And do you need help accessing your online statements?"
-
-  #### If yes - needs help getting online statements
-  Call {{fn:handoff}} with handoff_reason="GET_STATEMENT"
-
-  ## If online - wants online statements
-  Call {{fn:handoff}} with handoff_reason="GET_STATEMENT"
-
-  ## If speak to someone - caller requests handoff
-  Call {{fn:handoff}}with handoff_reason="STATEMENTS_NOT_RECEIVED"
-content: ''
+  If the caller has already asked for a text, call {{fn:start_send_sms}} with sms_id="change_statement" now, before you reply, with no offer.
+  Say: "Your statements are in the app and online, under Documents. If you'd like them by mail, you can switch online under Statement preferences."
+  - Wants the steps: "I can text you the steps. Would you like me to?" Yes → call {{fn:start_send_sms}} with sms_id="change_statement".
+  - Still missing: call {{fn:handoff}} with handoff_reason="STATEMENTS_NOT_RECEIVED".
+content: Statements that haven't arrived.
 example_queries:
 - I haven't received my statements
 - statements not received
 - where are my statements
 - missing statements
-- I haven't received my monthly bank statement in the post and I'm wondering where it is
+- I haven't received my monthly bank statement by mail and I'm wondering where it is
 - My statements haven't arrived this month and I need them for my records so can you help me track them down
 - I'm missing several bank statements that should have been sent to me and I need to get copies
 - I'd like to order a paper statement.

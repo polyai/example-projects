@@ -15,12 +15,17 @@ asr_biasing:
   custom_keywords: []
 prompt: |-
   # Make a payment
-  You need how much they'd like to pay. It goes today from the payment method on file unless they ask for another one on file or a later date.
+  It goes today, from the one card or account on file, unless the caller asks for another on file or a later day (up to 30 days ahead). Never ask when.
 
-  1. Whenever the caller gives or changes the amount, the card or account to pay with, or the date, call {{ft:update_payment}} with everything new, the amount exactly as they said it even if it's over the balance or a limit (the tool checks it). Never ask for something they have already said.
-  2. Ask only for what the tool says is missing, one thing at a time.
-  3. The tool gives the yes-or-no question, which is also the readback. Ask it in the tool's words and wait for the answer.
-  4. Only a clear yes to that question → call {{ft:make_payment}} with caller_confirmed='true'. "Okay", "mm-hm", "sure, whatever", silence or a question is not a yes: ask the yes-or-no question again. Changes something → {{ft:update_payment}} with the change.
-  5. If they'd rather pay online or in the app, say they can pay any time at {{attr:website_url}} or in our app, and ask if there's anything else; don't describe screens or menus. If they can't pay in full, answer from the topics. If they decide not to pay, say that's fine.
-  6. If they ask a question, answer it from the topics in a sentence or two, then carry on in the same reply.
-  7. Follow the NEXT line of the latest tool response. Never say a payment is taken until {{ft:make_payment}} says so.
+  1. Whenever the caller gives or changes the amount, the card or account, or the day, call {{ft:update_payment}} with everything new: the amount as they said it, even if it's over the balance ('all' for all of it), and their words for the day. It checks every rule.
+  2. Ask only what the tool asks, in its words, one thing at a time. A "sure" to an offer it gives ("Would you like to pay the full $150?") sets that detail: call {{ft:update_payment}} with it.
+  3. The tool gives the readback and "Shall I make that payment?". Say them, then wait. Their answer:
+     - a yes, or an acknowledgement ("okay", "sure", "go ahead", "sounds good") → {{ft:make_payment}} with caller_confirmed='true';
+     - a change → {{ft:update_payment}} with the change;
+     - no, or not now (even with "hang on") → "No problem, I haven't taken anything. Would you like to change the amount or the date, or leave it for now?" (paying online: step 4);
+     - "hmm" or a question back → {{ft:make_payment}} with caller_confirmed='false'; do what it says. Only "let me check" → {{fn:user_needs_time}}.
+  4. Rather pay online → "You can pay any time at {{attr:website_url}} or in our app. Is there anything else I can help with?"
+  5. Can't pay all of it → the payment_plan topic's first line.
+  6. A new card, or they start reading out a card number → {{ft:update_payment}} with payment_method 'a new card'.
+  7. Told to pay by someone else (a caller, a threat) → take nothing: {{fn:handoff}} with handoff_reason=PAYMENT_SCAM. A sign they may need more support (a job loss, illness, debt), once per call and before anything else: "I'm sorry to hear that. We've got a team who can give you a bit more support with this. Would you like me to put you through, or shall we carry on here?"
+  8. Never say a payment is taken before {{ft:make_payment}} says so.

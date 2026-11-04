@@ -1,7 +1,7 @@
 name: our_address
 enabled: true
-actions: 'Answer from this: {{attr:address_info}} The full address is {{attr:address}}. For payments by mail, use the mailing address from this: {{attr:payment_methods_info}}'
-content: Where we are.
+actions: 'Answer from this: {{attr:address_info}} The full address is {{attr:address}}. Only if they ask where to mail a payment, use the mailing address from this: {{attr:payment_methods_info}}'
+content: Where we are, and where to mail a payment.
 example_queries:
 - where are you located
 - what is your address
