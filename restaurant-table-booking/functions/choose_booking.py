@@ -1,5 +1,4 @@
 import functions.existing_booking as existing
-
 from _gen import *  # <AUTO GENERATED>
 from functions import bookings
 from functions.handoff import handoff

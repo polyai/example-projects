@@ -1,5 +1,4 @@
 import functions.new_booking as nb
-
 from _gen import *  # <AUTO GENERATED>
 from functions import bookings
 
