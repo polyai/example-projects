@@ -60,8 +60,30 @@ __all__ = [
     "ContactJourney",
     "ContactMetadata",
     "OutboundCampaign",
+    "OutboundCampaignContext",
     "OutboundContact",
     "StepAttempt",
+    "_Record",
+    "ContactJourney",
+    "ContactMetadata",
+    "LastSend",
+    "OutboundCampaign",
+    "OutboundCampaignContext",
+    "OutboundContact",
+    "StepAttempt",
+    "OutboundCampaignSignals",
+    "SignalResult",
+    "PciError",
+    "PciNotConfigured",
+    "PciBadRequest",
+    "PciCaptureNotFound",
+    "PciConflict",
+    "PciAttemptMismatch",
+    "PciCaptureExpired",
+    "PciRateLimited",
+    "PciResultUnknown",
+    "PciTimeout",
+    "PciUnavailable",
     "InvalidInput",
     "MissingAccess",
     "SecretNotFound",
@@ -116,7 +138,16 @@ from .memory import (
     Memory
 )
 from .outbound import (
-    ContactJourney, ContactMetadata, OutboundCampaign, OutboundContact, StepAttempt
+    ContactJourney, ContactMetadata, OutboundCampaign, OutboundCampaignContext, OutboundContact, StepAttempt
+)
+from .outbound_campaign import (
+    _Record, ContactJourney, ContactMetadata, LastSend, OutboundCampaign, OutboundCampaignContext, OutboundContact, StepAttempt
+)
+from .outbound_campaign_signals import (
+    OutboundCampaignSignals, SignalResult
+)
+from .pci import (
+    PciError, PciNotConfigured, PciBadRequest, PciCaptureNotFound, PciConflict, PciAttemptMismatch, PciCaptureExpired, PciRateLimited, PciResultUnknown, PciTimeout, PciUnavailable
 )
 from .secret_vault import (
     InvalidInput, MissingAccess, SecretNotFound
