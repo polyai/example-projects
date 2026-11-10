@@ -1,8 +1,0 @@
-name: missed_payment
-enabled: true
-actions: Call {{fn:handoff}} with handoff_reason="missed_payment".
-content: A payment that didn't go through.
-example_queries:
-- My payment didn't go through
-- Payment failed
-- Transaction was declined

@@ -1,3 +1,0 @@
-name: sms_flow
-description: Text the caller a message from config/sms_templates.yaml. One Send Text step settles the number (the calling number, or one the caller gives and confirms after a readback) and sends it.
-start_step: Send Text

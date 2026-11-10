@@ -1,3 +1,0 @@
-name: account_balance
-description: Tell a verified caller their balance. The entry step checks strict ID&V and reads the balance and any scheduled payments; one Account Balance step handles follow-ups.
-start_step: check_balance

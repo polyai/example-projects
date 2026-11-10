@@ -1,16 +1,1 @@
-pronunciations:
-- regex: /
-  replacement: slash
-  case_sensitive: false
-- regex: 2.99%
-  replacement: two point ninety-nine percent
-  case_sensitive: false
-- regex: $1.50
-  replacement: one dollar and fifty cents
-  case_sensitive: false
-- regex: \b10([ -])digit
-  replacement: ten\1digit
-  case_sensitive: false
-- regex: \b12([ -])digit
-  replacement: twelve\1digit
-  case_sensitive: false
+pronunciations: []

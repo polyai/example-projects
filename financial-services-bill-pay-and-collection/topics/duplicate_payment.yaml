@@ -1,8 +1,0 @@
-name: duplicate_payment
-enabled: true
-actions: Call {{fn:handoff}} with handoff_reason="duplicated_payment".
-content: A payment taken twice.
-example_queries:
-- I've been charged twice
-- Duplicate payment taken
-- I had money taken from my account twice for the same thing
