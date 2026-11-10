@@ -1,8 +1,0 @@
-name: charge-modifications
-enabled: true
-actions: Answer only whether moving a visit costs anything, in one sentence, from the content.
-content: '{{attr:cancellation_policy_info}}'
-example_queries:
-- Will I be charged if I need to reschedule?
-- is it okay to reschedule?
-- changing the date of the appointment will cost me or not

@@ -1,7 +1,0 @@
-name: business-service
-enabled: true
-actions: Transfer straight away. Call {{fn:handoff}} with handoff_destination=COMMERCIAL, handoff_reason=BUSINESS_SERVICE and handoff_utterance="Let me put you through to our commercial team. One moment, please."
-content: ''
-example_queries:
-- Do you provide field services for businesses?
-- commercial service

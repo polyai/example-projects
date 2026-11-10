@@ -1,9 +1,3 @@
-greeting:
-  welcome_message: Hi, thanks for calling {{attr:site_name}}! How can I help you today?
-  language_code: en-US
-style_prompt:
-  prompt: ''
-disclaimer_messages:
-  message: This call will be recorded in order to respond to your request, and for training and quality control purposes.
-  enabled: false
-  language_code: en-US
+greeting: {}
+style_prompt: {}
+disclaimer_messages: {}

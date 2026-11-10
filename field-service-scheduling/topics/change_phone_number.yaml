@@ -1,9 +1,0 @@
-name: change-phone_number
-enabled: true
-actions: Transfer straight away. Call {{fn:handoff}} with handoff_destination=CUSTOMER_CARE, handoff_reason=CONTACT_INFO_CHANGE and handoff_utterance="Let me put you through to the team, who can update your contact details. One moment, please."
-content: ''
-example_queries:
-- change phone number
-- my number has changed
-- update contact info
-- phone number change

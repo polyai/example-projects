@@ -1,7 +1,0 @@
-name: licensed
-enabled: true
-actions: Answer only what they asked, in one sentence.
-content: '{{attr:licensing_info}}'
-example_queries:
-- Is the company licensed and insured?
-- Are you licensed?

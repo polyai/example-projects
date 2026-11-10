@@ -1,6 +1,0 @@
-name: visit-intervals
-enabled: true
-actions: Answer from the content in one or two sentences. If they want help choosing or joining a plan, call {{fn:handoff}} with handoff_destination=INSIDE_SALES, handoff_reason=VISIT_INTERVALS and handoff_utterance="Let me put you through to the team. One moment, please."
-content: '{{attr:service_plans_info}}'
-example_queries:
-- How often should I schedule services?
