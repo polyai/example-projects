@@ -1,9 +1,0 @@
-name: specific_table_requests
-enabled: true
-actions: 'Say: "I can''t promise, but I''ll add a note and the team will do their best." If they''re booking or changing a booking now, pass it to that task''s tool as a note.'
-content: ''
-example_queries:
-- Can I sit by the window?
-- Can I have my favourite table?
-- Can we sit in the cosy chairs?
-- I want the comfortable seats

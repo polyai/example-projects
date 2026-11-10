@@ -1,9 +1,0 @@
-name: reservations-confirm_booking
-enabled: true
-actions: Don't say anything; immediately call {{fn:start_check_booking}}.
-content: ''
-example_queries:
-- I need to check on a booking I made with you
-- Can you confirm that I have a booking tonight at 6?
-- I was just checking which name my booking is under?
-- Can I check my booking details?

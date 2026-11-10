@@ -1,9 +1,0 @@
-name: reservations-sms_confirmations
-enabled: true
-actions: 'Say: "I''m afraid I can''t send confirmations by text, but I can read it out for you now." If they''d like that, call {{fn:start_check_booking}}.'
-content: ''
-example_queries:
-- Could you send me a confirmation text?
-- Can you send me an SMS confirmation
-- I never got my confirmation text for my booking
-- Can you text me to confirm the cancellation went through?
