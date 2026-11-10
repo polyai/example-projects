@@ -1,8 +1,0 @@
-name: Orders-tracking_number_not_working
-enabled: true
-actions: Say "New tracking numbers can take up to a day to show updates." Then call {{fn:start_track_order}} to check the order.
-content: New tracking numbers can take up to a day to show updates on the carrier's site.
-example_queries:
-- My tracking number doesn't work
-- I can't track my order
-- tracking hasn't updated

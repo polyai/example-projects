@@ -1,9 +1,0 @@
-name: Delivery_Issues-package_investigations
-enabled: true
-actions: Say it can take up to 4 business days to get an email update. If it's been longer, or they ask for a person, call {{fn:handoff}} with handoff_reason=PACKAGE_INVESTIGATION and handoff_utterance="I'll put you through to the team now. One moment, please."
-content: It can take up to 4 business days to get an email update about a claim.
-example_queries:
-- Status update on a package investigation
-- I need an update on an open investigation
-- I have a claim open for a missing package
-- When will I hear back about my claim

@@ -1,9 +1,0 @@
-name: Orders-new_order
-enabled: true
-actions: Say "We don't take orders over the phone, I'm afraid, but you can order on our website, which has all the latest stock." To offer the link, call {{fn:start_send_sms}} with sms_id='website' and caller_agreed='false', and ask the question it gives you. Only if they're having trouble ordering online, offer the team; on a yes, call {{fn:handoff}} with handoff_reason=NEW_ORDER and handoff_utterance="I'll put you through to the team now. One moment, please."
-content: We don't take orders over the phone. Orders are placed on our website, {{attr:website_url}}, which has live stock, photos, reviews and filters by brand, color and size.
-example_queries:
-- I want to place an order
-- new order
-- I wanna buy some shoes
-- can I order over the phone

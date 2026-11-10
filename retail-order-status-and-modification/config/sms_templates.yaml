@@ -1,7 +1,1 @@
-sms_templates:
-- name: store_link
-  text: Hi from {{vrbl:site_name}}. {{vrbl:sms_body}}
-  env_phone_numbers:
-    sandbox: ''
-    pre_release: ''
-    live: '+12015550100'
+sms_templates: []

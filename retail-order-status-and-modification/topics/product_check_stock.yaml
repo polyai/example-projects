@@ -1,8 +1,0 @@
-name: Product-check_stock
-enabled: true
-actions: 'Say the website has the most up-to-date stock, in a sentence. To offer the link, call {{fn:start_send_sms}} with sms_id=''website'' and caller_agreed=''false'', and ask the question it gives you. Don''t offer a transfer: the team sees the same stock.'
-content: Our website, {{attr:website_url}}, has the most up-to-date stock, with photos, reviews and filters by brand, color and size. Colleagues see the same stock information.
-example_queries:
-- Can I check if you have something in stock?
-- Do you have the new Nike LeBrons in stock?
-- do you have the adidas Sambas in pink

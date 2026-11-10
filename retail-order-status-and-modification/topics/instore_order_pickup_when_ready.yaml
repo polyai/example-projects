@@ -1,7 +1,0 @@
-name: Instore-order_pickup_when_ready
-enabled: true
-actions: Answer in a sentence. For a specific order, call {{fn:start_track_order}}.
-content: '{{attr:instore_pickup_info}}'
-example_queries:
-- When will my order be ready for pickup?
-- is my pickup order ready

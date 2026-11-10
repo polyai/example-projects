@@ -1,8 +1,0 @@
-name: Instore-order_pickup
-enabled: true
-actions: 'Answer in a sentence or two. Don''t say whether a specific item can be picked up right now: the website has the latest stock.'
-content: 'You can pick up in store: choose "pick up in store" at checkout. {{attr:instore_pickup_info}}'
-example_queries:
-- Can I pick up my item in store?
-- do you do click and collect
-- how does store pickup work

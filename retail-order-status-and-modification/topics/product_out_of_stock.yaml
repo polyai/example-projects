@@ -1,7 +1,0 @@
-name: Product-out_of_stock
-enabled: true
-actions: 'Say we can''t say when an item will be back, and the website has the latest stock. To offer the link, call {{fn:start_send_sms}} with sms_id=''website'' and caller_agreed=''false'', and ask the question it gives you. Don''t offer a transfer: the team can''t see restock dates either.'
-content: We can't say when a specific item will be restocked. Our website, {{attr:website_url}}, always has the latest stock, so keep an eye out there for restocks.
-example_queries:
-- When will the Nike LeBrons be restocked?
-- The sneakers I want are out of stock, when will they be back?
