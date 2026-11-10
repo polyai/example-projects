@@ -1,9 +1,3 @@
-greeting:
-  welcome_message: Hi, thanks for calling {{attr:site_name}}! How can I help?
-  language_code: en-US
-style_prompt:
-  prompt: Speak at a steady, moderate pace throughout. Keep a consistent rhythm whether the sentence is short or long.
-disclaimer_messages:
-  message: ''
-  enabled: false
-  language_code: en-US
+greeting: {}
+style_prompt: {}
+disclaimer_messages: {}
